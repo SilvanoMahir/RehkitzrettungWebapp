@@ -1,0 +1,2 @@
+C:\Users\Silvano\Git\RehkitzrettungWebapp\WebApplikation\reactapp\obj\Debug\reactapp.esproj.SuggestedBindingRedirects.cache
+C:\Users\Silvano\Git\RehkitzrettungWebapp\WebApplikation\reactapp\obj\Debug\reactapp.esproj.CoreCompileInputs.cache
