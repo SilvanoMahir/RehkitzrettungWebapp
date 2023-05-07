@@ -1,35 +1,35 @@
 import React, { Component } from 'react'
 
-export default class App extends Component<{}, { forecasts: [], loading: boolean }> {
+export default class App extends Component<{}, { protocols: [], loading: boolean }> {
     static displayName = App.name
 
     constructor(props: {} | Readonly<{}>) {
         super(props)
-        this.state = { forecasts: [], loading: true }
+        this.state = { protocols: [], loading: true }
     }
 
     componentDidMount() {
-        this.populateWeatherData()
+        this.populateProtocolData()
     }
 
-    static renderForecastsTable(forecasts: any[]) {
+    static renderProtocolsTable(protocols: any[]) {
         return (
             <table className='table table-striped' aria-labelledby="tabelLabel">
                 <thead>
                     <tr>
-                        <th>Date</th>
-                        <th>Temp. (C)</th>
-                        <th>Temp. (F)</th>
-                        <th>Summary</th>
+                        <th>Protokoll-Code</th>
+                        <th>Name des Klienten</th>
+                        <th>Name des Lokals</th>
+                        <th>Name des Piloten</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {forecasts.map(forecast =>
-                        <tr key={forecast.date}>
-                            <td>{forecast.date}</td>
-                            <td>{forecast.temperatureC}</td>
-                            <td>{forecast.temperatureF}</td>
-                            <td>{forecast.summary}</td>
+                    {protocols.map(protocol =>
+                        <tr key={protocol.date}>
+                            <td>{protocol.date}</td>
+                            <td>{protocol.temperatureC}</td>
+                            <td>{protocol.temperatureF}</td>
+                            <td>{protocol.summary}</td>
                         </tr>
                     )}
                 </tbody>
@@ -40,20 +40,19 @@ export default class App extends Component<{}, { forecasts: [], loading: boolean
     render() {
         let contents = this.state.loading
             ? <p><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationreact">https://aka.ms/jspsintegrationreact</a> for more details.</em></p>
-            : App.renderForecastsTable(this.state.forecasts)
+            : App.renderProtocolsTable(this.state.protocols)
 
         return (
             <div>
-                <h1 id="tabelLabel" >Weather forecast</h1>
-                <p>This component demonstrates fetching data from the server.</p>
+                <h1 id="tabelLabel" >Rehkitzrettung Webapp Protokolle</h1>
                 {contents}
             </div>
         );
     }
 
-    async populateWeatherData() {
+    async populateProtocolData() {
         const response = await fetch('weatherforecast')
         const data = await response.json()
-        this.setState({ forecasts: data, loading: false })
+        this.setState({ protocols: data, loading: false })
     }
 }
