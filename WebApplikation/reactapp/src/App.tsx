@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 
-export default class App extends Component {
+export default class App extends Component<{}, { forecasts: [], loading: boolean }> {
     static displayName = App.name;
 
-    constructor(props) {
+    constructor(props: {} | Readonly<{}>) {
         super(props);
         this.state = { forecasts: [], loading: true };
     }
@@ -12,7 +12,7 @@ export default class App extends Component {
         this.populateWeatherData();
     }
 
-    static renderForecastsTable(forecasts) {
+    static renderForecastsTable(forecasts: any[]) {
         return (
             <table className='table table-striped' aria-labelledby="tabelLabel">
                 <thead>
