@@ -1,0 +1,30 @@
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.VisualBasic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+
+namespace webapi.Models;
+
+public class Users
+{
+
+    [Key]
+    public int userId { get; set; }
+
+    [Required]
+    [Column(TypeName = "nvarchar(50)")]
+    public string? UserName { get; set; }
+
+    [Column(TypeName = "nvarchar(50)")]
+    public string? userPrenameName { get; set; }
+    
+    [Required]
+    [Column(TypeName = "nvarchar(50)")]
+    public string? userRole { get; set; }
+
+    [Required]
+    [Column(TypeName = "nvarchar(50)")]
+    public string? userMail { get; set; }
+
+}
