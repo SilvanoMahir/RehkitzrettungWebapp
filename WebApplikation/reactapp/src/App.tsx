@@ -1,15 +1,15 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 
 export default class App extends Component<{}, { forecasts: [], loading: boolean }> {
-    static displayName = App.name;
+    static displayName = App.name
 
     constructor(props: {} | Readonly<{}>) {
-        super(props);
-        this.state = { forecasts: [], loading: true };
+        super(props)
+        this.state = { forecasts: [], loading: true }
     }
 
     componentDidMount() {
-        this.populateWeatherData();
+        this.populateWeatherData()
     }
 
     static renderForecastsTable(forecasts: any[]) {
@@ -40,7 +40,7 @@ export default class App extends Component<{}, { forecasts: [], loading: boolean
     render() {
         let contents = this.state.loading
             ? <p><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationreact">https://aka.ms/jspsintegrationreact</a> for more details.</em></p>
-            : App.renderForecastsTable(this.state.forecasts);
+            : App.renderForecastsTable(this.state.forecasts)
 
         return (
             <div>
@@ -52,8 +52,8 @@ export default class App extends Component<{}, { forecasts: [], loading: boolean
     }
 
     async populateWeatherData() {
-        const response = await fetch('weatherforecast');
-        const data = await response.json();
-        this.setState({ forecasts: data, loading: false });
+        const response = await fetch('weatherforecast')
+        const data = await response.json()
+        this.setState({ forecasts: data, loading: false })
     }
 }
