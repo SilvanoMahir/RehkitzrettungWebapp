@@ -6,7 +6,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace webapi.Models;
 
-public class Users
+public class User
 {
 
     [Key]
@@ -14,10 +14,10 @@ public class Users
 
     [Required]
     [Column(TypeName = "nvarchar(50)")]
-    public string? UserName { get; set; }
+    public string? userFirstName { get; set; }
 
     [Column(TypeName = "nvarchar(50)")]
-    public string? userPrenameName { get; set; }
+    public string? userLastName { get; set; }
     
     [Required]
     [Column(TypeName = "nvarchar(50)")]

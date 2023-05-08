@@ -1,38 +1,38 @@
 USE [RehkitzrettungDB]
 GO
 
-INSERT INTO [dbo].[Protocols]
+INSERT INTO [dbo].[Protocol]
            ([protocolCode]
-           ,[clientName]
+           ,[clientFullName]
            ,[localName]
-           ,[pilotName]
+           ,[pilotFullName]
            ,[regionName]
            ,[remark]
-           ,[areaName]
+           ,[areaSize]
            ,[foundFawns]
            ,[injuredFawns]
            ,[markedFawns]
            ,[date])
      VALUES
            ('GR-0024'
-           ,'John Doe'
+           ,'Hans Pua'
            ,'Chomps'
-           ,'Jane Smith'
+           ,'Johannes Erny'
            ,'Sent'
-           ,'<1ha'
-           ,'Scuol'
+		   ,'Keine Bemerkung'
+           ,'>1ha'
            ,1
            ,0
            ,0
            ,'2023-05-07 12:00:00')
-INSERT INTO [dbo].[Protocols]
+INSERT INTO [dbo].[Protocol]
            ([protocolCode]
-           ,[clientName]
+           ,[clientFullName]
            ,[localName]
-           ,[pilotName]
+           ,[pilotFullName]
            ,[regionName]
            ,[remark]
-           ,[areaName]
+           ,[areaSize]
            ,[foundFawns]
            ,[injuredFawns]
            ,[markedFawns]
@@ -43,8 +43,8 @@ INSERT INTO [dbo].[Protocols]
            ,'Uina'
            ,'John Kane'
            ,'Scuol'
-           ,'No special remarks'
-           ,'>1ha'
+		   ,'Keine Bemerkung'
+           ,'<1ha'
            ,2
            ,1
            ,0

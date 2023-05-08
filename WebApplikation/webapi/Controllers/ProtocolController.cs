@@ -10,57 +10,57 @@ using webapi.Models;
 
 namespace webapi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/protocols")]
     [ApiController]
     public class ProtocolController : ControllerBase
     {
-        private readonly APIDbContext _context;
+        private readonly ApiDbContext _context;
 
-        public ProtocolController(APIDbContext context)
+        public ProtocolController(ApiDbContext context)
         {
             _context = context;
         }
 
         // GET: api/Protocol
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Protocols>>> GetProtocols()
+        public async Task<ActionResult<IEnumerable<Protocol>>> GetProtocol()
         {
-          if (_context.Protocols == null)
+          if (_context.Protocol == null)
           {
               return NotFound();
           }
-            return await _context.Protocols.ToListAsync();
+            return await _context.Protocol.ToListAsync();
         }
 
         // GET: api/Protocol/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Protocols>> GetProtocols(int id)
+        public async Task<ActionResult<Protocol>> GetProtocol(int id)
         {
-          if (_context.Protocols == null)
+          if (_context.Protocol == null)
           {
               return NotFound();
           }
-            var protocols = await _context.Protocols.FindAsync(id);
+            var protocol = await _context.Protocol.FindAsync(id);
 
-            if (protocols == null)
+            if (protocol == null)
             {
                 return NotFound();
             }
 
-            return protocols;
+            return protocol;
         }
 
         // PUT: api/Protocol/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutProtocols(int id, Protocols protocols)
+        public async Task<IActionResult> PutProtocol(int id, Protocol protocol)
         {
-            if (id != protocols.protocolId)
+            if (id != protocol.protocolId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(protocols).State = EntityState.Modified;
+            _context.Entry(protocol).State = EntityState.Modified;
 
             try
             {
@@ -68,7 +68,7 @@ namespace webapi.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ProtocolsExists(id))
+                if (!ProtocolExists(id))
                 {
                     return NotFound();
                 }
@@ -84,41 +84,41 @@ namespace webapi.Controllers
         // POST: api/Protocol
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Protocols>> PostProtocols(Protocols protocols)
+        public async Task<ActionResult<Protocol>> PostProtocol(Protocol protocol)
         {
-          if (_context.Protocols == null)
+          if (_context.Protocol == null)
           {
-              return Problem("Entity set 'APIDbContext.Protocols'  is null.");
+              return Problem("Entity set 'ApiDbContext.Protocol'  is null.");
           }
-            _context.Protocols.Add(protocols);
+            _context.Protocol.Add(protocol);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetProtocols", new { id = protocols.protocolId }, protocols);
+            return CreatedAtAction("GetProtocol", new { id = protocol.protocolId }, protocol);
         }
 
         // DELETE: api/Protocol/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProtocols(int id)
+        public async Task<IActionResult> DeleteProtocol(int id)
         {
-            if (_context.Protocols == null)
+            if (_context.Protocol == null)
             {
                 return NotFound();
             }
-            var protocols = await _context.Protocols.FindAsync(id);
-            if (protocols == null)
+            var protocol = await _context.Protocol.FindAsync(id);
+            if (protocol == null)
             {
                 return NotFound();
             }
 
-            _context.Protocols.Remove(protocols);
+            _context.Protocol.Remove(protocol);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool ProtocolsExists(int id)
+        private bool ProtocolExists(int id)
         {
-            return (_context.Protocols?.Any(e => e.protocolId == id)).GetValueOrDefault();
+            return (_context.Protocol?.Any(e => e.protocolId == id)).GetValueOrDefault();
         }
     }
 }

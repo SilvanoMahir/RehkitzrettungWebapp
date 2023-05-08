@@ -6,7 +6,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace webapi.Models;
 
-public class Protocols
+public class Protocol
 {
 
     [Key]
@@ -18,7 +18,7 @@ public class Protocols
 
     [Required]
     [Column(TypeName = "nvarchar(50)")]
-    public string? clientName { get; set; }
+    public string? clientFullName { get; set; }
 
     [Required]
     [Column(TypeName = "nvarchar(50)")]
@@ -26,7 +26,7 @@ public class Protocols
 
     [Required]
     [Column(TypeName = "nvarchar(50)")]
-    public string? pilotName { get; set; }
+    public string? pilotFullName { get; set; }
 
     [Required]
     [Column(TypeName = "nvarchar(50)")]
@@ -37,7 +37,7 @@ public class Protocols
 
     [Required]
     [Column(TypeName = "nvarchar(50)")]
-    public string? areaName { get; set; }
+    public string? areaSize { get; set; }
 
     [Required]
     public int foundFawns { get; set; }

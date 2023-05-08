@@ -6,7 +6,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace webapi.Models;
 
-public class Regions
+public class Region
 {
 
     [Key]
@@ -21,10 +21,10 @@ public class Regions
     public string? regionState { get; set; }
 
     [Column(TypeName = "nvarchar(50)")]
-    public string? contactPersonName { get; set; }
+    public string? contactPersonLastName { get; set; }
  
     [Column(TypeName = "nvarchar(50)")]
-    public string? contactPersonPrename { get; set; }
+    public string? contactPersonFirstName{ get; set; }
 
     [Column(TypeName = "nvarchar(50)")]
     public string? contactPersonMail { get; set; }

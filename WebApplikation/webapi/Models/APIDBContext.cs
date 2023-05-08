@@ -3,15 +3,15 @@ using webapi.Models;
 
 namespace StudentAPI.Models
 {
-    public class APIDbContext : DbContext
+    public class ApiDbContext : DbContext
     {
-        public APIDbContext(DbContextOptions option) : base(option)
+        public ApiDbContext(DbContextOptions option) : base(option)
         { }
 
-        public DbSet<Protocols> Protocols { get; set; }
+        public DbSet<Protocol> Protocol { get; set; }
 
-        public DbSet<Users> Users { get; set; }
+        public DbSet<User> User { get; set; }
 
-        public DbSet<Regions> Regions { get; set; }
+        public DbSet<Region> Region { get; set; }
     }
 }

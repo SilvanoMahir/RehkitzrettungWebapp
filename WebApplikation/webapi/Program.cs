@@ -11,7 +11,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 //Dependency Injection of DBContext
-builder.Services.AddDbContext<APIDbContext>(options => 
+builder.Services.AddDbContext<ApiDbContext>(options => 
 options.UseSqlServer(builder.Configuration.GetConnectionString("DevConnection")));
 
 var app = builder.Build();

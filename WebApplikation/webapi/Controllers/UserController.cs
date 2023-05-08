@@ -10,57 +10,57 @@ using webapi.Models;
 
 namespace webapi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/users")]
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly APIDbContext _context;
+        private readonly ApiDbContext _context;
 
-        public UserController(APIDbContext context)
+        public UserController(ApiDbContext context)
         {
             _context = context;
         }
 
         // GET: api/User
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Users>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<User>>> GetUser()
         {
-          if (_context.Users == null)
+          if (_context.User == null)
           {
               return NotFound();
           }
-            return await _context.Users.ToListAsync();
+            return await _context.User.ToListAsync();
         }
 
         // GET: api/User/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Users>> GetUsers(int id)
+        public async Task<ActionResult<User>> GetUser(int id)
         {
-          if (_context.Users == null)
+          if (_context.User == null)
           {
               return NotFound();
           }
-            var users = await _context.Users.FindAsync(id);
+            var user = await _context.User.FindAsync(id);
 
-            if (users == null)
+            if (user == null)
             {
                 return NotFound();
             }
 
-            return users;
+            return user;
         }
 
         // PUT: api/User/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUsers(int id, Users users)
+        public async Task<IActionResult> PutUser(int id, User user)
         {
-            if (id != users.userId)
+            if (id != user.userId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(users).State = EntityState.Modified;
+            _context.Entry(user).State = EntityState.Modified;
 
             try
             {
@@ -68,7 +68,7 @@ namespace webapi.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UsersExists(id))
+                if (!UserExists(id))
                 {
                     return NotFound();
                 }
@@ -84,41 +84,41 @@ namespace webapi.Controllers
         // POST: api/User
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Users>> PostUsers(Users users)
+        public async Task<ActionResult<User>> PostUser(User user)
         {
-          if (_context.Users == null)
+          if (_context.User == null)
           {
-              return Problem("Entity set 'APIDbContext.Users'  is null.");
+              return Problem("Entity set 'ApiDbContext.User'  is null.");
           }
-            _context.Users.Add(users);
+            _context.User.Add(user);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetUsers", new { id = users.userId }, users);
+            return CreatedAtAction("GetUser", new { id = user.userId }, user);
         }
 
         // DELETE: api/User/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUsers(int id)
+        public async Task<IActionResult> DeleteUser(int id)
         {
-            if (_context.Users == null)
+            if (_context.User == null)
             {
                 return NotFound();
             }
-            var users = await _context.Users.FindAsync(id);
-            if (users == null)
+            var user = await _context.User.FindAsync(id);
+            if (user == null)
             {
                 return NotFound();
             }
 
-            _context.Users.Remove(users);
+            _context.User.Remove(user);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool UsersExists(int id)
+        private bool UserExists(int id)
         {
-            return (_context.Users?.Any(e => e.userId == id)).GetValueOrDefault();
+            return (_context.User?.Any(e => e.userId == id)).GetValueOrDefault();
         }
     }
 }

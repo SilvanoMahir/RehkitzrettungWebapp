@@ -10,57 +10,57 @@ using webapi.Models;
 
 namespace webapi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/regions")]
     [ApiController]
     public class RegionController : ControllerBase
     {
-        private readonly APIDbContext _context;
+        private readonly ApiDbContext _context;
 
-        public RegionController(APIDbContext context)
+        public RegionController(ApiDbContext context)
         {
             _context = context;
         }
 
         // GET: api/Region
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Regions>>> GetRegions()
+        public async Task<ActionResult<IEnumerable<Region>>> GetRegion()
         {
-          if (_context.Regions == null)
+          if (_context.Region == null)
           {
               return NotFound();
           }
-            return await _context.Regions.ToListAsync();
+            return await _context.Region.ToListAsync();
         }
 
         // GET: api/Region/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Regions>> GetRegions(int id)
+        public async Task<ActionResult<Region>> GetRegion(int id)
         {
-          if (_context.Regions == null)
+          if (_context.Region == null)
           {
               return NotFound();
           }
-            var regions = await _context.Regions.FindAsync(id);
+            var region = await _context.Region.FindAsync(id);
 
-            if (regions == null)
+            if (region == null)
             {
                 return NotFound();
             }
 
-            return regions;
+            return region;
         }
 
         // PUT: api/Region/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutRegions(int id, Regions regions)
+        public async Task<IActionResult> PutRegion(int id, Region region)
         {
-            if (id != regions.regionId)
+            if (id != region.regionId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(regions).State = EntityState.Modified;
+            _context.Entry(region).State = EntityState.Modified;
 
             try
             {
@@ -68,7 +68,7 @@ namespace webapi.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!RegionsExists(id))
+                if (!RegionExists(id))
                 {
                     return NotFound();
                 }
@@ -84,41 +84,41 @@ namespace webapi.Controllers
         // POST: api/Region
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Regions>> PostRegions(Regions regions)
+        public async Task<ActionResult<Region>> PostRegion(Region region)
         {
-          if (_context.Regions == null)
+          if (_context.Region == null)
           {
-              return Problem("Entity set 'APIDbContext.Regions'  is null.");
+              return Problem("Entity set 'ApiDbContext.Region'  is null.");
           }
-            _context.Regions.Add(regions);
+            _context.Region.Add(region);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetRegions", new { id = regions.regionId }, regions);
+            return CreatedAtAction("GetRegion", new { id = region.regionId }, region);
         }
 
         // DELETE: api/Region/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteRegions(int id)
+        public async Task<IActionResult> DeleteRegion(int id)
         {
-            if (_context.Regions == null)
+            if (_context.Region == null)
             {
                 return NotFound();
             }
-            var regions = await _context.Regions.FindAsync(id);
-            if (regions == null)
+            var region = await _context.Region.FindAsync(id);
+            if (region == null)
             {
                 return NotFound();
             }
 
-            _context.Regions.Remove(regions);
+            _context.Region.Remove(region);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool RegionsExists(int id)
+        private bool RegionExists(int id)
         {
-            return (_context.Regions?.Any(e => e.regionId == id)).GetValueOrDefault();
+            return (_context.Region?.Any(e => e.regionId == id)).GetValueOrDefault();
         }
     }
 }
