@@ -21,7 +21,7 @@ namespace webapi.Controllers
             _context = context;
         }
 
-        // GET: api/Protocol
+        // GET: api/protocols
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Protocol>>> GetProtocol()
         {
@@ -32,7 +32,7 @@ namespace webapi.Controllers
             return await _context.Protocol.ToListAsync();
         }
 
-        // GET: api/Protocol/5
+        // GET: api/protocols/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Protocol>> GetProtocol(int id)
         {
@@ -50,7 +50,7 @@ namespace webapi.Controllers
             return protocol;
         }
 
-        // PUT: api/Protocol/5
+        // PUT: api/protocols/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutProtocol(int id, Protocol protocol)
@@ -81,7 +81,7 @@ namespace webapi.Controllers
             return NoContent();
         }
 
-        // POST: api/Protocol
+        // POST: api/protocols
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Protocol>> PostProtocol(Protocol protocol)
@@ -96,7 +96,7 @@ namespace webapi.Controllers
             return CreatedAtAction("GetProtocol", new { id = protocol.protocolId }, protocol);
         }
 
-        // DELETE: api/Protocol/5
+        // DELETE: api/protocols/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProtocol(int id)
         {
