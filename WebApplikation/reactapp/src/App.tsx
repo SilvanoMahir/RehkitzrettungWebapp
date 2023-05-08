@@ -25,11 +25,11 @@ export default class App extends Component<{}, { protocols: [], loading: boolean
                 </thead>
                 <tbody>
                     {protocols.map(protocol =>
-                        <tr key={protocol.date}>
-                            <td>{protocol.date}</td>
-                            <td>{protocol.temperatureC}</td>
-                            <td>{protocol.temperatureF}</td>
-                            <td>{protocol.summary}</td>
+                        <tr key={protocol.protocolId}>
+                            <td>{protocol.protocolCode}</td>
+                            <td>{protocol.clientFullName}</td>
+                            <td>{protocol.localName}</td>
+                            <td>{protocol.pilotFullName}</td>
                         </tr>
                     )}
                 </tbody>
@@ -51,7 +51,7 @@ export default class App extends Component<{}, { protocols: [], loading: boolean
     }
 
     async populateProtocolData() {
-        const response = await fetch('weatherforecast')
+        const response = await fetch('protocol')
         const data = await response.json()
         this.setState({ protocols: data, loading: false })
     }

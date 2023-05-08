@@ -10,8 +10,8 @@ using webapi.Models;
 
 namespace webapi.Controllers
 {
-    [Route("api/protocols")]
     [ApiController]
+    [Route("[controller]")]
     public class ProtocolController : ControllerBase
     {
         private readonly ApiDbContext _context;
@@ -21,18 +21,37 @@ namespace webapi.Controllers
             _context = context;
         }
 
-        // GET: api/protocols
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Protocol>>> GetProtocol()
+        // GET: api/protocol
+        [HttpGet(Name = "GetProtocol")]
+        // public async Task<ActionResult<IEnumerable<Protocol>>> GetProtocol()
+        // {
+        //   if (_context.Protocol == null)
+        //   {
+        //       return NotFound();
+        //   }
+        //     return await _context.Protocol.ToListAsync();
+        // }
+        public IEnumerable<Protocol> Get()
         {
-          if (_context.Protocol == null)
-          {
-              return NotFound();
-          }
-            return await _context.Protocol.ToListAsync();
+            return Enumerable.Range(1, 5).Select(index => new Protocol
+            {
+                protocolId = 42,
+                protocolCode = "Some Code",
+                clientFullName = "Some client full name",
+                localName = "Some local name",
+                pilotFullName = "Some pilot full name",
+                regionName = "Some region name",
+                remark = "Some remark",
+                areaSize = "Some area size",
+                foundFawns = 3,
+                injuredFawns = 1,
+                markedFawns = 2,
+                date = DateTime.Now
+            })
+            .ToArray();
         }
 
-        // GET: api/protocols/5
+        // GET: api/protocol/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Protocol>> GetProtocol(int id)
         {
@@ -50,7 +69,7 @@ namespace webapi.Controllers
             return protocol;
         }
 
-        // PUT: api/protocols/5
+        // PUT: api/protocol/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutProtocol(int id, Protocol protocol)
@@ -81,7 +100,7 @@ namespace webapi.Controllers
             return NoContent();
         }
 
-        // POST: api/protocols
+        // POST: api/protocol
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Protocol>> PostProtocol(Protocol protocol)
@@ -96,7 +115,7 @@ namespace webapi.Controllers
             return CreatedAtAction("GetProtocol", new { id = protocol.protocolId }, protocol);
         }
 
-        // DELETE: api/protocols/5
+        // DELETE: api/protocol/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProtocol(int id)
         {
