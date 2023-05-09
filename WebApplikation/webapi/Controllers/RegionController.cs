@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StudentAPI.Models;
 using webapi.Models;
 
 namespace webapi.Controllers
 {
-    [Route("api/regions")]
     [ApiController]
+    [Route("api/regions")]
     public class RegionController : ControllerBase
     {
         private readonly ApiDbContext _context;
