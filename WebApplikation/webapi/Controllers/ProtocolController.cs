@@ -23,33 +23,33 @@ namespace webapi.Controllers
 
         // GET: api/protocol
         [HttpGet(Name = "GetProtocol")]
-        // public async Task<ActionResult<IEnumerable<Protocol>>> GetProtocol()
-        // {
-        //   if (_context.Protocol == null)
-        //   {
-        //       return NotFound();
-        //   }
-        //     return await _context.Protocol.ToListAsync();
-        // }
-        public IEnumerable<Protocol> Get()
+        public async Task<ActionResult<IEnumerable<Protocol>>> GetProtocol()
         {
-            return Enumerable.Range(1, 5).Select(index => new Protocol
-            {
-                protocolId = 42,
-                protocolCode = "Some Code",
-                clientFullName = "Some client full name",
-                localName = "Some local name",
-                pilotFullName = "Some pilot full name",
-                regionName = "Some region name",
-                remark = "Some remark",
-                areaSize = "Some area size",
-                foundFawns = 3,
-                injuredFawns = 1,
-                markedFawns = 2,
-                date = DateTime.Now
-            })
-            .ToArray();
+          if (_context.Protocol == null)
+          {
+              return NotFound();
+          }
+            return await _context.Protocol.ToListAsync();
         }
+        // public IEnumerable<Protocol> Get()
+        // {
+        //     return Enumerable.Range(1, 5).Select(index => new Protocol
+        //     {
+        //         protocolId = 42,
+        //         protocolCode = "Some Code",
+        //         clientFullName = "Some client full name",
+        //         localName = "Some local name",
+        //         pilotFullName = "Some pilot full name",
+        //         regionName = "Some region name",
+        //         remark = "Some remark",
+        //         areaSize = "Some area size",
+        //         foundFawns = 3,
+        //         injuredFawns = 1,
+        //         markedFawns = 2,
+        //         date = DateTime.Now
+        //     })
+        //     .ToArray();
+        // }
 
         // GET: api/protocol/5
         [HttpGet("{id}")]
