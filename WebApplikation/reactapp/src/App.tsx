@@ -18,9 +18,16 @@ export default class App extends Component<{}, { protocols: [], loading: boolean
                 <thead>
                     <tr>
                         <th>Protokoll-Code</th>
-                        <th>Name des Klienten</th>
-                        <th>Name des Lokals</th>
-                        <th>Name des Piloten</th>
+                        <th>Klientname</th>
+                        <th>Lokalname</th>
+                        <th>Pilotname</th>
+                        <th>Regionname</th>
+                        <th>Bemerkung</th>
+                        <th>Flaeche</th>
+                        <th>Gefundene Kitze</th>
+                        <th>Verletzte Kitze</th>
+                        <th>Markierte Kitze</th>
+                        <th>Datum</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -30,6 +37,13 @@ export default class App extends Component<{}, { protocols: [], loading: boolean
                             <td>{protocol.clientFullName}</td>
                             <td>{protocol.localName}</td>
                             <td>{protocol.pilotFullName}</td>
+                            <td>{protocol.regionName}</td>
+                            <td>{protocol.remark}</td>
+                            <td>{protocol.areaSize}</td>
+                            <td>{protocol.foundFawns}</td>
+                            <td>{protocol.injuredFawns}</td>
+                            <td>{protocol.markedFawns}</td>
+                            <td>{protocol.date}</td>
                         </tr>
                     )}
                 </tbody>
