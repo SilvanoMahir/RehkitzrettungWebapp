@@ -51,7 +51,7 @@ export default class App extends Component<{}, { protocols: [], loading: boolean
     }
 
     async populateProtocolData() {
-        const response = await fetch('api/protocol')
+        const response = await fetch('api/protocols')
         const data = await response.json()
         this.setState({ protocols: data, loading: false })
     }

@@ -16,7 +16,7 @@ namespace webapi.Controllers
             _context = context;
         }
 
-        // GET: api/regions
+        // GET: /api/regions
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Region>>> GetRegion()
         {
@@ -27,7 +27,7 @@ namespace webapi.Controllers
             return await _context.Region.ToListAsync();
         }
 
-        // GET: api/regions/5
+        // GET: /api/regions/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Region>> GetRegion(int id)
         {
@@ -45,7 +45,7 @@ namespace webapi.Controllers
             return region;
         }
 
-        // PUT: api/regions/5
+        // PUT: /api/regions/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutRegion(int id, Region region)
@@ -76,7 +76,7 @@ namespace webapi.Controllers
             return NoContent();
         }
 
-        // POST: api/regions
+        // POST: /api/regions
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Region>> PostRegion(Region region)
@@ -91,7 +91,7 @@ namespace webapi.Controllers
             return CreatedAtAction("GetRegion", new { id = region.regionId }, region);
         }
 
-        // DELETE: api/regions/5
+        // DELETE: /api/regions/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteRegion(int id)
         {

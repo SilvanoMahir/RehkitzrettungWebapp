@@ -16,7 +16,7 @@ namespace webapi.Controllers
             _context = context;
         }
 
-        // GET: api/users
+        // GET: /api/users
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUser()
         {
@@ -27,7 +27,7 @@ namespace webapi.Controllers
             return await _context.User.ToListAsync();
         }
 
-        // GET: api/users/5
+        // GET: /api/users/5
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUser(int id)
         {
@@ -45,7 +45,7 @@ namespace webapi.Controllers
             return user;
         }
 
-        // PUT: api/users/5
+        // PUT: /api/users/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutUser(int id, User user)
@@ -76,7 +76,7 @@ namespace webapi.Controllers
             return NoContent();
         }
 
-        // POST: api/users
+        // POST: /api/users
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(User user)
@@ -91,7 +91,7 @@ namespace webapi.Controllers
             return CreatedAtAction("GetUser", new { id = user.userId }, user);
         }
 
-        // DELETE: api/users/5
+        // DELETE: /api/users/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(int id)
         {
