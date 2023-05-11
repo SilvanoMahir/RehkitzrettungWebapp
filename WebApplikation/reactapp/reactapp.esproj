@@ -13,5 +13,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="public\" />
+    <Folder Include="src\models\" />
+    <Folder Include="src\store\" />
   </ItemGroup>
 </Project>
