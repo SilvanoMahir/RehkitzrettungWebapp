@@ -10,36 +10,36 @@ export const Button = ({ onClick, children }: Props) => {
 }
 
 export const CustomButton = css`
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  color: #def2f1;
-  font-size: 25px;
-  font-weight: 500;
-  padding: 4px 8px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    color: #def2f1;
+    font-size: 25px;
+    font-weight: 500;
+    padding: 4px 8px;
 `
 
 export const DownloadProtocolButton = styled.button`
-  ${CustomButton};
-  background: steelblue;
+    ${CustomButton};
+    background: gray;
 `
 
 export const CreateProtocolButton = styled.button`
-  ${CustomButton};
-  background: steelblue;
-  align-items: baseline;
-  margin: 5px;
-  font-size: 25px;
+    ${CustomButton};
+    background: gray;
+    align-items: baseline;
+    margin: 5px;
+    font-size: 25px;
 `
 export const DeleteProtocolButton = styled.button`
-  ${CustomButton};
-  background: steelblue;
-  align-items: baseline;
-  margin: 5px;
-  width: 200px;
+    ${CustomButton};
+    background: red;
+    align-items: baseline;
+    margin: 5px;
+    width: 200px;
 `
 
 export const EditProtocolButton = styled.button`
-  ${CustomButton};
-  background: steelblue;
+    ${CustomButton};
+    background: green;
 `
