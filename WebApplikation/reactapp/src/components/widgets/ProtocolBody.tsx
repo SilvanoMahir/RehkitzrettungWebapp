@@ -1,22 +1,23 @@
 import styled from "styled-components"
+import ProtocolEntry from './ProtocolEntry'
 
 export default function ProtocolBody() {
 
     return (
         <RowContainer>
             <ColumnContainer>
-                <ProtocolEntry>Auftraggeber</ProtocolEntry>
-                <ProtocolEntry>Lokalname</ProtocolEntry>
-                <ProtocolEntry>Datum</ProtocolEntry>
-                <ProtocolEntry>Gefundene Kitze</ProtocolEntry>
-                <ProtocolEntry>Markierte Kitze</ProtocolEntry>
-                <ProtocolEntry>Bemerkung</ProtocolEntry>
+                <ProtocolEntry entry="Auftraggeber" value="Back" />
+                <ProtocolEntry entry="Lokalname" value="Back" />
+                <ProtocolEntry entry="Datum" value="Back" />
+                <ProtocolEntry entry="Gefundene Kitze" value="Back" />
+                <ProtocolEntry entry="Markierte Kitze" value="Back" />
+                <ProtocolEntry entry="Bemerkung" value="Back" />
             </ColumnContainer>
             <ColumnContainer>
-                <ProtocolEntry>Pilot</ProtocolEntry>
-                <ProtocolEntry>Region</ProtocolEntry>
-                <ProtocolEntry>Flaeche</ProtocolEntry>
-                <ProtocolEntry>Verletzte Kitze</ProtocolEntry>
+                <ProtocolEntry entry="Pilot" value="Back" />
+                <ProtocolEntry entry="Region" value="Back" />
+                <ProtocolEntry entry="Flaeche" value="Back" />
+                <ProtocolEntry entry="Verletzte Kitze" value="Back" />
             </ColumnContainer>
         </RowContainer>
     )
@@ -32,7 +33,4 @@ export const ColumnContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-`
-
-export const ProtocolEntry = styled.div`
 `
