@@ -11,17 +11,25 @@ export default function RescueListPage() {
     }
 
     return (
-        <ProtocolListing>
+        <RescueListLayout>
             <Protocol />
             <Protocol />
-            <DownloadProtocolButton onClick={() => downloadProtocol()}>Update</DownloadProtocolButton>
-            <CreateProtocolButton onClick={() => createProtocol()}>Update</CreateProtocolButton>
-        </ProtocolListing>
+            <RowContainer>
+                <DownloadProtocolButton onClick={() => downloadProtocol()}>Bericht herunterladen</DownloadProtocolButton>
+                <CreateProtocolButton onClick={() => createProtocol()}>Neues Protokoll erstellen</CreateProtocolButton>
+            </RowContainer>
+        </RescueListLayout>
     )
 }
 
-const ProtocolListing = styled.div`
-  margin: 20px;
-  display: flex;
-  flex-direction: row;
+export const RescueListLayout = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+`
+
+export const RowContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 `

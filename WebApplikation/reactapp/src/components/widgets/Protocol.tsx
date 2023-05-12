@@ -1,5 +1,6 @@
 import styled from 'styled-components/macro'
 import { DeleteProtocolButton, EditProtocolButton } from '../controls/Button'
+import ProtocolBody from './ProtocolBody'
 
 export default function Protocol() {
 
@@ -12,20 +13,32 @@ export default function Protocol() {
     return (
         <ProtocolLayout>
             <ProtocolTitle>Protokoll XYZ</ProtocolTitle>
-            <DeleteProtocolButton onClick={() => deleteProtocol()}>Loeschen</DeleteProtocolButton>
-            <EditProtocolButton onClick={() => editProtocol()}>Bearbeiten</EditProtocolButton>
+            <ProtocolBody />
+            <RowContainer>
+                <DeleteProtocolButton onClick={() => deleteProtocol()}>Loeschen</DeleteProtocolButton>
+                <EditProtocolButton onClick={() => editProtocol()}>Bearbeiten</EditProtocolButton>
+            </RowContainer>
         </ProtocolLayout>
     )
 }
 
 const ProtocolLayout = styled.div`
-                margin: 20px;
-                display: flex;
-                flex-direction: row;
-                `
+    border: 1px solid gray;
+    border-radius: 8px;
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+`
 
 const ProtocolTitle = styled.div`
-                margin-left: 15px;
-                font-weight: 500;
-                font-size: 25px;
-                `
+    margin-left: 15px;
+    font-weight: 500;
+    font-size: 25px;
+`
+
+export const RowContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+`
