@@ -57,7 +57,7 @@ const RescueListRowLayout = styled.div`
     display: flex;
     flex-direction: row;
     align-self: stretch;
-    justify-content: space-evenly;
+    justify-content: space-between;
     background: darkgoldenrod;
     height: 100vh;
 `
@@ -66,6 +66,7 @@ const RescueListColumnLayout = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-right: 90px;
 `
 
 const RowContainer = styled.div` 
