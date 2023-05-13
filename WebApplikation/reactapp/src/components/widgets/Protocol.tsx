@@ -34,6 +34,7 @@ const ProtocolLayout = styled.div`
     flex-direction: column;
     align-items: center;
     width: 800px;
+    height: 300px;
     background: saddlebrown;
     color: beige;
 `
@@ -41,7 +42,7 @@ const ProtocolLayout = styled.div`
 const ProtocolTitle = styled.div`
     font-weight: 500;
     font-size: 25px;
-    margin: 5px;
+    margin: 10px;
 `
 
 const RowContainer = styled.div`

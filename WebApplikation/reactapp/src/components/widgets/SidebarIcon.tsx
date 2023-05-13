@@ -10,6 +10,6 @@ export default function SidebarIcon() {
 }
 
 const Image = styled.img`
-    width: 300px;
+    width: 400px;
     margin: 15px;
 `

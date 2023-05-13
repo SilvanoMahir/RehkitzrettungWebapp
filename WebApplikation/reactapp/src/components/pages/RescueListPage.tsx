@@ -53,12 +53,13 @@ export default function RescueListPage() {
     )
 }
 
-const RescueListRowLayout = styled.div`  
+const RescueListRowLayout = styled.div`
     display: flex;
     flex-direction: row;
     align-self: stretch;
     justify-content: space-evenly;
-    background: darkgoldenrod  
+    background: darkgoldenrod;
+    height: 100vh;
 `
 
 const RescueListColumnLayout = styled.div`

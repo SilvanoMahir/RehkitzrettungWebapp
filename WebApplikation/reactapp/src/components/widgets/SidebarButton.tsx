@@ -30,5 +30,5 @@ const RowLayout = styled.div`
     flex-direction: row;
     align-self: stretch;
     justify-content: space-evenly;
-    margin: 10px;
+    margin: 11px;
 `

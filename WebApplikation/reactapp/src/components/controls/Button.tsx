@@ -31,9 +31,11 @@ export const CreateProtocolButton = styled.button`
 export const DeleteProtocolButton = styled.button`
     ${CustomButton};
     background: red;
+    margin-top: 20px;
 `
 
 export const EditProtocolButton = styled.button`
     ${CustomButton};
     background: green;
+    margin-top: 20px;
 `
