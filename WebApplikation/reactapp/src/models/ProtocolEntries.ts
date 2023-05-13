@@ -1,4 +1,5 @@
 export interface ProtocolEntries {
+    protocolId: string
     clientFullName: string
     localName: string
     date: string
