@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
 import { ProtocolEntries } from '../../models/ProtocolEntries'
 import { DownloadProtocolButton, CreateProtocolButton } from '../controls/Button'
-import { TextInput } from '../controls/TextInput'
 import Protocol from '../widgets/Protocol'
 import Sidebar from '../widgets/Sidebar'
 
@@ -54,31 +53,29 @@ export default function RescueListPage() {
     )
 }
 
-export const RescueListRowLayout = styled.div` 
-    border: 1px solid gray;
-    border-radius: 8px;    
+const RescueListRowLayout = styled.div`  
     display: flex;
     flex-direction: row;
     align-self: stretch;
     justify-content: space-evenly;
+    background: darkgoldenrod  
 `
 
-export const RescueListColumnLayout = styled.div`
-    border: 1px solid gray;
-    border-radius: 8px;
+const RescueListColumnLayout = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
 `
 
-export const RowContainer = styled.div` 
+const RowContainer = styled.div` 
     display: flex;
     flex-direction: row;
     align-self: stretch;
     justify-content: space-evenly;
+    margin-bottom: 20px;
 `
 
-export const SearchTextInput = styled.input`
+const SearchTextInput = styled.input`
     border-radius: 8px;
     width: 250px;
     font-size: 25px;
@@ -86,4 +83,6 @@ export const SearchTextInput = styled.input`
     margin-right: 20px;
     display: flex;
     align-self: flex-end;
+    background: saddlebrown;
+    color: beige;
 `

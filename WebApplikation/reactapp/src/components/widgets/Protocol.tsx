@@ -28,23 +28,23 @@ export default function Protocol({ protocolEntry }: Props) {
 }
 
 const ProtocolLayout = styled.div`
-    border: 1px solid gray;
     border-radius: 8px;
     margin: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 800px;
+    background: saddlebrown;
+    color: beige;
 `
 
 const ProtocolTitle = styled.div`
     font-weight: 500;
     font-size: 25px;
+    margin: 5px;
 `
 
-export const RowContainer = styled.div`
-    border: 1px solid gray;
-    border-radius: 8px;
+const RowContainer = styled.div`
     margin: 10px;
     display: flex;
     flex-direction: row;

@@ -19,18 +19,17 @@ export default function Sidebar() {
     )
 }
 
-export const SidebarColumnLayout = styled.div`
-    border: 1px solid gray;
-    border-radius: 8px;
+const SidebarColumnLayout = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 10px;
+    background: black;
 `
 
-export const SidebarTitle = styled.div`
+const SidebarTitle = styled.div`
     font-weight: 500;
     font-size: 25px;
     margin-bottom: 10px;
     margin: 0px 15px 10px;
+    color: beige;
 `

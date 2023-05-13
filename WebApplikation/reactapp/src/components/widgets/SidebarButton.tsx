@@ -19,16 +19,13 @@ export const Button = styled.button`
     ${CustomButton};
     background: gray;
     width: 250px;
-    border: 1px solid gray;
-    border-radius: 8px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    color: beige;
 `
 
 const RowLayout = styled.div` 
-    border: 1px solid gray;
-    border-radius: 8px;
     display: flex;
     flex-direction: row;
     align-self: stretch;

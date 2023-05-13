@@ -15,14 +15,12 @@ export default function ProtocolEntry({ entry, value }: Props) {
     )
 }
 
-export const RowContainer = styled.div`
-    border: 1px solid gray;
-    border-radius: 8px;
+const RowContainer = styled.div`
     display: flex;
     flex-direction: row;
 `
 
-export const EntryLayout = styled.div`
+const EntryLayout = styled.div`
     display: flex;
     flex: 1;
     flex-direction: row;

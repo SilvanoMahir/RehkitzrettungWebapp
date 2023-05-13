@@ -28,17 +28,13 @@ export default function ProtocolBody({ protocolEntry }: Props) {
     )
 }
 
-export const RowContainer = styled.div`
-    border: 1px solid gray;
-    border-radius: 8px;
+const RowContainer = styled.div`
     display: flex;
     flex-direction: row;
     align-self: stretch;
 `
 
-export const ColumnContainer = styled.div`
-    border: 1px solid gray;
-    border-radius: 8px;
+const ColumnContainer = styled.div`
     display: flex;
     flex-direction: column;
     width: 50%
