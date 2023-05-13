@@ -18,7 +18,7 @@ export default function SidebarButton({ text, icon }: Props) {
 export const Button = styled.button`
     ${CustomButton};
     background: gray;
-    width: 200px;
+    width: 250px;
     border: 1px solid gray;
     border-radius: 8px;
     display: flex;

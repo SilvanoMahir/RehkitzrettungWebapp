@@ -32,4 +32,5 @@ export const SidebarTitle = styled.div`
     font-weight: 500;
     font-size: 25px;
     margin-bottom: 10px;
+    margin: 0px 15px 10px;
 `

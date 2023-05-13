@@ -20,5 +20,4 @@ const CustomTextInput = styled.input`
     width: 250px;
     font-size: 25px;
     margin: 10px;
-    align
 `

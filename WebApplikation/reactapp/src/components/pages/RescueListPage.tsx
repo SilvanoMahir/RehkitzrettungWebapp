@@ -41,9 +41,9 @@ export default function RescueListPage() {
         <RescueListRowLayout>
             <Sidebar />
             <RescueListColumnLayout>
-                <TextInput onChange={search}
+                <SearchTextInput onChange={search}
                     value="Suche"
-                    placeholder="Suche"></TextInput>
+                    placeholder="Suche"></SearchTextInput>
                 {content}
                 <RowContainer>
                     <DownloadProtocolButton onClick={() => downloadProtocol()}>Bericht herunterladen</DownloadProtocolButton>
@@ -76,4 +76,14 @@ export const RowContainer = styled.div`
     flex-direction: row;
     align-self: stretch;
     justify-content: space-evenly;
+`
+
+export const SearchTextInput = styled.input`
+    border-radius: 8px;
+    width: 250px;
+    font-size: 25px;
+    margin-top: 20px;
+    margin-right: 20px;
+    display: flex;
+    align-self: flex-end;
 `
