@@ -44,13 +44,16 @@ export default function RescueListPage() {
 }
 
 export const RescueListLayout = styled.div`
+    border: 1px solid gray;
+    border-radius: 8px;
     display: flex;
     flex-direction: column;
     align-items: center;
 `
 
-export const RowContainer = styled.div`
+export const RowContainer = styled.div` 
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-self: stretch;
+    justify-content: space-evenly;
 `

@@ -27,16 +27,10 @@ export const DownloadProtocolButton = styled.button`
 export const CreateProtocolButton = styled.button`
     ${CustomButton};
     background: gray;
-    align-items: baseline;
-    margin: 5px;
-    font-size: 25px;
 `
 export const DeleteProtocolButton = styled.button`
     ${CustomButton};
     background: red;
-    align-items: baseline;
-    margin: 5px;
-    width: 200px;
 `
 
 export const EditProtocolButton = styled.button`

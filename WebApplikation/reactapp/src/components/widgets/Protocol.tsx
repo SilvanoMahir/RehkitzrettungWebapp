@@ -34,16 +34,20 @@ const ProtocolLayout = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 800px;
 `
 
 const ProtocolTitle = styled.div`
-    margin-left: 15px;
     font-weight: 500;
     font-size: 25px;
 `
 
 export const RowContainer = styled.div`
+    border: 1px solid gray;
+    border-radius: 8px;
+    margin: 10px;
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-self: stretch;
+    justify-content: space-around
 `
