@@ -9,8 +9,8 @@ export default function ProtocolEntry({ entry, value }: Props) {
 
     return (
         <RowContainer>
-            <EntryLayout>{entry}</EntryLayout>
-            <EntryLayout>{value}</EntryLayout>
+            <Entry>{entry}</Entry>
+            <Value>{value}</Value>
         </RowContainer>
     )
 }
@@ -20,7 +20,15 @@ const RowContainer = styled.div`
     flex-direction: row;
 `
 
-const EntryLayout = styled.div`
+const Entry = styled.div`
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    margin-left: 15px;
+    font-weight: bold;
+`
+
+const Value = styled.div`
     display: flex;
     flex: 1;
     flex-direction: row;
