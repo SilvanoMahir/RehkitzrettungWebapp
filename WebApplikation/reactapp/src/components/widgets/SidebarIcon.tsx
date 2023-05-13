@@ -1,6 +1,6 @@
 import styled from "styled-components"
 
-const icon = require('../../resources/fawn.jpg')
+const icon = require('../../resources/rescue_logo.png')
 
 export default function SidebarIcon() {
 

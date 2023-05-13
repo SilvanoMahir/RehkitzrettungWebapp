@@ -35,7 +35,7 @@ const ProtocolLayout = styled.div`
     align-items: center;
     width: 800px;
     height: 300px;
-    background: saddlebrown;
+    background: #7d6b52;
     color: beige;
 `
 

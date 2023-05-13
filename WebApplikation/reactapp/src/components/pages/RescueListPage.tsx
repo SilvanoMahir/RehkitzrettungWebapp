@@ -58,7 +58,7 @@ const RescueListRowLayout = styled.div`
     flex-direction: row;
     align-self: stretch;
     justify-content: space-between;
-    background: darkgoldenrod;
+    background: #9A8873;
     height: 100vh;
 `
 
@@ -85,6 +85,6 @@ const SearchTextInput = styled.input`
     margin-right: 20px;
     display: flex;
     align-self: flex-end;
-    background: saddlebrown;
+    background: #7d6b52;
     color: beige;
 `
