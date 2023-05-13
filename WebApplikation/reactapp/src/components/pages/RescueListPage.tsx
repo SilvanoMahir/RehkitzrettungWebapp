@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
 import { ProtocolEntries } from '../../models/ProtocolEntries'
 import { DownloadProtocolButton, CreateProtocolButton } from '../controls/Button'
+import { TextInput } from '../controls/TextInput'
 import Protocol from '../widgets/Protocol'
 
 export default function RescueListPage() {
@@ -19,6 +20,9 @@ export default function RescueListPage() {
         onMount()
     }, [])
 
+    const search = async () => {
+    }
+
     const downloadProtocol = async () => {
     }
 
@@ -34,12 +38,15 @@ export default function RescueListPage() {
 
     return (
         <RescueListLayout>
+            <TextInput onChange={search}
+                value="Suche"
+                placeholder="Suche"></TextInput>
             {content}
             <RowContainer>
                 <DownloadProtocolButton onClick={() => downloadProtocol()}>Bericht herunterladen</DownloadProtocolButton>
                 <CreateProtocolButton onClick={() => createProtocol()}>Neues Protokoll erstellen</CreateProtocolButton>
             </RowContainer>
-        </RescueListLayout>
+        </RescueListLayout >
     )
 }
 
