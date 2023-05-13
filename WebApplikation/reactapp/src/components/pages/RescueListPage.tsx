@@ -26,12 +26,10 @@ export default function RescueListPage() {
     }
 
     let content = loadingProtocols ?
-        <p><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationreact">https://aka.ms/jspsintegrationreact</a> for more details.</em></p>
+        <p><em>Laedt Protokolle... Bitte Seite aktualisieren, sobald ASP.NET Backend aufgestartet ist.</em></p>
         :
         protocolEntries?.map(protocolEntry => (
-            <>
-                <Protocol protocolEntry={protocolEntry} />
-            </>
+            <Protocol protocolEntry={protocolEntry} />
         ))
 
     return (
