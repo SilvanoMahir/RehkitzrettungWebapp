@@ -2,7 +2,7 @@ import styled from "styled-components"
 
 interface Props {
     entry: string
-    value?: string
+    value?: string | number
 }
 
 export default function ProtocolEntry({ entry, value }: Props) {

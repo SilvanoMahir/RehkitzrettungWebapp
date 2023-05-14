@@ -3,11 +3,11 @@ export interface ProtocolEntries {
     clientFullName: string
     localName: string
     date: string
-    foundFawns: string
-    markedFawns: string
+    foundFawns: number
+    markedFawns: number
     remark: string
     pilotFullName: string
     regionName: string
     areaSize: string
-    injuredFawns: string
+    injuredFawns: number
 }
