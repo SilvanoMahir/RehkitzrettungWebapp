@@ -2,9 +2,8 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.VisualBasic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace webapi.Models;
+namespace RehkitzWebApp.Model;
 
 public class Region
 {
@@ -22,9 +21,9 @@ public class Region
 
     [Column(TypeName = "nvarchar(50)")]
     public string? contactPersonLastName { get; set; }
- 
+
     [Column(TypeName = "nvarchar(50)")]
-    public string? contactPersonFirstName{ get; set; }
+    public string? contactPersonFirstName { get; set; }
 
     [Column(TypeName = "nvarchar(50)")]
     public string? contactPersonMail { get; set; }

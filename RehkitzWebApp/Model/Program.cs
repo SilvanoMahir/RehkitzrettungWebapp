@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using Models;
+using RehkitzWebApp.Model;
 
 var builder = WebApplication.CreateBuilder(args);
 

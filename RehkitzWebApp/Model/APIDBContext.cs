@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using webapi.Models;
 
-namespace Models
+namespace RehkitzWebApp.Model
 {
     public class ApiDbContext : DbContext
     {
