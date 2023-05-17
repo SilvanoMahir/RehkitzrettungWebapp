@@ -8,9 +8,6 @@ namespace RehkitzWebApp.Controllers
     [Route("api/protocols")]
     public class ProtocolController : ControllerBase
     {
-
-        //private readonly ILogger<ProtocolController> _context;
-
         private readonly ApiDbContext _context;
 
         public ProtocolController(ApiDbContext context)
