@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using webapi.Models;
 
-namespace StudentAPI.Models
+namespace Models
 {
     public class ApiDbContext : DbContext
     {

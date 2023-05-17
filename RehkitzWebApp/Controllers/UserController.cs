@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using StudentAPI.Models;
+using Models;
 using webapi.Models;
 
 namespace webapi.Controllers
