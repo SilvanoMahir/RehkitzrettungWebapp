@@ -14,7 +14,8 @@ public class User
     [Required]
     [Column(TypeName = "nvarchar(50)")]
     public string? userFirstName { get; set; }
-
+    
+    [Required]
     [Column(TypeName = "nvarchar(50)")]
     public string? userLastName { get; set; }
 
