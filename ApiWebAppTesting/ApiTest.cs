@@ -11,7 +11,7 @@ namespace ApiWebAppTesting
 
         string expectedProtocolsResult = "[{\"protocolId\":1,\"protocolCode\":\"GR-0024\",\"clientFullName\":\"Hans Pua\",\"localName\":\"Chomps\",\"pilotFullName\":\"Johannes Erny\"," +
             "\"regionName\":\"Sent\",\"remark\":\"Keine Bemerkung\",\"areaSize\":\">1ha\",\"foundFawns\":1,\"injuredFawns\":0,\"markedFawns\":0,\"date\":\"2023-05-07T12:00:00\"}," +
-            "{\"protocolId\":2,\"protocolCode\":\"GR-0023\",\"clientFullName\":\"Mark Smith\",\"localName\":\"Uina\",\"pilotFullName\":\"John Kane\"," +
+            "{\"protocolId\":2,\"protocolCode\":\"GR-0025\",\"clientFullName\":\"Mark Smith\",\"localName\":\"Uina\",\"pilotFullName\":\"John Kane\"," +
             "\"regionName\":\"Scuol\",\"remark\":\"Keine Bemerkung\",\"areaSize\":\"<1ha\",\"foundFawns\":2,\"injuredFawns\":1,\"markedFawns\":0,\"date\":\"2023-05-07T12:00:00\"}]";
 
         public ApiTest() {
