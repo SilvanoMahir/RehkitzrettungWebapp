@@ -1,3 +1,6 @@
+USE [rehkitzrettung-db]
+GO
+
 INSERT INTO [dbo].[Protocol]
            ([protocolCode]
            ,[clientFullName]
