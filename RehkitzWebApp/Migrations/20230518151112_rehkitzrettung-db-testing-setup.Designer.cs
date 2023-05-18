@@ -12,8 +12,8 @@ using RehkitzWebApp.Model;
 namespace RehkitzWebApp.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
-    [Migration("20230517205033_RehkitzDB")]
-    partial class RehkitzDB
+    [Migration("20230518151112_rehkitzrettung-db-testing-setup")]
+    partial class rehkitzrettungdbtestingsetup
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
