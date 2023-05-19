@@ -9,7 +9,11 @@ interface Props {
 
 export default function Protocol({ protocolEntry }: Props) {
 
-    const deleteProtocol = async () => {
+    const deleteProtocol = async (protocolId: string) => {
+        const response = await fetch(`/api/protocols/${Number(protocolId)}`, {
+            method: 'DELETE',
+            headers: { 'content-type': 'application/json' },
+          })
     }
 
     const editProtocol = async () => {
@@ -20,7 +24,7 @@ export default function Protocol({ protocolEntry }: Props) {
             <ProtocolTitle>Protokoll {protocolEntry.protocolCode}</ProtocolTitle>
             <ProtocolBody protocolEntry={protocolEntry} />
             <RowContainer>
-                <DeleteProtocolButton onClick={() => deleteProtocol()}>Loeschen</DeleteProtocolButton>
+                <DeleteProtocolButton onClick={() => deleteProtocol(protocolEntry.protocolId)}>Loeschen</DeleteProtocolButton>
                 <EditProtocolButton onClick={() => editProtocol()}>Bearbeiten</EditProtocolButton>
             </RowContainer>
         </ProtocolLayout>
