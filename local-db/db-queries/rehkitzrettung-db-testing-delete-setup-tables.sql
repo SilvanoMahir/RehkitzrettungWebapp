@@ -1,10 +1,10 @@
 USE [rehkitzrettung-db-testing]
 GO
 
---DROP TABLE [dbo].[Protocol];
---DROP TABLE [dbo].[Region];
---DROP TABLE [dbo].[User];
---GO
+DROP TABLE [dbo].[Protocol];
+DROP TABLE [dbo].[Region];
+DROP TABLE [dbo].[User];
+GO
 
 CREATE TABLE Protocol (
     protocolId INT IDENTITY(1, 1) PRIMARY KEY,
