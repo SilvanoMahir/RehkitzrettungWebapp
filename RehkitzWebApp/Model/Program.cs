@@ -8,9 +8,16 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 //Dependency Injection of DBContext
-builder.Services.AddDbContext<ApiDbContext>(options =>
-options.UseSqlServer(builder.Configuration.GetConnectionString("DevConnection")));
+if (!builder.Environment.EnvironmentName.Equals("Test"))
+{
+    builder.Services.AddDbContext<ApiDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DevConnection")));
+} else
+{
+    builder.Services.AddDbContext<ApiDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Test")));
 
+}
 
 var app = builder.Build();
 

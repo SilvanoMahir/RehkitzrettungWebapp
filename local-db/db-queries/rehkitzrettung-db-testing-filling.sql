@@ -1,4 +1,4 @@
-USE [rehkitzrettung-db]
+USE [rehkitzrettung-db-testing]
 GO
 
 INSERT INTO [dbo].[Protocol]
