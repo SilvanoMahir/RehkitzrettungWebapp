@@ -1,6 +1,8 @@
 import styled from 'styled-components/macro'
+import { useContext, useState } from 'react'
 import { ProtocolEntries } from '../../models/ProtocolEntries'
 import { DeleteProtocolButton, EditProtocolButton } from '../controls/Button'
+import { ProtocolsContext } from 'store/context'
 import ProtocolBody from './ProtocolBody'
 
 interface Props {
@@ -9,11 +11,18 @@ interface Props {
 
 export default function Protocol({ protocolEntry }: Props) {
 
+    const [protocolEntries, setProtocolEntries] = useState<ProtocolEntries[]>([])
+    let { protocolsListLocal, dispatch } = useContext(ProtocolsContext)
+
     const deleteProtocol = async (protocolId: string) => {
         const response = await fetch(`/api/protocols/${Number(protocolId)}`, {
             method: 'DELETE',
             headers: { 'content-type': 'application/json' },
-          })
+        })
+
+        if (response.ok) {
+            dispatch({ type: 'delete-protocols', protocolsListLocal, protocolId})
+          }        
     }
 
     const editProtocol = async () => {

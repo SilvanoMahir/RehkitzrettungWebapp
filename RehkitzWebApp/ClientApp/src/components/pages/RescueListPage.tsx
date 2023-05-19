@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
-import { ProtocolEntries } from '../../models/ProtocolEntries'
+import { ProtocolEntries } from 'models/ProtocolEntries'
 import { DownloadProtocolButton, CreateProtocolButton } from '../controls/Button'
+import { ProtocolsContext } from 'store/context'
 import Protocol from '../widgets/Protocol'
 import Sidebar from '../widgets/Sidebar'
 
@@ -9,16 +10,21 @@ export default function RescueListPage() {
 
     const [protocolEntries, setProtocolEntries] = useState<ProtocolEntries[]>([])
     const [loadingProtocols, setLoadingProtocols] = useState(true)
+    let { protocolsListLocal, dispatch } = useContext(ProtocolsContext)
 
     useEffect(() => {
         const onMount = async () => {
-            const response = await fetch('api/protocols')
-            const data = await response.json()
-            setProtocolEntries(data)
-            setLoadingProtocols(false)
+            const response = await fetch('/api/protocols')
+            if (response.ok) {
+                const data = await response.json()
+                protocolsListLocal = data
+                dispatch({ type: 'get-protocols', protocolsListLocal})
+                setProtocolEntries(data)
+                setLoadingProtocols(false)
+            }
         }
         onMount()
-    }, [])
+    }, [dispatch])
 
     const search = async () => {
     }
@@ -30,11 +36,11 @@ export default function RescueListPage() {
     }
 
     let content = loadingProtocols ?
-        <p><em>Laedt Protokolle... Bitte Seite aktualisieren, sobald ASP.NET Backend aufgestartet ist.</em></p>
-        :
-        protocolEntries?.map(protocolEntry => (
-            <Protocol protocolEntry={protocolEntry} />
-        ))
+         <p><em>Laedt Protokolle... Bitte Seite aktualisieren, sobald ASP.NET Backend aufgestartet ist.</em></p>
+         :
+         protocolEntries?.map(protocolEntry => (
+             <Protocol protocolEntry={protocolEntry} />
+         ))
 
     return (
         <RescueListRowLayout>
