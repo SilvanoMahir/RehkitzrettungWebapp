@@ -2,7 +2,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace ApiWebAppTesting
 {
@@ -11,29 +12,29 @@ namespace ApiWebAppTesting
     {
         private HttpClient _httpClient;
         private readonly DbContextOptions<ApiTestDbContext> _options;
+        TestModels models;
 
-        string expectedProtocolsResult = "[{\"protocolId\":1,\"protocolCode\":\"GR-0024\",\"clientFullName\":\"Hans Pua\",\"localName\":\"Chomps\",\"pilotFullName\":\"Johannes Erny\"," +
-            "\"regionName\":\"Sent\",\"remark\":\"Keine Bemerkung\",\"areaSize\":\">1ha\",\"foundFawns\":1,\"injuredFawns\":0,\"markedFawns\":0,\"date\":\"2023-05-07T12:00:00\"}," +
-            "{\"protocolId\":2,\"protocolCode\":\"GR-0023\",\"clientFullName\":\"Mark Smith\",\"localName\":\"Uina\",\"pilotFullName\":\"John Kane\"," +
-            "\"regionName\":\"Scuol\",\"remark\":\"Keine Bemerkung\",\"areaSize\":\"<1ha\",\"foundFawns\":2,\"injuredFawns\":1,\"markedFawns\":0,\"date\":\"2023-05-07T12:00:00\"}]";
-
+        //set enviroment for the client which test against the test DB 
         public ApiTest() {
             var webAppFactory = new WebApplicationFactory<Program>().WithWebHostBuilder(builder =>
             {
                 builder.UseEnvironment("Test");
             });
 
+            //create client and model for testing
             _httpClient = webAppFactory.CreateDefaultClient();
+            models = new TestModels();
 
-            // Set up the in-memory database options
+            //set up connection to test db and fill reset and initialize with test data of the model
+            string json = File.ReadAllText("../../../../RehkitzWebApp/appsettings.json");
+            JObject obj = JObject.Parse(json);
+            string testConnectionString = obj["ConnectionStrings"]["Test"].ToString();
+
             _options = new DbContextOptionsBuilder<ApiTestDbContext>()
-                .UseSqlServer("Server=tcp:sql-server-rehkitzrettung.database.windows.net,1433;Initial Catalog=rehkitzrettung-db-testing;Persist Security Info=False;User ID=adminRehkitzrettungSqlServer;Password=Salvamaint2023_;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;")
+                .UseSqlServer(testConnectionString)
                 .Options;
 
-            ApiTestDbContext dbContext = new ApiTestDbContext(_options);
-            bool value = dbContext.Database.CanConnect();
-            DatabaseInitializer databaseInitializer = new DatabaseInitializer(dbContext);
-            databaseInitializer.ResetAndInitializeTables();
+            resetAndInitializeTestDB();
         }
 
         [TestMethod]
@@ -42,7 +43,26 @@ namespace ApiWebAppTesting
             var response = await _httpClient.GetAsync("/api/protocols");
             var stringResult = await response.Content.ReadAsStringAsync();
 
+            string expectedProtocolsResult = JsonConvert.SerializeObject(models.getProtocolExpectedResultList());
+
+
             Assert.AreEqual(expectedProtocolsResult, stringResult);
+        }
+
+        private void resetAndInitializeTestDB()
+        {
+            //setup dbcontext and check if connections is established
+            ApiTestDbContext dbContext = new ApiTestDbContext(_options);
+            if (dbContext.Database.CanConnect())
+            {
+                DatabaseInitializer databaseInitializer = new DatabaseInitializer(dbContext);
+                databaseInitializer.ResetAndInitializeTables();
+            }
+            else
+            {
+                throw new Exception("No connection to test DB");
+            }
+
         }
 
     }
