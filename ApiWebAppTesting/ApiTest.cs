@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using RehkitzWebApp.Model;
 
 namespace ApiWebAppTesting
 {
@@ -49,6 +50,24 @@ namespace ApiWebAppTesting
             Assert.AreEqual(expectedProtocolsResult, stringResult);
         }
 
+        [TestMethod]
+        public async Task deleteProtocolsTest()
+        {
+            int protocolIdToRemove = 2; //protocolId with this number is deleted
+
+            var responseDelete = await _httpClient.DeleteAsync("/api/protocols/"+protocolIdToRemove);
+            var responseGet = await _httpClient.GetAsync("/api/protocols");
+            var stringResult = await responseGet.Content.ReadAsStringAsync();
+
+            List<Protocol> protocolList = models.getProtocolExpectedResultList().ToList();
+            int indexToRemove = protocolList.FindIndex(protocol => protocol.protocolId == protocolIdToRemove);
+            if (indexToRemove != -1)
+                protocolList.RemoveAt(indexToRemove);
+            string expectedProtocolsResult = JsonConvert.SerializeObject(protocolList.ToArray());
+
+
+            Assert.AreEqual(expectedProtocolsResult, stringResult);
+        }
         private void resetAndInitializeTestDB()
         {
             //setup dbcontext and check if connections is established
