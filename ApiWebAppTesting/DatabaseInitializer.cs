@@ -3,13 +3,16 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using RehkitzWebApp.Model;
 
+
 public class DatabaseInitializer
 {
-    private readonly ApiWebAppTesting.ApiTestDbContext _dbContext;
+    private readonly ApiTestDbContext _dbContext;
+    TestModels models;
 
-    public DatabaseInitializer(ApiWebAppTesting.ApiTestDbContext dbContext)
+    public DatabaseInitializer(ApiTestDbContext dbContext)
     {
         _dbContext = dbContext;
+        models = new TestModels();
     }
 
     public void ResetAndInitializeTables()
@@ -25,8 +28,6 @@ public class DatabaseInitializer
 
         // Fill the tables with initial data
         FillProtocolTable();
-        //FillRegionTable();
-        //FillUserTable();
     }
 
     private void FillProtocolTable()
@@ -72,37 +73,7 @@ public class DatabaseInitializer
                 );");
 
         // Fill Protocol table with data
-        _dbContext.Protocol.AddRange(new Protocol[]
-        {
-                new Protocol
-                {
-                    protocolCode = "GR-0024",
-                    clientFullName = "Hans Pua",
-                    localName = "Chomps",
-                    pilotFullName = "Johannes Erny",
-                    regionName = "Sent",
-                    remark = "Keine Bemerkung",
-                    areaSize = ">1ha",
-                    foundFawns = 1,
-                    injuredFawns = 0,
-                    markedFawns = 0,
-                    date = new DateTime(2023, 5, 7, 12, 0, 0)
-                },
-                new Protocol
-                {
-                    protocolCode = "GR-0023",
-                    clientFullName = "Mark Smith",
-                    localName = "Uina",
-                    pilotFullName = "John Kane",
-                    regionName = "Scuol",
-                    remark = "Keine Bemerkung",
-                    areaSize = "<1ha",
-                    foundFawns = 2,
-                    injuredFawns = 1,
-                    markedFawns = 0,
-                    date = new DateTime(2023, 5, 7, 12, 0, 0)
-                }
-        });
+        _dbContext.Protocol.AddRange(models.getProtocolTestList());
         _dbContext.SaveChanges();
 
     }
@@ -128,3 +99,4 @@ public class DatabaseInitializer
         _dbContext.User.AddRange(users);
         _dbContext.SaveChangesAsync();    }
 }
+
