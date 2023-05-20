@@ -10,21 +10,25 @@ export default function RescueListPage() {
 
     const [protocolEntries, setProtocolEntries] = useState<ProtocolEntries[]>([])
     const [loadingProtocols, setLoadingProtocols] = useState(true)
-    let { protocolsListLocal, dispatch } = useContext(ProtocolsContext)
+    const { protocolsListLocal, dispatch } = useContext(ProtocolsContext)
 
     useEffect(() => {
         const onMount = async () => {
-            const response = await fetch('/api/protocols')
-            if (response.ok) {
-                const data = await response.json()
-                protocolsListLocal = data
-                dispatch({ type: 'get-protocols', protocolsListLocal})
-                setProtocolEntries(data)
-                setLoadingProtocols(false)
-            }
+            const protocolsListLocal = await fetchProtocols()
+            setProtocolEntries(protocolsListLocal)
+            setLoadingProtocols(false)
+            dispatch({ type: 'get-protocols', protocolsListLocal})
         }
         onMount()
     }, [dispatch])
+
+    const fetchProtocols = async () => {
+        const response = await fetch('/api/protocols')
+        if (response.ok) {
+          return await response.json()
+        }
+        return []
+      }
 
     const search = async () => {
     }
@@ -36,10 +40,10 @@ export default function RescueListPage() {
     }
 
     let content = loadingProtocols ?
-         <p><em>Laedt Protokolle... Bitte Seite aktualisieren, sobald ASP.NET Backend aufgestartet ist.</em></p>
+         <p><em>{protocolsListLocal.toString()}</em></p>
          :
-         protocolEntries?.map(protocolEntry => (
-             <Protocol protocolEntry={protocolEntry} />
+         protocolsListLocal.map(protocolEntry => (
+            <Protocol key={protocolEntry.protocolId} protocolId={protocolEntry.protocolId}/>
          ))
 
     return (
