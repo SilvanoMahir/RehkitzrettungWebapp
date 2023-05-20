@@ -14,16 +14,27 @@ interface Props {
 
 export default function Protocol({protocolId}: Props) {
 
-    //const { protocolId } = useParams()
-    const [protocolIdState, setprotocolIdState] = useState('')
+    //const { protocolId } = useParams() --> not working now as Router not set, there used Props
     const { protocolsListLocal, dispatch } = useContext(ProtocolsContext)
-    const [protocolEntry, setProtocolEntry] = useState<ProtocolEntries>();
+    const [protocolEntry, setProtocolEntry] = useState<ProtocolEntries>({
+        protocolId: "",
+        protocolCode: "",
+        clientFullName: "",
+        localName: "",
+        date: "",
+        foundFawns: 0,
+        markedFawns: 0,
+        remark: "",
+        pilotFullName: "",
+        regionName: "",
+        areaSize: "",
+        injuredFawns: 0,
+      });
 
       useEffect(() => {
         const onMount = async () => {
           const data = protocolsListLocal.filter(protocol => protocol.protocolId === protocolId);
           setProtocolEntry(data[0]);
-          //setprotocolIdState(protocolId)
         };
         onMount();
       }, [protocolsListLocal, protocolId]);
@@ -34,7 +45,6 @@ export default function Protocol({protocolId}: Props) {
             method: 'DELETE',
             headers: { 'content-type': 'application/json' },
         })
-
         if (response.ok) {
             dispatch({ type: 'delete-protocols', protocolsListLocal, protocolId})
           }        
@@ -45,18 +55,12 @@ export default function Protocol({protocolId}: Props) {
 
     return (
         <ProtocolLayout>
-        {protocolEntry ? (
-          <>
             <ProtocolTitle>Protokoll {protocolId}</ProtocolTitle>
             <ProtocolBody protocolEntry={protocolEntry} />
             <RowContainer>
               <DeleteProtocolButton onClick={() => deleteProtocol(protocolEntry.protocolId)}>Loeschen</DeleteProtocolButton>
               <EditProtocolButton onClick={() => editProtocol()}>Bearbeiten</EditProtocolButton>
             </RowContainer>
-          </>
-        ) : (
-          <p>Loading...</p>
-        )}
       </ProtocolLayout>
     )
 }

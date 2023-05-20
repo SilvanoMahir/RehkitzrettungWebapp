@@ -8,14 +8,12 @@ import Sidebar from '../widgets/Sidebar'
 
 export default function RescueListPage() {
 
-    const [protocolEntries, setProtocolEntries] = useState<ProtocolEntries[]>([])
     const [loadingProtocols, setLoadingProtocols] = useState(true)
     const { protocolsListLocal, dispatch } = useContext(ProtocolsContext)
 
     useEffect(() => {
         const onMount = async () => {
             const protocolsListLocal = await fetchProtocols()
-            setProtocolEntries(protocolsListLocal)
             setLoadingProtocols(false)
             dispatch({ type: 'get-protocols', protocolsListLocal})
         }
@@ -39,12 +37,17 @@ export default function RescueListPage() {
     const createProtocol = async () => {
     }
 
-    let content = loadingProtocols ?
-         <p><em>{protocolsListLocal.toString()}</em></p>
-         :
-         protocolsListLocal.map(protocolEntry => (
-            <Protocol key={protocolEntry.protocolId} protocolId={protocolEntry.protocolId}/>
-         ))
+    let content 
+
+    if (loadingProtocols) {
+        content = (<p><em>Laedt Protokolle... Bitte Seite aktualisieren, sobald ASP.NET Backend aufgestartet ist.</em></p>);
+      } else if (protocolsListLocal.length === 0) {
+        content = (<p><em>Keine Protokolle gefunden.</em></p>);
+      } else {
+        content = protocolsListLocal.map(protocolEntry => (
+          <Protocol key={protocolEntry.protocolId} protocolId={protocolEntry.protocolId} />
+        ));
+    }
 
     return (
         <RescueListRowLayout>
