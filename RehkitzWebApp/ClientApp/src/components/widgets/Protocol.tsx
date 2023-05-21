@@ -55,7 +55,7 @@ export default function Protocol({protocolId}: Props) {
 
     return (
         <ProtocolLayout>
-            <ProtocolTitle>Protokoll {protocolId}</ProtocolTitle>
+            <ProtocolTitle>Protokoll {protocolEntry.protocolCode}</ProtocolTitle>
             <ProtocolBody protocolEntry={protocolEntry} />
             <RowContainer>
               <DeleteProtocolButton onClick={() => deleteProtocol(protocolEntry.protocolId)}>Loeschen</DeleteProtocolButton>
