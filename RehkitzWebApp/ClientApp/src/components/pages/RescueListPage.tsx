@@ -1,24 +1,31 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
-import { ProtocolEntries } from '../../models/ProtocolEntries'
 import { DownloadProtocolButton, CreateProtocolButton } from '../controls/Button'
+import { ProtocolsContext } from 'store/context'
 import Protocol from '../widgets/Protocol'
 import Sidebar from '../widgets/Sidebar'
 
 export default function RescueListPage() {
 
-    const [protocolEntries, setProtocolEntries] = useState<ProtocolEntries[]>([])
     const [loadingProtocols, setLoadingProtocols] = useState(true)
+    const { protocolsListLocal, dispatch } = useContext(ProtocolsContext)
 
     useEffect(() => {
         const onMount = async () => {
-            const response = await fetch('api/protocols')
-            const data = await response.json()
-            setProtocolEntries(data)
+            const protocolsListLocal = await fetchProtocols()
             setLoadingProtocols(false)
+            dispatch({ type: 'get-protocols', protocolsListLocal})
         }
         onMount()
-    }, [])
+    }, [dispatch])
+
+    const fetchProtocols = async () => {
+        const response = await fetch('/api/protocols')
+        if (response.ok) {
+          return await response.json()
+        }
+        return []
+      }
 
     const search = async () => {
     }
@@ -29,12 +36,17 @@ export default function RescueListPage() {
     const createProtocol = async () => {
     }
 
-    let content = loadingProtocols ?
-        <p><em>Laedt Protokolle... Bitte Seite aktualisieren, sobald ASP.NET Backend aufgestartet ist.</em></p>
-        :
-        protocolEntries?.map(protocolEntry => (
-            <Protocol protocolEntry={protocolEntry} />
-        ))
+    let content;
+
+    if (loadingProtocols) {
+        content = (<p><em>Laedt Protokolle... Bitte Seite aktualisieren, sobald ASP.NET Backend aufgestartet ist.</em></p>);
+      } else if (protocolsListLocal.length === 0) {
+        content = (<p><em>Keine Protokolle gefunden.</em></p>);
+      } else {
+        content = protocolsListLocal.map(protocolEntry => (
+          <Protocol key={protocolEntry.protocolId} protocolId={protocolEntry.protocolId} />
+        ));
+    }
 
     return (
         <RescueListRowLayout>

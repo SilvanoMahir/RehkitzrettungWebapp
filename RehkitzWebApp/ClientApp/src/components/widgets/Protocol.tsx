@@ -1,15 +1,51 @@
 import styled from 'styled-components/macro'
+import { useContext, useState, useEffect } from 'react'
 import { ProtocolEntries } from '../../models/ProtocolEntries'
 import { DeleteProtocolButton, EditProtocolButton } from '../controls/Button'
+import { ProtocolsContext } from 'store/context'
 import ProtocolBody from './ProtocolBody'
 
+
 interface Props {
-    protocolEntry: ProtocolEntries
+      protocolId: String
 }
 
-export default function Protocol({ protocolEntry }: Props) {
+export default function Protocol({protocolId}: Props) {
 
-    const deleteProtocol = async () => {
+    //const { protocolId } = useParams() --> not working now as Router not set, there used Props
+    const { protocolsListLocal, dispatch } = useContext(ProtocolsContext)
+    const [protocolEntry, setProtocolEntry] = useState<ProtocolEntries>({
+        protocolId: "",
+        protocolCode: "",
+        clientFullName: "",
+        localName: "",
+        date: "",
+        foundFawns: 0,
+        markedFawns: 0,
+        remark: "",
+        pilotFullName: "",
+        regionName: "",
+        areaSize: "",
+        injuredFawns: 0,
+      });
+
+      useEffect(() => {
+        const onMount = async () => {
+          const data = protocolsListLocal.filter(protocol => protocol.protocolId === protocolId);
+          setProtocolEntry(data[0]);
+        };
+        onMount();
+      }, [protocolsListLocal, protocolId]);
+      
+
+    const deleteProtocol = async (protocolId: string) => {
+        const response = await fetch(`/api/protocols/${Number(protocolId)}`, {
+            method: 'DELETE',
+            headers: { 'content-type': 'application/json' },
+        })
+        if (response.ok) {
+            dispatch({ type: 'delete-protocols', protocolsListLocal, protocolId})
+          }        
     }
 
     const editProtocol = async () => {
@@ -20,10 +56,10 @@ export default function Protocol({ protocolEntry }: Props) {
             <ProtocolTitle>Protokoll {protocolEntry.protocolCode}</ProtocolTitle>
             <ProtocolBody protocolEntry={protocolEntry} />
             <RowContainer>
-                <DeleteProtocolButton onClick={() => deleteProtocol()}>Loeschen</DeleteProtocolButton>
-                <EditProtocolButton onClick={() => editProtocol()}>Bearbeiten</EditProtocolButton>
+              <DeleteProtocolButton onClick={() => deleteProtocol(protocolEntry.protocolId)}>Loeschen</DeleteProtocolButton>
+              <EditProtocolButton onClick={() => editProtocol()}>Bearbeiten</EditProtocolButton>
             </RowContainer>
-        </ProtocolLayout>
+      </ProtocolLayout>
     )
 }
 
