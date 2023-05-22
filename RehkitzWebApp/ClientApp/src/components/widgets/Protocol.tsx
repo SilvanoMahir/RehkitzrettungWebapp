@@ -4,8 +4,6 @@ import { ProtocolEntries } from '../../models/ProtocolEntries'
 import { DeleteProtocolButton, EditProtocolButton } from '../controls/Button'
 import { ProtocolsContext } from 'store/context'
 import ProtocolBody from './ProtocolBody'
-import { useNavigate, useParams } from 'react-router-dom'
-import ProtocolEntry from './ProtocolEntry'
 
 
 interface Props {

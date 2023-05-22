@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
-import { ProtocolEntries } from 'models/ProtocolEntries'
 import { DownloadProtocolButton, CreateProtocolButton } from '../controls/Button'
 import { ProtocolsContext } from 'store/context'
 import Protocol from '../widgets/Protocol'
@@ -37,7 +36,7 @@ export default function RescueListPage() {
     const createProtocol = async () => {
     }
 
-    let content 
+    let content;
 
     if (loadingProtocols) {
         content = (<p><em>Laedt Protokolle... Bitte Seite aktualisieren, sobald ASP.NET Backend aufgestartet ist.</em></p>);
