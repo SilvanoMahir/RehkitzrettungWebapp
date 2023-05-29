@@ -8,9 +8,9 @@ namespace webapi.Controllers
     [Route("api/users")]
     public class UserController : ControllerBase
     {
-        private readonly ApiDbContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public UserController(ApiDbContext context)
+        public UserController(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -82,7 +82,7 @@ namespace webapi.Controllers
         {
           if (_context.User == null)
           {
-              return Problem("Entity set 'ApiDbContext.User'  is null.");
+              return Problem("Entity set 'ApplicationDbContext.User'  is null.");
           }
             _context.User.Add(user);
             await _context.SaveChangesAsync();

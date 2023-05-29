@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RehkitzWebApp.Model;
 
@@ -8,9 +9,9 @@ namespace webapi.Controllers
     [Route("api/regions")]
     public class RegionController : ControllerBase
     {
-        private readonly ApiDbContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public RegionController(ApiDbContext context)
+        public RegionController(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -82,7 +83,7 @@ namespace webapi.Controllers
         {
           if (_context.Region == null)
           {
-              return Problem("Entity set 'ApiDbContext.Region'  is null.");
+              return Problem("Entity set 'ApplicationDbContext.Region'  is null.");
           }
             _context.Region.Add(region);
             await _context.SaveChangesAsync();

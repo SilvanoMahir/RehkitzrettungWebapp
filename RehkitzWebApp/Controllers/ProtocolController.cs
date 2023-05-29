@@ -1,16 +1,18 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RehkitzWebApp.Model;
 
 namespace RehkitzWebApp.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/protocols")]
     public class ProtocolController : ControllerBase
     {
-        private readonly ApiDbContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public ProtocolController(ApiDbContext context)
+        public ProtocolController(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -82,7 +84,7 @@ namespace RehkitzWebApp.Controllers
         {
             if (_context.Protocol == null)
             {
-                return Problem("Entity set 'ApiDbContext.Protocol'  is null.");
+                return Problem("Entity set 'ApplicationDbContext.Protocol'  is null.");
             }
             _context.Protocol.Add(protocol);
             await _context.SaveChangesAsync();
