@@ -8,6 +8,7 @@ const context = [
     "/api/protocols",
     "/api/regions",
     "/api/users",
+    "/api/Authenticate/login",
 ];
 
 module.exports = function (app) {

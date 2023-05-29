@@ -39,3 +39,7 @@ export const EditProtocolButton = styled.button`
     background: green;
     margin-top: 20px;
 `
+export const LoginButton = styled.button`
+    ${CustomButton};
+    background: gray;
+`

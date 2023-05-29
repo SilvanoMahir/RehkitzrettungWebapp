@@ -51,7 +51,7 @@ export default function RescueListPage() {
     return (
         <RescueListRowLayout>
             <Sidebar />
-            <RescueListColumnLayout>
+            <LoginPageColumnLayout>
                 <SearchTextInput onChange={search}
                     value="Suche"
                     placeholder="Suche"></SearchTextInput>
@@ -60,7 +60,7 @@ export default function RescueListPage() {
                     <DownloadProtocolButton onClick={() => downloadProtocol()}>Bericht herunterladen</DownloadProtocolButton>
                     <CreateProtocolButton onClick={() => createProtocol()}>Neues Protokoll erstellen</CreateProtocolButton>
                 </RowContainer>
-            </RescueListColumnLayout >
+            </LoginPageColumnLayout >
         </RescueListRowLayout>
     )
 }
@@ -74,7 +74,7 @@ const RescueListRowLayout = styled.div`
     height: 100vh;
 `
 
-const RescueListColumnLayout = styled.div`
+const LoginPageColumnLayout = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;

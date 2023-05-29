@@ -5,7 +5,7 @@ using RehkitzWebApp.Model;
 
 namespace RehkitzWebApp.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [ApiController]
     [Route("api/protocols")]
     public class ProtocolController : ControllerBase
