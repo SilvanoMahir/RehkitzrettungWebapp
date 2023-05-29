@@ -18,14 +18,4 @@ public class Region
     [Required]
     [Column(TypeName = "nvarchar(50)")]
     public string? regionState { get; set; }
-
-    [Column(TypeName = "nvarchar(50)")]
-    public string? contactPersonLastName { get; set; }
-
-    [Column(TypeName = "nvarchar(50)")]
-    public string? contactPersonFirstName { get; set; }
-
-    [Column(TypeName = "nvarchar(50)")]
-    public string? contactPersonMail { get; set; }
-
 }

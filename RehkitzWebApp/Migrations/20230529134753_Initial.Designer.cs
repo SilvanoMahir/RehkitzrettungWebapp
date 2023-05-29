@@ -12,7 +12,7 @@ using RehkitzWebApp.Model;
 namespace RehkitzWebApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230529082636_Initial")]
+    [Migration("20230529134753_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -283,15 +283,6 @@ namespace RehkitzWebApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("regionId"));
 
-                    b.Property<string>("contactPersonFirstName")
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("contactPersonLastName")
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("contactPersonMail")
-                        .HasColumnType("nvarchar(50)");
-
                     b.Property<string>("regionName")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)");
@@ -313,6 +304,10 @@ namespace RehkitzWebApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("userId"));
 
+                    b.Property<string>("ownerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)");
+
                     b.Property<string>("userFirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)");
@@ -321,11 +316,7 @@ namespace RehkitzWebApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("userMail")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("userRole")
+                    b.Property<string>("userRegionId")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)");
 

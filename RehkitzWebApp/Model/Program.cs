@@ -23,8 +23,6 @@ else
 {
     builder.Services.AddDbContext<ApplicationDbContext>(options => 
     options.UseSqlServer(configuration.GetConnectionString("Test")));
-
-
 }
 
 // For Identity

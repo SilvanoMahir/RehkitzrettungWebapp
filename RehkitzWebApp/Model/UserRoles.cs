@@ -3,6 +3,8 @@
     public static class UserRoles
     {
         public const string Admin = "Admin";
-        public const string User = "User";
+        public const string User = "Benutzer";
+        public const string Ranger= "Wildhut";
+        public const string Central = "Zentrale";
     }
 }
