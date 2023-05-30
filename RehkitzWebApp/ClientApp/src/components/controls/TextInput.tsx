@@ -20,6 +20,12 @@ export const CustomTextInput = styled.input`
     width: 250px;
     font-size: 25px;
     margin: 10px;
+    background: #7d6b52;
+    color: #fffecb;
+    &::placeholder {
+        color: #fffecb; /* Change this to the desired color */
+        opacity: 0.5;
+      }
 `
 
 export const UserNameTextInput = styled.input`
