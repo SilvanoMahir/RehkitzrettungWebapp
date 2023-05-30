@@ -3,8 +3,12 @@ import { LoginButton } from '../controls/Button'
 import { useState } from 'react'
 import { TextInput } from 'components/controls/TextInput'
 import LoginIcon from "../widgets/LoginIcon"
+import BackgroundIcon from "../widgets/LoginBackground"
 import { ROUTE_RESCUE_LIST_PAGE } from 'App'
 import { useNavigate } from 'react-router-dom'
+import { FaSignInAlt } from "react-icons/fa"
+
+
 
 
 export default function RescueListPage() {
@@ -30,9 +34,12 @@ export default function RescueListPage() {
     }
 
     return (
+        <div>
+        <BackgroundIcon />
         <LoginPageRowLayout>
             <LoginPageColumnLayout>
             <LoginIcon />
+            <div><TitleText>Anmelden</TitleText></div>
                 <TextInput onChange={setUserName}
                     value={inputUserName}
                     placeholder="Benutzername"></TextInput>
@@ -40,25 +47,28 @@ export default function RescueListPage() {
                     value={inputPassword}
                     placeholder="Passwort"></TextInput>
                 <RowContainer>
-                    <LoginButton onClick={() => login()}>Anmelden</LoginButton>
+                    <LoginButton onClick={() => login()}>Anmelden <FaSignInAlt/></LoginButton>
                 </RowContainer>
+                <div><VersionText>v0.3</VersionText></div>
             </LoginPageColumnLayout >
         </LoginPageRowLayout>
+        </div>
     )
 }
 
 const LoginPageRowLayout = styled.div`
     display: flex;
-    flex-direction: row;
     justify-content: center;
     background: #9A8873;
-    height: 100vh;
+    min-height: 100vh;
+    align-items: flex-start;
 `
 
 const LoginPageColumnLayout = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
 `
 
 const RowContainer = styled.div` 
@@ -67,4 +77,15 @@ const RowContainer = styled.div`
     align-self: stretch;
     justify-content: space-evenly;
     margin-bottom: 20px;
+`
+
+const TitleText = styled.div`
+    color: #fffecb;
+    font-size: 30px;
+    font-weight: bold;
+`
+
+const VersionText = styled.div`
+    color: #fffecb;
+    font-size: 15px;
 `

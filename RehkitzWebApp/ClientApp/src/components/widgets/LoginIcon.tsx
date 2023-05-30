@@ -12,4 +12,5 @@ export default function LoginIcon() {
 const Image = styled.img`
     width: 300px;
     margin: 15px;
+    margin-top: -150px;
 `

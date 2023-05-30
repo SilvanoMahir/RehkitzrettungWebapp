@@ -10,6 +10,5 @@ export default function LoginBackground() {
 }
 
 const Image = styled.img`
-    width: 300px;
-    margin: 15px;
+    width: 100%;
 `

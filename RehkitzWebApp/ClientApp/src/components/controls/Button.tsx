@@ -41,5 +41,8 @@ export const EditProtocolButton = styled.button`
 `
 export const LoginButton = styled.button`
     ${CustomButton};
-    background: gray;
+    background: #16d129;
+    color: #fffecb;
+    font-size: 20px;
+    padding: 15px;
 `
