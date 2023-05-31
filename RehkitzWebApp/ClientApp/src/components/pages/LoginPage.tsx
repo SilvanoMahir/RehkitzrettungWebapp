@@ -9,8 +9,6 @@ import { useNavigate } from 'react-router-dom'
 import { FaSignInAlt } from "react-icons/fa"
 
 
-
-
 export default function RescueListPage() {
     const [inputUserName, setUserName] = useState('')
     const [inputPassword, setPassword] = useState('')
@@ -26,10 +24,11 @@ export default function RescueListPage() {
               "password":inputPassword
             }),
           })
+          setToken('')
           const {token} = await response.json() 
-          setToken(token)
-          if (token !== ''){
-            navigate(ROUTE_RESCUE_LIST_PAGE)
+          if (response.ok){
+            localStorage.setItem('user_token', token);
+             navigate(ROUTE_RESCUE_LIST_PAGE)
           }
     }
 
