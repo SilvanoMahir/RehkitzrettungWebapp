@@ -22,7 +22,12 @@ export default function RescueListPage() {
     }, [dispatch])
 
     const fetchProtocols = async () => {
-        const response = await fetch('/api/protocols')
+        const response = await fetch('/api/protocols',{ 
+        method: 'GET',
+        headers: {
+            'Content-type': 'application/json',
+            'Authorization': `Bearer ${token}`, // notice the Bearer before your token
+        }})
         if (response.ok) {
           return await response.json()
         }
