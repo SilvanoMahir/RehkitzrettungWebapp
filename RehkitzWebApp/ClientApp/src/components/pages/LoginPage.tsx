@@ -1,18 +1,19 @@
 import styled from 'styled-components/macro'
 import { LoginButton } from '../controls/Button'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { TextInput } from 'components/controls/TextInput'
 import LoginIcon from "../widgets/LoginIcon"
 import BackgroundIcon from "../widgets/LoginBackground"
 import { ROUTE_RESCUE_LIST_PAGE } from 'App'
 import { useNavigate } from 'react-router-dom'
 import { FaSignInAlt } from "react-icons/fa"
+import { AppContext } from 'store/context'
 
 
 export default function RescueListPage() {
     const [inputUserName, setUserName] = useState('')
     const [inputPassword, setPassword] = useState('')
-    const [token, setToken] = useState('')
+    const { authenticated, username, password, dispatch } = useContext(AppContext)
     let navigate = useNavigate()
 
     const login = async () => {
@@ -24,11 +25,11 @@ export default function RescueListPage() {
               "password":inputPassword
             }),
           })
-          setToken('')
           const {token} = await response.json() 
           if (response.ok){
             localStorage.setItem('user_token', token);
-             navigate(ROUTE_RESCUE_LIST_PAGE)
+            dispatch({type: 'set-token', value: token})
+            navigate(ROUTE_RESCUE_LIST_PAGE)
           }
     }
 

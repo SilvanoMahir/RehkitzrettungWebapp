@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
 import { DownloadProtocolButton, CreateProtocolButton } from '../controls/Button'
-import { ProtocolsContext } from '../../store/context'
+import { AppContext, ProtocolsContext } from '../../store/context'
 import Protocol from '../widgets/Protocol'
 import Sidebar from '../widgets/Sidebar'
 
@@ -9,6 +9,8 @@ export default function RescueListPage() {
 
     const [loadingProtocols, setLoadingProtocols] = useState(true)
     const { protocolsListLocal, dispatch } = useContext(ProtocolsContext)
+    const { authenticated, username, token, password } = useContext(AppContext)
+
 
     useEffect(() => {
         const onMount = async () => {
@@ -53,8 +55,8 @@ export default function RescueListPage() {
             <Sidebar />
             <LoginPageColumnLayout>
                 <SearchTextInput onChange={search}
-                    value="Suche"
-                    placeholder="Suche"></SearchTextInput>
+                    value={token}
+                    placeholder={token}></SearchTextInput>
                 {content}
                 <RowContainer>
                     <DownloadProtocolButton onClick={() => downloadProtocol()}>Bericht herunterladen</DownloadProtocolButton>
