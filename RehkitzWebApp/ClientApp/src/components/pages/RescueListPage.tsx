@@ -9,7 +9,7 @@ export default function RescueListPage() {
 
     const [loadingProtocols, setLoadingProtocols] = useState(true)
     const { protocolsListLocal, dispatch } = useContext(ProtocolsContext)
-    const { authenticated, username, token, password } = useContext(AppContext)
+    const { token } = useContext(AppContext)
 
 
     useEffect(() => {
@@ -59,9 +59,9 @@ export default function RescueListPage() {
         <RescueListRowLayout>
             <Sidebar />
             <LoginPageColumnLayout>
-                <SearchTextInput onChange={search}
-                    value={token}
-                    placeholder={token}></SearchTextInput>
+                <SearchInput onChange={search}
+                    value={''}
+                    placeholder={'Suchen'}></SearchInput>
                 {content}
                 <RowContainer>
                     <DownloadProtocolButton onClick={() => downloadProtocol()}>Bericht herunterladen</DownloadProtocolButton>
@@ -96,14 +96,17 @@ const RowContainer = styled.div`
     margin-bottom: 20px;
 `
 
-const SearchTextInput = styled.input`
+const SearchInput = styled.input` 
+    display: flex;
+    align-self: flex-end;
     border-radius: 8px;
     width: 250px;
     font-size: 25px;
-    margin-top: 20px;
-    margin-right: 20px;
-    display: flex;
-    align-self: flex-end;
-    background: #7d6b52;
-    color: beige;
+    margin: 10px;
+    background: #898472;
+    color: #fffecb;
+    &::placeholder {
+        color: #fffecb; /* Change this to the desired color */
+        opacity: 0.5;
+      }
 `

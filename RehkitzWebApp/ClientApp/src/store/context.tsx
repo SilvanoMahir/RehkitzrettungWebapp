@@ -53,11 +53,11 @@ interface Props {
 export const AppProvider = ({ children }: Props) => {
   const [state, dispatch] = useReducer(authReducer, initialState)
 
-  const store = {
+  const appStore = {
     ...state,
     dispatch
   }
 
-  return <AppContext.Provider value={store}>{children}</AppContext.Provider>
+  return <AppContext.Provider value={appStore}>{children}</AppContext.Provider>
 }
 

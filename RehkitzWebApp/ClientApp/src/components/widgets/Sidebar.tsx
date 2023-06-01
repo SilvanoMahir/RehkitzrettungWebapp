@@ -11,7 +11,7 @@ import { useNavigate } from "react-router"
 
 export default function Sidebar() {
 
-    const { authenticated, username, password, dispatch } = useContext(AppContext)
+    const { dispatch } = useContext(AppContext)
     let navigate = useNavigate()
 
     function logout(): void {
@@ -62,6 +62,7 @@ const SidebarColumnLayout = styled.div`
 `
 
 const SidebarTitle = styled.div`
+    text-align: center;
     font-weight: 500;
     font-size: 25px;
     margin-bottom: 10px;

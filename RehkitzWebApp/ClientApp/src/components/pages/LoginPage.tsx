@@ -14,7 +14,7 @@ import { AppContext } from 'store/context'
 export default function RescueListPage() {
     const [inputUserName, setUserName] = useState('')
     const [inputPassword, setPassword] = useState('')
-    const { authenticated, username, password, dispatch } = useContext(AppContext)
+    const { dispatch } = useContext(AppContext)
     let navigate = useNavigate()
 
     const login = async () => {
