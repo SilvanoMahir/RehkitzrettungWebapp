@@ -28,5 +28,6 @@ steps:
 
 - task: PublishTestResults@2
   inputs:
-    testResultsFormat: 'VSTest'
+    testResultsFormat: 'JUnit'
     testResultsFiles: '**/TEST-*.xml'
+    searchFolder: '$(System.DefaultWorkingDirectory)/RehkitzWebApp/clientapp'
