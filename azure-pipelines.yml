@@ -25,3 +25,8 @@ steps:
     npm test -- --watchAll=false 
   displayName: 'npm test -- --watchAll=false'
   workingDirectory: '$(Build.SourcesDirectory)/RehkitzWebApp/clientapp'
+
+- task: PublishTestResults@2
+  inputs:
+    testResultsFormat: 'JUnit'
+    testResultsFiles: '**/TEST-*.xml'
