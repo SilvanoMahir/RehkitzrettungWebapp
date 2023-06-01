@@ -7,15 +7,21 @@ trigger:
 - main
 
 pool:
-  vmImage: ubuntu-latest
+  vmImage: 'windows-latest'
 
 steps:
 - task: NodeTool@0
   inputs:
-    versionSpec: '10.x'
+    versionSpec: '18.x'
   displayName: 'Install Node.js'
 
 - script: |
     npm install
     npm run build
   displayName: 'npm install and build'
+  workingDirectory: '$(Build.SourcesDirectory)/RehkitzWebApp/clientapp'
+
+- script: |
+    npm test  
+  displayName: 'npm test'
+  workingDirectory: '$(Build.SourcesDirectory)/RehkitzWebApp/clientapp'
