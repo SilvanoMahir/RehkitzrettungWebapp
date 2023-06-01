@@ -22,6 +22,6 @@ steps:
   workingDirectory: '$(Build.SourcesDirectory)/RehkitzWebApp/clientapp'
 
 - script: |
-    npm test  
-  displayName: 'npm test'
+    npm run test --watchAll=false 
+  displayName: 'npm run test --watchAll=false'
   workingDirectory: '$(Build.SourcesDirectory)/RehkitzWebApp/clientapp'
