@@ -10,7 +10,7 @@ export default function LoginIcon() {
 }
 
 const Image = styled.img`
-    width: 300px;
+    width: 50%;
     margin: 15px;
-    margin-top: -150px;
+    margin-top: -15%;
 `

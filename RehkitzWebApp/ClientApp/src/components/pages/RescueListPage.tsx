@@ -78,7 +78,6 @@ const RescueListRowLayout = styled.div`
     align-self: stretch;
     justify-content: space-between;
     background: #9A8873;
-    height: 100vh;
 `
 
 const LoginPageColumnLayout = styled.div`

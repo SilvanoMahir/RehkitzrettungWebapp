@@ -61,7 +61,6 @@ const LoginPageRowLayout = styled.div`
     display: flex;
     justify-content: center;
     background: #9A8873;
-    min-height: 100vh;
     align-items: flex-start;
 `
 
