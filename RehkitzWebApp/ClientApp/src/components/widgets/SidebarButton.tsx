@@ -3,26 +3,27 @@ import { CustomButton } from '../controls/Button';
 
 interface Props {
     text: string
+    onClick: () => void
     icon: any
 }
 
-export default function SidebarButton({ text, icon }: Props) {
-
+export default function SidebarButton({ text, icon, onClick}: Props) {
     return (
         <RowLayout>
-            <Button>{text}{icon}</Button>
+            <Button onClick={onClick}>{text}{icon}</Button>
         </RowLayout>
     )
 }
 
 export const Button = styled.button`
     ${CustomButton};
-    background: gray;
+    background: #8c8c8c;
     width: 250px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     color: beige;
+    padding: 20px
 `
 
 const RowLayout = styled.div` 
