@@ -11,7 +11,6 @@ export default function RescueListPage() {
     const { protocolsListLocal, dispatch } = useContext(ProtocolsContext)
     const { token } = useContext(AppContext)
 
-
     useEffect(() => {
         const onMount = async () => {
             const protocolsListLocal = await fetchProtocols()
@@ -58,7 +57,7 @@ export default function RescueListPage() {
     return (
         <RescueListRowLayout>
             <Sidebar />
-            <LoginPageColumnLayout>
+            <RescueListColumnLayout>
                 <SearchInput onChange={search}
                     value={''}
                     placeholder={'Suchen'}></SearchInput>
@@ -67,7 +66,7 @@ export default function RescueListPage() {
                     <DownloadProtocolButton onClick={() => downloadProtocol()}>Bericht herunterladen</DownloadProtocolButton>
                     <CreateProtocolButton onClick={() => createProtocol()}>Neues Protokoll erstellen</CreateProtocolButton>
                 </RowContainer>
-            </LoginPageColumnLayout >
+            </RescueListColumnLayout >
         </RescueListRowLayout>
     )
 }
@@ -80,7 +79,7 @@ const RescueListRowLayout = styled.div`
     background: #9A8873;
 `
 
-const LoginPageColumnLayout = styled.div`
+const RescueListColumnLayout = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;

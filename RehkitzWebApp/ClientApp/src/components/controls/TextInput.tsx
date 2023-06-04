@@ -15,7 +15,7 @@ export const TextInput = ({ onChange, value, placeholder }: Props) => (
     />
 )
 
-export const TextInputPswd = ({ onChange, value, placeholder }: Props) => (
+export const TextInputPassword = ({ onChange, value, placeholder }: Props) => (
     <CustomTextInput
         onChange={e => onChange(e.target.value)}
         value={value}

@@ -8,7 +8,7 @@ using System.Text;
 
 namespace RehkitzWebApp.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/authenticate")]
     [ApiController]
     public class AuthenticateController : ControllerBase
     {

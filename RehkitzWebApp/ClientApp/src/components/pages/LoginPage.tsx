@@ -1,7 +1,7 @@
 import styled from 'styled-components/macro'
 import { LoginButton } from '../controls/Button'
 import { useContext, useState } from 'react'
-import { TextInput, TextInputPswd } from '../controls/TextInput'
+import { TextInput, TextInputPassword } from '../controls/TextInput'
 import LoginIcon from "../widgets/LoginIcon"
 import BackgroundIcon from "../widgets/LoginBackground"
 import { ROUTE_RESCUE_LIST_PAGE } from '../../App'
@@ -18,7 +18,7 @@ export default function RescueListPage() {
     let navigate = useNavigate()
 
     const login = async () => {
-        const response = await fetch('/api/Authenticate/login', {
+        const response = await fetch('/api/authenticate/login', {
             method: 'POST',
             headers: {'content-type': 'application/json'},
             body: JSON.stringify({
@@ -44,9 +44,9 @@ export default function RescueListPage() {
                 <TextInput onChange={setUserName}
                     value={inputUserName}
                     placeholder="Benutzername"></TextInput>
-                <TextInputPswd onChange={setPassword}
+                <TextInputPassword onChange={setPassword}
                     value={inputPassword}
-                    placeholder="Passwort"></TextInputPswd>
+                    placeholder="Passwort"></TextInputPassword>
                 <RowContainer>
                     <LoginButton onClick={() => login()}>Anmelden <FaSignInAlt/></LoginButton>
                 </RowContainer>
