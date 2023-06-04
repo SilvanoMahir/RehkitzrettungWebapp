@@ -3,8 +3,8 @@ import styled from "styled-components"
 import SidebarButton from "./SidebarButton"
 import SidebarIcon from "./SidebarIcon"
 import { useContext } from "react"
-import { AppContext } from 'store/context'
-import { ROUTE_LOGIN_PAGE } from 'App'
+import { AppContext } from '../../store/context'
+import { ROUTE_LOGIN_PAGE } from '../../App'
 import { useNavigate } from "react-router"
 
 

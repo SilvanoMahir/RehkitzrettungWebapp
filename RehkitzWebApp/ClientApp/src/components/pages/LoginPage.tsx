@@ -1,13 +1,13 @@
 import styled from 'styled-components/macro'
 import { LoginButton } from '../controls/Button'
 import { useContext, useState } from 'react'
-import { TextInput, TextInputPswd } from 'components/controls/TextInput'
+import { TextInput, TextInputPswd } from '../controls/TextInput'
 import LoginIcon from "../widgets/LoginIcon"
 import BackgroundIcon from "../widgets/LoginBackground"
-import { ROUTE_RESCUE_LIST_PAGE } from 'App'
+import { ROUTE_RESCUE_LIST_PAGE } from '../../App'
 import { useNavigate } from 'react-router-dom'
 import { FaSignInAlt } from "react-icons/fa"
-import { AppContext } from 'store/context'
+import { AppContext } from '../../store/context'
 
 
 
