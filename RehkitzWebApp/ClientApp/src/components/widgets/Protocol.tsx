@@ -2,7 +2,7 @@ import styled from 'styled-components/macro'
 import { useContext, useState, useEffect } from 'react'
 import { ProtocolEntries } from '../../models/ProtocolEntries'
 import { DeleteProtocolButton, EditProtocolButton } from '../controls/Button'
-import { ProtocolsContext } from 'store/context'
+import { ProtocolsContext } from '../../store/context'
 import ProtocolBody from './ProtocolBody'
 
 

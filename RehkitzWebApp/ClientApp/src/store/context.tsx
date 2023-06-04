@@ -1,7 +1,7 @@
-import { ActionProtocols } from 'models/ProtocolActions'
-import { ProtocolState } from 'models/ProtocolsState'
+import { ActionProtocols } from '../models/ProtocolActions'
+import { ProtocolState } from '../models/ProtocolsState'
 import { createContext, ReactNode, useReducer } from 'react'
-import { protocolReducer, initialProtocolsState } from 'store/protocolReducer'
+import { protocolReducer, initialProtocolsState } from './protocolReducer'
 
 interface AppState1 extends ProtocolState {
   dispatch: (action: ActionProtocols) => void

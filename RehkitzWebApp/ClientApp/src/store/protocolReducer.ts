@@ -1,5 +1,5 @@
-import { ActionProtocols } from 'models/ProtocolActions'
-import { ProtocolState } from 'models/ProtocolsState'
+import { ActionProtocols } from '../models/ProtocolActions'
+import { ProtocolState } from '../models/ProtocolsState'
 
 export function protocolReducer(state: ProtocolState, action: ActionProtocols): ProtocolState {
   switch (action.type) {
