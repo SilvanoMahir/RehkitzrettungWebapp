@@ -7,9 +7,13 @@ namespace RehkitzWebApp.Model;
 
 public class User
 {
-
     [Key]
     public int userId { get; set; }
+
+    [Required]
+    // user ID from AspNetUser table. In this table username and Email are stored. With this ID the Role is linked. 
+    [Column(TypeName = "nvarchar(50)")]
+    public string? ownerId { get; set; }
 
     [Required]
     [Column(TypeName = "nvarchar(50)")]
@@ -21,10 +25,5 @@ public class User
 
     [Required]
     [Column(TypeName = "nvarchar(50)")]
-    public string? userRole { get; set; }
-
-    [Required]
-    [Column(TypeName = "nvarchar(50)")]
-    public string? userMail { get; set; }
-
+    public string? userRegionId { get; set; }
 }
