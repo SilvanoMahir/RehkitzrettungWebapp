@@ -9,8 +9,6 @@ import { useNavigate } from 'react-router-dom'
 import { FaSignInAlt } from "react-icons/fa"
 import { AppContext } from '../../store/context'
 
-
-
 export default function RescueListPage() {
     const [inputUserName, setUserName] = useState('')
     const [inputPassword, setPassword] = useState('')

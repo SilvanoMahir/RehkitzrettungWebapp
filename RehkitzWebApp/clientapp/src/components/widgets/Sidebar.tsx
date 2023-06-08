@@ -2,19 +2,46 @@ import { FaInfo, FaListUl, FaMap, FaRegArrowAltCircleRight, FaUser, FaUsers } fr
 import styled from "styled-components"
 import SidebarButton from "./SidebarButton"
 import SidebarIcon from "./SidebarIcon"
+import { useContext } from "react"
+import { AppContext } from '../../store/context'
+import { ROUTE_LOGIN_PAGE } from '../../App'
+import { useNavigate } from "react-router"
 
 export default function Sidebar() {
+
+    const { dispatch } = useContext(AppContext)
+    let navigate = useNavigate()
+    function logout(): void {
+        dispatch({ type: 'set-token', value: '' })
+        localStorage.removeItem("user_token")
+        navigate(ROUTE_LOGIN_PAGE)
+    }
+    function moveToInformation(): void {
+        throw new Error("Function not implemented.")
+    }
+    function moveToOrganisation(): void {
+        throw new Error("Function not implemented.")
+    }
+    function moveToMyData(): void {
+        throw new Error("Function not implemented.")
+    }
+    function moveToSavings(): void {
+        throw new Error("Function not implemented.")
+    }
+    function moveToMap(): void {
+        throw new Error("Function not implemented.")
+    }
 
     return (
         <SidebarColumnLayout>
             <SidebarIcon />
             <SidebarTitle>Willkommen zur Rehkitzrettung App</SidebarTitle>
-            <SidebarButton text="Meine Daten" icon=<FaUser />/>
-            <SidebarButton text="Rettungen" icon=<FaListUl />/>
-            <SidebarButton text="Karte" icon=<FaMap />/>
-            <SidebarButton text="Organisation" icon=<FaUsers />/>
-            <SidebarButton text="Information" icon=<FaInfo />/>
-            <SidebarButton text="Abmelden" icon=<FaRegArrowAltCircleRight />/>
+            <SidebarButton onClick={() => moveToMyData()} text="Meine Daten" icon=<FaUser /> />
+            <SidebarButton onClick={() => moveToSavings()} text="Rettungen" icon=<FaListUl /> />
+            <SidebarButton onClick={() => moveToMap()} text="Karte" icon=<FaMap /> />
+            <SidebarButton onClick={() => moveToOrganisation()} text="Organisation" icon=<FaUsers /> />
+            <SidebarButton onClick={() => moveToInformation()} text="Information" icon=<FaInfo /> />
+            <SidebarButton onClick={() => logout()} text="Abmelden" icon=<FaRegArrowAltCircleRight /> />
         </SidebarColumnLayout>
     )
 }
@@ -23,10 +50,11 @@ const SidebarColumnLayout = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: black;
+    background: #393e41;
 `
 
 const SidebarTitle = styled.div`
+    text-align: center;
     font-weight: 500;
     font-size: 25px;
     margin-bottom: 10px;
