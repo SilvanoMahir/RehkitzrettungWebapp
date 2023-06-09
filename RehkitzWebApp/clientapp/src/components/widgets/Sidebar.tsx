@@ -2,16 +2,19 @@ import { FaInfo, FaListUl, FaMap, FaRegArrowAltCircleRight, FaUser, FaUsers } fr
 import styled from "styled-components"
 import SidebarButton from "./SidebarButton"
 import SidebarIcon from "./SidebarIcon"
-import { useContext } from "react"
+import { useContext, useState } from "react"
 import { AppContext } from '../../store/context'
 import { ROUTE_LOGIN_PAGE } from '../../App'
 import { useNavigate } from "react-router"
 import { useMediaQuery } from "react-responsive"
 
-export default function Sidebar() {
+interface Props {
+    showSidebar: boolean
+}
+
+export default function Sidebar({ showSidebar }: Props) {
 
     const isMobile = useMediaQuery({ query: '(max-width: 375px)' })
-
     const { dispatch } = useContext(AppContext)
     let navigate = useNavigate()
     function logout(): void {
@@ -37,7 +40,7 @@ export default function Sidebar() {
 
     return (
         <div> {
-            !isMobile && 
+            (!isMobile || showSidebar) && 
             <SidebarColumnLayout>
                 <SidebarIcon />
                 <SidebarTitle>Willkommen zur Rehkitzrettung App</SidebarTitle>

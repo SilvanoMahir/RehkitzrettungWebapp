@@ -2,14 +2,16 @@
 import { FaListUl } from "react-icons/fa"
 import SidebarButton from "./SidebarButton"
 
-export default function Menubar() {
+interface Props {
+    showSidebar: boolean
+    setShowSidebar: (arg0: boolean) => void
+}
 
-    const showSidebar = async () => {
-    }
+export default function Menubar({ showSidebar, setShowSidebar }: Props) {
 
     return (
         <Bar>
-            <SidebarButton onClick={() => showSidebar()} text="" icon=<FaListUl /> />
+            <SidebarButton onClick={() => setShowSidebar(!showSidebar)} text="" icon=<FaListUl /> />
         </Bar>
     )
 }

@@ -11,6 +11,7 @@ export default function RescueListPage() {
 
     const isMobile = useMediaQuery({ query: '(max-width: 375px)' })
 
+    const [showSidebar, setShowSidebar] = useState(false)
     const [loadingProtocols, setLoadingProtocols] = useState(true)
     const { protocolsListLocal, dispatch } = useContext(ProtocolsContext)
     const { token } = useContext(AppContext)
@@ -61,9 +62,9 @@ export default function RescueListPage() {
 
     return (
         <div>
-            {isMobile && <Menubar />}
+            {isMobile && <Menubar showSidebar={showSidebar} setShowSidebar={setShowSidebar} />}
             <RescueListRowLayout>
-                <Sidebar />
+                {(!isMobile || showSidebar) && <Sidebar showSidebar={showSidebar} />}
                 <RescueListColumnLayout>
                     <SearchInput onChange={search}
                         value={''}
