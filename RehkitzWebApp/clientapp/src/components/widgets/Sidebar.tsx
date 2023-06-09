@@ -14,7 +14,7 @@ interface Props {
 
 export default function Sidebar({ showSidebar }: Props) {
 
-    const isMobile = useMediaQuery({ query: '(max-width: 375px)' })
+    const isMobile = useMediaQuery({ query: '(max-width: 376px)' })
     const { dispatch } = useContext(AppContext)
     let navigate = useNavigate()
     function logout(): void {
