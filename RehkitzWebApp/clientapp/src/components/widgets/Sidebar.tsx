@@ -6,8 +6,11 @@ import { useContext } from "react"
 import { AppContext } from '../../store/context'
 import { ROUTE_LOGIN_PAGE } from '../../App'
 import { useNavigate } from "react-router"
+import { useMediaQuery } from "react-responsive"
 
 export default function Sidebar() {
+
+    const isMobile = useMediaQuery({ query: '(min-width: 376px)' })
 
     const { dispatch } = useContext(AppContext)
     let navigate = useNavigate()
@@ -33,16 +36,20 @@ export default function Sidebar() {
     }
 
     return (
-        <SidebarColumnLayout>
-            <SidebarIcon />
-            <SidebarTitle>Willkommen zur Rehkitzrettung App</SidebarTitle>
-            <SidebarButton onClick={() => moveToMyData()} text="Meine Daten" icon=<FaUser /> />
-            <SidebarButton onClick={() => moveToSavings()} text="Rettungen" icon=<FaListUl /> />
-            <SidebarButton onClick={() => moveToMap()} text="Karte" icon=<FaMap /> />
-            <SidebarButton onClick={() => moveToOrganisation()} text="Organisation" icon=<FaUsers /> />
-            <SidebarButton onClick={() => moveToInformation()} text="Information" icon=<FaInfo /> />
-            <SidebarButton onClick={() => logout()} text="Abmelden" icon=<FaRegArrowAltCircleRight /> />
-        </SidebarColumnLayout>
+        <div> {
+            isMobile && 
+            <SidebarColumnLayout>
+                <SidebarIcon />
+                <SidebarTitle>Willkommen zur Rehkitzrettung App</SidebarTitle>
+                <SidebarButton onClick={() => moveToMyData()} text="Meine Daten" icon=<FaUser /> />
+                <SidebarButton onClick={() => moveToSavings()} text="Rettungen" icon=<FaListUl /> />
+                <SidebarButton onClick={() => moveToMap()} text="Karte" icon=<FaMap /> />
+                <SidebarButton onClick={() => moveToOrganisation()} text="Organisation" icon=<FaUsers /> />
+                <SidebarButton onClick={() => moveToInformation()} text="Information" icon=<FaInfo /> />
+                <SidebarButton onClick={() => logout()} text="Abmelden" icon=<FaRegArrowAltCircleRight /> />
+            </SidebarColumnLayout>
+        }
+        </div>
     )
 }
 
