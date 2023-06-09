@@ -4,8 +4,12 @@ import { DownloadProtocolButton, CreateProtocolButton } from '../controls/Button
 import { AppContext, ProtocolsContext } from '../../store/context'
 import Protocol from '../widgets/Protocol'
 import Sidebar from '../widgets/Sidebar'
+import { useMediaQuery } from 'react-responsive'
+import Menubar from '../widgets/Menubar'
 
 export default function RescueListPage() {
+
+    const isMobile = useMediaQuery({ query: '(max-width: 375px)' })
 
     const [loadingProtocols, setLoadingProtocols] = useState(true)
     const { protocolsListLocal, dispatch } = useContext(ProtocolsContext)
@@ -56,19 +60,22 @@ export default function RescueListPage() {
     }
 
     return (
-        <RescueListRowLayout>
-            <Sidebar />
-            <RescueListColumnLayout>
-                <SearchInput onChange={search}
-                    value={''}
-                    placeholder={'Suchen'}></SearchInput>
-                {content}
-                <RowContainer>
-                    <DownloadProtocolButton onClick={() => downloadProtocol()}>Bericht herunterladen</DownloadProtocolButton>
-                    <CreateProtocolButton onClick={() => createProtocol()}>Neues Protokoll erstellen</CreateProtocolButton>
-                </RowContainer>
-            </RescueListColumnLayout >
-        </RescueListRowLayout>
+        <div>
+            {isMobile && <Menubar />}
+            <RescueListRowLayout>
+                <Sidebar />
+                <RescueListColumnLayout>
+                    <SearchInput onChange={search}
+                        value={''}
+                        placeholder={'Suchen'}></SearchInput>
+                    {content}
+                    <RowContainer>
+                        <DownloadProtocolButton onClick={() => downloadProtocol()}>Bericht herunterladen</DownloadProtocolButton>
+                        <CreateProtocolButton onClick={() => createProtocol()}>Neues Protokoll erstellen</CreateProtocolButton>
+                    </RowContainer>
+                </RescueListColumnLayout >
+            </RescueListRowLayout>
+        </div>
     )
 }
 

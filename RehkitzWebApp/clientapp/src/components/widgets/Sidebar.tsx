@@ -10,7 +10,7 @@ import { useMediaQuery } from "react-responsive"
 
 export default function Sidebar() {
 
-    const isMobile = useMediaQuery({ query: '(min-width: 376px)' })
+    const isMobile = useMediaQuery({ query: '(max-width: 375px)' })
 
     const { dispatch } = useContext(AppContext)
     let navigate = useNavigate()
@@ -37,7 +37,7 @@ export default function Sidebar() {
 
     return (
         <div> {
-            isMobile && 
+            !isMobile && 
             <SidebarColumnLayout>
                 <SidebarIcon />
                 <SidebarTitle>Willkommen zur Rehkitzrettung App</SidebarTitle>
