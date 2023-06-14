@@ -14,7 +14,7 @@ interface Props {
 
 export default function Sidebar({ showSidebar }: Props) {
 
-    const isMobile = useMediaQuery({ query: '(max-width: 376px)' })
+    const isNotMobile = useMediaQuery({ query: '(min-width: 376px)' })
     const { dispatch } = useContext(AppContext)
     let navigate = useNavigate()
     function logout(): void {
@@ -40,7 +40,7 @@ export default function Sidebar({ showSidebar }: Props) {
 
     return (
         <div> {
-            (!isMobile || showSidebar) && 
+            (isNotMobile || showSidebar) && 
             <SidebarColumnLayout>
                 <SidebarIcon />
                 <SidebarTitle>Willkommen zur Rehkitzrettung App</SidebarTitle>

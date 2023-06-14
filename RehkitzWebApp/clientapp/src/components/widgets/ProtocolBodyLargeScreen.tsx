@@ -6,7 +6,7 @@ interface Props {
     protocolEntry: ProtocolEntries
 }
 
-export default function ProtocolBody({ protocolEntry }: Props) {
+export default function ProtocolBodyLargeScreen({ protocolEntry }: Props) {
 
     return (
         <RowContainer>

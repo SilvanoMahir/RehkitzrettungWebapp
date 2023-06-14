@@ -9,7 +9,7 @@ import Menubar from '../widgets/Menubar'
 
 export default function RescueListPage() {
 
-    const isMobile = useMediaQuery({ query: '(max-width: 376px)' })
+    const isNotMobile = useMediaQuery({ query: '(min-width: 376px)' })
 
     const [showSidebar, setShowSidebar] = useState(false)
     const [loadingProtocols, setLoadingProtocols] = useState(true)
@@ -62,9 +62,9 @@ export default function RescueListPage() {
 
     return (
         <div>
-            {isMobile && <Menubar showSidebar={showSidebar} setShowSidebar={setShowSidebar} />}
+            {!isNotMobile && <Menubar showSidebar={showSidebar} setShowSidebar={setShowSidebar} />}
             <RescueListRowLayout>
-                {(!isMobile || showSidebar) && <Sidebar showSidebar={showSidebar} />}
+                {(isNotMobile || showSidebar) && <Sidebar showSidebar={showSidebar} />}
                 <RescueListColumnLayout>
                     <SearchInput onChange={search}
                         value={''}
