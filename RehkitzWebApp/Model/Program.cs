@@ -72,10 +72,7 @@ else
 {
     //add Swagger
     app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Rehkitzrettung API v1");
-    });
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
