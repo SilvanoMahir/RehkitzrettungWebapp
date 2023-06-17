@@ -11,7 +11,7 @@
     "RehkitzWebApp": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "swagger",
+      //"launchUrl": "swagger",
       "applicationUrl": "https://localhost:7286;",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
