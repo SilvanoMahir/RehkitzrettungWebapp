@@ -6,6 +6,6 @@ test('renders Rehkitzrettung app', () => {
   render(<MemoryRouter>
             <App />
          </MemoryRouter>)
-  const linkElement = screen.getByText(/Willkommen zur Rehkitzrettung App/i)
+  const linkElement = screen.getByTestId("login-anmelden-title")
   expect(linkElement).toBeInTheDocument()
 })

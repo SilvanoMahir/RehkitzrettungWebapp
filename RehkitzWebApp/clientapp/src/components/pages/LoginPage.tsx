@@ -38,7 +38,7 @@ export default function RescueListPage() {
         <LoginPageRowLayout>
             <LoginPageColumnLayout>
             <LoginIcon />
-            <div><TitleText>Anmelden</TitleText></div>
+            <div><TitleText data-testid="login-anmelden-title">Anmelden</TitleText></div>
                 <TextInput onChange={setUserName}
                     value={inputUserName}
                     placeholder="Benutzername"></TextInput>
@@ -81,6 +81,7 @@ const TitleText = styled.div`
     color: #fffecb;
     font-size: 30px;
     font-weight: bold;
+    data-testid="anmelden-title"
 `
 
 const VersionText = styled.div`
