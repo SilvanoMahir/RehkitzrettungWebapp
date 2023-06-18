@@ -81,7 +81,6 @@ const TitleText = styled.div`
     color: #fffecb;
     font-size: 30px;
     font-weight: bold;
-    data-testid="anmelden-title"
 `
 
 const VersionText = styled.div`
