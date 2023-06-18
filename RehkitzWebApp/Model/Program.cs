@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using RehkitzWebApp.Model;
 using System.Text;
 
@@ -52,6 +53,13 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+// Add Swagger
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Rehkitzrettung API", Version = "v1" });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -59,6 +67,12 @@ if (!app.Environment.IsDevelopment())
 {
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
+}
+else
+{
+    //add Swagger
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
@@ -68,7 +82,6 @@ app.UseRouting();
 // Authentication & Authorization
 app.UseAuthentication();
 app.UseAuthorization();
-
 
 app.MapControllerRoute(
     name: "default",
