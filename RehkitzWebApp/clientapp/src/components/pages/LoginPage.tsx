@@ -38,7 +38,7 @@ export default function RescueListPage() {
         <LoginPageRowLayout>
             <LoginPageColumnLayout>
             <LoginIcon />
-            <div><TitleText>Anmelden</TitleText></div>
+            <div><TitleText data-testid="login-anmelden-title">Anmelden</TitleText></div>
                 <TextInput onChange={setUserName}
                     value={inputUserName}
                     placeholder="Benutzername"></TextInput>
