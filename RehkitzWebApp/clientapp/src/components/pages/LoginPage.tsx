@@ -8,6 +8,7 @@ import { ROUTE_RESCUE_LIST_PAGE } from '../../App'
 import { useNavigate } from 'react-router-dom'
 import { FaSignInAlt } from "react-icons/fa"
 import { AppContext } from '../../store/context'
+import { toast } from 'react-toastify';
 
 export default function RescueListPage() {
     const [inputUserName, setUserName] = useState('')
@@ -16,20 +17,32 @@ export default function RescueListPage() {
     let navigate = useNavigate()
 
     const login = async () => {
-        const response = await fetch('/api/authenticate/login', {
-            method: 'POST',
-            headers: {'content-type': 'application/json'},
-            body: JSON.stringify({
-              "username":inputUserName,
-              "password":inputPassword
-            }),
-          })
-          const {token} = await response.json() 
-          if (response.ok){
-            localStorage.setItem('user_token', token);
-            dispatch({type: 'set-token', value: token})
-            navigate(ROUTE_RESCUE_LIST_PAGE)
-          }
+        if (inputUserName === "" || inputPassword === "" ){
+            toast.error("Bitte Benutzername und Password einsetzen!", {
+                position: toast.POSITION.TOP_CENTER,
+                containerId: 'LoginToaster'
+            });
+        } else {        
+            const response = await fetch('/api/authenticate/login', {
+                method: 'POST',
+                headers: {'content-type': 'application/json'},
+                body: JSON.stringify({
+                "username":inputUserName,
+                "password":inputPassword
+                }),
+            })
+            const {token} = await response.json() 
+            if (response.ok){
+                localStorage.setItem('user_token', token);
+                dispatch({type: 'set-token', value: token})
+                navigate(ROUTE_RESCUE_LIST_PAGE)
+            } else {
+                toast.error("Login fehlgeschlagen. Password oder Benutzername falsch", {
+                    position: toast.POSITION.TOP_CENTER,
+                    containerId: 'LoginToaster'
+                });
+            }
+        }
     }
 
     return (
