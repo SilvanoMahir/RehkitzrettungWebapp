@@ -83,16 +83,13 @@ export default function RescueListPage() {
 const RescueListRowLayout = styled.div`
     display: flex;
     flex-direction: row;
-    align-self: stretch;
-    justify-content: space-between;
     background: #9A8873;
 `
 
 const RescueListColumnLayout = styled.div`
     display: flex;
     flex-direction: column;
-    align-items: center;
-    margin-right: 90px;
+    justify-content: center;
 `
 
 const RowContainer = styled.div` 
@@ -100,7 +97,7 @@ const RowContainer = styled.div`
     flex-direction: row;
     align-self: stretch;
     justify-content: space-evenly;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 `
 
 const SearchInput = styled.input` 

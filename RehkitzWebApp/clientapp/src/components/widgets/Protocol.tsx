@@ -33,13 +33,13 @@ export default function Protocol({protocolId}: Props) {
         regionName: "",
         areaSize: "",
         injuredFawns: 0,
-      });
+      })
 
       useEffect(() => {
         const onMount = async () => {
           const data = protocolsListLocal.filter(protocol => protocol.protocolId === protocolId);
           setProtocolEntry(data[0]);
-        };
+        }
         onMount();
       }, [protocolsListLocal, protocolId]);
       
@@ -77,8 +77,7 @@ const ProtocolLayout = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%;
-    height: 500px;
+    width: 90%;
     background: #7d6b52;
     color: beige;
     @media (min-width: 426px) {
