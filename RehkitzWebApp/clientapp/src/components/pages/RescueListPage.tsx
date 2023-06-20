@@ -9,7 +9,7 @@ import Menubar from '../widgets/Menubar'
 
 export default function RescueListPage() {
 
-    const isNotMobile = useMediaQuery({ query: '(min-width: 376px)' })
+    const isNotMobile = useMediaQuery({ query: '(min-width: 426px)' })
 
     const [showSidebar, setShowSidebar] = useState(false)
     const [loadingProtocols, setLoadingProtocols] = useState(true)

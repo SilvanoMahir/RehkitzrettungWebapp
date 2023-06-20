@@ -16,7 +16,7 @@ interface Props {
 
 export default function Protocol({protocolId}: Props) {
 
-    const isNotMobile = useMediaQuery({ query: '(min-width: 376px)' })
+    const isNotMobile = useMediaQuery({ query: '(min-width: 426px)' })
     //const { protocolId } = useParams() --> not working now as Router not set, there used Props
     const { token } = useContext(AppContext)
     const { protocolsListLocal, dispatch } = useContext(ProtocolsContext)
@@ -81,8 +81,8 @@ const ProtocolLayout = styled.div`
     height: 500px;
     background: #7d6b52;
     color: beige;
-    @media (min-width: 376px) {
-        height: 375px;
+    @media (min-width: 426px) {
+        height: 425px;
     }
 `
 
