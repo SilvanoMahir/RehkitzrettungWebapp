@@ -80,7 +80,7 @@ namespace webapi.Controllers
         {
             if (_context.User == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.User'  is null.");
+                return NotFound();
             }
             _context.User.Add(user);
             await _context.SaveChangesAsync();

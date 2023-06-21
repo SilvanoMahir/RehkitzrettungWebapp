@@ -84,7 +84,7 @@ namespace RehkitzWebApp.Controllers
         {
             if (_context.Protocol == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.Protocol'  is null.");
+                return NotFound();
             }
             _context.Protocol.Add(protocol);
             await _context.SaveChangesAsync();

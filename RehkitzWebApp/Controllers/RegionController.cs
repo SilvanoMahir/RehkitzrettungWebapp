@@ -80,7 +80,7 @@ namespace webapi.Controllers
         {
             if (_context.Region == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.Region'  is null.");
+                return NotFound();
             }
             _context.Region.Add(region);
             await _context.SaveChangesAsync();
