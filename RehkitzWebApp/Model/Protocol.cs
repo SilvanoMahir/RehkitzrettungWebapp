@@ -8,45 +8,45 @@ public class Protocol
 {
 
     [Key]
-    public int protocolId { get; set; }
+    public int ProtocolId { get; set; }
 
     [Required]
     [Column(TypeName = "nvarchar(50)")]
-    public string? protocolCode { get; set; }
+    public string? ProtocolCode { get; set; }
 
     [Required]
     [Column(TypeName = "nvarchar(50)")]
-    public string? clientFullName { get; set; }
+    public string? ClientFullName { get; set; }
 
     [Required]
     [Column(TypeName = "nvarchar(50)")]
-    public string? localName { get; set; }
+    public string? LocalName { get; set; }
 
     [Required]
     [Column(TypeName = "nvarchar(50)")]
-    public string? pilotFullName { get; set; }
+    public string? PilotFullName { get; set; }
 
     [Required]
     [Column(TypeName = "nvarchar(50)")]
-    public string? regionName { get; set; }
+    public string? RegionName { get; set; }
 
     [Column(TypeName = "nvarchar(250)")]
-    public string? remark { get; set; }
+    public string? Remark { get; set; }
 
     [Required]
     [Column(TypeName = "nvarchar(50)")]
-    public string? areaSize { get; set; }
+    public string? AreaSize { get; set; }
 
     [Required]
-    public int foundFawns { get; set; }
+    public int FoundFawns { get; set; }
 
     [Required]
-    public int injuredFawns { get; set; }
+    public int InjuredFawns { get; set; }
 
     [Required]
-    public int markedFawns { get; set; }
+    public int MarkedFawns { get; set; }
 
     [Required]
-    public DateTime date { get; set; }
+    public DateTime Date { get; set; }
 
 }

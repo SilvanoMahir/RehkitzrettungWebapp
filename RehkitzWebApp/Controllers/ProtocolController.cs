@@ -51,7 +51,7 @@ public class ProtocolController : ControllerBase
     [HttpPut("{id}")]
     public async Task<IActionResult> PutProtocol(int id, Protocol protocol)
     {
-        if (id != protocol.protocolId)
+        if (id != protocol.ProtocolId)
         {
             return BadRequest();
         }
@@ -89,7 +89,7 @@ public class ProtocolController : ControllerBase
         _context.Protocol.Add(protocol);
         await _context.SaveChangesAsync();
 
-        return CreatedAtAction("GetProtocol", new { id = protocol.protocolId }, protocol);
+        return CreatedAtAction("GetProtocol", new { id = protocol.ProtocolId }, protocol);
     }
 
     // DELETE: /api/protocols/5
@@ -114,6 +114,6 @@ public class ProtocolController : ControllerBase
 
     private bool ProtocolExists(int id)
     {
-        return (_context.Protocol?.Any(e => e.protocolId == id)).GetValueOrDefault();
+        return (_context.Protocol?.Any(e => e.ProtocolId == id)).GetValueOrDefault();
     }
 }

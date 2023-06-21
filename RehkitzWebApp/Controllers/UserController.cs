@@ -48,7 +48,7 @@ public class UserController : ControllerBase
     [HttpPut("{id}")]
     public async Task<IActionResult> PutUser(int id, User user)
     {
-        if (id != user.userId)
+        if (id != user.UserId)
         {
             return BadRequest();
         }
@@ -85,7 +85,7 @@ public class UserController : ControllerBase
         _context.User.Add(user);
         await _context.SaveChangesAsync();
 
-        return CreatedAtAction("GetUser", new { id = user.userId }, user);
+        return CreatedAtAction("GetUser", new { id = user.UserId }, user);
     }
 
     // DELETE: /api/users/5
@@ -110,6 +110,6 @@ public class UserController : ControllerBase
 
     private bool UserExists(int id)
     {
-        return (_context.User?.Any(e => e.userId == id)).GetValueOrDefault();
+        return (_context.User?.Any(e => e.UserId == id)).GetValueOrDefault();
     }
 }

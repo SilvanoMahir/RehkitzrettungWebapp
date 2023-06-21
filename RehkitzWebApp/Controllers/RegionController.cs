@@ -48,7 +48,7 @@ public class RegionController : ControllerBase
     [HttpPut("{id}")]
     public async Task<IActionResult> PutRegion(int id, Region region)
     {
-        if (id != region.regionId)
+        if (id != region.RegionId)
         {
             return BadRequest();
         }
@@ -85,7 +85,7 @@ public class RegionController : ControllerBase
         _context.Region.Add(region);
         await _context.SaveChangesAsync();
 
-        return CreatedAtAction("GetRegion", new { id = region.regionId }, region);
+        return CreatedAtAction("GetRegion", new { id = region.RegionId }, region);
     }
 
     // DELETE: /api/regions/5
@@ -110,6 +110,6 @@ public class RegionController : ControllerBase
 
     private bool RegionExists(int id)
     {
-        return (_context.Region?.Any(e => e.regionId == id)).GetValueOrDefault();
+        return (_context.Region?.Any(e => e.RegionId == id)).GetValueOrDefault();
     }
 }

@@ -8,13 +8,13 @@ public class Region
 {
 
     [Key]
-    public int regionId { get; set; }
+    public int RegionId { get; set; }
 
     [Required]
     [Column(TypeName = "nvarchar(50)")]
-    public string? regionName { get; set; }
+    public string? RegionName { get; set; }
 
     [Required]
     [Column(TypeName = "nvarchar(50)")]
-    public string? regionState { get; set; }
+    public string? RegionState { get; set; }
 }
