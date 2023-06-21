@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RehkitzWebApp.Model;
 
@@ -20,10 +19,10 @@ namespace webapi.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Region>>> GetRegion()
         {
-          if (_context.Region == null)
-          {
-              return NotFound();
-          }
+            if (_context.Region == null)
+            {
+                return NotFound();
+            }
             return await _context.Region.ToListAsync();
         }
 
@@ -31,17 +30,16 @@ namespace webapi.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Region>> GetRegion(int id)
         {
-          if (_context.Region == null)
-          {
-              return NotFound();
-          }
+            if (_context.Region == null)
+            {
+                return NotFound();
+            }
             var region = await _context.Region.FindAsync(id);
 
             if (region == null)
             {
                 return NotFound();
             }
-
             return region;
         }
 
@@ -72,7 +70,6 @@ namespace webapi.Controllers
                     throw;
                 }
             }
-
             return NoContent();
         }
 
@@ -81,10 +78,10 @@ namespace webapi.Controllers
         [HttpPost]
         public async Task<ActionResult<Region>> PostRegion(Region region)
         {
-          if (_context.Region == null)
-          {
-              return Problem("Entity set 'ApplicationDbContext.Region'  is null.");
-          }
+            if (_context.Region == null)
+            {
+                return Problem("Entity set 'ApplicationDbContext.Region'  is null.");
+            }
             _context.Region.Add(region);
             await _context.SaveChangesAsync();
 
