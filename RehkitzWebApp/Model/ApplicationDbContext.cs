@@ -16,6 +16,8 @@ public class ApplicationDbContext : IdentityDbContext<IdentityUser>
 
     public DbSet<Region> Region { get; set; }
 
+    public DbSet<Area> Area { get; set; }
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);

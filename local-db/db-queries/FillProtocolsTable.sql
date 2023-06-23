@@ -2,17 +2,18 @@ USE [rehkitzrettung-db]
 GO
 
 INSERT INTO [dbo].[Protocol]
-           ([protocolCode]
-           ,[clientFullName]
-           ,[localName]
-           ,[pilotFullName]
-           ,[regionName]
-           ,[remark]
-           ,[areaSize]
-           ,[foundFawns]
-           ,[injuredFawns]
-           ,[markedFawns]
-           ,[date])
+           ([ProtocolCode]
+           ,[ClientFullName]
+           ,[LocalName]
+           ,[PilotFullName]
+           ,[RegionName]
+           ,[Remark]
+           ,[AreaSize]
+           ,[FoundFawns]
+           ,[InjuredFawns]
+           ,[MarkedFawns]
+           ,[Date]
+		   ,[EntryIsDeleted])
      VALUES
            ('GR-0024'
            ,'Hans Pua'
@@ -24,19 +25,21 @@ INSERT INTO [dbo].[Protocol]
            ,1
            ,0
            ,0
-           ,'2023-05-07 12:00:00')
+           ,'2023-05-07 12:00:00'
+		   ,0)
 INSERT INTO [dbo].[Protocol]
-           ([protocolCode]
-           ,[clientFullName]
-           ,[localName]
-           ,[pilotFullName]
-           ,[regionName]
-           ,[remark]
-           ,[areaSize]
-           ,[foundFawns]
-           ,[injuredFawns]
-           ,[markedFawns]
-           ,[date])
+           ([ProtocolCode]
+           ,[ClientFullName]
+           ,[LocalName]
+           ,[PilotFullName]
+           ,[RegionName]
+           ,[Remark]
+           ,[AreaSize]
+           ,[FoundFawns]
+           ,[InjuredFawns]
+           ,[MarkedFawns]
+           ,[Date]
+		   ,[EntryIsDeleted])
 	 VALUES
            ('GR-0023'
            ,'Mark Smith'
@@ -48,5 +51,6 @@ INSERT INTO [dbo].[Protocol]
            ,2
            ,1
            ,0
-           ,'2023-05-07 12:00:00')
+           ,'2023-05-07 12:00:00'
+		   ,0)
 GO

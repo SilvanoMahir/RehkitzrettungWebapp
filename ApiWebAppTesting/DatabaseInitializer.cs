@@ -37,39 +37,39 @@ public class DatabaseInitializer
         // Create Protocol table
         _dbContext.Database.ExecuteSqlRaw(@"
                 CREATE TABLE Protocol (
-                    protocolId INT IDENTITY(1, 1) PRIMARY KEY,
-                    protocolCode NVARCHAR(50) NOT NULL,
-                    clientFullName NVARCHAR(50) NOT NULL,
-                    localName NVARCHAR(50) NOT NULL,
-                    pilotFullName NVARCHAR(50) NOT NULL,
-                    regionName NVARCHAR(50) NOT NULL,
-                    remark NVARCHAR(250) NULL,
-                    areaSize NVARCHAR(50) NOT NULL,
-                    foundFawns INT NOT NULL,
-                    injuredFawns INT NOT NULL,
-                    markedFawns INT NOT NULL,
-                    date DATETIME2 NOT NULL
+                    ProtocolId INT IDENTITY(1, 1) PRIMARY KEY,
+                    ProtocolCode NVARCHAR(50) NOT NULL,
+                    ClientFullName NVARCHAR(50) NOT NULL,
+                    LocalName NVARCHAR(50) NOT NULL,
+                    PilotFullName NVARCHAR(50) NOT NULL,
+                    RegionName NVARCHAR(50) NOT NULL,
+                    Remark NVARCHAR(250) NULL,
+                    AreaSize NVARCHAR(50) NOT NULL,
+                    FoundFawns INT NOT NULL,
+                    InjuredFawns INT NOT NULL,
+                    MarkedFawns INT NOT NULL,
+                    Date DATETIME2 NOT NULL
                 );");
 
         // Create Region table
         _dbContext.Database.ExecuteSqlRaw(@"
                 CREATE TABLE Region (
-                    regionId INT IDENTITY(1, 1) PRIMARY KEY,
-                    regionName NVARCHAR(50) NOT NULL,
-                    regionState NVARCHAR(50) NOT NULL,
-                    contactPersonLastName NVARCHAR(50) NULL,
-                    contactPersonFirstName NVARCHAR(50) NULL,
-                    contactPersonMail NVARCHAR(50) NULL
+                    RegionId INT IDENTITY(1, 1) PRIMARY KEY,
+                    RegionName NVARCHAR(50) NOT NULL,
+                    RegionState NVARCHAR(50) NOT NULL,
+                    ContactPersonLastName NVARCHAR(50) NULL,
+                    ContactPersonFirstName NVARCHAR(50) NULL,
+                    ContactPersonMail NVARCHAR(50) NULL
                 );");
 
         // Create User table
         _dbContext.Database.ExecuteSqlRaw(@"
                 CREATE TABLE [User] (
-                    userId INT IDENTITY(1, 1) PRIMARY KEY,
-                    userFirstName NVARCHAR(50) NOT NULL,
-                    userLastName NVARCHAR(50) NOT NULL,
-                    userRole NVARCHAR(50) NOT NULL,
-                    userMail NVARCHAR(50) NOT NULL
+                    UserId INT IDENTITY(1, 1) PRIMARY KEY,
+                    UserFirstName NVARCHAR(50) NOT NULL,
+                    UserLastName NVARCHAR(50) NOT NULL,
+                    UserRole NVARCHAR(50) NOT NULL,
+                    UserMail NVARCHAR(50) NOT NULL
                 );");
 
         // Fill Protocol table with data

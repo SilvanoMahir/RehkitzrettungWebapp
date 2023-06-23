@@ -60,7 +60,7 @@ namespace ApiWebAppTesting
             var stringResult = await responseGet.Content.ReadAsStringAsync();
 
             List<Protocol> protocolList = models.getProtocolExpectedResultList().ToList();
-            int indexToRemove = protocolList.FindIndex(protocol => protocol.protocolId == protocolIdToRemove);
+            int indexToRemove = protocolList.FindIndex(protocol => protocol.ProtocolId == protocolIdToRemove);
             if (indexToRemove != -1)
                 protocolList.RemoveAt(indexToRemove);
             string expectedProtocolsResult = JsonConvert.SerializeObject(protocolList.ToArray());

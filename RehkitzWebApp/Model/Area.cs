@@ -5,19 +5,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RehkitzWebApp.Model;
 
-public class Region
+public class Area
 {
-
     [Key]
-    public int RegionId { get; set; }
+    public int AreaId { get; set; }
 
     [Required]
     [Column(TypeName = "nvarchar(50)")]
-    public string? RegionName { get; set; }
-
-    [Required]
-    [Column(TypeName = "nvarchar(50)")]
-    public string? RegionState { get; set; }
+    public string? AreaSize { get; set; }
 
     [Required]
     [Column(TypeName = "bit")]
