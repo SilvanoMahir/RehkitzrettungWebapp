@@ -3,118 +3,117 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RehkitzWebApp.Model;
 
-namespace RehkitzWebApp.Controllers
+namespace RehkitzWebApp.Controllers;
+
+[Authorize]
+[ApiController]
+[Route("api/protocols")]
+public class ProtocolController : ControllerBase
 {
-    [Authorize]
-    [ApiController]
-    [Route("api/protocols")]
-    public class ProtocolController : ControllerBase
+    private readonly ApplicationDbContext _context;
+
+    public ProtocolController(ApplicationDbContext context)
     {
-        private readonly ApplicationDbContext _context;
+        _context = context;
+    }
 
-        public ProtocolController(ApplicationDbContext context)
+    // GET: /api/protocols
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<Protocol>>> GetProtocol()
+    {
+        if (_context.Protocol == null)
         {
-            _context = context;
+            return NotFound();
+        }
+        return await _context.Protocol.ToListAsync();
+    }
+
+    // GET: /api/protocols/5
+    [HttpGet("{id}")]
+    public async Task<ActionResult<Protocol>> GetProtocol(int id)
+    {
+        if (_context.Protocol == null)
+        {
+            return NotFound();
+        }
+        var protocol = await _context.Protocol.FindAsync(id);
+
+        if (protocol == null)
+        {
+            return NotFound();
         }
 
-        // GET: /api/protocols
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Protocol>>> GetProtocol()
+        return protocol;
+    }
+
+    // PUT: /api/protocols/5
+    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+    [HttpPut("{id}")]
+    public async Task<IActionResult> PutProtocol(int id, Protocol protocol)
+    {
+        if (id != protocol.ProtocolId)
         {
-            if (_context.Protocol == null)
-            {
-                return NotFound();
-            }
-            return await _context.Protocol.ToListAsync();
+            return BadRequest();
         }
 
-        // GET: /api/protocols/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Protocol>> GetProtocol(int id)
+        _context.Entry(protocol).State = EntityState.Modified;
+
+        try
         {
-            if (_context.Protocol == null)
-            {
-                return NotFound();
-            }
-            var protocol = await _context.Protocol.FindAsync(id);
-
-            if (protocol == null)
-            {
-                return NotFound();
-            }
-
-            return protocol;
-        }
-
-        // PUT: /api/protocols/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutProtocol(int id, Protocol protocol)
-        {
-            if (id != protocol.protocolId)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(protocol).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ProtocolExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: /api/protocols
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Protocol>> PostProtocol(Protocol protocol)
-        {
-            if (_context.Protocol == null)
-            {
-                return Problem("Entity set 'ApplicationDbContext.Protocol'  is null.");
-            }
-            _context.Protocol.Add(protocol);
             await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetProtocol", new { id = protocol.protocolId }, protocol);
         }
-
-        // DELETE: /api/protocols/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProtocol(int id)
+        catch (DbUpdateConcurrencyException)
         {
-            if (_context.Protocol == null)
+            if (!ProtocolExists(id))
             {
                 return NotFound();
             }
-            var protocol = await _context.Protocol.FindAsync(id);
-            if (protocol == null)
+            else
             {
-                return NotFound();
+                throw;
             }
-
-            _context.Protocol.Remove(protocol);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
         }
 
-        private bool ProtocolExists(int id)
+        return NoContent();
+    }
+
+    // POST: /api/protocols
+    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+    [HttpPost]
+    public async Task<ActionResult<Protocol>> PostProtocol(Protocol protocol)
+    {
+        if (_context.Protocol == null)
         {
-            return (_context.Protocol?.Any(e => e.protocolId == id)).GetValueOrDefault();
+            return NotFound();
         }
+        _context.Protocol.Add(protocol);
+        await _context.SaveChangesAsync();
+
+        return CreatedAtAction("GetProtocol", new { id = protocol.ProtocolId }, protocol);
+    }
+
+    // DELETE: /api/protocols/5
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteProtocol(int id)
+    {
+        if (_context.Protocol == null)
+        {
+            return NotFound();
+        }
+        var protocol = await _context.Protocol.FindAsync(id);
+        if (protocol == null)
+        {
+            return NotFound();
+        }
+
+        _context.Protocol.Remove(protocol);
+        await _context.SaveChangesAsync();
+
+        return NoContent();
+    }
+
+    private bool ProtocolExists(int id)
+    {
+        return (_context.Protocol?.Any(e => e.ProtocolId == id)).GetValueOrDefault();
     }
 }
