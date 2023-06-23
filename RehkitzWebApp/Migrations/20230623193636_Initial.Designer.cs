@@ -12,7 +12,7 @@ using RehkitzWebApp.Model;
 namespace RehkitzWebApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230623145014_Initial")]
+    [Migration("20230623193636_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -305,6 +305,18 @@ namespace RehkitzWebApp.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RegionId"));
+
+                    b.Property<string>("ContactPersonFirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("ContactPersonLastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("ContactPersonMail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<bool>("EntryIsDeleted")
                         .HasColumnType("bit");
