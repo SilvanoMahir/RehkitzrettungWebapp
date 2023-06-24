@@ -11,7 +11,6 @@ import { AppContext } from '../../store/context'
 import { toast } from 'react-toastify';
 import { trackPromise, usePromiseTracker } from 'react-promise-tracker';
 import { FadeLoader} from 'react-spinners';
-import { wait } from '@testing-library/user-event/dist/utils'
 
 export default function RescueListPage() {
     const [inputUserName, setUserName] = useState('')
@@ -21,7 +20,7 @@ export default function RescueListPage() {
     const { promiseInProgress } = usePromiseTracker();
 
     const login = async () => {
-        if (inputUserName === "" || inputPassword === "" ){
+        if (inputUserName === "" || inputPassword === "" ) {
             toast.error("Bitte Benutzername und Password einsetzen!", {
                 position: toast.POSITION.TOP_CENTER,
                 containerId: 'LoginToaster'
