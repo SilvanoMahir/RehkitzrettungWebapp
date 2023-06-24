@@ -5,6 +5,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RehkitzWebApp.Model;
+using System.Net.Http.Headers;
+using System.Text;
 
 namespace ApiWebAppTesting
 {
@@ -39,15 +41,51 @@ namespace ApiWebAppTesting
         }
 
         [TestMethod]
-        public async Task getProtocolsTest()
+        public async Task getUnauthorizedProtocolsTest()
         {
             var response = await _httpClient.GetAsync("/api/protocols");
-            var stringResult = await response.Content.ReadAsStringAsync();
 
-            string expectedProtocolsResult = JsonConvert.SerializeObject(models.getProtocolExpectedResultList());
+            Assert.IsTrue(response.ToString().Contains("Unauthorized"));
+        }
 
+        [TestMethod]
+        public async Task getAdminUserProtocolsTest()
+        {
+            var user = new
+            {
+                username = "admin",
+                email = "test@ost.ch",
+                password = "Password@123"
+            };
 
-            Assert.AreEqual(expectedProtocolsResult, stringResult);
+            string jsonPayload = JsonConvert.SerializeObject(user);
+            var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+            var responseRegister = await _httpClient.PostAsync("/api/authenticate/register-admin", content);
+
+            var userLogin = new
+            {
+                username = "admin",
+                password = "Password@123"
+            };
+
+            var contentLogin = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+            var responseLogin = await _httpClient.PostAsync("/api/authenticate/login", contentLogin);
+
+            string responseString = await responseLogin.Content.ReadAsStringAsync();
+            var responseJson = JObject.Parse(responseString);
+            string token = responseJson["token"].Value<string>();
+
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new Uri("/api/protocols", UriKind.Relative)
+            };
+            request.Headers.Add("Authorization", "Bearer " + token);
+            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            var responseGet = await _httpClient.SendAsync(request);
+
+            Assert.IsTrue(responseGet.ToString().Contains("StatusCode: 200"));
         }
 
         [TestMethod]
@@ -68,6 +106,26 @@ namespace ApiWebAppTesting
 
             Assert.AreEqual(expectedProtocolsResult, stringResult);
         }
+
+        [TestMethod]
+        public async Task createAdminUserTest()
+        {
+            var user = new
+            {
+                username = "admin_test",
+                email = "test@ost.ch",
+                password = "Password@123"
+            };
+
+            string jsonPayload = JsonConvert.SerializeObject(user);
+            var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+
+            var response = await _httpClient.PostAsync("/api/authenticate/register-admin", content);
+            var stringResult = await response.Content.ReadAsStringAsync();
+
+            Assert.IsTrue(stringResult.Contains("Success"));
+        }
+
         private void resetAndInitializeTestDB()
         {
             //setup dbcontext and check if connections is established

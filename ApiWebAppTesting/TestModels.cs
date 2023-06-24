@@ -28,7 +28,8 @@ namespace ApiWebAppTesting
                     FoundFawns = 1,
                     InjuredFawns = 0,
                     MarkedFawns = 0,
-                    Date = new DateTime(2023, 5, 7, 12, 0, 0)
+                    Date = new DateTime(2023, 5, 7, 12, 0, 0),
+                    EntryIsDeleted = false
                 },
                 new Protocol
                 {
@@ -42,7 +43,8 @@ namespace ApiWebAppTesting
                     FoundFawns = 2,
                     InjuredFawns = 1,
                     MarkedFawns = 0,
-                    Date = new DateTime(2023, 5, 7, 12, 0, 0)
+                    Date = new DateTime(2023, 5, 7, 12, 0, 0),
+                    EntryIsDeleted = false
                 }
             };
         }

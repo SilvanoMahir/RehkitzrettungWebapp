@@ -23,7 +23,23 @@ public class DatabaseInitializer
         _dbContext.Database.ExecuteSqlRaw("DROP TABLE IF EXISTS Protocol");
         _dbContext.Database.ExecuteSqlRaw("DROP TABLE IF EXISTS Region");
         _dbContext.Database.ExecuteSqlRaw("DROP TABLE IF EXISTS [User]");
+        _dbContext.Database.ExecuteSqlRaw("DROP TABLE IF EXISTS Area");
+        _dbContext.Database.ExecuteSqlRaw("DROP TABLE IF EXISTS AspNetUserTokens");
+        _dbContext.Database.ExecuteSqlRaw("DROP TABLE IF EXISTS AspNetUserClaims");
+        _dbContext.Database.ExecuteSqlRaw("DROP TABLE IF EXISTS AspNetUserLogins");
+        _dbContext.Database.ExecuteSqlRaw("DROP TABLE IF EXISTS AspNetUserRoles");
+        _dbContext.Database.ExecuteSqlRaw("DROP TABLE IF EXISTS AspNetUsers");
 
+        /*_dbContext.Database.ExecuteSqlRaw("DROP TABLE IF EXISTS AspNetUserTokens");
+        _dbContext.Database.ExecuteSqlRaw("DROP TABLE IF EXISTS AspNetRoleClaims");
+        _dbContext.Database.ExecuteSqlRaw("DROP TABLE IF EXISTS AspNetUserClaims");
+        _dbContext.Database.ExecuteSqlRaw("DROP TABLE IF EXISTS AspNetUserLogins");
+        _dbContext.Database.ExecuteSqlRaw("DROP TABLE IF EXISTS AspNetUserRoles");
+        _dbContext.Database.ExecuteSqlRaw("DROP TABLE IF EXISTS __EFMigrationsHistory");
+        _dbContext.Database.ExecuteSqlRaw("DROP TABLE IF EXISTS AspNetRoles");
+        _dbContext.Database.ExecuteSqlRaw("DROP TABLE IF EXISTS AspNetUsers");*/
+
+        _dbContext.SaveChanges();
         bool result = _dbContext.Database.EnsureCreated();
 
         // Fill the tables with initial data
@@ -48,7 +64,8 @@ public class DatabaseInitializer
                     FoundFawns INT NOT NULL,
                     InjuredFawns INT NOT NULL,
                     MarkedFawns INT NOT NULL,
-                    Date DATETIME2 NOT NULL
+                    Date DATETIME2 NOT NULL, 
+                    EntryIsDeleted BIT NOT NULL
                 );");
 
         // Create Region table
@@ -59,7 +76,8 @@ public class DatabaseInitializer
                     RegionState NVARCHAR(50) NOT NULL,
                     ContactPersonLastName NVARCHAR(50) NULL,
                     ContactPersonFirstName NVARCHAR(50) NULL,
-                    ContactPersonMail NVARCHAR(50) NULL
+                    ContactPersonMail NVARCHAR(50) NULL,
+                    EntryIsDeleted BIT NOT NULL
                 );");
 
         // Create User table
@@ -69,7 +87,8 @@ public class DatabaseInitializer
                     UserFirstName NVARCHAR(50) NOT NULL,
                     UserLastName NVARCHAR(50) NOT NULL,
                     UserRole NVARCHAR(50) NOT NULL,
-                    UserMail NVARCHAR(50) NOT NULL
+                    UserMail NVARCHAR(50) NOT NULL,
+                    EntryIsDeleted BIT NOT NULL
                 );");
 
         // Fill Protocol table with data
