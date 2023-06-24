@@ -11,4 +11,6 @@ export default function LoginBackground() {
 
 const Image = styled.img`
     width: 100%;
+    height: 25vh;
+    object-fit: cover;
 `
