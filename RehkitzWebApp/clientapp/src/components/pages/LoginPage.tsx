@@ -8,28 +8,50 @@ import { ROUTE_RESCUE_LIST_PAGE } from '../../App'
 import { useNavigate } from 'react-router-dom'
 import { FaSignInAlt } from "react-icons/fa"
 import { AppContext } from '../../store/context'
+import { toast } from 'react-toastify';
+import { trackPromise, usePromiseTracker } from 'react-promise-tracker';
+import { FadeLoader} from 'react-spinners';
 
 export default function RescueListPage() {
     const [inputUserName, setUserName] = useState('')
     const [inputPassword, setPassword] = useState('')
     const { dispatch } = useContext(AppContext)
     let navigate = useNavigate()
+    const { promiseInProgress } = usePromiseTracker();
 
     const login = async () => {
+        if (inputUserName === "" || inputPassword === "" ) {
+            toast.error("Bitte Benutzername und Password einsetzen!", {
+                position: toast.POSITION.TOP_CENTER,
+                containerId: 'LoginToaster'
+            });
+        } else {     
+            trackPromise(
+                fetchLogin()
+            )   
+        }
+    }
+
+    const fetchLogin = async () => {
         const response = await fetch('/api/authenticate/login', {
             method: 'POST',
             headers: {'content-type': 'application/json'},
             body: JSON.stringify({
-              "username":inputUserName,
-              "password":inputPassword
+            "username":inputUserName,
+            "password":inputPassword
             }),
-          })
-          const {token} = await response.json() 
-          if (response.ok){
+        })
+        const {token} = await response.json() 
+        if (response.ok){
             localStorage.setItem('user_token', token);
             dispatch({type: 'set-token', value: token})
             navigate(ROUTE_RESCUE_LIST_PAGE)
-          }
+        } else {
+            toast.error("Login fehlgeschlagen. Password oder Benutzername falsch", {
+                position: toast.POSITION.TOP_CENTER,
+                containerId: 'LoginToaster'
+            });
+        }
     }
 
     return (
@@ -48,7 +70,8 @@ export default function RescueListPage() {
                 <RowContainer>
                     <LoginButton onClick={() => login()}>Anmelden <FaSignInAlt/></LoginButton>
                 </RowContainer>
-                <div><VersionText>v0.3</VersionText></div>
+                <VersionText>v0.3</VersionText>
+                <LoadingBar>{promiseInProgress ? (<FadeLoader height={8} color="#fffecb" />) : ("")} </LoadingBar>
             </LoginPageColumnLayout >
         </LoginPageRowLayout>
         </div>
@@ -86,4 +109,9 @@ const TitleText = styled.div`
 const VersionText = styled.div`
     color: #fffecb;
     font-size: 15px;
+    margin-bottom: 20px;
+`
+
+const LoadingBar = styled.div`
+    margin-bottom: 40px;
 `
