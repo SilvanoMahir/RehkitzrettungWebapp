@@ -2,10 +2,10 @@ import { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
 import { DownloadProtocolButton, CreateProtocolButton } from '../controls/Button'
 import { AppContext, ProtocolsContext } from '../../store/context'
-import Protocol from '../widgets/Protocol'
-import Sidebar from '../widgets/Sidebar'
+import Protocol from '../widgets/Protocol/Protocol'
+import Sidebar from '../widgets/Sidebar/Sidebar'
 import { useMediaQuery } from 'react-responsive'
-import Menubar from '../widgets/Menubar'
+import { Menu } from '../widgets/Menu'
 
 export default function RescueListPage() {
 
@@ -62,7 +62,7 @@ export default function RescueListPage() {
 
     return (
         <div>
-            {!isNotMobile && <Menubar showSidebar={showSidebar} setShowSidebar={setShowSidebar} />}
+            {!isNotMobile && <Menu/>}
             <RescueListRowLayout>
                 {(isNotMobile || showSidebar) && <Sidebar showSidebar={showSidebar} />}
                 <RescueListColumnLayout>
@@ -89,7 +89,7 @@ const RescueListRowLayout = styled.div`
 const RescueListColumnLayout = styled.div`
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
 `
 
 const RowContainer = styled.div` 

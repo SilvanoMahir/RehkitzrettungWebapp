@@ -1,5 +1,5 @@
 ﻿import styled from "styled-components"
-import { ProtocolEntries } from "../../models/ProtocolEntries"
+import { ProtocolEntries } from "../../../models/ProtocolEntries"
 import ProtocolEntry from './ProtocolEntry'
 
 interface Props {

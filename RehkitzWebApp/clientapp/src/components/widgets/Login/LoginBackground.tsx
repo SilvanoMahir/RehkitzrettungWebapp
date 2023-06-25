@@ -1,6 +1,6 @@
 import styled from "styled-components"
 
-const icon = require('../../resources/field.png')
+const icon = require('../../../resources/field.png')
 
 export default function LoginBackground() {
 

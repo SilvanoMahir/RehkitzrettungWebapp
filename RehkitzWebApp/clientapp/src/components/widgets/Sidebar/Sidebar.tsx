@@ -1,10 +1,10 @@
 import { FaInfo, FaListUl, FaMap, FaRegArrowAltCircleRight, FaUser, FaUsers } from "react-icons/fa"
 import styled from "styled-components"
-import SidebarButton from "./SidebarButton"
-import SidebarIcon from "./SidebarIcon"
+import SidebarButton from "../Sidebar/SidebarButton"
+import SidebarIcon from "../Sidebar/SidebarIcon"
 import { useContext, useState } from "react"
-import { AppContext } from '../../store/context'
-import { ROUTE_LOGIN_PAGE } from '../../App'
+import { AppContext } from '../../../store/context'
+import { ROUTE_LOGIN_PAGE } from '../../../App'
 import { useNavigate } from "react-router"
 import { useMediaQuery } from "react-responsive"
 
