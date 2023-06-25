@@ -27,4 +27,5 @@ export default function ProtocolBodySmallScreen({ protocolEntry }: Props) {
 const ColumnContainer = styled.div`
     display: flex;
     flex-direction: column;
+    width: 100%;
 `

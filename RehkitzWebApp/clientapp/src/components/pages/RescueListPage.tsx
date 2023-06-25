@@ -11,7 +11,6 @@ export default function RescueListPage() {
 
     const isNotMobile = useMediaQuery({ query: '(min-width: 426px)' })
 
-    const [showSidebar, setShowSidebar] = useState(false)
     const [loadingProtocols, setLoadingProtocols] = useState(true)
     const { protocolsListLocal, dispatch } = useContext(ProtocolsContext)
     const { token } = useContext(AppContext)
@@ -61,10 +60,10 @@ export default function RescueListPage() {
     }
 
     return (
-        <div>
+        <RescueListLayout>
             {!isNotMobile && <Menu/>}
             <RescueListRowLayout>
-                {(isNotMobile || showSidebar) && <Sidebar showSidebar={showSidebar} />}
+                {(isNotMobile) && <Sidebar showSidebar={isNotMobile} />}
                 <RescueListColumnLayout>
                     <SearchInput onChange={search}
                         value={''}
@@ -76,20 +75,26 @@ export default function RescueListPage() {
                     </RowContainer>
                 </RescueListColumnLayout >
             </RescueListRowLayout>
-        </div>
+        </RescueListLayout>
     )
 }
+
+const RescueListLayout = styled.div`
+    height: 100%;
+`
 
 const RescueListRowLayout = styled.div`
     display: flex;
     flex-direction: row;
     background: #9A8873;
+    height: 100%;
 `
 
 const RescueListColumnLayout = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+    width: 100%;
 `
 
 const RowContainer = styled.div` 
@@ -106,9 +111,10 @@ const SearchInput = styled.input`
     border-radius: 8px;
     width: 250px;
     font-size: 25px;
-    margin: 10px;
     background: #898472;
     color: #fffecb;
+    margin-top: ${(isNotMobile) => (isNotMobile ? "15vw" : "5vw")};
+    
     &::placeholder {
         color: #fffecb; /* Change this to the desired color */
         opacity: 0.5;

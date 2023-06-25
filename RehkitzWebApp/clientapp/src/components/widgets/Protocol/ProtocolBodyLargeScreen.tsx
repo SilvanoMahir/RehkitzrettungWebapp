@@ -32,10 +32,11 @@ const RowContainer = styled.div`
     display: flex;
     flex-direction: row;
     align-self: stretch;
+    width: 100%;
 `
 
 const ColumnContainer = styled.div`
     display: flex;
     flex-direction: column;
-    width: 50%
+    width: 100%;
 `

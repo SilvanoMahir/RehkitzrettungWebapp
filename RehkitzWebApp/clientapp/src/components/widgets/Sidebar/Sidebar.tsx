@@ -61,6 +61,7 @@ const SidebarColumnLayout = styled.div`
     flex-direction: column;
     align-items: center;
     background: #393e41;
+    height: 100%;
 `
 
 const SidebarTitle = styled.div`

@@ -77,12 +77,8 @@ const ProtocolLayout = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 90%;
     background: #7d6b52;
     color: beige;
-    @media (min-width: 426px) {
-        height: 425px;
-    }
 `
 
 const ProtocolTitle = styled.div`
