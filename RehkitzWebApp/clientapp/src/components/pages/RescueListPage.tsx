@@ -67,6 +67,7 @@ export default function RescueListPage() {
                 <RescueListColumnLayout>
                     <SearchInput onChange={search}
                         value={''}
+                        isNotMobile={isNotMobile}
                         placeholder={'Suchen'}></SearchInput>
                     {content}
                     <RowContainer>
@@ -105,7 +106,7 @@ const RowContainer = styled.div`
     margin-bottom: 10px;
 `
 
-const SearchInput = styled.input` 
+const SearchInput = styled.input<{ isNotMobile: boolean }>` 
     display: flex;
     align-self: flex-end;
     border-radius: 8px;
@@ -113,8 +114,8 @@ const SearchInput = styled.input`
     font-size: 25px;
     background: #898472;
     color: #fffecb;
-    margin-top: ${(isNotMobile) => (isNotMobile ? "15vw" : "5vw")};
-    
+    margin-top: ${(props) => (props.isNotMobile ? "5vh" : "8vh")};
+
     &::placeholder {
         color: #fffecb; /* Change this to the desired color */
         opacity: 0.5;
