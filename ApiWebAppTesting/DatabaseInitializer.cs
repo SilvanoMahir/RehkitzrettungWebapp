@@ -17,8 +17,10 @@ public class DatabaseInitializer
 
     public void ResetAndInitializeTables()
     {
-        // Drop and recreate the tables
+        //drop and recreate the tables
         bool value = _dbContext.Database.CanConnect();
+
+        //try catch necessary to catch exceptions, otherwise tests will fail 
         try
         {
             _dbContext.Database.ExecuteSqlRaw("USE [rehkitzrettung-db-testing]");
@@ -43,7 +45,7 @@ public class DatabaseInitializer
         _dbContext.SaveChanges();
         bool result = _dbContext.Database.EnsureCreated();
 
-        // Fill the tables with initial data
+        //fill the tables with initial data
         FillProtocolTable();
     }
 

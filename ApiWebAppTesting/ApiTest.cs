@@ -44,7 +44,6 @@ namespace ApiWebAppTesting
         public async Task getUnauthorizedProtocolsTest()
         {
             var response = await _httpClient.GetAsync("/api/protocols");
-
             Assert.IsTrue(response.ToString().Contains("Unauthorized"));
         }
 
@@ -53,28 +52,32 @@ namespace ApiWebAppTesting
         {
             var user = new
             {
-                username = "admin",
+                username = "admin_test",
                 email = "test@ost.ch",
                 password = "Password@123"
             };
 
+            var userLogin = new
+            {
+                username = "admin_test",
+                password = "Password@123"
+            };
+
+            //register new admin client
             string jsonPayload = JsonConvert.SerializeObject(user);
             var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
             var responseRegister = await _httpClient.PostAsync("/api/authenticate/register-admin", content);
 
-            var userLogin = new
-            {
-                username = "admin",
-                password = "Password@123"
-            };
-
+            //login with previous created admin user
             var contentLogin = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
             var responseLogin = await _httpClient.PostAsync("/api/authenticate/login", contentLogin);
 
+            //get token of the login
             string responseString = await responseLogin.Content.ReadAsStringAsync();
             var responseJson = JObject.Parse(responseString);
             string token = responseJson["token"].Value<string>();
 
+            //setup request for getting the protocols
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Get,
@@ -83,6 +86,7 @@ namespace ApiWebAppTesting
             request.Headers.Add("Authorization", "Bearer " + token);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
+            //send request
             var responseGet = await _httpClient.SendAsync(request);
 
             Assert.IsTrue(responseGet.ToString().Contains("StatusCode: 200"));
@@ -92,17 +96,16 @@ namespace ApiWebAppTesting
         public async Task deleteProtocolsTest()
         {
             int protocolIdToRemove = 2; //protocolId with this number is deleted
-
             var user = new
             {
-                username = "admin",
+                username = "admin_test",
                 email = "test@ost.ch",
                 password = "Password@123"
             };
 
             var userLogin = new
             {
-                username = "admin",
+                username = "admin_test",
                 password = "Password@123"
             };
 
@@ -120,6 +123,7 @@ namespace ApiWebAppTesting
             var responseJson = JObject.Parse(responseString);
             string token = responseJson["token"].Value<string>();
 
+            //setup request for deleting one protocol
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Delete,
@@ -128,9 +132,9 @@ namespace ApiWebAppTesting
             request.Headers.Add("Authorization", "Bearer " + token);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            var responseDelete = await _httpClient.SendAsync(request);
+            await _httpClient.SendAsync(request);
 
-            // get protocol list
+            //setup request for getting the protocols
             request = new HttpRequestMessage
             {
                 Method = HttpMethod.Get,
@@ -139,9 +143,11 @@ namespace ApiWebAppTesting
             request.Headers.Add("Authorization", "Bearer " + token);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
+            //send request
             var responseGet = await _httpClient.SendAsync(request);
             var stringResult = await responseGet.Content.ReadAsStringAsync();
 
+            //get the comparasion object from initialisation db and delete the desired object
             List<Protocol> protocolList = models.getProtocolExpectedResultList().ToList();
             int indexToRemove = protocolList.FindIndex(protocol => protocol.ProtocolId == protocolIdToRemove);
             if (indexToRemove != -1)
@@ -162,9 +168,11 @@ namespace ApiWebAppTesting
                 password = "Password@123"
             };
 
+            //setup request for getting the protocols
             string jsonPayload = JsonConvert.SerializeObject(user);
             var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
 
+            //send request
             var response = await _httpClient.PostAsync("/api/authenticate/register-admin", content);
             var stringResult = await response.Content.ReadAsStringAsync();
 
@@ -184,7 +192,6 @@ namespace ApiWebAppTesting
             {
                 throw new Exception("No connection to test DB");
             }
-
         }
 
     }
