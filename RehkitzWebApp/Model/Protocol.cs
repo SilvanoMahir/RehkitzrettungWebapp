@@ -54,5 +54,4 @@ public class Protocol
     [Column(TypeName = "bit")]
     [DefaultValue(false)]
     public bool EntryIsDeleted { get; set; }
-
 }

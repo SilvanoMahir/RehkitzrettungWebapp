@@ -13,7 +13,7 @@ INSERT INTO [dbo].[Protocol]
            ,[InjuredFawns]
            ,[MarkedFawns]
            ,[Date]
-		   ,[EntryIsDeleted])
+			,[EntryIsDeleted])
      VALUES
            ('GR-0024'
            ,'Hans Pua'
@@ -26,7 +26,7 @@ INSERT INTO [dbo].[Protocol]
            ,0
            ,0
            ,'2023-05-07 12:00:00'
-		   ,0)
+			,0)
 INSERT INTO [dbo].[Protocol]
            ([ProtocolCode]
            ,[ClientFullName]
@@ -39,7 +39,7 @@ INSERT INTO [dbo].[Protocol]
            ,[InjuredFawns]
            ,[MarkedFawns]
            ,[Date]
-		   ,[EntryIsDeleted])
+			,[EntryIsDeleted])
 	 VALUES
            ('GR-0023'
            ,'Mark Smith'
@@ -52,5 +52,5 @@ INSERT INTO [dbo].[Protocol]
            ,1
            ,0
            ,'2023-05-07 12:00:00'
-		   ,0)
+			,0)
 GO
