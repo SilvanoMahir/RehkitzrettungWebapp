@@ -18,31 +18,31 @@ namespace ApiWebAppTesting
             {
                 new Protocol
                 {
-                    protocolCode = "GR-0024",
-                    clientFullName = "Hans Pua",
-                    localName = "Chomps",
-                    pilotFullName = "Johannes Erny",
-                    regionName = "Sent",
-                    remark = "Keine Bemerkung",
-                    areaSize = ">1ha",
-                    foundFawns = 1,
-                    injuredFawns = 0,
-                    markedFawns = 0,
-                    date = new DateTime(2023, 5, 7, 12, 0, 0)
+                    ProtocolCode = "GR-0024",
+                    ClientFullName = "Hans Pua",
+                    LocalName = "Chomps",
+                    PilotFullName = "Johannes Erny",
+                    RegionName = "Sent",
+                    Remark = "Keine Bemerkung",
+                    AreaSize = ">1ha",
+                    FoundFawns = 1,
+                    InjuredFawns = 0,
+                    MarkedFawns = 0,
+                    Date = new DateTime(2023, 5, 7, 12, 0, 0)
                 },
                 new Protocol
                 {
-                    protocolCode = "GR-0023",
-                    clientFullName = "Mark Smith",
-                    localName = "Uina",
-                    pilotFullName = "John Kane",
-                    regionName = "Scuol",
-                    remark = "Keine Bemerkung",
-                    areaSize = "<1ha",
-                    foundFawns = 2,
-                    injuredFawns = 1,
-                    markedFawns = 0,
-                    date = new DateTime(2023, 5, 7, 12, 0, 0)
+                    ProtocolCode = "GR-0023",
+                    ClientFullName = "Mark Smith",
+                    LocalName = "Uina",
+                    PilotFullName = "John Kane",
+                    RegionName = "Scuol",
+                    Remark = "Keine Bemerkung",
+                    AreaSize = "<1ha",
+                    FoundFawns = 2,
+                    InjuredFawns = 1,
+                    MarkedFawns = 0,
+                    Date = new DateTime(2023, 5, 7, 12, 0, 0)
                 }
             };
         }
@@ -58,7 +58,7 @@ namespace ApiWebAppTesting
             Protocol[] protcolsList = getProtocolTestList();
             for (int i = 0; i < protcolsList.Length; i++)
             {
-                protcolsList[i].protocolId = i+1;
+                protcolsList[i].ProtocolId = i+1;
             }
             return protcolsList;
         }

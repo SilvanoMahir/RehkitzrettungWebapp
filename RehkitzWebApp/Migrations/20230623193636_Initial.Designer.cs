@@ -12,7 +12,7 @@ using RehkitzWebApp.Model;
 namespace RehkitzWebApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230529134753_Initial")]
+    [Migration("20230623193636_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -223,104 +223,145 @@ namespace RehkitzWebApp.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("RehkitzWebApp.Model.Protocol", b =>
+            modelBuilder.Entity("RehkitzWebApp.Model.Area", b =>
                 {
-                    b.Property<int>("protocolId")
+                    b.Property<int>("AreaId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("protocolId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AreaId"));
 
-                    b.Property<string>("areaSize")
+                    b.Property<string>("AreaSize")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("clientFullName")
+                    b.Property<bool>("EntryIsDeleted")
+                        .HasColumnType("bit");
+
+                    b.HasKey("AreaId");
+
+                    b.ToTable("Area");
+                });
+
+            modelBuilder.Entity("RehkitzWebApp.Model.Protocol", b =>
+                {
+                    b.Property<int>("ProtocolId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProtocolId"));
+
+                    b.Property<string>("AreaSize")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<DateTime>("date")
+                    b.Property<string>("ClientFullName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("foundFawns")
+                    b.Property<bool>("EntryIsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("FoundFawns")
                         .HasColumnType("int");
 
-                    b.Property<int>("injuredFawns")
+                    b.Property<int>("InjuredFawns")
                         .HasColumnType("int");
 
-                    b.Property<string>("localName")
+                    b.Property<string>("LocalName")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("markedFawns")
+                    b.Property<int>("MarkedFawns")
                         .HasColumnType("int");
 
-                    b.Property<string>("pilotFullName")
+                    b.Property<string>("PilotFullName")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("protocolCode")
+                    b.Property<string>("ProtocolCode")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("regionName")
+                    b.Property<string>("RegionName")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("remark")
+                    b.Property<string>("Remark")
                         .HasColumnType("nvarchar(250)");
 
-                    b.HasKey("protocolId");
+                    b.HasKey("ProtocolId");
 
                     b.ToTable("Protocol");
                 });
 
             modelBuilder.Entity("RehkitzWebApp.Model.Region", b =>
                 {
-                    b.Property<int>("regionId")
+                    b.Property<int>("RegionId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("regionId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RegionId"));
 
-                    b.Property<string>("regionName")
+                    b.Property<string>("ContactPersonFirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("regionState")
+                    b.Property<string>("ContactPersonLastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)");
 
-                    b.HasKey("regionId");
+                    b.Property<string>("ContactPersonMail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<bool>("EntryIsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("RegionName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("RegionState")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("RegionId");
 
                     b.ToTable("Region");
                 });
 
             modelBuilder.Entity("RehkitzWebApp.Model.User", b =>
                 {
-                    b.Property<int>("userId")
+                    b.Property<int>("UserId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("userId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
 
-                    b.Property<string>("ownerId")
+                    b.Property<bool>("EntryIsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("OwnerId")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("userFirstName")
+                    b.Property<string>("UserFirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("userLastName")
+                    b.Property<string>("UserLastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("userRegionId")
+                    b.Property<string>("UserRegionId")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)");
 
-                    b.HasKey("userId");
+                    b.HasKey("UserId");
 
                     b.ToTable("User");
                 });

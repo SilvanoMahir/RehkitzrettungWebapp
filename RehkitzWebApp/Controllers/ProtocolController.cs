@@ -25,7 +25,12 @@ public class ProtocolController : ControllerBase
         {
             return NotFound();
         }
-        return await _context.Protocol.ToListAsync();
+
+        var protocols = await _context.Protocol
+            .Where(p => p.EntryIsDeleted == false)  
+            .ToListAsync();
+
+        return protocols;
     }
 
     // GET: /api/protocols/5
@@ -106,7 +111,8 @@ public class ProtocolController : ControllerBase
             return NotFound();
         }
 
-        _context.Protocol.Remove(protocol);
+        protocol.EntryIsDeleted = true;
+        _context.Entry(protocol).State = EntityState.Modified;
         await _context.SaveChangesAsync();
 
         return NoContent();

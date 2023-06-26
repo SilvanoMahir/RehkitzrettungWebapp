@@ -2,7 +2,7 @@ import styled from 'styled-components/macro'
 import { useContext, useState, useEffect } from 'react'
 import { ProtocolEntries } from '../../models/ProtocolEntries'
 import { DeleteProtocolButton, EditProtocolButton } from '../controls/Button'
-import { ProtocolsContext } from '../../store/context'
+import { AppContext, ProtocolsContext } from '../../store/context'
 import ProtocolBody from './ProtocolBody'
 
 
@@ -13,6 +13,7 @@ interface Props {
 export default function Protocol({protocolId}: Props) {
 
     //const { protocolId } = useParams() --> not working now as Router not set, there used Props
+    const { token } = useContext(AppContext)
     const { protocolsListLocal, dispatch } = useContext(ProtocolsContext)
     const [protocolEntry, setProtocolEntry] = useState<ProtocolEntries>({
         protocolId: "",
@@ -41,7 +42,10 @@ export default function Protocol({protocolId}: Props) {
     const deleteProtocol = async (protocolId: string) => {
         const response = await fetch(`/api/protocols/${Number(protocolId)}`, {
             method: 'DELETE',
-            headers: { 'content-type': 'application/json' },
+            headers: { 
+              'content-type': 'application/json',
+              'Authorization': `Bearer ${token}`, // notice the Bearer before your token
+          },
         })
         if (response.ok) {
             dispatch({ type: 'delete-protocols', protocolsListLocal, protocolId})
