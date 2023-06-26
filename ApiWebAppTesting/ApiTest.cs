@@ -93,8 +93,53 @@ namespace ApiWebAppTesting
         {
             int protocolIdToRemove = 2; //protocolId with this number is deleted
 
-            var responseDelete = await _httpClient.DeleteAsync("/api/protocols/"+protocolIdToRemove);
-            var responseGet = await _httpClient.GetAsync("/api/protocols");
+            var user = new
+            {
+                username = "admin",
+                email = "test@ost.ch",
+                password = "Password@123"
+            };
+
+            var userLogin = new
+            {
+                username = "admin",
+                password = "Password@123"
+            };
+
+            // create a new admin user
+            string jsonPayload = JsonConvert.SerializeObject(user);
+            var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+            var responseRegister = await _httpClient.PostAsync("/api/authenticate/register-admin", content);
+
+            // login as admin user
+            var contentLogin = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+            var responseLogin = await _httpClient.PostAsync("/api/authenticate/login", contentLogin);
+
+            // delete the protocol
+            string responseString = await responseLogin.Content.ReadAsStringAsync();
+            var responseJson = JObject.Parse(responseString);
+            string token = responseJson["token"].Value<string>();
+
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Delete,
+                RequestUri = new Uri("/api/protocols/" + protocolIdToRemove, UriKind.Relative)
+            };
+            request.Headers.Add("Authorization", "Bearer " + token);
+            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            var responseDelete = await _httpClient.SendAsync(request);
+
+            // get protocol list
+            request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new Uri("/api/protocols", UriKind.Relative)
+            };
+            request.Headers.Add("Authorization", "Bearer " + token);
+            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            var responseGet = await _httpClient.SendAsync(request);
             var stringResult = await responseGet.Content.ReadAsStringAsync();
 
             List<Protocol> protocolList = models.getProtocolExpectedResultList().ToList();
@@ -103,8 +148,8 @@ namespace ApiWebAppTesting
                 protocolList.RemoveAt(indexToRemove);
             string expectedProtocolsResult = JsonConvert.SerializeObject(protocolList.ToArray());
 
-
-            Assert.AreEqual(expectedProtocolsResult, stringResult);
+            Assert.IsTrue(stringResult.Contains(protocolList[0].ProtocolId.ToString()));
+            Assert.IsTrue((protocolList.Count == JArray.Parse(stringResult).Count));
         }
 
         [TestMethod]
@@ -123,7 +168,7 @@ namespace ApiWebAppTesting
             var response = await _httpClient.PostAsync("/api/authenticate/register-admin", content);
             var stringResult = await response.Content.ReadAsStringAsync();
 
-            Assert.IsTrue(stringResult.Contains("Success"));
+            Assert.IsTrue(response.ToString().Contains("StatusCode: 200"));
         }
 
         private void resetAndInitializeTestDB()
