@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import { CustomButton } from '../../controls/Button';
+import styled from 'styled-components'
+import { CustomButton } from '../../controls/Button'
 
 interface Props {
     text: string

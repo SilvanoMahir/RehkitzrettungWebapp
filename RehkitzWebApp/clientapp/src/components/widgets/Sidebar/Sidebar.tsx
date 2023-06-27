@@ -2,7 +2,7 @@ import { FaInfo, FaListUl, FaMap, FaRegArrowAltCircleRight, FaUser, FaUsers } fr
 import styled from "styled-components"
 import SidebarButton from "../Sidebar/SidebarButton"
 import SidebarIcon from "../Sidebar/SidebarIcon"
-import { useContext, useState } from "react"
+import { useContext } from "react"
 import { AppContext } from '../../../store/context'
 import { ROUTE_LOGIN_PAGE } from '../../../App'
 import { useNavigate } from "react-router"

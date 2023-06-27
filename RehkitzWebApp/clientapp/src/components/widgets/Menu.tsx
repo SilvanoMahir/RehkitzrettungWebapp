@@ -1,7 +1,7 @@
-import styled from "styled-components";
-import { useState } from "react";
-import { Hamburger } from "./Hamburger";
-import Sidebar from "./Sidebar/Sidebar";
+import styled from "styled-components"
+import { useState } from "react"
+import { Hamburger } from "./Hamburger"
+import Sidebar from "./Sidebar/Sidebar"
 
 
 export const Menu = () => {
@@ -13,8 +13,8 @@ export const Menu = () => {
       </StyledMenu>
       <Hamburger open={open} setOpen={setOpen} />
      </div>
-   );
-};
+   )
+}
 
 const StyledMenu = styled.nav<{ open: boolean }>`
     height: 100%;
@@ -23,5 +23,5 @@ const StyledMenu = styled.nav<{ open: boolean }>`
     z-index: 1;
     flex-direction: column;
     display: ${({ open }) => (open ? "flex" : "none")};
-    overflow-y: auto; /* Add this line */
+    overflow-y: auto;
 `
