@@ -13,23 +13,27 @@ export default function RescueListPage() {
 
     const [loadingProtocols, setLoadingProtocols] = useState(true)
     const { protocolsListLocal, dispatch } = useContext(ProtocolsContext)
-    const { token } = useContext(AppContext)
+    const { token, dispatch_token } = useContext(AppContext)
 
     useEffect(() => {
         const onMount = async () => {
-            const protocolsListLocal = await fetchProtocols()
+            //token handling can probably be optimized
+            const storageToken = localStorage.getItem('user_token'); 
+            if (storageToken !== null) 
+                dispatch_token({ type: 'set-token', value: storageToken })
+            const protocolsListLocal = await fetchProtocols(storageToken)
             setLoadingProtocols(false)
             dispatch({ type: 'get-protocols', protocolsListLocal})
         }
         onMount()
     }, [dispatch])
 
-    const fetchProtocols = async () => {
+    const fetchProtocols = async (storageToken: string | null) => {
         const response = await fetch('/api/protocols', {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json',
-                'Authorization': `Bearer ${token}`, // notice the Bearer before your token
+                'Authorization': `Bearer ${storageToken}`, // notice the Bearer before your token
             }
         })
         if (response.ok) {
@@ -68,7 +72,7 @@ export default function RescueListPage() {
                     <SearchInput onChange={search}
                         value={''}
                         isNotMobile={isNotMobile}
-                        placeholder={'Suchen'}></SearchInput>
+                        placeholder={token}></SearchInput>
                     {content}
                     <RowContainer>
                         <DownloadProtocolButton onClick={() => downloadProtocol()}>Bericht herunterladen</DownloadProtocolButton>

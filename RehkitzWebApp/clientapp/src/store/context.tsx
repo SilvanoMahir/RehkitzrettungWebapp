@@ -35,12 +35,12 @@ export const ProtocolProvider = ({ children }: Props) => {
 }
 
 interface AppState2 extends AuthState {
-    dispatch: (action: Action) => void
+  dispatch_token: (action: Action) => void
 }
 
 const initialState: AppState2 = {
     ...initialAuthState,
-    dispatch: (action: Action) => { }
+    dispatch_token: (action: Action) => { }
 }
 
 export const AppContext = createContext<AppState2>(initialState)
@@ -50,11 +50,11 @@ interface Props {
 }
 
 export const AppProvider = ({ children }: Props) => {
-    const [state, dispatch] = useReducer(authReducer, initialState)
+    const [state, dispatch_token] = useReducer(authReducer, initialState)
 
     const appStore = {
         ...state,
-        dispatch
+        dispatch_token
     }
 
     return <AppContext.Provider value={appStore}>{children}</AppContext.Provider>
