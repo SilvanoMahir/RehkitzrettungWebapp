@@ -21,9 +21,7 @@ root.render(
           </BrowserRouter>
         </ProtocolProvider>
         <ToastContainer enableMultiContainer containerId={'LoginToaster'} position={toast.POSITION.BOTTOM_LEFT} />
-    </AppProvider>
-)
       </AppProvider>
-    </div>,
+    </div>
   );
 

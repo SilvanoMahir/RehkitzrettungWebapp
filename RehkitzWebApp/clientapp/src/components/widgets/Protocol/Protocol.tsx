@@ -2,12 +2,10 @@ import styled from 'styled-components/macro'
 import { useContext, useState, useEffect } from 'react'
 import { ProtocolEntries } from '../../../models/ProtocolEntries'
 import { DeleteProtocolButton, EditProtocolButton } from '../../controls/Button'
-import { ProtocolsContext } from '../../../store/context'
 import ProtocolBodySmallScreen from './ProtocolBodySmallScreen'
 import { useMediaQuery } from 'react-responsive'
 import ProtocolBodyLargeScreen from './ProtocolBodyLargeScreen'
-import { AppContext, ProtocolsContext } from '../../store/context'
-import ProtocolBody from './ProtocolBody'
+import { AppContext, ProtocolsContext } from '../../../store/context'
 
 
 interface Props {
