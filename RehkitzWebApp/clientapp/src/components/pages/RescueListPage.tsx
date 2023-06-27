@@ -2,10 +2,14 @@ import { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
 import { DownloadProtocolButton, CreateProtocolButton } from '../controls/Button'
 import { AppContext, ProtocolsContext } from '../../store/context'
-import Protocol from '../widgets/Protocol'
-import Sidebar from '../widgets/Sidebar'
+import Protocol from '../widgets/Protocol/Protocol'
+import Sidebar from '../widgets/Sidebar/Sidebar'
+import { useMediaQuery } from 'react-responsive'
+import { Menu } from '../widgets/Menu'
 
 export default function RescueListPage() {
+
+    const isNotMobile = useMediaQuery({ query: '(min-width: 426px)' })
 
     const [loadingProtocols, setLoadingProtocols] = useState(true)
     const { protocolsListLocal, dispatch } = useContext(ProtocolsContext)
@@ -56,35 +60,42 @@ export default function RescueListPage() {
     }
 
     return (
-        <RescueListRowLayout>
-            <Sidebar />
-            <RescueListColumnLayout>
-                <SearchInput onChange={search}
-                    value={''}
-                    placeholder={'Suchen'}></SearchInput>
-                {content}
-                <RowContainer>
-                    <DownloadProtocolButton onClick={() => downloadProtocol()}>Bericht herunterladen</DownloadProtocolButton>
-                    <CreateProtocolButton onClick={() => createProtocol()}>Neues Protokoll erstellen</CreateProtocolButton>
-                </RowContainer>
-            </RescueListColumnLayout >
-        </RescueListRowLayout>
+        <RescueListLayout>
+            {!isNotMobile && <Menu/>}
+            <RescueListRowLayout>
+                {(isNotMobile) && <Sidebar showSidebar={isNotMobile} />}
+                <RescueListColumnLayout>
+                    <SearchInput onChange={search}
+                        value={''}
+                        isNotMobile={isNotMobile}
+                        placeholder={'Suchen'}></SearchInput>
+                    {content}
+                    <RowContainer>
+                        <DownloadProtocolButton onClick={() => downloadProtocol()}>Bericht herunterladen</DownloadProtocolButton>
+                        <CreateProtocolButton onClick={() => createProtocol()}>Neues Protokoll erstellen</CreateProtocolButton>
+                    </RowContainer>
+                </RescueListColumnLayout >
+            </RescueListRowLayout>
+        </RescueListLayout>
     )
 }
+
+const RescueListLayout = styled.div`
+    height: 100%;
+`
 
 const RescueListRowLayout = styled.div`
     display: flex;
     flex-direction: row;
-    align-self: stretch;
-    justify-content: space-between;
     background: #9A8873;
+    height: 100%;
 `
 
 const RescueListColumnLayout = styled.div`
     display: flex;
     flex-direction: column;
-    align-items: center;
-    margin-right: 90px;
+    justify-content: flex-start;
+    width: 100%;
 `
 
 const RowContainer = styled.div` 
@@ -92,18 +103,19 @@ const RowContainer = styled.div`
     flex-direction: row;
     align-self: stretch;
     justify-content: space-evenly;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 `
 
-const SearchInput = styled.input` 
+const SearchInput = styled.input<{ isNotMobile: boolean }>` 
     display: flex;
     align-self: flex-end;
     border-radius: 8px;
     width: 250px;
     font-size: 25px;
-    margin: 10px;
     background: #898472;
     color: #fffecb;
+    margin-top: ${(props) => (props.isNotMobile ? "5vh" : "8vh")};
+
     &::placeholder {
         color: #fffecb; /* Change this to the desired color */
         opacity: 0.5;

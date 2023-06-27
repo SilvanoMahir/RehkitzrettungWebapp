@@ -22,11 +22,15 @@ export const CustomButton = css`
 export const DownloadProtocolButton = styled.button`
     ${CustomButton};
     background: gray;
+    margin: 10px;
+    font-size: 20px;
 `
 
 export const CreateProtocolButton = styled.button`
     ${CustomButton};
     background: gray;
+    margin: 10px;
+    font-size: 20px;
 `
 export const DeleteProtocolButton = styled.button`
     ${CustomButton};

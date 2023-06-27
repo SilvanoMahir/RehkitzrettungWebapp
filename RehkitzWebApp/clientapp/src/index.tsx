@@ -8,13 +8,20 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
+const rootStyles = {
+    height: '100%',
+  };
+
 root.render(
-    <AppProvider>
+    <div style={rootStyles}>
+      <AppProvider>
         <ProtocolProvider>
-            <BrowserRouter>
-                <App />
-            </BrowserRouter> 
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
         </ProtocolProvider>
         <ToastContainer enableMultiContainer containerId={'LoginToaster'} position={toast.POSITION.BOTTOM_LEFT} />
-    </AppProvider>
-)
+      </AppProvider>
+    </div>
+  );
+

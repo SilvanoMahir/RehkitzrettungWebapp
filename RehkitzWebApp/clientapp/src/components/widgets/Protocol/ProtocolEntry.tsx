@@ -21,16 +21,18 @@ const RowContainer = styled.div`
 `
 
 const Entry = styled.div`
-    display: flex;
     flex: 1;
-    flex-direction: row;
     margin-left: 15px;
     font-weight: bold;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 `
 
 const Value = styled.div`
-    display: flex;
     flex: 1;
-    flex-direction: row;
     margin-left: 15px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 `

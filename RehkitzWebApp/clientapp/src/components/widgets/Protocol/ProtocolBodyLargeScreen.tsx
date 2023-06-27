@@ -1,12 +1,12 @@
 import styled from "styled-components"
-import { ProtocolEntries } from "../../models/ProtocolEntries"
+import { ProtocolEntries } from "../../../models/ProtocolEntries"
 import ProtocolEntry from './ProtocolEntry'
 
 interface Props {
     protocolEntry: ProtocolEntries
 }
 
-export default function ProtocolBody({ protocolEntry }: Props) {
+export default function ProtocolBodyLargeScreen({ protocolEntry }: Props) {
 
     return (
         <RowContainer>
@@ -32,10 +32,11 @@ const RowContainer = styled.div`
     display: flex;
     flex-direction: row;
     align-self: stretch;
+    width: 100%;
 `
 
 const ColumnContainer = styled.div`
     display: flex;
     flex-direction: column;
-    width: 50%
+    width: 100%;
 `

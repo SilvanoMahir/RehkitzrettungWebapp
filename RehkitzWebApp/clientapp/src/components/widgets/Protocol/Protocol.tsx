@@ -1,9 +1,11 @@
 import styled from 'styled-components/macro'
 import { useContext, useState, useEffect } from 'react'
-import { ProtocolEntries } from '../../models/ProtocolEntries'
-import { DeleteProtocolButton, EditProtocolButton } from '../controls/Button'
-import { AppContext, ProtocolsContext } from '../../store/context'
-import ProtocolBody from './ProtocolBody'
+import { ProtocolEntries } from '../../../models/ProtocolEntries'
+import { DeleteProtocolButton, EditProtocolButton } from '../../controls/Button'
+import ProtocolBodySmallScreen from './ProtocolBodySmallScreen'
+import { useMediaQuery } from 'react-responsive'
+import ProtocolBodyLargeScreen from './ProtocolBodyLargeScreen'
+import { AppContext, ProtocolsContext } from '../../../store/context'
 
 
 interface Props {
@@ -12,6 +14,7 @@ interface Props {
 
 export default function Protocol({protocolId}: Props) {
 
+    const isNotMobile = useMediaQuery({ query: '(min-width: 426px)' })
     //const { protocolId } = useParams() --> not working now as Router not set, there used Props
     const { token } = useContext(AppContext)
     const { protocolsListLocal, dispatch } = useContext(ProtocolsContext)
@@ -28,13 +31,13 @@ export default function Protocol({protocolId}: Props) {
         regionName: "",
         areaSize: "",
         injuredFawns: 0,
-      });
+      })
 
       useEffect(() => {
         const onMount = async () => {
           const data = protocolsListLocal.filter(protocol => protocol.protocolId === protocolId);
           setProtocolEntry(data[0]);
-        };
+        }
         onMount();
       }, [protocolsListLocal, protocolId]);
       
@@ -58,7 +61,7 @@ export default function Protocol({protocolId}: Props) {
     return (
         <ProtocolLayout>
             <ProtocolTitle>Protokoll {protocolEntry.protocolCode}</ProtocolTitle>
-            <ProtocolBody protocolEntry={protocolEntry} />
+            {isNotMobile ? <ProtocolBodyLargeScreen protocolEntry={protocolEntry} /> : <ProtocolBodySmallScreen protocolEntry={protocolEntry} />}
             <RowContainer>
               <DeleteProtocolButton onClick={() => deleteProtocol(protocolEntry.protocolId)}>Loeschen</DeleteProtocolButton>
               <EditProtocolButton onClick={() => editProtocol()}>Bearbeiten</EditProtocolButton>
@@ -68,13 +71,10 @@ export default function Protocol({protocolId}: Props) {
 }
 
 const ProtocolLayout = styled.div`
-    border-radius: 8px;
-    margin: 20px;
+    margin: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 800px;
-    height: 300px;
     background: #7d6b52;
     color: beige;
 `
