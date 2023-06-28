@@ -72,7 +72,7 @@ export default function RescueListPage() {
                     <SearchInput onChange={search}
                         value={''}
                         isNotMobile={isNotMobile}
-                        placeholder={token}></SearchInput>
+                        placeholder={"Suchen"}></SearchInput>
                     {content}
                     <RowContainer>
                         <DownloadProtocolButton onClick={() => downloadProtocol()}>Bericht herunterladen</DownloadProtocolButton>
