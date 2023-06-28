@@ -5,6 +5,9 @@ import { protocolReducer, initialProtocolsState } from './protocolReducer'
 import { Action } from '../models/AuthActions'
 import { AuthState } from '../models/AuthState'
 import { initialAuthState, authReducer } from './authReducer'
+import { initialUserState, userReducer } from './userReducer'
+import { ActionUsers } from '../models/UserActions'
+import { UserState } from '../models/UserState'
 
 interface AppState1 extends ProtocolState {
   dispatch: (action: ActionProtocols) => void
@@ -34,6 +37,8 @@ export const ProtocolProvider = ({ children }: Props) => {
   )
 }
 
+
+
 interface AppState2 extends AuthState {
   dispatch_token: (action: Action) => void
 }
@@ -58,4 +63,34 @@ export const AppProvider = ({ children }: Props) => {
     }
 
     return <AppContext.Provider value={appStore}>{children}</AppContext.Provider>
+}
+
+
+
+interface AppState3 extends UserState {
+  dispatch: (action: ActionUsers) => void
+}
+
+const initialState2: AppState3 = {
+  ...initialUserState,
+  dispatch: (action: ActionUsers) => {},
+}
+
+export const UserContext = createContext<AppState3>(initialState2)
+
+interface Props {
+  children: ReactNode
+}
+
+export const UserProvider = ({ children }: Props) => {
+  const [userState, dispatch] = useReducer(userReducer, initialState2)
+
+  const userAppStore = {
+    ...userState,
+    dispatch,
+  }
+
+  return (
+    <UserContext.Provider value={userAppStore}>{children}</UserContext.Provider>
+  )
 }
