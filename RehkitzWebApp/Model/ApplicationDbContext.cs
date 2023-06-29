@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using RehkitzWebApp.Model.Dtos;
 
 namespace RehkitzWebApp.Model;
 
@@ -12,7 +13,7 @@ public class ApplicationDbContext : IdentityDbContext<IdentityUser>
 
     public DbSet<Protocol> Protocol { get; set; }
 
-    public DbSet<User> User { get; set; }
+    public DbSet<UserDto> UserDto { get; set; }
 
     public DbSet<Region> Region { get; set; }
 

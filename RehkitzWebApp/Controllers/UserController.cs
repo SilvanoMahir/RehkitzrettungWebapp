@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RehkitzWebApp.Model;
+using RehkitzWebApp.Model.Dtos;
 
 namespace webapi.Controllers;
 
@@ -17,43 +18,43 @@ public class UserController : ControllerBase
 
     // GET: /api/users
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<User>>> GetUser()
+    public async Task<ActionResult<IEnumerable<UserDto>>> GetUser()
     {
-        if (_context.User == null)
+        if (_context.UserDto == null)
         {
             return NotFound();
         }
-        return await _context.User.ToListAsync();
+        return await _context.UserDto.ToListAsync();
     }
 
     // GET: /api/users/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<User>> GetUser(int id)
+    public async Task<ActionResult<UserDto>> GetUser(int id)
     {
-        if (_context.User == null)
+        if (_context.UserDto == null)
         {
             return NotFound();
         }
-        var user = await _context.User.FindAsync(id);
+        var userDto = await _context.UserDto.FindAsync(id);
 
-        if (user == null)
+        if (userDto == null)
         {
             return NotFound();
         }
-        return user;
+        return userDto;
     }
 
     // PUT: /api/users/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutUser(int id, User user)
+    public async Task<IActionResult> PutUser(int id, UserDto userDto)
     {
-        if (id != user.UserId)
+        if (id != userDto.UserId)
         {
             return BadRequest();
         }
 
-        _context.Entry(user).State = EntityState.Modified;
+        _context.Entry(userDto).State = EntityState.Modified;
 
         try
         {
@@ -76,33 +77,33 @@ public class UserController : ControllerBase
     // POST: /api/users
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<User>> PostUser(User user)
+    public async Task<ActionResult<UserDto>> PostUser(UserDto userDto)
     {
-        if (_context.User == null)
+        if (_context.UserDto == null)
         {
             return NotFound();
         }
-        _context.User.Add(user);
+        _context.UserDto.Add(userDto);
         await _context.SaveChangesAsync();
 
-        return CreatedAtAction("GetUser", new { id = user.UserId }, user);
+        return CreatedAtAction("GetUser", new { id = userDto.UserId }, userDto);
     }
 
     // DELETE: /api/users/5
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteUser(int id)
     {
-        if (_context.User == null)
+        if (_context.UserDto == null)
         {
             return NotFound();
         }
-        var user = await _context.User.FindAsync(id);
-        if (user == null)
+        var userDto = await _context.UserDto.FindAsync(id);
+        if (userDto == null)
         {
             return NotFound();
         }
 
-        _context.User.Remove(user);
+        _context.UserDto.Remove(userDto);
         await _context.SaveChangesAsync();
 
         return NoContent();
@@ -110,6 +111,6 @@ public class UserController : ControllerBase
 
     private bool UserExists(int id)
     {
-        return (_context.User?.Any(e => e.UserId == id)).GetValueOrDefault();
+        return (_context.UserDto?.Any(e => e.UserId == id)).GetValueOrDefault();
     }
 }
