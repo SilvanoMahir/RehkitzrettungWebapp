@@ -15,10 +15,10 @@ interface Props {
 export default function Sidebar({ showSidebar }: Props) {
 
     const isNotMobile = useMediaQuery({ query: '(min-width: 426px)' })
-    const { dispatch } = useContext(AppContext)
+    const { dispatch_token } = useContext(AppContext)
     let navigate = useNavigate()
     function logout(): void {
-        dispatch({ type: 'set-token', value: '' })
+        dispatch_token({ type: 'set-token', value: '' })
         localStorage.removeItem("user_token")
         navigate(ROUTE_LOGIN_PAGE)
     }

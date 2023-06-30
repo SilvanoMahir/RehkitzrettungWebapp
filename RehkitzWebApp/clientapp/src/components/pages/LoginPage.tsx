@@ -15,7 +15,7 @@ import { FadeLoader} from 'react-spinners';
 export default function RescueListPage() {
     const [inputUserName, setUserName] = useState('')
     const [inputPassword, setPassword] = useState('')
-    const { dispatch } = useContext(AppContext)
+    const { dispatch_token } = useContext(AppContext)
     let navigate = useNavigate()
     const { promiseInProgress } = usePromiseTracker();
 
@@ -24,7 +24,7 @@ export default function RescueListPage() {
             toast.error("Bitte Benutzername und Password einsetzen!", {
                 position: toast.POSITION.TOP_CENTER,
                 containerId: 'LoginToaster'
-            });
+            })
         } else {     
             trackPromise(
                 fetchLogin()
@@ -44,7 +44,7 @@ export default function RescueListPage() {
         const {token} = await response.json() 
         if (response.ok){
             localStorage.setItem('user_token', token);
-            dispatch({type: 'set-token', value: token})
+            dispatch_token({type: 'set-token', value: token})
             navigate(ROUTE_RESCUE_LIST_PAGE)
         } else {
             toast.error("Login fehlgeschlagen. Password oder Benutzername falsch", {
