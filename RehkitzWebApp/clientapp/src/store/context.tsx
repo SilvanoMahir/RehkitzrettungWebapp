@@ -68,12 +68,12 @@ export const AppProvider = ({ children }: Props) => {
 
 
 interface AppState3 extends UserState {
-  dispatch: (action: ActionUsers) => void
+  dispatch_users: (action: ActionUsers) => void
 }
 
 const initialState2: AppState3 = {
   ...initialUserState,
-  dispatch: (action: ActionUsers) => {},
+  dispatch_users: (action: ActionUsers) => {},
 }
 
 export const UserContext = createContext<AppState3>(initialState2)
@@ -83,11 +83,11 @@ interface Props {
 }
 
 export const UserProvider = ({ children }: Props) => {
-  const [userState, dispatch] = useReducer(userReducer, initialState2)
+  const [userState, dispatch_users] = useReducer(userReducer, initialState2)
 
   const userAppStore = {
     ...userState,
-    dispatch,
+    dispatch_users,
   }
 
   return (

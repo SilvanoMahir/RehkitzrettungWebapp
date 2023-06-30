@@ -40,7 +40,7 @@ export default function RescueListPage() {
           return await response.json()
         }
         return []
-      }
+    }
 
     const search = async () => {
     }
