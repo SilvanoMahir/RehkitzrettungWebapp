@@ -13,7 +13,7 @@ export default function RescueListPage() {
 
     const [loadingProtocols, setLoadingProtocols] = useState(true)
     const { protocolsListLocal, dispatch } = useContext(ProtocolsContext)
-    const { token, dispatch_token } = useContext(AppContext)
+    const { dispatch_token } = useContext(AppContext)
 
     useEffect(() => {
         const onMount = async () => {
@@ -26,14 +26,14 @@ export default function RescueListPage() {
             dispatch({ type: 'get-protocols', protocolsListLocal})
         }
         onMount()
-    }, [dispatch])
+    }, [dispatch, dispatch_token])
 
     const fetchProtocols = async (storageToken: string | null) => {
         const response = await fetch('/api/protocols', {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json',
-                'Authorization': `Bearer ${storageToken}`, // notice the Bearer before your token
+                'Authorization': `Bearer ${storageToken}`, 
             }
         })
         if (response.ok) {
@@ -72,7 +72,7 @@ export default function RescueListPage() {
                     <SearchInput onChange={search}
                         value={''}
                         isNotMobile={isNotMobile}
-                        placeholder={"Suchen"}></SearchInput>
+                        placeholder={'Suchen'}></SearchInput>
                     {content}
                     <RowContainer>
                         <DownloadProtocolButton onClick={() => downloadProtocol()}>Bericht herunterladen</DownloadProtocolButton>
