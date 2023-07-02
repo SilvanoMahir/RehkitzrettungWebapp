@@ -43,37 +43,38 @@ public class ProtocolController : ControllerBase
 
     // GET: /api/protocols/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<Protocol>> GetProtocol(int id)
+    public IActionResult GetProtocol(int id)
     {
         if (_context.Protocol == null)
         {
             return NotFound();
         }
-        var protocol = await _context.Protocol.FindAsync(id);
+        var protocol = _context.Protocol.Find(id);
 
         if (protocol == null)
         {
             return NotFound();
         }
 
-        return protocol;
+        return Ok(protocol.ToDto());
     }
 
     // PUT: /api/protocols/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutProtocol(int id, Protocol protocol)
+    public IActionResult PutProtocol(int id, ProtocolDto protocolDto)
     {
-        if (id != protocol.ProtocolId)
+        if (id != protocolDto.ProtocolId)
         {
             return BadRequest();
         }
 
+        var protocol = protocolDto.ToProtocol();
         _context.Entry(protocol).State = EntityState.Modified;
 
         try
         {
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
         }
         catch (DbUpdateConcurrencyException)
         {
@@ -93,27 +94,28 @@ public class ProtocolController : ControllerBase
     // POST: /api/protocols
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<Protocol>> PostProtocol(Protocol protocol)
+    public IActionResult PostProtocol(ProtocolDto protocolDto)
     {
         if (_context.Protocol == null)
         {
             return NotFound();
         }
+        var protocol = protocolDto.ToProtocol();
         _context.Protocol.Add(protocol);
-        await _context.SaveChangesAsync();
+        _context.SaveChanges();
 
         return CreatedAtAction("GetProtocol", new { id = protocol.ProtocolId }, protocol);
     }
 
     // DELETE: /api/protocols/5
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteProtocol(int id)
+    public IActionResult DeleteProtocol(int id)
     {
         if (_context.Protocol == null)
         {
             return NotFound();
         }
-        var protocol = await _context.Protocol.FindAsync(id);
+        var protocol = _context.Protocol.Find(id);
         if (protocol == null)
         {
             return NotFound();
@@ -121,7 +123,7 @@ public class ProtocolController : ControllerBase
 
         protocol.EntryIsDeleted = true;
         _context.Entry(protocol).State = EntityState.Modified;
-        await _context.SaveChangesAsync();
+        _context.SaveChanges();
 
         return NoContent();
     }
