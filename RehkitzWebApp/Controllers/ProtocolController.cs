@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RehkitzWebApp.Model;
+using RehkitzWebApp.Model.Dtos;
 
 namespace RehkitzWebApp.Controllers;
 
@@ -19,18 +20,25 @@ public class ProtocolController : ControllerBase
 
     // GET: /api/protocols
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Protocol>>> GetProtocol()
+    public IActionResult GetProtocol()
     {
         if (_context.Protocol == null)
         {
             return NotFound();
         }
 
-        var protocols = await _context.Protocol
-            .Where(p => p.EntryIsDeleted == false)  
-            .ToListAsync();
+        var protocols = _context.Protocol
+            .Where(p => p.EntryIsDeleted == false)
+            .ToList();
 
-        return protocols;
+        var protocolDtos = new List<ProtocolDto>();
+
+        foreach (var protocol in protocols)
+        {
+            protocolDtos.Add(protocol.ToDto());
+        }
+
+        return Ok(protocolDtos);
     }
 
     // GET: /api/protocols/5
