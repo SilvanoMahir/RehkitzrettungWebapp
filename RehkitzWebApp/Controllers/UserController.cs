@@ -18,43 +18,51 @@ public class UserController : ControllerBase
 
     // GET: /api/users
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<UserDto>>> GetUser()
+    public IActionResult GetUser()
     {
-        if (_context.UserDto == null)
+        if (_context.User == null)
         {
             return NotFound();
         }
-        return await _context.UserDto.ToListAsync();
+
+        var userDtos = new List<UserDto>();
+
+        foreach (var user in _context.User)
+        {
+            userDtos.Add(user.ToDto());
+        }
+
+        return Ok(userDtos);
     }
 
     // GET: /api/users/5
     [HttpGet("{id}")]
     public async Task<ActionResult<UserDto>> GetUser(int id)
     {
-        if (_context.UserDto == null)
+        if (_context.User == null)
         {
             return NotFound();
         }
-        var userDto = await _context.UserDto.FindAsync(id);
+        var user = await _context.User.FindAsync(id);
 
-        if (userDto == null)
+        if (user == null)
         {
             return NotFound();
         }
-        return userDto;
+        return user.ToDto();
     }
 
     // PUT: /api/users/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutUser(int id, UserDto userDto)
+    public async Task<IActionResult> PutUser(int id, User user)
     {
-        if (id != userDto.UserId)
+        if (id != user.UserId)
         {
             return BadRequest();
         }
 
-        _context.Entry(userDto).State = EntityState.Modified;
+        _context.Entry(user).State = EntityState.Modified;
 
         try
         {
@@ -77,33 +85,33 @@ public class UserController : ControllerBase
     // POST: /api/users
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<UserDto>> PostUser(UserDto userDto)
+    public async Task<ActionResult<User>> PostUser(User user)
     {
-        if (_context.UserDto == null)
+        if (_context.User == null)
         {
             return NotFound();
         }
-        _context.UserDto.Add(userDto);
+        _context.User.Add(user);
         await _context.SaveChangesAsync();
 
-        return CreatedAtAction("GetUser", new { id = userDto.UserId }, userDto);
+        return CreatedAtAction("GetUser", new { id = user.UserId }, user);
     }
 
     // DELETE: /api/users/5
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteUser(int id)
     {
-        if (_context.UserDto == null)
+        if (_context.User == null)
         {
             return NotFound();
         }
-        var userDto = await _context.UserDto.FindAsync(id);
-        if (userDto == null)
+        var user = await _context.User.FindAsync(id);
+        if (user == null)
         {
             return NotFound();
         }
 
-        _context.UserDto.Remove(userDto);
+        _context.User.Remove(user);
         await _context.SaveChangesAsync();
 
         return NoContent();
@@ -111,6 +119,6 @@ public class UserController : ControllerBase
 
     private bool UserExists(int id)
     {
-        return (_context.UserDto?.Any(e => e.UserId == id)).GetValueOrDefault();
+        return (_context.User?.Any(e => e.UserId == id)).GetValueOrDefault();
     }
 }
