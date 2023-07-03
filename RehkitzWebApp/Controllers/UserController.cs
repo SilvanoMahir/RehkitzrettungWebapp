@@ -18,16 +18,20 @@ public class UserController : ControllerBase
 
     // GET: /api/users
     [HttpGet]
-    public IActionResult GetUser()
+    public async Task<ActionResult<IEnumerable<UserDto>>> GetUser()
     {
         if (_context.User == null)
         {
             return NotFound();
         }
 
+        var users = await _context.User
+            .Where(p => p.EntryIsDeleted == false)
+            .ToListAsync();
+
         var userDtos = new List<UserDto>();
 
-        foreach (var user in _context.User)
+        foreach (var user in users)
         {
             userDtos.Add(user.ToDto());
         }
@@ -37,13 +41,13 @@ public class UserController : ControllerBase
 
     // GET: /api/users/5
     [HttpGet("{id}")]
-    public IActionResult GetUser(int id)
+    public async Task<ActionResult<ProtocolDto>> GetUser(int id)
     {
         if (_context.User == null)
         {
             return NotFound();
         }
-        var user = _context.User.Find(id);
+        var user = await _context.User.FindAsync(id);
 
         if (user == null)
         {
@@ -55,7 +59,7 @@ public class UserController : ControllerBase
     // PUT: /api/users/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
-    public IActionResult PutUser(int id, UserDto userDto)
+    public async Task<ActionResult> PutUser(int id, UserDto userDto)
     {
         if (id != userDto.UserId)
         {
@@ -67,7 +71,7 @@ public class UserController : ControllerBase
 
         try
         {
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
         catch (DbUpdateConcurrencyException)
         {
@@ -86,7 +90,7 @@ public class UserController : ControllerBase
     // POST: /api/users
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public IActionResult PostUser(UserDto userDto)
+    public async Task<ActionResult<UserDto>> PostUser(UserDto userDto)
     {
         if (_context.User == null)
         {
@@ -94,20 +98,20 @@ public class UserController : ControllerBase
         }
         var user = userDto.ToUser();
         _context.User.Add(user);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
         return CreatedAtAction("GetUser", new { id = user.UserId }, user);
     }
 
     // DELETE: /api/users/5
     [HttpDelete("{id}")]
-    public IActionResult DeleteUser(int id)
+    public async Task<ActionResult> DeleteUser(int id)
     {
         if (_context.User == null)
         {
             return NotFound();
         }
-        var user = _context.User.Find(id);
+        var user = await _context.User.FindAsync(id);
         if (user == null)
         {
             return NotFound();
