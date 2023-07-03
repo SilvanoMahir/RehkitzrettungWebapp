@@ -113,7 +113,8 @@ public class UserController : ControllerBase
             return NotFound();
         }
 
-        _context.User.Remove(user);
+        user.EntryIsDeleted = true;
+        _context.Entry(user).State = EntityState.Modified;
         _context.SaveChanges();
 
         return NoContent();
