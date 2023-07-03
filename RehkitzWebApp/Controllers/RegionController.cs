@@ -18,16 +18,16 @@ public class RegionController : ControllerBase
 
     // GET: /api/regions
     [HttpGet]
-    public IActionResult GetRegion()
+    public async Task<ActionResult<IEnumerable<RegionDto>>> GetRegion()
     {
         if (_context.Region == null)
         {
             return NotFound();
         }
 
-        var regions = _context.Region
+        var regions = await _context.Region
             .Where(p => p.EntryIsDeleted == false)
-            .ToList();
+            .ToListAsync();
 
         var regionDtos = new List<RegionDto>();
 
@@ -41,13 +41,13 @@ public class RegionController : ControllerBase
 
     // GET: /api/regions/5
     [HttpGet("{id}")]
-    public IActionResult GetRegion(int id)
+    public async Task<ActionResult<ProtocolDto>> GetRegion(int id)
     {
         if (_context.Region == null)
         {
             return NotFound();
         }
-        var region = _context.Region.Find(id);
+        var region = await _context.Region.FindAsync(id);
 
         if (region == null)
         {
@@ -60,7 +60,7 @@ public class RegionController : ControllerBase
     // PUT: /api/regions/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
-    public IActionResult PutRegion(int id, RegionDto regionDto)
+    public async Task<ActionResult> PutRegion(int id, RegionDto regionDto)
     {
         if (id != regionDto.RegionId)
         {
@@ -72,7 +72,7 @@ public class RegionController : ControllerBase
 
         try
         {
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
         catch (DbUpdateConcurrencyException)
         {
@@ -91,7 +91,7 @@ public class RegionController : ControllerBase
     // POST: /api/regions
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public IActionResult PostRegion(RegionDto regionDto)
+    public async Task<ActionResult<RegionDto>> PostRegion(RegionDto regionDto)
     {
         if (_context.Region == null)
         {
@@ -99,20 +99,20 @@ public class RegionController : ControllerBase
         }
         var region = regionDto.ToRegion();
         _context.Region.Add(region);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
         return CreatedAtAction("GetRegion", new { id = region.RegionId }, region);
     }
 
     // DELETE: /api/regions/5
     [HttpDelete("{id}")]
-    public IActionResult DeleteRegion(int id)
+    public async Task<ActionResult> DeleteRegion(int id)
     {
         if (_context.Region == null)
         {
             return NotFound();
         }
-        var region = _context.Region.Find(id);
+        var region = await _context.Region.FindAsync(id);
         if (region == null)
         {
             return NotFound();
@@ -120,7 +120,7 @@ public class RegionController : ControllerBase
 
         region.EntryIsDeleted = true;
         _context.Entry(region).State = EntityState.Modified;
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
         return NoContent();
     }
