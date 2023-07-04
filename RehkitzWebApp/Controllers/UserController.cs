@@ -66,7 +66,8 @@ public class UserController : ControllerBase
             return BadRequest();
         }
 
-        var user = userDto.ToUser();
+        bool entryIsDeleted = false;
+        var user = userDto.ToUserEntity(entryIsDeleted);
         _context.Entry(user).State = EntityState.Modified;
 
         try
@@ -96,7 +97,9 @@ public class UserController : ControllerBase
         {
             return NotFound();
         }
-        var user = userDto.ToUser();
+
+        bool entryIsDeleted = false;
+        var user = userDto.ToUserEntity(entryIsDeleted);
         _context.User.Add(user);
         await _context.SaveChangesAsync();
 

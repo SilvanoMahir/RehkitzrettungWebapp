@@ -14,5 +14,4 @@ public class ProtocolDto
     public int InjuredFawns { get; set; }
     public int MarkedFawns { get; set; }
     public DateTime Date { get; set; }
-    public bool EntryIsDeleted { get; set; }
 }

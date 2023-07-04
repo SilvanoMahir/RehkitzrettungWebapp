@@ -67,7 +67,8 @@ public class RegionController : ControllerBase
             return BadRequest();
         }
 
-        var region = regionDto.ToRegion();
+        bool entryIsDeleted = false;
+        var region = regionDto.ToRegionEntity(entryIsDeleted);
         _context.Entry(region).State = EntityState.Modified;
 
         try
@@ -97,7 +98,9 @@ public class RegionController : ControllerBase
         {
             return NotFound();
         }
-        var region = regionDto.ToRegion();
+
+        bool entryIsDeleted = false;
+        var region = regionDto.ToRegionEntity(entryIsDeleted);
         _context.Region.Add(region);
         await _context.SaveChangesAsync();
 

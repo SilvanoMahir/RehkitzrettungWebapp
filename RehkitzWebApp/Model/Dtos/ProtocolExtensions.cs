@@ -18,11 +18,10 @@ public static class ProtocolExtensions
             InjuredFawns = protocol.InjuredFawns,
             MarkedFawns = protocol.MarkedFawns,
             Date = protocol.Date,
-            EntryIsDeleted = protocol.EntryIsDeleted
         };
     }
 
-    public static Protocol ToProtocol(this ProtocolDto protocolDto)
+    public static Protocol ToProtocolEntity(this ProtocolDto protocolDto, bool entryIsDeleted)
     {
         return new Protocol
         {
@@ -38,7 +37,7 @@ public static class ProtocolExtensions
             InjuredFawns = protocolDto.InjuredFawns,
             MarkedFawns = protocolDto.MarkedFawns,
             Date = protocolDto.Date,
-            EntryIsDeleted = protocolDto.EntryIsDeleted
+            EntryIsDeleted = entryIsDeleted,
         };
     }
 }

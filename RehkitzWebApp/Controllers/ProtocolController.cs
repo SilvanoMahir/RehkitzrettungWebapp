@@ -69,7 +69,8 @@ public class ProtocolController : ControllerBase
             return BadRequest();
         }
 
-        var protocol = protocolDto.ToProtocol();
+        bool entryIsDeleted = false;
+        var protocol = protocolDto.ToProtocolEntity(entryIsDeleted);
         _context.Entry(protocol).State = EntityState.Modified;
 
         try
@@ -100,7 +101,9 @@ public class ProtocolController : ControllerBase
         {
             return NotFound();
         }
-        var protocol = protocolDto.ToProtocol();
+
+        bool entryIsDeleted = false;
+        var protocol = protocolDto.ToProtocolEntity(entryIsDeleted);
         _context.Protocol.Add(protocol);
         await _context.SaveChangesAsync();
 

@@ -8,5 +8,4 @@ public class RegionDto
     public string? ContactPersonFirstName { get; set; }
     public string? ContactPersonLastName { get; set; }
     public string? ContactPersonMail { get; set; }
-    public bool EntryIsDeleted { get; set; }
 }

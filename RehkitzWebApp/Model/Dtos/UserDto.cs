@@ -7,5 +7,4 @@ public class UserDto
     public string? UserFirstName { get; set; }
     public string? UserLastName { get; set; }
     public string? UserRegionId { get; set; }
-    public bool EntryIsDeleted { get; set; }
 }

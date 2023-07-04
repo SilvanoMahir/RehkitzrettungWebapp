@@ -11,11 +11,10 @@ public static class UserExtensions
             UserFirstName = user.UserFirstName,
             UserLastName = user.UserLastName,
             UserRegionId = user.UserRegionId,
-            EntryIsDeleted = user.EntryIsDeleted
         };
     }
 
-    public static User ToUser(this UserDto userDto)
+    public static User ToUserEntity(this UserDto userDto, bool entryIsDeleted)
     {
         return new User
         {
@@ -24,7 +23,7 @@ public static class UserExtensions
             UserFirstName = userDto.UserFirstName,
             UserLastName = userDto.UserLastName,
             UserRegionId = userDto.UserRegionId,
-            EntryIsDeleted = userDto.EntryIsDeleted
+            EntryIsDeleted = entryIsDeleted,
         };
     }
 }

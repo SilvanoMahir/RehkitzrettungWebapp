@@ -13,11 +13,10 @@ public static class RegionExtensions
             ContactPersonFirstName = region.ContactPersonFirstName,
             ContactPersonLastName = region.ContactPersonLastName,
             ContactPersonMail = region.ContactPersonMail,
-            EntryIsDeleted = region.EntryIsDeleted
         };
     }
 
-    public static Region ToRegion(this RegionDto regionDto)
+    public static Region ToRegionEntity(this RegionDto regionDto, bool entryIsDeleted)
     {
         return new Region
         {
@@ -27,7 +26,7 @@ public static class RegionExtensions
             ContactPersonFirstName = regionDto.ContactPersonFirstName,
             ContactPersonLastName = regionDto.ContactPersonLastName,
             ContactPersonMail = regionDto.ContactPersonMail,
-            EntryIsDeleted = regionDto.EntryIsDeleted
+            EntryIsDeleted = entryIsDeleted,
         };
     }
 }
