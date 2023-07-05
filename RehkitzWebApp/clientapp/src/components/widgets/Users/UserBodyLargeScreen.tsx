@@ -13,7 +13,7 @@ export default function UserBodyLargeScreen({ userEntry }: Props) {
             <UserEntry entry= "" value = { userEntry?.userId } />
             <UserEntry entry= "" value = { userEntry?.userFirstName } />
             <UserEntry entry= "" value = { userEntry?.userLastName } />
-            <UserEntry entry= "" value = { userEntry?.userRegion } />
+            <UserEntry entry= "" value = { userEntry?.userLastName } />
         </RowContainer>
     )
 }

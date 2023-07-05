@@ -11,7 +11,6 @@ export default function UserEntryTitles({ entry }: Props) {
       <Title>Bezeichnung</Title>
       <Title>Funktion</Title>
       <Title>Kanton/Region</Title>
-      <Title></Title>
     </RowContainer>
   );
 }
@@ -23,9 +22,10 @@ const RowContainer = styled.div`
 `;
 
 const Title = styled.div`
+  display: flex;
+  justify-content: center;
   flex: 1;
   margin-left: 15px;
   font-weight: bold;
   color: #fffecb;
-  justify-content: flex-end;
-`;
+  `;

@@ -40,8 +40,7 @@ export default function Users({userId}: Props) {
     return (
         <UserLayout>
             <RowContainer isNotMobile={isNotMobile}>
-              {isNotMobile ? <><UserBodyLargeScreen userEntry={userEntry} />
-              <EditUserButton onClick={() => editProtocol()}>Bearbeiten</EditUserButton></>        
+              {isNotMobile ? <><UserBodyLargeScreen userEntry={userEntry} /></>
               : <><UserBodySmallScreen userEntry={userEntry} />
               <EditUserButton onClick={() => editProtocol()}>Bearbeiten</EditUserButton></>
             }
@@ -51,7 +50,6 @@ export default function Users({userId}: Props) {
 }
 
 const UserLayout = styled.div`
-    margin: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;

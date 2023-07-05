@@ -20,6 +20,7 @@ const RowContainer = styled.div`
     flex-direction: row;
     flex-basis: 0;
     flex-grow: 1;
+    justify-content: center;
 `
 
 const Entry = styled.div`
