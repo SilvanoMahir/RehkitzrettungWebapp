@@ -41,11 +41,21 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="clientapp\src\components\pages\AdaptProtocolPage.tsx" />
+    <None Remove="clientapp\src\components\widgets\Protocol\ProtocolForAdaptPage.tsx" />
+  </ItemGroup>
+
+  <ItemGroup>
     <InternalsVisibleTo Include="ApiWebAppTesting" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Migrations\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="clientapp\src\components\pages\AdaptProtocolPage.tsx" />
+    <TypeScriptCompile Include="clientapp\src\components\widgets\Protocol\ProtocolForAdaptPage.tsx" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
