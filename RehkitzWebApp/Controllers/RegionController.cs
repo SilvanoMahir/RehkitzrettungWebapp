@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RehkitzWebApp.Model;
+using RehkitzWebApp.Model.Dtos;
 
 namespace webapi.Controllers;
 
@@ -17,18 +18,30 @@ public class RegionController : ControllerBase
 
     // GET: /api/regions
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Region>>> GetRegion()
+    public async Task<ActionResult<IEnumerable<RegionDto>>> GetRegion()
     {
         if (_context.Region == null)
         {
             return NotFound();
         }
-        return await _context.Region.ToListAsync();
+
+        var regions = await _context.Region
+            .Where(p => p.EntryIsDeleted == false)
+            .ToListAsync();
+
+        var regionDtos = new List<RegionDto>();
+
+        foreach (var region in regions)
+        {
+            regionDtos.Add(region.ToDto());
+        }
+
+        return Ok(regionDtos);
     }
 
     // GET: /api/regions/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<Region>> GetRegion(int id)
+    public async Task<ActionResult<ProtocolDto>> GetRegion(int id)
     {
         if (_context.Region == null)
         {
@@ -40,19 +53,22 @@ public class RegionController : ControllerBase
         {
             return NotFound();
         }
-        return region;
+
+        return Ok(region.ToDto());
     }
 
     // PUT: /api/regions/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutRegion(int id, Region region)
+    public async Task<ActionResult> PutRegion(int id, RegionDto regionDto)
     {
-        if (id != region.RegionId)
+        if (id != regionDto.RegionId)
         {
             return BadRequest();
         }
 
+        bool entryIsDeleted = false;
+        var region = regionDto.ToRegionEntity(entryIsDeleted);
         _context.Entry(region).State = EntityState.Modified;
 
         try
@@ -76,12 +92,15 @@ public class RegionController : ControllerBase
     // POST: /api/regions
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<Region>> PostRegion(Region region)
+    public async Task<ActionResult<RegionDto>> PostRegion(RegionDto regionDto)
     {
         if (_context.Region == null)
         {
             return NotFound();
         }
+
+        bool entryIsDeleted = false;
+        var region = regionDto.ToRegionEntity(entryIsDeleted);
         _context.Region.Add(region);
         await _context.SaveChangesAsync();
 
@@ -90,7 +109,7 @@ public class RegionController : ControllerBase
 
     // DELETE: /api/regions/5
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteRegion(int id)
+    public async Task<ActionResult> DeleteRegion(int id)
     {
         if (_context.Region == null)
         {
@@ -102,7 +121,8 @@ public class RegionController : ControllerBase
             return NotFound();
         }
 
-        _context.Region.Remove(region);
+        region.EntryIsDeleted = true;
+        _context.Entry(region).State = EntityState.Modified;
         await _context.SaveChangesAsync();
 
         return NoContent();

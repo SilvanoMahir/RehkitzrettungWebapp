@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RehkitzWebApp.Model;
+using RehkitzWebApp.Model.Dtos;
 
 namespace RehkitzWebApp.Controllers;
 
@@ -19,7 +20,7 @@ public class ProtocolController : ControllerBase
 
     // GET: /api/protocols
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Protocol>>> GetProtocol()
+    public async Task<ActionResult<IEnumerable<ProtocolDto>>> GetProtocol()
     {
         if (_context.Protocol == null)
         {
@@ -27,15 +28,22 @@ public class ProtocolController : ControllerBase
         }
 
         var protocols = await _context.Protocol
-            .Where(p => p.EntryIsDeleted == false)  
+            .Where(p => p.EntryIsDeleted == false)
             .ToListAsync();
 
-        return protocols;
+        var protocolDtos = new List<ProtocolDto>();
+
+        foreach (var protocol in protocols)
+        {
+            protocolDtos.Add(protocol.ToDto());
+        }
+
+        return Ok(protocolDtos);
     }
 
     // GET: /api/protocols/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<Protocol>> GetProtocol(int id)
+    public async Task<ActionResult<ProtocolDto>> GetProtocol(int id)
     {
         if (_context.Protocol == null)
         {
@@ -48,19 +56,21 @@ public class ProtocolController : ControllerBase
             return NotFound();
         }
 
-        return protocol;
+        return Ok(protocol.ToDto());
     }
 
     // PUT: /api/protocols/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutProtocol(int id, Protocol protocol)
+    public async Task<ActionResult> PutProtocol(int id, ProtocolDto protocolDto)
     {
-        if (id != protocol.ProtocolId)
+        if (id != protocolDto.ProtocolId)
         {
             return BadRequest();
         }
 
+        bool entryIsDeleted = false;
+        var protocol = protocolDto.ToProtocolEntity(entryIsDeleted);
         _context.Entry(protocol).State = EntityState.Modified;
 
         try
@@ -85,12 +95,15 @@ public class ProtocolController : ControllerBase
     // POST: /api/protocols
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<Protocol>> PostProtocol(Protocol protocol)
+    public async Task<ActionResult<ProtocolDto>> PostProtocol(ProtocolDto protocolDto)
     {
         if (_context.Protocol == null)
         {
             return NotFound();
         }
+
+        bool entryIsDeleted = false;
+        var protocol = protocolDto.ToProtocolEntity(entryIsDeleted);
         _context.Protocol.Add(protocol);
         await _context.SaveChangesAsync();
 
@@ -99,7 +112,7 @@ public class ProtocolController : ControllerBase
 
     // DELETE: /api/protocols/5
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteProtocol(int id)
+    public async Task<ActionResult> DeleteProtocol(int id)
     {
         if (_context.Protocol == null)
         {
