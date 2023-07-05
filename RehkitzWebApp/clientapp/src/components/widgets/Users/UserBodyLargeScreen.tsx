@@ -1,6 +1,6 @@
 import styled from "styled-components"
-import UserEntry from "./UserEntry"
 import { UserEntries } from "../../../models/UserEntries"
+import { EditUserButton } from "../../controls/Button"
 
 interface Props {
     userEntry: UserEntries
@@ -8,28 +8,36 @@ interface Props {
 
 export default function UserBodyLargeScreen({ userEntry }: Props) {
 
+    function editProtocol(): void {
+        throw new Error("Function not implemented.")
+    }
+
     return (
         <RowContainer>
-            <UserEntry entry= "" value = { userEntry?.userId } />
-            <UserEntry entry= "" value = { userEntry?.userFirstName } />
-            <UserEntry entry= "" value = { userEntry?.userLastName } />
-            <UserEntry entry= "" value = { userEntry?.userLastName } />
+            <TextField> { userEntry?.userId }</TextField>
+            <TextField> { userEntry?.userFirstName }</TextField>
+            <TextField> { userEntry?.userLastName }</TextField>
+            <TextField> { userEntry?.userRegion }</TextField>
+            <ButtonBox>
+                <EditUserButton onClick={() => editProtocol()}>Bearbeiten</EditUserButton>
+            </ButtonBox>
         </RowContainer>
     )
 }
 
-const UserOverviewTitles= styled.div`
-    display: flex;
-    flex-direction: row;
-    align-self: stretch;
-    width: 100%;
+const RowContainer = styled.div`
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    justify-items: stretch;
+    align-items: center;
 `
 
-const RowContainer = styled.div`
+const TextField = styled.text`
+    color: #fffecb;
     display: flex;
-    flex-direction: row;
-    align-items: center;
-    align-self: stretch;
-    width: 100%;
-    flex: 1;
+    justify-content: center;
+`
+
+const ButtonBox = styled.div`
+    display: flex;
 `

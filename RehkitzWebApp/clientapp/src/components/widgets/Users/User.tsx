@@ -34,15 +34,15 @@ export default function Users({userId}: Props) {
         onMount();
       }, [usersListLocal, userId]);
 
-    const editProtocol = async () => {
-    }
+  function editProtocol(): void {
+    throw new Error('Function not implemented.')
+  }
 
     return (
         <UserLayout>
             <RowContainer isNotMobile={isNotMobile}>
               {isNotMobile ? <><UserBodyLargeScreen userEntry={userEntry} /></>
-              : <><UserBodySmallScreen userEntry={userEntry} />
-              <EditUserButton onClick={() => editProtocol()}>Bearbeiten</EditUserButton></>
+              : <><UserBodySmallScreen userEntry={userEntry} /></>
             }
             </RowContainer>
       </UserLayout>
@@ -50,16 +50,20 @@ export default function Users({userId}: Props) {
 }
 
 const UserLayout = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: beige;
+    @media (max-width: 426px) {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: beige;
+    }
 `
 
 const RowContainer = styled.div<{ isNotMobile: boolean }>`
-    margin: 10px;
-    display: flex;
-    flex-direction: ${(props) => (props.isNotMobile ? "row" : "column")};;
-    align-self: stretch;
-    justify-content: space-around
+    @media (max-width: 426px) {
+      margin: 10px;
+      display: flex;
+      flex-direction: ${(props) => (props.isNotMobile ? "row" : "column")};;
+      align-self: stretch;
+      justify-content: space-around
+    }
 `

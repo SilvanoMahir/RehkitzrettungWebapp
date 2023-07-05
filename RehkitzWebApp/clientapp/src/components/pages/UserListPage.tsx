@@ -94,6 +94,7 @@ const SearchInput = styled.input<{ isNotMobile: boolean }>`
     background: #898472;
     color: #fffecb;
     margin-top: ${(props) => (props.isNotMobile ? "5vh" : "8vh")};
+    margin-right: ${(props) => (props.isNotMobile ? "2vh" : "1vh")};
 
     &::placeholder {
         color: #fffecb; /* Change this to the desired color */
@@ -108,13 +109,6 @@ const SiteTitle = styled.div`
     font-weight: 500;
     font-size: 2em;
     margin: 10px;
+    margin-bottom: 1.5em;
     color: #fffecb;
-`
-
-const UserOverviewTitle = styled.div`
-    margin-left: 15px;
-    font-weight: bold;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
 `

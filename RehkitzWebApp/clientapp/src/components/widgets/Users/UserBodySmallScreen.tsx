@@ -1,6 +1,7 @@
 ﻿import styled from "styled-components"
 import { UserEntries } from "../../../models/UserEntries"
 import UserEntry from "./UserEntry"
+import { EditUserButton } from "../../controls/Button"
 
 interface Props {
     userEntry: UserEntries
@@ -8,12 +9,17 @@ interface Props {
 
 export default function UserBodySmallScreen({ userEntry }: Props) {
 
+    function editProtocol(): void {
+        throw new Error("Function not implemented.")
+    }
+
     return (
         <ColumnContainer>
             <UserEntry entry= "ID" value = { userEntry?.userId } />
             <UserEntry entry= "Bezeichnung" value = { userEntry?.userFirstName } />
             <UserEntry entry= "Funktion" value = { userEntry?.userLastName } />
             <UserEntry entry= "Kanton/Region" value = { userEntry?.userRegion } />
+            <EditUserButton onClick={() => editProtocol()}>Bearbeiten</EditUserButton>
         </ColumnContainer>
     )
 }
