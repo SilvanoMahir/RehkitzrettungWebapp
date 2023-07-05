@@ -73,6 +73,7 @@ export default function RescueListPage() {
                         value={''}
                         isNotMobile={isNotMobile}
                         placeholder={'Suchen'}></SearchInput>
+                     <SiteTitle>Übersicht Protkolle</SiteTitle>
                     {content}
                     <RowContainer>
                         <DownloadProtocolButton onClick={() => downloadProtocol()}>Bericht herunterladen</DownloadProtocolButton>
@@ -124,4 +125,14 @@ const SearchInput = styled.input<{ isNotMobile: boolean }>`
         color: #fffecb; /* Change this to the desired color */
         opacity: 0.5;
     }
+`
+
+const SiteTitle = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    font-weight: 500;
+    font-size: 2em;
+    margin: 10px;
+    color: #fffecb;
 `

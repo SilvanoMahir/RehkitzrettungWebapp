@@ -4,6 +4,8 @@ import { AppContext, UserContext } from '../../store/context'
 import Sidebar from '../widgets/Sidebar/Sidebar'
 import { useMediaQuery } from 'react-responsive'
 import { Menu } from '../widgets/Menu'
+import User from '../widgets/Users/User'
+import UserEntryTitles from '../widgets/Users/UserEntryTitles'
 
 export default function UserListPage() {
 
@@ -42,11 +44,7 @@ export default function UserListPage() {
         content = (<p><em>Keine Benutzer gefunden.</em></p>);
       } else {
         content = usersListLocal.map(userEntry => (
-            <div key={userEntry.ownerId}>
-              <p>UserId: {userEntry.ownerId}</p>
-              <p>First Name: {userEntry.userFirstName}</p>
-              <p>Last Name: {userEntry.userLastName}</p>
-            </div>
+            <User key={userEntry.userId} userId={userEntry.userId} />
           ));
     }
 
@@ -60,6 +58,8 @@ export default function UserListPage() {
                         value={''}
                         isNotMobile={isNotMobile}
                         placeholder={"Suchen"}></SearchInput>
+                    <SiteTitle>Benutzerverwaltung</SiteTitle>
+                    {isNotMobile ? <UserEntryTitles entry={'NotMObile'}></UserEntryTitles>:<></>}
                     {content}
                 </RescueListColumnLayout >
             </RescueListRowLayout>
@@ -85,14 +85,6 @@ const RescueListColumnLayout = styled.div`
     width: 100%;
 `
 
-const RowContainer = styled.div` 
-    display: flex;
-    flex-direction: row;
-    align-self: stretch;
-    justify-content: space-evenly;
-    margin-bottom: 10px;
-`
-
 const SearchInput = styled.input<{ isNotMobile: boolean }>` 
     display: flex;
     align-self: flex-end;
@@ -107,4 +99,22 @@ const SearchInput = styled.input<{ isNotMobile: boolean }>`
         color: #fffecb; /* Change this to the desired color */
         opacity: 0.5;
     }
+`
+
+const SiteTitle = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    font-weight: 500;
+    font-size: 2em;
+    margin: 10px;
+    color: #fffecb;
+`
+
+const UserOverviewTitle = styled.div`
+    margin-left: 15px;
+    font-weight: bold;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 `
