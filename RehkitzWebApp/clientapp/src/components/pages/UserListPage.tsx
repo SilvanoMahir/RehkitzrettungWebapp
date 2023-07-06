@@ -59,8 +59,10 @@ export default function UserListPage() {
                         isNotMobile={isNotMobile}
                         placeholder={"Suchen"}></SearchInput>
                     <SiteTitle>Benutzerverwaltung</SiteTitle>
-                    {isNotMobile ? <UserEntryTitles entry={'NotMObile'}></UserEntryTitles>:<></>}
-                    {content}
+                    <BlockLayout>
+                        {isNotMobile ? <UserEntryTitles entry={'NotMObile'}></UserEntryTitles>:<></>}
+                        {content}
+                    </BlockLayout>
                 </RescueListColumnLayout >
             </RescueListRowLayout>
         </RescueListLayout>
@@ -69,6 +71,16 @@ export default function UserListPage() {
 
 const RescueListLayout = styled.div`
     height: 100%;
+`
+
+const BlockLayout = styled.div`
+    background: #7d6b52;
+    margin: 1em; 
+    padding: 1em;
+    border-radius: 10px;
+    @media (max-width: 426px) {
+        background: transparent;
+      }
 `
 
 const RescueListRowLayout = styled.div`
@@ -111,4 +123,7 @@ const SiteTitle = styled.div`
     margin: 10px;
     margin-bottom: 1.5em;
     color: #fffecb;
+    @media (max-width: 426px) {
+        margin-bottom: 0.25em;
+      }
 `

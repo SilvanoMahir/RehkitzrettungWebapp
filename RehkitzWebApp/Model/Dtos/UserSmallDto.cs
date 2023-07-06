@@ -1,6 +1,6 @@
 ﻿namespace RehkitzWebApp.Model.Dtos;
 
-public class UserSmallListDto
+public class UserSmallDto
 {
     public int UserId { get; set; }
 
