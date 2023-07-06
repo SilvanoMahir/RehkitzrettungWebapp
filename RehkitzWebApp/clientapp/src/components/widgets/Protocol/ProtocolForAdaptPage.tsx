@@ -7,6 +7,7 @@ import { useMediaQuery } from 'react-responsive'
 import ProtocolBodyLargeScreen from './ProtocolBodyLargeScreen'
 import { AppContext, ProtocolsContext } from '../../../store/context'
 import ProtocolEntry from './ProtocolEntry'
+import ProtocolEntryForAdaptPage from './ProtocolEntryForAdaptPage'
 
 interface Props {
     protocolEntry: ProtocolEntries
@@ -23,16 +24,16 @@ export default function ProtocolForAdaptPage({ protocolEntry }: Props) {
         <ProtocolLayout>
             <ProtocolTitle>Protokoll {protocolEntry.protocolCode}</ProtocolTitle>
             <ColumnContainer>
-                <ProtocolEntry entry="Auftraggeber" value={protocolEntry?.clientFullName} />
-                <ProtocolEntry entry="Pilot" value={protocolEntry?.pilotFullName} />
-                <ProtocolEntry entry="Lokalname" value={protocolEntry?.localName} />
-                <ProtocolEntry entry="Region" value={protocolEntry?.regionName} />
-                <ProtocolEntry entry="Datum" value={protocolEntry?.date} />
-                <ProtocolEntry entry="Flaeche" value={protocolEntry?.areaSize} />
-                <ProtocolEntry entry="Gefundene Kitze" value={protocolEntry?.foundFawns} />
-                <ProtocolEntry entry="Verletzte Kitze" value={protocolEntry?.injuredFawns} />
-                <ProtocolEntry entry="Markierte Kitze" value={protocolEntry?.markedFawns} />
-                <ProtocolEntry entry="Bemerkung" value={protocolEntry?.remark} />
+                <ProtocolEntryForAdaptPage entry="Auftraggeber" value={protocolEntry?.clientFullName} />
+                <ProtocolEntryForAdaptPage entry="Pilot" value={protocolEntry?.pilotFullName} />
+                <ProtocolEntryForAdaptPage entry="Lokalname" value={protocolEntry?.localName} />
+                <ProtocolEntryForAdaptPage entry="Region" value={protocolEntry?.regionName} />
+                <ProtocolEntryForAdaptPage entry="Datum" value={protocolEntry?.date} />
+                <ProtocolEntryForAdaptPage entry="Flaeche" value={protocolEntry?.areaSize} />
+                <ProtocolEntryForAdaptPage entry="Gefundene Kitze" value={protocolEntry?.foundFawns} />
+                <ProtocolEntryForAdaptPage entry="Verletzte Kitze" value={protocolEntry?.injuredFawns} />
+                <ProtocolEntryForAdaptPage entry="Markierte Kitze" value={protocolEntry?.markedFawns} />
+                <ProtocolEntryForAdaptPage entry="Bemerkung" value={protocolEntry?.remark} />
             </ColumnContainer>
         </ProtocolLayout>
     )
@@ -45,6 +46,7 @@ const ProtocolLayout = styled.div`
     align-items: center;
     background: #7d6b52;
     color: beige;
+    max-width: 500px;
 `
 
 const ProtocolTitle = styled.div`
