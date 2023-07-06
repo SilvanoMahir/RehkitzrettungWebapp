@@ -44,6 +44,18 @@ export const EditProtocolButton = styled.button`
     margin-top: 20px;
 `
 
+export const DiscardProtocolButton = styled.button`
+    ${CustomButton};
+    background: red;
+    margin-top: 20px;
+`
+
+export const SaveProtocolButton = styled.button`
+    ${CustomButton};
+    background: green;
+    margin-top: 20px;
+`
+
 export const LoginButton = styled.button`
     ${CustomButton};
     background: #16d129;

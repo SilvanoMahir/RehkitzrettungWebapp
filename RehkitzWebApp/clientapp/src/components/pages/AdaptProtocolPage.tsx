@@ -1,13 +1,14 @@
 ﻿import { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
-import { DownloadProtocolButton, CreateProtocolButton } from '../controls/Button'
+import { DiscardProtocolButton, SaveProtocolButton } from '../controls/Button'
 import { AppContext, ProtocolsContext } from '../../store/context'
 import Protocol from '../widgets/Protocol/Protocol'
 import Sidebar from '../widgets/Sidebar/Sidebar'
 import { useMediaQuery } from 'react-responsive'
 import { Menu } from '../widgets/Menu'
 import { useNavigate } from 'react-router-dom'
-import { ROUTE_ADAPT_PROTOCOL_PAGE } from '../../App'
+import { ROUTE_RESCUE_LIST_PAGE } from '../../App'
+import ProtocolForAdaptPage from '../widgets/Protocol/ProtocolForAdaptPage'
 
 export default function AdaptProtocolPage() {
 
@@ -17,6 +18,21 @@ export default function AdaptProtocolPage() {
     const { protocolsListLocal, dispatch } = useContext(ProtocolsContext)
     const { dispatch_token } = useContext(AppContext)
     let navigate = useNavigate()
+
+    const protocolEntry = ({
+        protocolId: "",
+        protocolCode: "",
+        clientFullName: "",
+        localName: "",
+        date: "",
+        foundFawns: 0,
+        markedFawns: 0,
+        remark: "",
+        pilotFullName: "",
+        regionName: "",
+        areaSize: "",
+        injuredFawns: 0,
+    })
 
     useEffect(() => {
         const onMount = async () => {
@@ -48,15 +64,32 @@ export default function AdaptProtocolPage() {
     const search = async () => {
     }
 
-    const downloadProtocol = async () => {
+    const discardProtocol = async () => {
+        navigate(ROUTE_RESCUE_LIST_PAGE)
     }
 
-    const createProtocol = async () => {
-        navigate(ROUTE_ADAPT_PROTOCOL_PAGE)
+    const saveProtocol = async () => {
+        navigate(ROUTE_RESCUE_LIST_PAGE)
     }
 
     return (
-        <div>This is the adapt protocol page!</div>
+        <RescueListLayout>
+            {!isNotMobile && <Menu />}
+            <RescueListRowLayout>
+                {(isNotMobile) && <Sidebar showSidebar={isNotMobile} />}
+                <RescueListColumnLayout>
+                    <SearchInput onChange={search}
+                        value={''}
+                        isNotMobile={isNotMobile}
+                        placeholder={'Suchen'}></SearchInput>
+                    <ProtocolForAdaptPage protocolEntry={protocolEntry}/>
+                    <RowContainer>
+                        <DiscardProtocolButton onClick={() => discardProtocol()}>Verwerfen</DiscardProtocolButton>
+                        <SaveProtocolButton onClick={() => saveProtocol()}>Speichern</SaveProtocolButton>
+                    </RowContainer>
+                </RescueListColumnLayout >
+            </RescueListRowLayout>
+        </RescueListLayout>
     )
 }
 
