@@ -10,7 +10,7 @@ export default function ProtocolEntry({ entry, value }: Props) {
     return (
         <RowContainer>
             <Entry>{entry}</Entry>
-            <Value>{value}</Value>
+            <Value/>
         </RowContainer>
     )
 }
@@ -32,7 +32,7 @@ const Entry = styled.div`
     max-width: 200px;
 `
 
-const Value = styled.div`
+const Value = styled.input`
     flex: 1;
     margin-left: 15px;
     overflow: hidden;
@@ -44,6 +44,12 @@ const Value = styled.div`
     flex-direction: column;
     align-items: center;
     background: #fcba03;
-    color: beige;
+    color: fffecb;
     max-width: 200px;
+
+    border-radius: 8px;
+    font-size: 15px;
+    background: #898472;
+
+    opacity: 0.5;
 `

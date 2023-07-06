@@ -78,10 +78,6 @@ export default function AdaptProtocolPage() {
             <RescueListRowLayout>
                 {(isNotMobile) && <Sidebar showSidebar={isNotMobile} />}
                 <RescueListColumnLayout>
-                    <SearchInput onChange={search}
-                        value={''}
-                        isNotMobile={isNotMobile}
-                        placeholder={'Suchen'}></SearchInput>
                     <ProtocolForAdaptPage protocolEntry={protocolEntry}/>
                     <RowContainer>
                         <DiscardProtocolButton onClick={() => discardProtocol()}>Verwerfen</DiscardProtocolButton>
