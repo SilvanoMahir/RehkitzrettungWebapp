@@ -22,9 +22,12 @@ export default function Users({userId}: Props) {
         userId: "",
         userFirstName: "",
         userLastName: "",
-        userRegion: "",
-        ownerId: ""
-      })
+        userStateRegion: "",
+        userDefinition: "",
+        userFunction: "",
+        userMail: "",
+        userPassword: ""
+    })
 
       useEffect(() => {
         const onMount = async () => {

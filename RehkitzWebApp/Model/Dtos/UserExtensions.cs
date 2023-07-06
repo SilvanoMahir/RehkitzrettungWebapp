@@ -2,15 +2,29 @@
 
 public static class UserExtensions
 {
-    public static UserDto ToDto(this User user)
+    public static UserDto ToUserDto(this User user)
     {
         return new UserDto
         {
             UserId = user.UserId,
-            OwnerId = user.OwnerId,
+            UserDefinition = "Zentrale Scuol",
+            UserFunction = "Zentrale",
+            UserStateRegion = "GR/Scuol",
             UserFirstName = user.UserFirstName,
             UserLastName = user.UserLastName,
-            UserRegionId = user.UserRegionId,
+            UserMail = "bsp@mail.com",
+            UserPassword = "Password"
+        };
+    }
+
+    public static UserSmallDto ToUserSmallListDto(this User user)
+    {
+        return new UserSmallDto
+        {
+            UserId = user.UserId,
+            UserDefinition = "Zentrale Scuol",
+            UserFunction = "Zentrale",
+            UserStateRegion = "GR/Scuol"
         };
     }
 
@@ -19,11 +33,11 @@ public static class UserExtensions
         return new User
         {
             UserId = userDto.UserId,
-            OwnerId = userDto.OwnerId,
+            OwnerId = "0",
             UserFirstName = userDto.UserFirstName,
             UserLastName = userDto.UserLastName,
-            UserRegionId = userDto.UserRegionId,
-            EntryIsDeleted = entryIsDeleted,
+            UserRegionId = userDto.UserStateRegion,
+            EntryIsDeleted = entryIsDeleted
         };
     }
 }

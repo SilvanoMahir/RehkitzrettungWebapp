@@ -15,9 +15,9 @@ export default function UserBodyLargeScreen({ userEntry }: Props) {
     return (
         <RowContainer>
             <TextField> { userEntry?.userId }</TextField>
-            <TextField> { userEntry?.userFirstName }</TextField>
-            <TextField> { userEntry?.userLastName }</TextField>
-            <TextField> { userEntry?.userRegion }</TextField>
+            <TextField> { userEntry?.userDefinition }</TextField>
+            <TextField> { userEntry?.userFunction }</TextField>
+            <TextField> { userEntry?.userStateRegion }</TextField>
             <ButtonBox>
                 <EditUserButton onClick={() => editProtocol()}>Bearbeiten</EditUserButton>
             </ButtonBox>

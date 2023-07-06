@@ -16,9 +16,9 @@ export default function UserBodySmallScreen({ userEntry }: Props) {
     return (
         <ColumnContainer>
             <UserEntry entry= "ID" value = { userEntry?.userId } />
-            <UserEntry entry= "Bezeichnung" value = { userEntry?.userFirstName } />
-            <UserEntry entry= "Funktion" value = { userEntry?.userLastName } />
-            <UserEntry entry= "Kanton/Region" value = { userEntry?.userRegion } />
+            <UserEntry entry= "Bezeichnung" value = { userEntry?.userDefinition } />
+            <UserEntry entry= "Funktion" value = { userEntry?.userFunction } />
+            <UserEntry entry= "Kanton/Region" value = { userEntry?.userStateRegion }/>
             <EditUserButton onClick={() => editProtocol()}>Bearbeiten</EditUserButton>
         </ColumnContainer>
     )

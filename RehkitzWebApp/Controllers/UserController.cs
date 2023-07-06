@@ -29,11 +29,11 @@ public class UserController : ControllerBase
             .Where(p => p.EntryIsDeleted == false)
             .ToListAsync();
 
-        var userDtos = new List<UserDto>();
+        var userDtos = new List<UserSmallDto>();
 
         foreach (var user in users)
         {
-            userDtos.Add(user.ToDto());
+            userDtos.Add(user.ToUserSmallListDto());
         }
 
         return Ok(userDtos);
@@ -53,7 +53,7 @@ public class UserController : ControllerBase
         {
             return NotFound();
         }
-        return Ok(user.ToDto());
+        return Ok(user.ToUserDto());
     }
 
     // PUT: /api/users/5
