@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
-import { AppContext, UserContext } from '../../store/context'
+import { UserContext } from '../../store/context'
 import Sidebar from '../widgets/Sidebar/Sidebar'
 import { useMediaQuery } from 'react-responsive'
 import { Menu } from '../widgets/Menu'
@@ -13,7 +13,6 @@ export default function UserListPage() {
 
     const [loadingUsers, setLoadingUsers] = useState(true)
     const { usersListLocal, dispatch_users } = useContext(UserContext)
-    const { token } = useContext(AppContext)
 
     useEffect(() => {
         const onMount = async () => {

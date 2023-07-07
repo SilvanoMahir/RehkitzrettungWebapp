@@ -139,6 +139,7 @@ public class UserController : ControllerBase
 
     private UserDto getUserDto(User user, Region region)
     {
+        // the fixed comments depends on the Role which has to be linked first
         return new UserDto
         {
             UserId = user.UserId,

@@ -1,8 +1,7 @@
 import styled from 'styled-components/macro'
 import { useContext, useState, useEffect } from 'react'
-import { EditUserButton } from '../../controls/Button'
 import { useMediaQuery } from 'react-responsive'
-import { AppContext, UserContext } from '../../../store/context'
+import { UserContext } from '../../../store/context'
 import { UserEntries } from '../../../models/UserEntries'
 import UserBodySmallScreen from './UserBodySmallScreen'
 import UserBodyLargeScreen from './UserBodyLargeScreen'
@@ -16,8 +15,7 @@ export default function Users({userId}: Props) {
 
     const isNotMobile = useMediaQuery({ query: '(min-width: 426px)' })
     //const { protocolId } = useParams() --> not working now as Router not set, there used Props
-    const { token } = useContext(AppContext)
-    const { usersListLocal, dispatch_users } = useContext(UserContext)
+    const { usersListLocal } = useContext(UserContext)
     const [userEntry, setUserEntry] = useState<UserEntries>({
         userId: "",
         userFirstName: "",
@@ -36,10 +34,6 @@ export default function Users({userId}: Props) {
         }
         onMount();
       }, [usersListLocal, userId]);
-
-  function editProtocol(): void {
-    throw new Error('Function not implemented.')
-  }
 
     return (
         <UserLayout>

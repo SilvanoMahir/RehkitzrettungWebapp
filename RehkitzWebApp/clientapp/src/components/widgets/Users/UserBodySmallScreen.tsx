@@ -1,4 +1,4 @@
-﻿import styled from "styled-components"
+import styled from "styled-components"
 import { UserEntries } from "../../../models/UserEntries"
 import UserEntry from "./UserEntry"
 import { EditUserButton } from "../../controls/Button"

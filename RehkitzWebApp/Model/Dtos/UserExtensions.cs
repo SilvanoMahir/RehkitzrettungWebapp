@@ -2,21 +2,6 @@
 
 public static class UserExtensions
 {
-    public static UserDto ToUserDto(this User user)
-    {
-        return new UserDto
-        {
-            UserId = user.UserId,
-            UserDefinition = "Zentrale Scuol",
-            UserFunction = "Zentrale",
-            UserStateRegion = "GR/Scuol",
-            UserFirstName = user.UserFirstName,
-            UserLastName = user.UserLastName,
-            UserMail = "bsp@mail.com",
-            UserPassword = "Password"
-        };
-    }
-
     public static UserSmallDto ToUserSmallListDto(this UserDto user)
     {
         return new UserSmallDto
