@@ -22,6 +22,10 @@ public class User
     [Required]
     [Column(TypeName = "nvarchar(50)")]
     public string? UserLastName { get; set; }
+        
+    [Required]
+    [Column(TypeName = "nvarchar(50)")]
+    public string? UserDefinition { get; set; }
 
     [Required]
     [Column(TypeName = "nvarchar(50)")]
