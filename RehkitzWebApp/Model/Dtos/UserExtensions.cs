@@ -17,14 +17,14 @@ public static class UserExtensions
         };
     }
 
-    public static UserSmallDto ToUserSmallListDto(this User user)
+    public static UserSmallDto ToUserSmallListDto(this UserDto user)
     {
         return new UserSmallDto
         {
             UserId = user.UserId,
-            UserDefinition = "Zentrale Scuol",
-            UserFunction = "Zentrale",
-            UserStateRegion = "GR/Scuol"
+            UserDefinition = user.UserDefinition,
+            UserFunction = user.UserFunction,
+            UserStateRegion = user.UserStateRegion
         };
     }
 

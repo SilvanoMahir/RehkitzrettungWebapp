@@ -18,7 +18,7 @@ public class UserController : ControllerBase
 
     // GET: /api/users
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<UserDto>>> GetUser()
+    public async Task<ActionResult<IEnumerable<UserSmallDto>>> GetUser()
     {
         if (_context.User == null)
         {
@@ -33,7 +33,10 @@ public class UserController : ControllerBase
 
         foreach (var user in users)
         {
-            userDtos.Add(user.ToUserSmallListDto());
+            Region userRegion = await _context.Region.FindAsync(int.Parse(user.UserRegionId));
+            UserDto userDto = getUserDto(user, userRegion);
+
+            userDtos.Add(userDto.ToUserSmallListDto());
         }
 
         return Ok(userDtos);
@@ -41,19 +44,21 @@ public class UserController : ControllerBase
 
     // GET: /api/users/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<ProtocolDto>> GetUser(int id)
+    public async Task<ActionResult<UserDto>> GetUser(int id)
     {
         if (_context.User == null)
         {
             return NotFound();
         }
-        var user = await _context.User.FindAsync(id);
 
-        if (user == null)
+        var user = await _context.User.FindAsync(id);
+        Region userRegion = await _context.Region.FindAsync(int.Parse(user.UserRegionId));
+
+        if (user == null || userRegion == null )
         {
             return NotFound();
         }
-        return Ok(user.ToUserDto());
+        return Ok(getUserDto(user, userRegion));
     }
 
     // PUT: /api/users/5
@@ -130,5 +135,21 @@ public class UserController : ControllerBase
     private bool UserExists(int id)
     {
         return (_context.User?.Any(e => e.UserId == id)).GetValueOrDefault();
+    }
+
+    private UserDto getUserDto(User user, Region region)
+    {
+        return new UserDto
+        {
+            UserId = user.UserId,
+            UserDefinition = "Zentrale",
+            UserFunction = "Zentrale " + region.RegionName,
+            UserStateRegion = region.RegionState + "/" + region.RegionName,
+            UserFirstName = user.UserFirstName,
+            UserLastName = user.UserLastName,
+            UserMail = region.ContactPersonMail,
+            UserPassword = "Password"
+        };
+
     }
 }
