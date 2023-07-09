@@ -1,18 +1,16 @@
-
 import Iframe from 'react-iframe'
 import styled from 'styled-components'
 import { useMediaQuery } from 'react-responsive'
 import Sidebar from '../widgets/Sidebar/Sidebar'
 import { Menu } from '../widgets/Menu'
 
-
 export default function RescueListPage() {
     const isNotMobile = useMediaQuery({ query: '(min-width: 426px)' })
 
     return (
-        <RescueListLayout>
+        <MapLayout>
             {!isNotMobile && <Menu />}
-            <RescueListRowLayout>
+            <MapRowLayout>
                 {(isNotMobile) && <Sidebar showSidebar={isNotMobile} />}
                 <MapBlock>
                     <Iframe url="https://geogr.mapplus.ch/viewer/geogr/"
@@ -23,8 +21,8 @@ export default function RescueListPage() {
                         display="block"
                         position="relative" />
                 </MapBlock>
-            </RescueListRowLayout>
-        </RescueListLayout>
+            </MapRowLayout>
+        </MapLayout>
     )
 }
 
@@ -32,11 +30,11 @@ const MapBlock = styled.div`
     width: 100%
 `
 
-const RescueListLayout = styled.div`
+const MapLayout = styled.div`
     height: 100%;
 `
 
-const RescueListRowLayout = styled.div`
+const MapRowLayout = styled.div`
     display: flex;
     height: 100%;
 `
