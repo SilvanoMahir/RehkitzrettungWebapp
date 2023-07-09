@@ -65,7 +65,7 @@ export default function Protocol({ protocolId }: Props) {
             <ProtocolTitle>Protokoll {protocolEntry.protocolCode}</ProtocolTitle>
             {isNotMobile ? <ProtocolBodyLargeScreen protocolEntry={protocolEntry} /> : <ProtocolBodySmallScreen protocolEntry={protocolEntry} />}
             <RowContainer>
-                <DeleteProtocolButton onClick={() => deleteProtocol(protocolEntry.protocolId)}>Löschen</DeleteProtocolButton>
+                <DeleteProtocolButton onClick={() => deleteProtocol(protocolEntry.protocolId)}>L�schen</DeleteProtocolButton>
                 <EditProtocolButton onClick={() => editProtocol()}>Bearbeiten</EditProtocolButton>
             </RowContainer>
         </ProtocolLayout>
@@ -73,12 +73,14 @@ export default function Protocol({ protocolId }: Props) {
 }
 
 const ProtocolLayout = styled.div`
-    margin: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background: #9A8873;
-    color: beige;
+	margin: 10px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	background: #7d6b52;
+	color: beige;
+	border-radius: 10px;
+
 `
 
 const ProtocolTitle = styled.div`
