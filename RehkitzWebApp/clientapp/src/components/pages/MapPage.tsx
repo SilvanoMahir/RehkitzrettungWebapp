@@ -11,19 +11,19 @@ export default function RescueListPage() {
 
     return (
         <RescueListLayout>
-            {!isNotMobile && <Menu/>}
-                <RescueListRowLayout>
-                    {(isNotMobile) && <Sidebar showSidebar={isNotMobile} />}
-                    <MapBlock>
-                        <Iframe url="https://geogr.mapplus.ch/viewer/geogr/"
+            {!isNotMobile && <Menu />}
+            <RescueListRowLayout>
+                {(isNotMobile) && <Sidebar showSidebar={isNotMobile} />}
+                <MapBlock>
+                    <Iframe url="https://geogr.mapplus.ch/viewer/geogr/"
                         height="100%"
                         width="100%"
                         id=""
                         className=""
                         display="block"
-                        position="relative"/>
-                    </MapBlock>
-                </RescueListRowLayout>
+                        position="relative" />
+                </MapBlock>
+            </RescueListRowLayout>
         </RescueListLayout>
     )
 }

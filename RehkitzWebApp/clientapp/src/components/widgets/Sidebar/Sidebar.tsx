@@ -42,7 +42,7 @@ export default function Sidebar({ showSidebar }: Props) {
 
     return (
         <div> {
-            (isNotMobile || showSidebar) && 
+            (isNotMobile || showSidebar) &&
             <SidebarColumnLayout>
                 <SidebarIcon />
                 <SidebarTitle>Willkommen zur Rehkitzrettung App</SidebarTitle>
