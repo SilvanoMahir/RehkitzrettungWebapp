@@ -7,10 +7,10 @@ import UserBodySmallScreen from './UserBodySmallScreen'
 import UserBodyLargeScreen from './UserBodyLargeScreen'
 
 interface Props {
-      userId: number
+    userId: number
 }
 
-export default function Users({userId}: Props) {
+export default function Users({ userId }: Props) {
 
     const isNotMobile = useMediaQuery({ query: '(min-width: 426px)' })
     const { usersListLocal } = useContext(UserContext)
@@ -25,40 +25,40 @@ export default function Users({userId}: Props) {
         userPassword: ""
     })
 
-      useEffect(() => {
+    useEffect(() => {
         const onMount = async () => {
-          const data = usersListLocal.filter(user => user.userId === userId);
-          setUserEntry(data[0]);
+            const data = usersListLocal.filter(user => user.userId === userId);
+            setUserEntry(data[0]);
         }
         onMount();
-      }, [usersListLocal, userId]);
+    }, [usersListLocal, userId]);
 
     return (
-      <UserLayout>
-        <RowContainer isNotMobile={isNotMobile}>
-          {isNotMobile ? <UserBodyLargeScreen userEntry={userEntry} />
-            : <UserBodySmallScreen userEntry={userEntry} />
-          }
-        </RowContainer>
-      </UserLayout>
+        <UserLayout>
+            <RowContainer isNotMobile={isNotMobile}>
+                {isNotMobile ? <UserBodyLargeScreen userEntry={userEntry} />
+                    : <UserBodySmallScreen userEntry={userEntry} />
+                }
+            </RowContainer>
+        </UserLayout>
     )
 }
 
 const UserLayout = styled.div`
     @media (max-width: 426px) {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      color: beige;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        color: beige;
     }
 `
 
 const RowContainer = styled.div<{ isNotMobile: boolean }>`
     @media (max-width: 426px) {
-      margin: 10px;
-      display: flex;
-      flex-direction: ${(props) => (props.isNotMobile ? "row" : "column")};;
-      align-self: stretch;
-      justify-content: space-around
+        margin: 10px;
+        display: flex;
+        flex-direction: ${(props) => (props.isNotMobile ? "row" : "column")};;
+        align-self: stretch;
+        justify-content: space-around
     }
 `

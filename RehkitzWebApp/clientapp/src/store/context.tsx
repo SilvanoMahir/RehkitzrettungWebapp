@@ -10,35 +10,35 @@ import { ActionUsers } from '../models/UserActions'
 import { UserState } from '../models/UserState'
 
 interface AppState1 extends ProtocolState {
-  dispatch: (action: ActionProtocols) => void
+    dispatch: (action: ActionProtocols) => void
 }
 
 const initialState1: AppState1 = {
-  ...initialProtocolsState,
-  dispatch: (action: ActionProtocols) => {},
+    ...initialProtocolsState,
+    dispatch: (action: ActionProtocols) => { },
 }
 
 export const ProtocolsContext = createContext<AppState1>(initialState1)
 
 interface Props {
-  children: ReactNode
+    children: ReactNode
 }
 
 export const ProtocolProvider = ({ children }: Props) => {
-  const [protocolsState, dispatch] = useReducer(protocolReducer, initialState1)
+    const [protocolsState, dispatch] = useReducer(protocolReducer, initialState1)
 
-  const protocolsStore = {
-    ...protocolsState,
-    dispatch,
-  }
+    const protocolsStore = {
+        ...protocolsState,
+        dispatch,
+    }
 
-  return (
-    <ProtocolsContext.Provider value={protocolsStore}>{children}</ProtocolsContext.Provider>
-  )
+    return (
+        <ProtocolsContext.Provider value={protocolsStore}>{children}</ProtocolsContext.Provider>
+    )
 }
 
 interface AppState2 extends AuthState {
-  dispatch_token: (action: Action) => void
+    dispatch_token: (action: Action) => void
 }
 
 const initialState: AppState2 = {
@@ -64,29 +64,29 @@ export const AppProvider = ({ children }: Props) => {
 }
 
 interface AppState3 extends UserState {
-  dispatch_users: (action: ActionUsers) => void
+    dispatch_users: (action: ActionUsers) => void
 }
 
 const initialState2: AppState3 = {
-  ...initialUserState,
-  dispatch_users: (action: ActionUsers) => {},
+    ...initialUserState,
+    dispatch_users: (action: ActionUsers) => { },
 }
 
 export const UserContext = createContext<AppState3>(initialState2)
 
 interface Props {
-  children: ReactNode
+    children: ReactNode
 }
 
 export const UserProvider = ({ children }: Props) => {
-  const [userState, dispatch_users] = useReducer(userReducer, initialState2)
+    const [userState, dispatch_users] = useReducer(userReducer, initialState2)
 
-  const userAppStore = {
-    ...userState,
-    dispatch_users,
-  }
+    const userAppStore = {
+        ...userState,
+        dispatch_users,
+    }
 
-  return (
-    <UserContext.Provider value={userAppStore}>{children}</UserContext.Provider>
-  )
+    return (
+        <UserContext.Provider value={userAppStore}>{children}</UserContext.Provider>
+    )
 }

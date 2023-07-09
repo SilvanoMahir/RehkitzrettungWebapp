@@ -18,12 +18,12 @@ export default function RescueListPage() {
     useEffect(() => {
         const onMount = async () => {
             //token handling can probably be optimized
-            const storageToken = localStorage.getItem('user_token'); 
-            if (storageToken !== null) 
+            const storageToken = localStorage.getItem('user_token');
+            if (storageToken !== null)
                 dispatch_token({ type: 'set-token', value: storageToken })
             const protocolsListLocal = await fetchProtocols(storageToken)
             setLoadingProtocols(false)
-            dispatch({ type: 'get-protocols', protocolsListLocal})
+            dispatch({ type: 'get-protocols', protocolsListLocal })
         }
         onMount()
     }, [dispatch, dispatch_token])
@@ -33,11 +33,11 @@ export default function RescueListPage() {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json',
-                'Authorization': `Bearer ${storageToken}`, 
+                'Authorization': `Bearer ${storageToken}`,
             }
         })
         if (response.ok) {
-          return await response.json()
+            return await response.json()
         }
         return []
     }
@@ -55,17 +55,17 @@ export default function RescueListPage() {
 
     if (loadingProtocols) {
         content = (<p><em>Laedt Protokolle... Bitte Seite aktualisieren, sobald ASP.NET Backend aufgestartet ist.</em></p>);
-      } else if (protocolsListLocal.length === 0) {
+    } else if (protocolsListLocal.length === 0) {
         content = (<p><em>Keine Protokolle gefunden.</em></p>);
-      } else {
+    } else {
         content = protocolsListLocal.map(protocolEntry => (
-          <Protocol key={protocolEntry.protocolId} protocolId={protocolEntry.protocolId} />
+            <Protocol key={protocolEntry.protocolId} protocolId={protocolEntry.protocolId} />
         ));
     }
 
     return (
         <RescueListLayout>
-            {!isNotMobile && <Menu/>}
+            {!isNotMobile && <Menu />}
             <RescueListRowLayout>
                 {(isNotMobile) && <Sidebar showSidebar={isNotMobile} />}
                 <RescueListColumnLayout>
@@ -73,7 +73,7 @@ export default function RescueListPage() {
                         value={''}
                         isNotMobile={isNotMobile}
                         placeholder={'Suchen'}></SearchInput>
-                     <SiteTitle>Übersicht Protokolle</SiteTitle>
+                    <SiteTitle>Übersicht Protokolle</SiteTitle>
                     {content}
                     <RowContainer>
                         <DownloadProtocolButton onClick={() => downloadProtocol()}>Bericht herunterladen</DownloadProtocolButton>

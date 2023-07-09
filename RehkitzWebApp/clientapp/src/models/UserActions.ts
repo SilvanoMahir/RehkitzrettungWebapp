@@ -16,6 +16,5 @@ type getUserAction = {
     type: 'get-users'
     usersListLocal: UserEntries[]
 }
-  
+
 export type ActionUsers = deleteUserAction | getUserAction | addUserAction 
-  

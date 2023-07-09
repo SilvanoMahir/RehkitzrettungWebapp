@@ -18,7 +18,7 @@ export default function UserListPage() {
         const onMount = async () => {
             const usersListLocal = await fetchUsers()
             setLoadingUsers(false)
-            dispatch_users({ type: 'get-users', usersListLocal})
+            dispatch_users({ type: 'get-users', usersListLocal })
         }
         onMount()
     }, [dispatch_users])
@@ -49,7 +49,7 @@ export default function UserListPage() {
 
     return (
         <RescueListLayout>
-            {!isNotMobile && <Menu/>}
+            {!isNotMobile && <Menu />}
             <RescueListRowLayout>
                 {(isNotMobile) && <Sidebar showSidebar={isNotMobile} />}
                 <RescueListColumnLayout>
@@ -59,7 +59,7 @@ export default function UserListPage() {
                         placeholder={"Suchen"}></SearchInput>
                     <PageTitle>Benutzerverwaltung</PageTitle>
                     <BlockLayout>
-                        {isNotMobile ? <UserEntryTitles entry={'NotMObile'}></UserEntryTitles>:<></>}
+                        {isNotMobile ? <UserEntryTitles entry={'NotMObile'}></UserEntryTitles> : <></>}
                         {content}
                     </BlockLayout>
                 </RescueListColumnLayout >

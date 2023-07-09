@@ -5,15 +5,15 @@ import Sidebar from "./Sidebar/Sidebar"
 
 
 export const Menu = () => {
-  const [open, setOpen] = useState<boolean>(false);
-  return (
-    <div>
-      <StyledMenu open={open}>
-        <Sidebar showSidebar={open} />
-      </StyledMenu>
-      <Hamburger open={open} setOpen={setOpen} />
-     </div>
-   )
+    const [open, setOpen] = useState<boolean>(false);
+    return (
+        <div>
+            <StyledMenu open={open}>
+                <Sidebar showSidebar={open} />
+            </StyledMenu>
+            <Hamburger open={open} setOpen={setOpen} />
+        </div>
+    )
 }
 
 const StyledMenu = styled.nav<{ open: boolean }>`

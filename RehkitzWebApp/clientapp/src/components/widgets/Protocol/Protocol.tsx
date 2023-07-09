@@ -9,10 +9,10 @@ import { AppContext, ProtocolsContext } from '../../../store/context'
 
 
 interface Props {
-      protocolId: String
+    protocolId: String
 }
 
-export default function Protocol({protocolId}: Props) {
+export default function Protocol({ protocolId }: Props) {
 
     const isNotMobile = useMediaQuery({ query: '(min-width: 426px)' })
     //const { protocolId } = useParams() --> not working now as Router not set, there used Props
@@ -31,28 +31,28 @@ export default function Protocol({protocolId}: Props) {
         regionName: "",
         areaSize: "",
         injuredFawns: 0,
-      })
+    })
 
-      useEffect(() => {
+    useEffect(() => {
         const onMount = async () => {
-          const data = protocolsListLocal.filter(protocol => protocol.protocolId === protocolId);
-          setProtocolEntry(data[0]);
+            const data = protocolsListLocal.filter(protocol => protocol.protocolId === protocolId);
+            setProtocolEntry(data[0]);
         }
         onMount();
-      }, [protocolsListLocal, protocolId]);
-      
+    }, [protocolsListLocal, protocolId]);
+
 
     const deleteProtocol = async (protocolId: string) => {
         const response = await fetch(`/api/protocols/${Number(protocolId)}`, {
             method: 'DELETE',
-            headers: { 
-              'content-type': 'application/json',
-              'Authorization': `Bearer ${token}`, // notice the Bearer before your token
-          },
+            headers: {
+                'content-type': 'application/json',
+                'Authorization': `Bearer ${token}`, // notice the Bearer before your token
+            },
         })
         if (response.ok) {
-            dispatch({ type: 'delete-protocols', protocolsListLocal, protocolId})
-          }        
+            dispatch({ type: 'delete-protocols', protocolsListLocal, protocolId })
+        }
     }
 
     const editProtocol = async () => {
@@ -63,33 +63,33 @@ export default function Protocol({protocolId}: Props) {
             <ProtocolTitle>Protokoll {protocolEntry.protocolCode}</ProtocolTitle>
             {isNotMobile ? <ProtocolBodyLargeScreen protocolEntry={protocolEntry} /> : <ProtocolBodySmallScreen protocolEntry={protocolEntry} />}
             <RowContainer>
-              <DeleteProtocolButton onClick={() => deleteProtocol(protocolEntry.protocolId)}>Loeschen</DeleteProtocolButton>
-              <EditProtocolButton onClick={() => editProtocol()}>Bearbeiten</EditProtocolButton>
+                <DeleteProtocolButton onClick={() => deleteProtocol(protocolEntry.protocolId)}>Loeschen</DeleteProtocolButton>
+                <EditProtocolButton onClick={() => editProtocol()}>Bearbeiten</EditProtocolButton>
             </RowContainer>
-      </ProtocolLayout>
+        </ProtocolLayout>
     )
 }
 
 const ProtocolLayout = styled.div`
-    margin: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background: #7d6b52;
-    color: beige;
-    border-radius: 10px;
+	margin: 10px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	background: #7d6b52;
+	color: beige;
+	border-radius: 10px;
 `
 
 const ProtocolTitle = styled.div`
-    font-weight: 500;
-    font-size: 25px;
-    margin: 10px;
+	font-weight: 500;
+	font-size: 25px;
+	margin: 10px;
 `
 
 const RowContainer = styled.div`
-    margin: 10px;
-    display: flex;
-    flex-direction: row;
-    align-self: stretch;
-    justify-content: space-around
+	margin: 10px;
+	display: flex;
+	flex-direction: row;
+	align-self: stretch;
+	justify-content: space-around
 `
