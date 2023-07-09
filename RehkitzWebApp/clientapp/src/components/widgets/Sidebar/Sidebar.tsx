@@ -4,7 +4,7 @@ import SidebarButton from "../Sidebar/SidebarButton"
 import SidebarIcon from "../Sidebar/SidebarIcon"
 import { useContext } from "react"
 import { AppContext } from '../../../store/context'
-import { ROUTE_LOGIN_PAGE } from '../../../App'
+import { ROUTE_LOGIN_PAGE, ROUTE_MAP_PAGE } from '../../../App'
 import { useNavigate } from "react-router"
 import { useMediaQuery } from "react-responsive"
 
@@ -17,11 +17,13 @@ export default function Sidebar({ showSidebar }: Props) {
     const isNotMobile = useMediaQuery({ query: '(min-width: 426px)' })
     const { dispatch_token } = useContext(AppContext)
     let navigate = useNavigate()
+
     function logout(): void {
         dispatch_token({ type: 'set-token', value: '' })
         localStorage.removeItem("user_token")
         navigate(ROUTE_LOGIN_PAGE)
     }
+
     function moveToInformation(): void {
         throw new Error("Function not implemented.")
     }
@@ -35,12 +37,12 @@ export default function Sidebar({ showSidebar }: Props) {
         throw new Error("Function not implemented.")
     }
     function moveToMap(): void {
-        throw new Error("Function not implemented.")
+        navigate(ROUTE_MAP_PAGE)
     }
 
     return (
         <div> {
-            (isNotMobile || showSidebar) && 
+            (isNotMobile || showSidebar) &&
             <SidebarColumnLayout>
                 <SidebarIcon />
                 <SidebarTitle>Willkommen zur Rehkitzrettung App</SidebarTitle>
