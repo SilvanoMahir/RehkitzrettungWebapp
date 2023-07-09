@@ -33,13 +33,27 @@ public class UserController : ControllerBase
 
         foreach (var user in users)
         {
-            Region userRegion = await _context.Region.FindAsync(int.Parse(user.UserRegionId));
-            UserDto userDto = getUserDto(user, userRegion);
-
-            userDtos.Add(userDto.ToUserSmallListDto());
+            var userRegion = await _context.Region.FindAsync(int.Parse(user.UserRegionId));
+            var userRoleId = await _context.UserRoles
+                                    .Where(x => x.UserId == user.OwnerId)
+                                    .Select(x => x.RoleId)
+                                    .ToListAsync();
+            if (userRoleId.Count != 0)
+            {
+                var userRole = await _context.Roles.FindAsync(userRoleId[0]);
+                var userDto = getUserDto(user, userRegion, userRole.Name);
+                userDtos.Add(userDto.ToUserSmallListDto());
+            }
+            else
+            {
+                return NoContent();
+            }
         }
 
-        return Ok(userDtos);
+        if (userDtos.Count != 0)
+            return Ok(userDtos);
+        else
+            return NoContent();
     }
 
     // GET: /api/users/5
@@ -50,15 +64,28 @@ public class UserController : ControllerBase
         {
             return NotFound();
         }
-
+        var userRole = "";
         var user = await _context.User.FindAsync(id);
         var userRegion = await _context.Region.FindAsync(int.Parse(user.UserRegionId));
+        var userRoleId = await _context.UserRoles
+                                .Where(x => x.UserId == user.OwnerId)
+                                .Select(x => x.RoleId)
+                                .ToListAsync();
+        if (userRoleId.Count != 0)
+        {
+            var userRoleItem = await _context.Roles.FindAsync(userRoleId[0]);
+            var userDto = getUserDto(user, userRegion, userRoleItem.Name);
+        }
+        else
+        {
+            return NotFound();
+        }
 
         if (user == null || userRegion == null)
         {
             return NotFound();
         }
-        return Ok(getUserDto(user, userRegion));
+        return Ok(getUserDto(user, userRegion, userRole));
     }
 
     // PUT: /api/users/5
@@ -137,14 +164,14 @@ public class UserController : ControllerBase
         return (_context.User?.Any(e => e.UserId == id)).GetValueOrDefault();
     }
 
-    private UserDto getUserDto(User user, Region region)
+    private UserDto getUserDto(User user, Region region, string userRole)
     {
         // the fixed comments depends on the Role which has to be linked first
         return new UserDto
         {
             UserId = user.UserId,
-            UserDefinition = "Zentrale",
-            UserFunction = "Zentrale " + region.RegionName,
+            UserDefinition = user.UserDefinition,
+            UserFunction = userRole + " " + region.RegionName,
             UserStateRegion = region.RegionState + "/" + region.RegionName,
             UserFirstName = user.UserFirstName,
             UserLastName = user.UserLastName,

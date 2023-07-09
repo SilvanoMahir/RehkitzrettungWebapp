@@ -6,11 +6,11 @@ INSERT INTO [rehkitzrettung-db].[dbo].[User]
 			, [UserFirstName]
 			, [UserLastName]
 			, [UserRegionId]
-			, [EntryIsDeleted])
+			, [EntryIsDeleted]
+			, [UserDefinition])
 VALUES
-    ('1', 'John', 'Doe', 1, 0),
-    ('2', 'Jane', 'Smith', 2, 0);
-
+    ('1', 'John', 'Doe', 1, 0, 'Admin 1'),
+    ('2', 'Jane', 'Smith', 2, 0, 'Pilot 1');
 GO
 
 INSERT INTO [rehkitzrettung-db].[dbo].[Region] 
@@ -23,5 +23,4 @@ INSERT INTO [rehkitzrettung-db].[dbo].[Region]
 VALUES
     ('Tasna', 'GR', 0, 'Hans','Schmid', 'tasna'),
     ('Valsot', 'GR', 0, 'Urs', 'Locher', 'valsot');
-
 GO
