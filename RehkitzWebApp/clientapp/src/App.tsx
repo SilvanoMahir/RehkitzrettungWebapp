@@ -9,7 +9,6 @@ export const ROUTE_MAP_PAGE = '/map'
 export const ROUTE_LOGIN_PAGE = '/'
 export const ROUTE_USER_LIST_PAGE = '/users'
 
-
 export default function App() {
     return (
         <Routes>

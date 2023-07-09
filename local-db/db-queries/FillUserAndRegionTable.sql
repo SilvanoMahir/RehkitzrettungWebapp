@@ -8,8 +8,8 @@ INSERT INTO [rehkitzrettung-db].[dbo].[User]
 			, [UserRegionId]
 			, [EntryIsDeleted])
 VALUES
-    (1, '1', 'John', 'Doe', 1, 0),
-    (2, '2', 'Jane', 'Smith', 2, 0);
+    ('1', 'John', 'Doe', 1, 0),
+    ('2', 'Jane', 'Smith', 2, 0);
 
 GO
 
@@ -22,6 +22,6 @@ INSERT INTO [rehkitzrettung-db].[dbo].[Region]
 			, [ContactPersonMail])
 VALUES
     ('Tasna', 'GR', 0, 'Hans','Schmid', 'tasna'),
-    ('Valsot', 'AT', 0, 'Urs', 'Locher', 'valsot');
+    ('Valsot', 'GR', 0, 'Urs', 'Locher', 'valsot');
 
 GO

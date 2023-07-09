@@ -32,7 +32,7 @@ const Entry = styled.div`
     margin-left: 15px;
     flex: 1;
   }
-`;
+`
 
 const Value = styled.div`
   display: grid;
@@ -43,9 +43,4 @@ const Value = styled.div`
   text-overflow: ellipsis;
   margin-left: 15px;
   flex: 1;
-`;
-
-
-
-
-
+`

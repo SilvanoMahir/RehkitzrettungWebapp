@@ -6,18 +6,16 @@ import { UserEntries } from '../../../models/UserEntries'
 import UserBodySmallScreen from './UserBodySmallScreen'
 import UserBodyLargeScreen from './UserBodyLargeScreen'
 
-
 interface Props {
-      userId: string
+      userId: number
 }
 
 export default function Users({userId}: Props) {
 
     const isNotMobile = useMediaQuery({ query: '(min-width: 426px)' })
-    //const { protocolId } = useParams() --> not working now as Router not set, there used Props
     const { usersListLocal } = useContext(UserContext)
     const [userEntry, setUserEntry] = useState<UserEntries>({
-        userId: "",
+        userId: 0,
         userFirstName: "",
         userLastName: "",
         userStateRegion: "",
@@ -36,12 +34,12 @@ export default function Users({userId}: Props) {
       }, [usersListLocal, userId]);
 
     return (
-        <UserLayout>
-            <RowContainer isNotMobile={isNotMobile}>
-              {isNotMobile ? <><UserBodyLargeScreen userEntry={userEntry} /></>
-              : <><UserBodySmallScreen userEntry={userEntry} /></>
-            }
-            </RowContainer>
+      <UserLayout>
+        <RowContainer isNotMobile={isNotMobile}>
+          {isNotMobile ? <UserBodyLargeScreen userEntry={userEntry} />
+            : <UserBodySmallScreen userEntry={userEntry} />
+          }
+        </RowContainer>
       </UserLayout>
     )
 }

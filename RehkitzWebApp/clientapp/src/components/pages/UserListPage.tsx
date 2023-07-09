@@ -28,10 +28,10 @@ export default function UserListPage() {
             method: 'GET'
         })
         if (response.ok) {
-          return await response.json()
+            return await response.json()
         }
         return []
-      }
+    }
 
     const search = async () => {
     }
@@ -39,12 +39,12 @@ export default function UserListPage() {
     let content;
     if (loadingUsers) {
         content = (<p><em>Laedt Protokolle... Bitte Seite aktualisieren, sobald ASP.NET Backend aufgestartet ist.</em></p>);
-      } else if (usersListLocal.length === 0) {
+    } else if (usersListLocal.length === 0) {
         content = (<p><em>Keine Benutzer gefunden.</em></p>);
-      } else {
+    } else {
         content = usersListLocal.map(userEntry => (
             <User key={userEntry.userId} userId={userEntry.userId} />
-          ));
+        ));
     }
 
     return (
@@ -57,7 +57,7 @@ export default function UserListPage() {
                         value={''}
                         isNotMobile={isNotMobile}
                         placeholder={"Suchen"}></SearchInput>
-                    <SiteTitle>Benutzerverwaltung</SiteTitle>
+                    <PageTitle>Benutzerverwaltung</PageTitle>
                     <BlockLayout>
                         {isNotMobile ? <UserEntryTitles entry={'NotMObile'}></UserEntryTitles>:<></>}
                         {content}
@@ -79,7 +79,7 @@ const BlockLayout = styled.div`
     border-radius: 10px;
     @media (max-width: 426px) {
         background: transparent;
-      }
+    }
 `
 
 const RescueListRowLayout = styled.div`
@@ -108,12 +108,12 @@ const SearchInput = styled.input<{ isNotMobile: boolean }>`
     margin-right: ${(props) => (props.isNotMobile ? "2vh" : "1vh")};
 
     &::placeholder {
-        color: #fffecb; /* Change this to the desired color */
+        color: #fffecb; 
         opacity: 0.5;
     }
 `
 
-const SiteTitle = styled.div`
+const PageTitle = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -124,5 +124,5 @@ const SiteTitle = styled.div`
     color: #fffecb;
     @media (max-width: 426px) {
         margin-bottom: 0.25em;
-      }
+    }
 `

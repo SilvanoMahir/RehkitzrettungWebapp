@@ -3,18 +3,11 @@
 public class UserDto
 {
     public int UserId { get; set; }
-
     public string UserFirstName { get; set; }
-
     public string UserLastName { get; set; }
-
     public string UserMail { get; set; }    
-
     public string? UserDefinition { get; set; }
-
     public string? UserFunction { get; set; }
-
     public string? UserStateRegion { get; set; }
-
     public string? UserPassword { get; set; }
 }

@@ -73,7 +73,7 @@ export default function RescueListPage() {
                         value={''}
                         isNotMobile={isNotMobile}
                         placeholder={'Suchen'}></SearchInput>
-                     <SiteTitle>Übersicht Protkolle</SiteTitle>
+                     <SiteTitle>Übersicht Protokolle</SiteTitle>
                     {content}
                     <RowContainer>
                         <DownloadProtocolButton onClick={() => downloadProtocol()}>Bericht herunterladen</DownloadProtocolButton>

@@ -15,13 +15,13 @@ const rootStyles = {
 root.render(
     <div style={rootStyles}>
       <AppProvider>
-        <ProtocolProvider>
-          <UserProvider>
-            <BrowserRouter>
-              <App />
-            </BrowserRouter>
-          </UserProvider>
-        </ProtocolProvider>
+          <ProtocolProvider>
+            <UserProvider>
+              <BrowserRouter>
+                <App />
+              </BrowserRouter>
+            </UserProvider>
+          </ProtocolProvider>
         <ToastContainer enableMultiContainer containerId={'LoginToaster'} position={toast.POSITION.BOTTOM_LEFT} />
       </AppProvider>
     </div>

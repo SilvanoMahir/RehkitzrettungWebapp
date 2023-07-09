@@ -37,8 +37,6 @@ export const ProtocolProvider = ({ children }: Props) => {
   )
 }
 
-
-
 interface AppState2 extends AuthState {
   dispatch_token: (action: Action) => void
 }
@@ -64,8 +62,6 @@ export const AppProvider = ({ children }: Props) => {
 
     return <AppContext.Provider value={appStore}>{children}</AppContext.Provider>
 }
-
-
 
 interface AppState3 extends UserState {
   dispatch_users: (action: ActionUsers) => void

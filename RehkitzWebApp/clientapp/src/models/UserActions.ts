@@ -9,7 +9,7 @@ type addUserAction = {
 type deleteUserAction = {
     type: 'delete-user'
     usersListLocal: UserEntries[]
-    userId: string
+    userId: number
 }
 
 type getUserAction = {

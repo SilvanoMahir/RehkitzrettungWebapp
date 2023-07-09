@@ -8,7 +8,7 @@ INSERT INTO [rehkitzrettung-db].[dbo].[User]
 			, [UserRegionId]
 			, [EntryIsDeleted])
 VALUES
-    (1, '1', 'John', 'Doe', 1, 0),
-    (2, '2', 'Jane', 'Smith', 2, 0);
+    ('1', 'John', 'Doe', 1, 0),
+    ('2', 'Jane', 'Smith', 2, 0);
 
 GO

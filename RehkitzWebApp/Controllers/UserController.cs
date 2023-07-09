@@ -52,7 +52,7 @@ public class UserController : ControllerBase
         }
 
         var user = await _context.User.FindAsync(id);
-        Region userRegion = await _context.Region.FindAsync(int.Parse(user.UserRegionId));
+        var userRegion = await _context.Region.FindAsync(int.Parse(user.UserRegionId));
 
         if (user == null || userRegion == null )
         {
@@ -151,6 +151,5 @@ public class UserController : ControllerBase
             UserMail = region.ContactPersonMail,
             UserPassword = "Password"
         };
-
     }
 }
