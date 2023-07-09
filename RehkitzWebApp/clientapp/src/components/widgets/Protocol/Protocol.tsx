@@ -73,6 +73,7 @@ export default function Protocol({ protocolId }: Props) {
 }
 
 const ProtocolLayout = styled.div`
+<<<<<<< HEAD
 	margin: 10px;
 	display: flex;
 	flex-direction: column;
@@ -80,6 +81,14 @@ const ProtocolLayout = styled.div`
 	background: #7d6b52;
 	color: beige;
 	border-radius: 10px;
+=======
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #9A8873;
+    color: beige;
+>>>>>>> d774038 (added gradient)
 `
 
 const ProtocolTitle = styled.div`

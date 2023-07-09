@@ -97,7 +97,6 @@ const RescueListLayout = styled.div`
 const RescueListRowLayout = styled.div`
     display: flex;
     flex-direction: row;
-    background: #9A8873;
     height: 100%;
 `
 

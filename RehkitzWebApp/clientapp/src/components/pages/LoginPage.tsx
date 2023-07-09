@@ -81,7 +81,6 @@ export default function RescueListPage() {
 const LoginPageRowLayout = styled.div`
     display: flex; 
     justify-content: center;
-    background: #9A8873;
     align-items: flex-start;
 `
 
