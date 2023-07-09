@@ -31,28 +31,27 @@ export default function Protocol({protocolId}: Props) {
         regionName: "",
         areaSize: "",
         injuredFawns: 0,
-      })
+    })
 
-      useEffect(() => {
+    useEffect(() => {
         const onMount = async () => {
-          const data = protocolsListLocal.filter(protocol => protocol.protocolId === protocolId);
-          setProtocolEntry(data[0]);
+            const data = protocolsListLocal.filter(protocol => protocol.protocolId === protocolId);
+            setProtocolEntry(data[0]);
         }
         onMount();
-      }, [protocolsListLocal, protocolId]);
+    }, [protocolsListLocal, protocolId]);
       
-
     const deleteProtocol = async (protocolId: string) => {
         const response = await fetch(`/api/protocols/${Number(protocolId)}`, {
             method: 'DELETE',
             headers: { 
-              'content-type': 'application/json',
-              'Authorization': `Bearer ${token}`, // notice the Bearer before your token
-          },
+                'content-type': 'application/json',
+                'Authorization': `Bearer ${token}`, // notice the Bearer before your token
+            },
         })
         if (response.ok) {
             dispatch({ type: 'delete-protocols', protocolsListLocal, protocolId})
-          }        
+        }        
     }
 
     const editProtocol = async () => {

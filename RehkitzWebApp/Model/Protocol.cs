@@ -9,6 +9,7 @@ public class Protocol
 {
 
     [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int ProtocolId { get; set; }
 
     [Required]

@@ -22,8 +22,9 @@ export default function RescueListPage() {
         const onMount = async () => {
             //token handling can probably be optimized
             const storageToken = localStorage.getItem('user_token'); 
-            if (storageToken !== null) 
+            if (storageToken !== null) {
                 dispatch_token({ type: 'set-token', value: storageToken })
+            }
             const protocolsListLocal = await fetchProtocols(storageToken)
             setLoadingProtocols(false)
             dispatch({ type: 'get-protocols', protocolsListLocal})
@@ -40,10 +41,10 @@ export default function RescueListPage() {
             }
         })
         if (response.ok) {
-          return await response.json()
+            return await response.json()
         }
         return []
-      }
+    }
 
     const search = async () => {
     }
