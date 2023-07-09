@@ -10,6 +10,8 @@ import { useNavigate } from 'react-router-dom'
 import { ROUTE_RESCUE_LIST_PAGE } from '../../App'
 import { ProtocolEntries } from '../../models/ProtocolEntries'
 import ProtocolEntryForAdaptPage from '../widgets/Protocol/ProtocolEntryForAdaptPage'
+import DatePicker from "react-datepicker"
+import 'react-datepicker/dist/react-datepicker.css'
 
 export default function AdaptProtocolPage() {
 
@@ -20,7 +22,7 @@ export default function AdaptProtocolPage() {
     const [clientFullName, setClientFullName] = useState('')
     const [inputUserName, setUserName] = useState('')
     const [localName, setLocalName] = useState('')
-    const [date, setDate] = useState('')
+    const [date, setDate] = useState<Date | null>(new Date())
     const [foundFawns, setFoundFawns] = useState('')
     const [markedFawns, setMarkedFawns] = useState('')
     const [remark, setRemark] = useState('')
@@ -94,7 +96,7 @@ export default function AdaptProtocolPage() {
                 ProtocolCode: protocolCode,
                 ClientFullName: clientFullName,
                 LocalName: localName,
-                // Date: date,
+                Date: date,
                 FoundFawns: 1,
                 MarkedFawns: 2,
                 Remark: remark,
@@ -123,7 +125,10 @@ export default function AdaptProtocolPage() {
                             <ProtocolEntryForAdaptPage entry="Pilot" value={pilotFullName} callbackFunction={setPilotFullName} />
                             <ProtocolEntryForAdaptPage entry="Lokalname" value={localName} callbackFunction={setLocalName} />
                             <ProtocolEntryForAdaptPage entry="Region" value={regionName} callbackFunction={setRegionName} />
-                            <ProtocolEntryForAdaptPage entry="Datum" value={date} callbackFunction={setDate} />
+                            <DatePickerRowContainer>
+                                <DatePickerLabel>Datum</DatePickerLabel>
+                                <DatePicker selected={date} onChange={(date) => setDate(date)} />
+                            </DatePickerRowContainer>
                             <ProtocolEntryForAdaptPage entry="Flaeche" value={areaSize} callbackFunction={setAreaSize} />
                             <ProtocolEntryForAdaptPage entry="Gefundene Kitze" value={foundFawns} callbackFunction={setFoundFawns} />
                             <ProtocolEntryForAdaptPage entry="Verletzte Kitze" value={injuredFawns} callbackFunction={setInjuredFawns} />
@@ -167,20 +172,21 @@ const RowContainer = styled.div`
     margin-bottom: 10px;
 `
 
-const SearchInput = styled.input<{ isNotMobile: boolean }>` 
+const DatePickerRowContainer = styled.div` 
     display: flex;
-    align-self: flex-end;
-    border-radius: 8px;
-    width: 250px;
-    font-size: 25px;
-    background: #898472;
-    color: #fffecb;
-    margin-top: ${(props) => (props.isNotMobile ? "5vh" : "8vh")};
+    flex-direction: row;
+    justify-content: center
+`
 
-    &::placeholder {
-        color: #fffecb; /* Change this to the desired color */
-        opacity: 0.5;
-    }
+const DatePickerLabel = styled.div`
+    flex: 1;
+    margin-left: 15px;
+    font-weight: bold;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-align: center;
+    max-width: 200px;
 `
 
 const ProtocolLayout = styled.div`
