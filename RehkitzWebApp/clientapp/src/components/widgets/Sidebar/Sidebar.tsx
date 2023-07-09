@@ -4,7 +4,7 @@ import SidebarButton from "../Sidebar/SidebarButton"
 import SidebarIcon from "../Sidebar/SidebarIcon"
 import { useContext } from "react"
 import { AppContext } from '../../../store/context'
-import { ROUTE_LOGIN_PAGE, ROUTE_MAP_PAGE } from '../../../App'
+import { ROUTE_LOGIN_PAGE,ROUTE_MAP_PAGE, ROUTE_RESCUE_LIST_PAGE, ROUTE_USER_LIST_PAGE } from '../../../App'
 import { useNavigate } from "react-router"
 import { useMediaQuery } from "react-responsive"
 
@@ -27,15 +27,19 @@ export default function Sidebar({ showSidebar }: Props) {
     function moveToInformation(): void {
         throw new Error("Function not implemented.")
     }
+
     function moveToOrganisation(): void {
-        throw new Error("Function not implemented.")
+        navigate(ROUTE_USER_LIST_PAGE)
     }
+
     function moveToMyData(): void {
         throw new Error("Function not implemented.")
     }
-    function moveToSavings(): void {
-        throw new Error("Function not implemented.")
+
+    function moveToRescues(): void {
+        navigate(ROUTE_RESCUE_LIST_PAGE)
     }
+
     function moveToMap(): void {
         navigate(ROUTE_MAP_PAGE)
     }
@@ -47,7 +51,7 @@ export default function Sidebar({ showSidebar }: Props) {
                 <SidebarIcon />
                 <SidebarTitle>Willkommen zur Rehkitzrettung App</SidebarTitle>
                 <SidebarButton onClick={() => moveToMyData()} text="Meine Daten" icon=<FaUser /> />
-                <SidebarButton onClick={() => moveToSavings()} text="Rettungen" icon=<FaListUl /> />
+                <SidebarButton onClick={() => moveToRescues()} text="Rettungen" icon=<FaListUl /> />
                 <SidebarButton onClick={() => moveToMap()} text="Karte" icon=<FaMap /> />
                 <SidebarButton onClick={() => moveToOrganisation()} text="Organisation" icon=<FaUsers /> />
                 <SidebarButton onClick={() => moveToInformation()} text="Information" icon=<FaInfo /> />

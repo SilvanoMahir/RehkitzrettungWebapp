@@ -16,6 +16,5 @@ type getProtocolsAction = {
     type: 'get-protocols'
     protocolsListLocal: ProtocolEntries[]
 }
-  
-export type ActionProtocols = deleteProtocolsAction | getProtocolsAction | addProtocolsAction 
-  
+
+export type ActionProtocols = deleteProtocolsAction | getProtocolsAction | addProtocolsAction
