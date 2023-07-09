@@ -1,16 +1,18 @@
 ﻿import styled from "styled-components"
+import { TextInput } from "../../controls/TextInput"
 
 interface Props {
     entry: string
-    value?: string | number
+    value: string
+    callbackFunction: (value: string) => void
 }
 
-export default function ProtocolEntry({ entry, value }: Props) {
+export default function ProtocolEntry({ entry, value, callbackFunction }: Props) {
 
     return (
         <RowContainer>
             <Entry>{entry}</Entry>
-            <Value/>
+            <TextInput onChange={callbackFunction} value={value}/>
         </RowContainer>
     )
 }

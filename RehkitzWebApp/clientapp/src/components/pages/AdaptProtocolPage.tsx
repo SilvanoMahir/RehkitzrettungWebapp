@@ -8,14 +8,26 @@ import { useMediaQuery } from 'react-responsive'
 import { Menu } from '../widgets/Menu'
 import { useNavigate } from 'react-router-dom'
 import { ROUTE_RESCUE_LIST_PAGE } from '../../App'
-import ProtocolForAdaptPage from '../widgets/Protocol/ProtocolForAdaptPage'
 import { ProtocolEntries } from '../../models/ProtocolEntries'
+import ProtocolEntryForAdaptPage from '../widgets/Protocol/ProtocolEntryForAdaptPage'
 
 export default function AdaptProtocolPage() {
 
     const isNotMobile = useMediaQuery({ query: '(min-width: 426px)' })
 
     const [loadingProtocols, setLoadingProtocols] = useState(true)
+    const [protocolCode, setProtocolCode] = useState('')
+    const [clientFullName, setClientFullName] = useState('')
+    const [inputUserName, setUserName] = useState('')
+    const [localName, setLocalName] = useState('')
+    const [date, setDate] = useState('')
+    const [foundFawns, setFoundFawns] = useState('')
+    const [markedFawns, setMarkedFawns] = useState('')
+    const [remark, setRemark] = useState('')
+    const [pilotFullName, setPilotFullName] = useState('')
+    const [regionName, setRegionName] = useState('')
+    const [areaSize, setAreaSize] = useState('')
+    const [injuredFawns, setInjuredFawns] = useState('')
     const { protocolsListLocal, dispatch } = useContext(ProtocolsContext)
     const { dispatch_token, token } = useContext(AppContext)
     let navigate = useNavigate()
@@ -79,17 +91,17 @@ export default function AdaptProtocolPage() {
                 'Authorization': `Bearer ${storageToken}`, // notice the Bearer before your token
             },
             body: JSON.stringify({
-                ProtocolCode: newProtocol.protocolCode,
-                ClientFullName: newProtocol.clientFullName,
-                LocalName: newProtocol.localName,
-                // Date: newProtocol.date,
-                FoundFawns: newProtocol.foundFawns,
-                MarkedFawns: newProtocol.markedFawns,
-                Remark: newProtocol.remark,
-                PilotFullName: newProtocol.pilotFullName,
-                RegionName: newProtocol.regionName,
-                AreaSize: newProtocol.areaSize,
-                InjuredFawns: newProtocol.injuredFawns,
+                ProtocolCode: protocolCode,
+                ClientFullName: clientFullName,
+                LocalName: localName,
+                // Date: date,
+                FoundFawns: 1,
+                MarkedFawns: 2,
+                Remark: remark,
+                PilotFullName: pilotFullName,
+                RegionName: regionName,
+                AreaSize: areaSize,
+                InjuredFawns: 3,
             })
         })
         if (response.ok) {
@@ -104,7 +116,21 @@ export default function AdaptProtocolPage() {
             <RescueListRowLayout>
                 {(isNotMobile) && <Sidebar showSidebar={isNotMobile} />}
                 <RescueListColumnLayout>
-                    <ProtocolForAdaptPage protocolEntry={protocolEntry}/>
+                    <ProtocolLayout>
+                        <ProtocolTitle>Protokoll {protocolEntry.protocolCode}</ProtocolTitle>
+                        <ColumnContainer>
+                            <ProtocolEntryForAdaptPage entry="Auftraggeber" value={clientFullName} callbackFunction={setClientFullName} />
+                            <ProtocolEntryForAdaptPage entry="Pilot" value={pilotFullName} callbackFunction={setPilotFullName} />
+                            <ProtocolEntryForAdaptPage entry="Lokalname" value={localName} callbackFunction={setLocalName} />
+                            <ProtocolEntryForAdaptPage entry="Region" value={regionName} callbackFunction={setRegionName} />
+                            <ProtocolEntryForAdaptPage entry="Datum" value={date} callbackFunction={setDate} />
+                            <ProtocolEntryForAdaptPage entry="Flaeche" value={areaSize} callbackFunction={setAreaSize} />
+                            <ProtocolEntryForAdaptPage entry="Gefundene Kitze" value={foundFawns} callbackFunction={setFoundFawns} />
+                            <ProtocolEntryForAdaptPage entry="Verletzte Kitze" value={injuredFawns} callbackFunction={setInjuredFawns} />
+                            <ProtocolEntryForAdaptPage entry="Markierte Kitze" value={markedFawns} callbackFunction={setMarkedFawns} />
+                            <ProtocolEntryForAdaptPage entry="Bemerkung" value={remark} callbackFunction={setRemark} />
+                        </ColumnContainer>
+                    </ProtocolLayout>
                     <RowContainer>
                         <DiscardProtocolButton onClick={() => discardProtocol()}>Verwerfen</DiscardProtocolButton>
                         <SaveProtocolButton onClick={() => saveProtocol(protocolEntry)}>Speichern</SaveProtocolButton>
@@ -155,4 +181,26 @@ const SearchInput = styled.input<{ isNotMobile: boolean }>`
         color: #fffecb; /* Change this to the desired color */
         opacity: 0.5;
     }
+`
+
+const ProtocolLayout = styled.div`
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #7d6b52;
+    color: beige;
+    max-width: 500px;
+`
+
+const ProtocolTitle = styled.div`
+    font-weight: 500;
+    font-size: 25px;
+    margin: 10px;
+`
+
+const ColumnContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    width: 100%;
 `
