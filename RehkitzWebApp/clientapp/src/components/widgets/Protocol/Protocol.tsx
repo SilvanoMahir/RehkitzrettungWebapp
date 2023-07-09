@@ -65,7 +65,7 @@ export default function Protocol({ protocolId }: Props) {
             <ProtocolTitle>Protokoll {protocolEntry.protocolCode}</ProtocolTitle>
             {isNotMobile ? <ProtocolBodyLargeScreen protocolEntry={protocolEntry} /> : <ProtocolBodySmallScreen protocolEntry={protocolEntry} />}
             <RowContainer>
-                <DeleteProtocolButton onClick={() => deleteProtocol(protocolEntry.protocolId)}>L�schen</DeleteProtocolButton>
+                <DeleteProtocolButton onClick={() => deleteProtocol(protocolEntry.protocolId)}>Löschen</DeleteProtocolButton>
                 <EditProtocolButton onClick={() => editProtocol()}>Bearbeiten</EditProtocolButton>
             </RowContainer>
         </ProtocolLayout>
