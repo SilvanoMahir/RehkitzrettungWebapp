@@ -64,3 +64,9 @@ export const LoginButton = styled.button`
     padding: 15px;
     margin: 20px;
 `
+
+export const EditUserButton = styled.button`
+    ${CustomButton};
+    background: green;
+    margin-top: 20px;
+`

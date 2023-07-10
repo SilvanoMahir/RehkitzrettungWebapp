@@ -10,7 +10,7 @@ import { FaSignInAlt } from "react-icons/fa"
 import { AppContext } from '../../store/context'
 import { toast } from 'react-toastify';
 import { trackPromise, usePromiseTracker } from 'react-promise-tracker';
-import { FadeLoader} from 'react-spinners';
+import { FadeLoader } from 'react-spinners';
 
 export default function RescueListPage() {
     const [inputUserName, setUserName] = useState('')
@@ -20,31 +20,31 @@ export default function RescueListPage() {
     const { promiseInProgress } = usePromiseTracker();
 
     const login = async () => {
-        if (inputUserName === "" || inputPassword === "" ) {
+        if (inputUserName === "" || inputPassword === "") {
             toast.error("Bitte Benutzername und Password einsetzen!", {
                 position: toast.POSITION.TOP_CENTER,
                 containerId: 'LoginToaster'
             })
-        } else {     
+        } else {
             trackPromise(
                 fetchLogin()
-            )   
+            )
         }
     }
 
     const fetchLogin = async () => {
         const response = await fetch('/api/authenticate/login', {
             method: 'POST',
-            headers: {'content-type': 'application/json'},
+            headers: { 'content-type': 'application/json' },
             body: JSON.stringify({
-            "username":inputUserName,
-            "password":inputPassword
+                "username": inputUserName,
+                "password": inputPassword
             }),
         })
-        const {token} = await response.json() 
-        if (response.ok){
+        const { token } = await response.json()
+        if (response.ok) {
             localStorage.setItem('user_token', token);
-            dispatch_token({type: 'set-token', value: token})
+            dispatch_token({ type: 'set-token', value: token })
             navigate(ROUTE_RESCUE_LIST_PAGE)
         } else {
             toast.error("Login fehlgeschlagen. Password oder Benutzername falsch", {
@@ -56,30 +56,30 @@ export default function RescueListPage() {
 
     return (
         <div>
-        <BackgroundIcon />
-        <LoginPageRowLayout>
-            <LoginPageColumnLayout>
-            <LoginIcon />
-            <div><TitleText data-testid="login-anmelden-title">Anmelden</TitleText></div>
-                <TextInput onChange={setUserName}
-                    value={inputUserName}
-                    placeholder="Benutzername"></TextInput>
-                <TextInputPassword onChange={setPassword}
-                    value={inputPassword}
-                    placeholder="Passwort"></TextInputPassword>
-                <RowContainer>
-                    <LoginButton onClick={() => login()}>Anmelden <FaSignInAlt/></LoginButton>
-                </RowContainer>
-                <VersionText>v0.3</VersionText>
-                <LoadingBar>{promiseInProgress ? (<FadeLoader height={8} color="#fffecb" />) : ("")} </LoadingBar>
-            </LoginPageColumnLayout >
-        </LoginPageRowLayout>
+            <BackgroundIcon />
+            <LoginPageRowLayout>
+                <LoginPageColumnLayout>
+                    <LoginIcon />
+                    <div><TitleText data-testid="login-anmelden-title">Anmelden</TitleText></div>
+                    <TextInput onChange={setUserName}
+                        value={inputUserName}
+                        placeholder="Benutzername"></TextInput>
+                    <TextInputPassword onChange={setPassword}
+                        value={inputPassword}
+                        placeholder="Passwort"></TextInputPassword>
+                    <RowContainer>
+                        <LoginButton onClick={() => login()}>Anmelden <FaSignInAlt /></LoginButton>
+                    </RowContainer>
+                    <VersionText>v0.3</VersionText>
+                    <LoadingBar>{promiseInProgress ? (<FadeLoader height={8} color="#fffecb" />) : ("")} </LoadingBar>
+                </LoginPageColumnLayout >
+            </LoginPageRowLayout>
         </div>
     )
 }
 
 const LoginPageRowLayout = styled.div`
-    display: flex;
+    display: flex; 
     justify-content: center;
     background: #9A8873;
     align-items: flex-start;

@@ -27,7 +27,7 @@ export default function RescueListPage() {
             }
             const protocolsListLocal = await fetchProtocols(storageToken)
             setLoadingProtocols(false)
-            dispatch({ type: 'get-protocols', protocolsListLocal})
+            dispatch({ type: 'get-protocols', protocolsListLocal })
         }
         onMount()
     }, [dispatch, dispatch_token])
@@ -37,7 +37,7 @@ export default function RescueListPage() {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json',
-                'Authorization': `Bearer ${storageToken}`, 
+                'Authorization': `Bearer ${storageToken}`,
             }
         })
         if (response.ok) {
@@ -70,7 +70,7 @@ export default function RescueListPage() {
 
     return (
         <RescueListLayout>
-            {!isNotMobile && <Menu/>}
+            {!isNotMobile && <Menu />}
             <RescueListRowLayout>
                 {(isNotMobile) && <Sidebar showSidebar={isNotMobile} />}
                 <RescueListColumnLayout>
@@ -78,6 +78,7 @@ export default function RescueListPage() {
                         value={''}
                         isNotMobile={isNotMobile}
                         placeholder={'Suchen'}></SearchInput>
+                    <SiteTitle>Übersicht Protokolle</SiteTitle>
                     {content}
                     <RowContainer>
                         <DownloadProtocolButton onClick={() => downloadProtocol()}>Bericht herunterladen</DownloadProtocolButton>
@@ -124,9 +125,20 @@ const SearchInput = styled.input<{ isNotMobile: boolean }>`
     background: #898472;
     color: #fffecb;
     margin-top: ${(props) => (props.isNotMobile ? "5vh" : "8vh")};
+    margin-right: 0.75em; 
 
     &::placeholder {
         color: #fffecb; /* Change this to the desired color */
         opacity: 0.5;
     }
+`
+
+const SiteTitle = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    font-weight: 500;
+    font-size: 2em;
+    margin: 10px;
+    color: #fffecb;
 `

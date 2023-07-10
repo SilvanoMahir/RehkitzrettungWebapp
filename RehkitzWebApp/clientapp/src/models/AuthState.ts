@@ -3,5 +3,4 @@ export interface AuthState {
     password: string
     authenticated: boolean
     token: string
-  }
-  
+}

@@ -2,15 +2,14 @@
 
 public static class UserExtensions
 {
-    public static UserDto ToDto(this User user)
+    public static UserSmallDto ToUserSmallListDto(this UserDto user)
     {
-        return new UserDto
+        return new UserSmallDto
         {
             UserId = user.UserId,
-            OwnerId = user.OwnerId,
-            UserFirstName = user.UserFirstName,
-            UserLastName = user.UserLastName,
-            UserRegionId = user.UserRegionId,
+            UserDefinition = user.UserDefinition,
+            UserFunction = user.UserFunction,
+            UserStateRegion = user.UserStateRegion
         };
     }
 
@@ -19,11 +18,11 @@ public static class UserExtensions
         return new User
         {
             UserId = userDto.UserId,
-            OwnerId = userDto.OwnerId,
+            OwnerId = "0",
             UserFirstName = userDto.UserFirstName,
             UserLastName = userDto.UserLastName,
-            UserRegionId = userDto.UserRegionId,
-            EntryIsDeleted = entryIsDeleted,
+            UserRegionId = userDto.UserStateRegion,
+            EntryIsDeleted = entryIsDeleted
         };
     }
 }
