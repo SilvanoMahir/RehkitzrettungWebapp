@@ -34,21 +34,6 @@ export default function AdaptProtocolPage() {
     const { dispatch_token, token } = useContext(AppContext)
     let navigate = useNavigate()
 
-    const protocolEntry = ({
-        protocolId: "1",
-        protocolCode: "2",
-        clientFullName: "3",
-        localName: "4",
-        date: "5",
-        foundFawns: 6,
-        markedFawns: 7,
-        remark: "8",
-        pilotFullName: "9",
-        regionName: "10",
-        areaSize: "11",
-        injuredFawns: 12,
-    })
-
     useEffect(() => {
         const onMount = async () => {
             //token handling can probably be optimized
@@ -84,7 +69,7 @@ export default function AdaptProtocolPage() {
         navigate(ROUTE_RESCUE_LIST_PAGE)
     }
 
-    const saveProtocol = async (newProtocol: ProtocolEntries) => {
+    const saveProtocol = async () => {
         const storageToken = localStorage.getItem('user_token');
         const response = await fetch(`/api/protocols`, {
             method: 'POST',
@@ -97,16 +82,32 @@ export default function AdaptProtocolPage() {
                 ClientFullName: clientFullName,
                 LocalName: localName,
                 Date: date,
-                FoundFawns: 1,
-                MarkedFawns: 2,
+                FoundFawns: parseInt(foundFawns),
+                MarkedFawns: parseInt(markedFawns),
                 Remark: remark,
                 PilotFullName: pilotFullName,
                 RegionName: regionName,
                 AreaSize: areaSize,
-                InjuredFawns: 3,
+                InjuredFawns: parseInt(injuredFawns),
             })
         })
         if (response.ok) {
+            const dateAsString: string = date?.toDateString()!
+            const newProtocol = ({
+                protocolId: '1',
+                protocolCode: protocolCode,
+                clientFullName: clientFullName,
+                localName: localName,
+                date: dateAsString,
+                foundFawns: parseInt(foundFawns),
+                markedFawns: parseInt(markedFawns),
+                remark: remark,
+                pilotFullName: pilotFullName,
+                regionName: regionName,
+                areaSize: areaSize,
+                injuredFawns: parseInt(injuredFawns),
+            })
+
             dispatch({ type: 'add-protocols', protocolsListLocal, newProtocol })
         }
         navigate(ROUTE_RESCUE_LIST_PAGE)
@@ -119,7 +120,7 @@ export default function AdaptProtocolPage() {
                 {(isNotMobile) && <Sidebar showSidebar={isNotMobile} />}
                 <RescueListColumnLayout>
                     <ProtocolLayout>
-                        <ProtocolTitle>Protokoll {protocolEntry.protocolCode}</ProtocolTitle>
+                        <ProtocolTitle>Protokoll {2}</ProtocolTitle>
                         <ColumnContainer>
                             <ProtocolEntryForAdaptPage entry="Auftraggeber" value={clientFullName} callbackFunction={setClientFullName} />
                             <ProtocolEntryForAdaptPage entry="Pilot" value={pilotFullName} callbackFunction={setPilotFullName} />
@@ -138,7 +139,7 @@ export default function AdaptProtocolPage() {
                     </ProtocolLayout>
                     <RowContainer>
                         <DiscardProtocolButton onClick={() => discardProtocol()}>Verwerfen</DiscardProtocolButton>
-                        <SaveProtocolButton onClick={() => saveProtocol(protocolEntry)}>Speichern</SaveProtocolButton>
+                        <SaveProtocolButton onClick={() => saveProtocol()}>Speichern</SaveProtocolButton>
                     </RowContainer>
                 </RescueListColumnLayout >
             </RescueListRowLayout>
