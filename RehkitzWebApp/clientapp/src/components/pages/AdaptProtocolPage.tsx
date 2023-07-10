@@ -188,6 +188,7 @@ const DatePickerLabel = styled.div`
     text-overflow: ellipsis;
     text-align: center;
     max-width: 200px;
+    line-height: 50px;
 `
 
 const ProtocolLayout = styled.div`
