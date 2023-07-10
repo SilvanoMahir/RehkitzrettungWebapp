@@ -7,8 +7,11 @@ import { Menu } from '../widgets/Menu'
 import User from '../widgets/Users/User'
 import UserEntryTitles from '../widgets/Users/UserEntryTitles'
 import { CreateNewUserButton } from '../controls/Button'
+<<<<<<< HEAD
 import { ROUTE_ADAPT_USER_PAGE } from '../../App'
 import { useNavigate } from 'react-router-dom'
+=======
+>>>>>>> 7da944a (adde new user button)
 
 export default function UserListPage() {
 
@@ -41,7 +44,10 @@ export default function UserListPage() {
     }
 
     const addNewUser = async () => {
+<<<<<<< HEAD
         navigate(ROUTE_ADAPT_USER_PAGE)
+=======
+>>>>>>> 7da944a (adde new user button)
     }
 
     let content;
