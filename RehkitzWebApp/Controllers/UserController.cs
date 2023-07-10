@@ -66,6 +66,9 @@ public class UserController : ControllerBase
         }
         var userRole = "";
         var user = await _context.User.FindAsync(id);
+        if (user == null)
+            return NotFound();
+
         var userRegion = await _context.Region.FindAsync(int.Parse(user.UserRegionId));
         var userRoleId = await _context.UserRoles
                                 .Where(x => x.UserId == user.OwnerId)

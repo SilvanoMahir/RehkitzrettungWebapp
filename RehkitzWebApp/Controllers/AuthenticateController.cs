@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using RehkitzWebApp.Model;
+using RehkitzWebApp.Model.Dtos;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -15,15 +17,19 @@ public class AuthenticateController : ControllerBase
     private readonly UserManager<IdentityUser> _userManager;
     private readonly RoleManager<IdentityRole> _roleManager;
     private readonly IConfiguration _configuration;
+    private readonly ApplicationDbContext _context;
+
 
     public AuthenticateController(
         UserManager<IdentityUser> userManager,
         RoleManager<IdentityRole> roleManager,
+        ApplicationDbContext context,
         IConfiguration configuration)
     {
         _userManager = userManager;
         _roleManager = roleManager;
         _configuration = configuration;
+        _context = context;
     }
 
     [HttpPost]
@@ -106,7 +112,8 @@ public class AuthenticateController : ControllerBase
 
         if (!await _roleManager.RoleExistsAsync(UserRoles.Admin))
         {
-            await _roleManager.CreateAsync(new IdentityRole(UserRoles.Admin));
+            var role = new IdentityRole(UserRoles.Admin);
+            await _roleManager.CreateAsync(role);
         }
 
         //if (!await _roleManager.RoleExistsAsync(UserRoles.User))
@@ -118,10 +125,29 @@ public class AuthenticateController : ControllerBase
         {
             await _userManager.AddToRoleAsync(user, UserRoles.Admin);
         }
+
+        var userRegion = await _context.Region
+            .Where(r => r.RegionName == model.UserRegion) // Replace "Attribute" with the actual attribute name in your entity
+            .Select(r => (int?)r.RegionId) // Replace "Id" with the actual ID property name in your entity
+            .FirstOrDefaultAsync();
+
+        var newUser = new User {
+            OwnerId = user.Id,
+            UserFirstName = model.UserFirstName,
+            UserLastName = model.UserLastName,
+            UserRegionId = userRegion.ToString(),
+            UserDefinition = model.UserDefinition,
+            EntryIsDeleted = false
+        };
+
+        _context.User.Add(newUser);
+        await _context.SaveChangesAsync();
+
         //if (await _roleManager.RoleExistsAsync(UserRoles.Admin))
         //{
         //    await _userManager.AddToRoleAsync(user, UserRoles.User);
         //}
+
         return Ok(new Response { Status = "Success", Message = "User created successfully!" });
     }
 
