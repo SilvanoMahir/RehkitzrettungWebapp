@@ -6,6 +6,7 @@ import { useMediaQuery } from 'react-responsive'
 import { Menu } from '../widgets/Menu'
 import User from '../widgets/Users/User'
 import UserEntryTitles from '../widgets/Users/UserEntryTitles'
+import { CreateNewUserButton } from '../controls/Button'
 
 export default function UserListPage() {
 
@@ -36,6 +37,9 @@ export default function UserListPage() {
     const search = async () => {
     }
 
+    const addNewUser = async () => {
+    }
+
     let content;
     if (loadingUsers) {
         content = (<p><em>Laedt Protokolle... Bitte Seite aktualisieren, sobald ASP.NET Backend aufgestartet ist.</em></p>);
@@ -62,6 +66,9 @@ export default function UserListPage() {
                         {isNotMobile ? <UserEntryTitles entry={'NotMObile'}></UserEntryTitles> : <></>}
                         {content}
                     </BlockLayout>
+                    <NewUserButton>
+                        <CreateNewUserButton onClick={() => addNewUser()}> Neuer Benutzer erstellen</CreateNewUserButton>
+                    </NewUserButton>
                 </RescueListColumnLayout >
             </RescueListRowLayout>
         </RescueListLayout>
@@ -125,4 +132,9 @@ const PageTitle = styled.div`
     @media (max-width: 426px) {
         margin-bottom: 0.25em;
     }
+`
+
+const NewUserButton = styled.div`
+    display: flex;
+    justify-content: center;
 `

@@ -70,3 +70,10 @@ export const EditUserButton = styled.button`
     background: green;
     margin-top: 20px;
 `
+
+export const CreateNewUserButton = styled.button`
+    ${CustomButton};
+    background: gray;
+    margin: 10px;
+    font-size: 25px;
+`
