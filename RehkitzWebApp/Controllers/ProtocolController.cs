@@ -95,7 +95,7 @@ public class ProtocolController : ControllerBase
     // POST: /api/protocols
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public ActionResult<ProtocolDto> PostProtocol(ProtocolDto protocolDto)
+    public async Task<ActionResult<ProtocolDto>> PostProtocol(ProtocolDto protocolDto)
     {
         if (_context.Protocol == null)
         {
@@ -105,7 +105,7 @@ public class ProtocolController : ControllerBase
         bool entryIsDeleted = false;
         var protocol = protocolDto.ToProtocolEntity(entryIsDeleted);
         _context.Protocol.Add(protocol);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
         return CreatedAtAction("PostProtocol", new { id = protocol.ProtocolId }, protocol);
     }
