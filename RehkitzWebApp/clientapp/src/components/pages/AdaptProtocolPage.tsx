@@ -1,14 +1,12 @@
-﻿import { useContext, useEffect, useState } from 'react'
+﻿import { useContext, useState } from 'react'
 import styled from 'styled-components/macro'
 import { DiscardProtocolButton, SaveProtocolButton } from '../controls/Button'
-import { AppContext, ProtocolsContext } from '../../store/context'
-import Protocol from '../widgets/Protocol/Protocol'
+import { ProtocolsContext } from '../../store/context'
 import Sidebar from '../widgets/Sidebar/Sidebar'
 import { useMediaQuery } from 'react-responsive'
 import { Menu } from '../widgets/Menu'
 import { useNavigate } from 'react-router-dom'
 import { ROUTE_RESCUE_LIST_PAGE } from '../../App'
-import { ProtocolEntries } from '../../models/ProtocolEntries'
 import ProtocolEntryForAdaptPage from '../widgets/Protocol/ProtocolEntryForAdaptPage'
 import DatePicker from "react-datepicker"
 import 'react-datepicker/dist/react-datepicker.css'
@@ -17,10 +15,8 @@ export default function AdaptProtocolPage() {
 
     const isNotMobile = useMediaQuery({ query: '(min-width: 426px)' })
 
-    const [loadingProtocols, setLoadingProtocols] = useState(true)
     const [protocolCode, setProtocolCode] = useState('')
     const [clientFullName, setClientFullName] = useState('')
-    const [inputUserName, setUserName] = useState('')
     const [localName, setLocalName] = useState('')
     const [date, setDate] = useState<Date | null>(new Date())
     const [foundFawns, setFoundFawns] = useState('')
@@ -31,39 +27,7 @@ export default function AdaptProtocolPage() {
     const [areaSize, setAreaSize] = useState('')
     const [injuredFawns, setInjuredFawns] = useState('')
     const { protocolsListLocal, dispatch } = useContext(ProtocolsContext)
-    const { dispatch_token, token } = useContext(AppContext)
     let navigate = useNavigate()
-
-    useEffect(() => {
-        const onMount = async () => {
-            //token handling can probably be optimized
-            const storageToken = localStorage.getItem('user_token');
-            if (storageToken !== null) {
-                dispatch_token({ type: 'set-token', value: storageToken })
-            }
-            const protocolsListLocal = await fetchProtocols(storageToken)
-            setLoadingProtocols(false)
-            dispatch({ type: 'get-protocols', protocolsListLocal })
-        }
-        onMount()
-    }, [dispatch, dispatch_token])
-
-    const fetchProtocols = async (storageToken: string | null) => {
-        const response = await fetch('/api/protocols', {
-            method: 'GET',
-            headers: {
-                'Content-type': 'application/json',
-                'Authorization': `Bearer ${storageToken}`,
-            }
-        })
-        if (response.ok) {
-            return await response.json()
-        }
-        return []
-    }
-
-    const search = async () => {
-    }
 
     const discardProtocol = async () => {
         navigate(ROUTE_RESCUE_LIST_PAGE)
@@ -75,7 +39,7 @@ export default function AdaptProtocolPage() {
             method: 'POST',
             headers: {
                 'content-type': 'application/json',
-                'Authorization': `Bearer ${storageToken}`, // notice the Bearer before your token
+                'Authorization': `Bearer ${storageToken}`,
             },
             body: JSON.stringify({
                 ProtocolCode: protocolCode,
@@ -128,7 +92,7 @@ export default function AdaptProtocolPage() {
                             <ProtocolEntryForAdaptPage entry="Region" value={regionName} callbackFunction={setRegionName} />
                             <DatePickerRowContainer>
                                 <DatePickerLabel>Datum</DatePickerLabel>
-                                <DatePicker selected={date} onChange={(date) => setDate(date)} />
+                                <DatePicker selected={date} onChange={(date) => setDate(date)} dateFormat="dd/MM/yyyy" />
                             </DatePickerRowContainer>
                             <ProtocolEntryForAdaptPage entry="Flaeche" value={areaSize} callbackFunction={setAreaSize} />
                             <ProtocolEntryForAdaptPage entry="Gefundene Kitze" value={foundFawns} callbackFunction={setFoundFawns} />

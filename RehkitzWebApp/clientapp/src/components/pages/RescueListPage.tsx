@@ -60,11 +60,11 @@ export default function RescueListPage() {
 
     if (loadingProtocols) {
         content = (<p><em>Laedt Protokolle... Bitte Seite aktualisieren, sobald ASP.NET Backend aufgestartet ist.</em></p>);
-      } else if (protocolsListLocal.length === 0) {
+    } else if (protocolsListLocal.length === 0) {
         content = (<p><em>Keine Protokolle gefunden.</em></p>);
-      } else {
+    } else {
         content = protocolsListLocal.map(protocolEntry => (
-          <Protocol key={protocolEntry.protocolId} protocolId={protocolEntry.protocolId} />
+            <Protocol key={protocolEntry.protocolId} protocolId={protocolEntry.protocolId} />
         ));
     }
 

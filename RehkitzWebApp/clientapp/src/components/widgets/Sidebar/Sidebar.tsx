@@ -4,7 +4,7 @@ import SidebarButton from "../Sidebar/SidebarButton"
 import SidebarIcon from "../Sidebar/SidebarIcon"
 import { useContext } from "react"
 import { AppContext } from '../../../store/context'
-import { ROUTE_LOGIN_PAGE } from '../../../App'
+import { ROUTE_LOGIN_PAGE, ROUTE_RESCUE_LIST_PAGE } from '../../../App'
 import { useNavigate } from "react-router"
 import { useMediaQuery } from "react-responsive"
 
@@ -32,7 +32,7 @@ export default function Sidebar({ showSidebar }: Props) {
         throw new Error("Function not implemented.")
     }
     function moveToSavings(): void {
-        throw new Error("Function not implemented.")
+        navigate(ROUTE_RESCUE_LIST_PAGE)
     }
     function moveToMap(): void {
         throw new Error("Function not implemented.")
