@@ -32,26 +32,5 @@ const Entry = styled.div`
     text-overflow: ellipsis;
     text-align: center;
     max-width: 200px;
-`
-
-const Value = styled.input`
-    flex: 1;
-    margin-left: 15px;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    text-align: center;
-    margin: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background: #fcba03;
-    color: fffecb;
-    max-width: 200px;
-
-    border-radius: 8px;
-    font-size: 15px;
-    background: #898472;
-
-    opacity: 0.5;
+    line-height: 50px;
 `

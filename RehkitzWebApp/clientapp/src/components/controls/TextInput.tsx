@@ -32,7 +32,7 @@ const CustomTextInput = styled.input`
     background: #898472;
     color: #fffecb;
     &::placeholder {
-        color: #fffecb; /* Change this to the desired color */
+        color: #fffecb;
         opacity: 0.5;
     }
 `
