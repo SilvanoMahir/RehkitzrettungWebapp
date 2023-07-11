@@ -54,7 +54,7 @@ public class UserController : ControllerBase
         var user = await _context.User.FindAsync(id);
         var userRegion = await _context.Region.FindAsync(int.Parse(user.UserRegionId));
 
-        if (user == null || userRegion == null )
+        if (user == null || userRegion == null)
         {
             return NotFound();
         }
@@ -108,7 +108,7 @@ public class UserController : ControllerBase
         _context.User.Add(user);
         await _context.SaveChangesAsync();
 
-        return CreatedAtAction("GetUser", new { id = user.UserId }, user);
+        return Ok(userDto);
     }
 
     // DELETE: /api/users/5

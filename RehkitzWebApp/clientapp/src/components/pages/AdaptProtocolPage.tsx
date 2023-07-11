@@ -83,7 +83,7 @@ export default function AdaptProtocolPage() {
             <RescueListRowLayout>
                 {(isNotMobile) && <Sidebar showSidebar={isNotMobile} />}
                 <RescueListColumnLayout>
-                    <ProtocolLayout>
+                    <ProtocolLayout isNotMobile={isNotMobile}>
                         <ProtocolTitle>Protokoll {2}</ProtocolTitle>
                         <ColumnContainer>
                             <ProtocolEntryForAdaptPage entry="Auftraggeber" value={clientFullName} callbackFunction={setClientFullName} />
@@ -94,7 +94,7 @@ export default function AdaptProtocolPage() {
                                 <DatePickerLabel>Datum</DatePickerLabel>
                                 <DatePicker selected={date} onChange={(date) => setDate(date)} dateFormat="dd/MM/yyyy" />
                             </DatePickerRowContainer>
-                            <ProtocolEntryForAdaptPage entry="Flaeche" value={areaSize} callbackFunction={setAreaSize} />
+                            <ProtocolEntryForAdaptPage entry="Fläche" value={areaSize} callbackFunction={setAreaSize} />
                             <ProtocolEntryForAdaptPage entry="Gefundene Kitze" value={foundFawns} callbackFunction={setFoundFawns} />
                             <ProtocolEntryForAdaptPage entry="Verletzte Kitze" value={injuredFawns} callbackFunction={setInjuredFawns} />
                             <ProtocolEntryForAdaptPage entry="Markierte Kitze" value={markedFawns} callbackFunction={setMarkedFawns} />
@@ -155,8 +155,9 @@ const DatePickerLabel = styled.div`
     line-height: 50px;
 `
 
-const ProtocolLayout = styled.div`
-    margin: 10px;
+const ProtocolLayout = styled.div<{ isNotMobile: boolean }>`
+    margin: 0px 10px 10px;
+    margin-top: ${(props) => (props.isNotMobile ? "5vh" : "8vh")};
     display: flex;
     flex-direction: column;
     align-items: center;

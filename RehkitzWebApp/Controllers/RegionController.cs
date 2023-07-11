@@ -104,7 +104,7 @@ public class RegionController : ControllerBase
         _context.Region.Add(region);
         await _context.SaveChangesAsync();
 
-        return CreatedAtAction("GetRegion", new { id = region.RegionId }, region);
+        return Ok(regionDto);
     }
 
     // DELETE: /api/regions/5

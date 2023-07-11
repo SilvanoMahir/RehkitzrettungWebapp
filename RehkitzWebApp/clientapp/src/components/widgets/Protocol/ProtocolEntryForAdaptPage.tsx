@@ -1,5 +1,5 @@
 ﻿import styled from "styled-components"
-import { TextInput } from "../../controls/TextInput"
+import { TextInputForAdaptPage } from "../../controls/TextInput"
 
 interface Props {
     entry: string
@@ -7,12 +7,12 @@ interface Props {
     callbackFunction: (value: string) => void
 }
 
-export default function ProtocolEntry({ entry, value, callbackFunction }: Props) {
+export default function ProtocolEntryForAdaptPage({ entry, value, callbackFunction }: Props) {
 
     return (
         <RowContainer>
             <Entry>{entry}</Entry>
-            <TextInput onChange={callbackFunction} value={value}/>
+            <TextInputForAdaptPage onChange={callbackFunction} value={value}/>
         </RowContainer>
     )
 }

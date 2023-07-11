@@ -18,7 +18,7 @@ export default function ProtocolBodySmallScreen({ protocolEntry }: Props) {
             <ProtocolEntry entry="Bemerkung" value={protocolEntry?.remark} />
             <ProtocolEntry entry="Pilot" value={protocolEntry?.pilotFullName} />
             <ProtocolEntry entry="Region" value={protocolEntry?.regionName} />
-            <ProtocolEntry entry="Flaeche" value={protocolEntry?.areaSize} />
+            <ProtocolEntry entry="Fläche" value={protocolEntry?.areaSize} />
             <ProtocolEntry entry="Verletzte Kitze" value={protocolEntry?.injuredFawns} />
         </ColumnContainer>
     )

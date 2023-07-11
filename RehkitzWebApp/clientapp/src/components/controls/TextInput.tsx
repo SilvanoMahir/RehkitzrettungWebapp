@@ -24,9 +24,31 @@ export const TextInputPassword = ({ onChange, value, placeholder }: Props) => (
     />
 )
 
+export const TextInputForAdaptPage = ({ onChange, value, placeholder }: Props) => (
+    <CustomTextInputForAdaptPage
+        type="text"
+        onChange={e => onChange(e.target.value)}
+        value={value}
+        placeholder={placeholder}
+    />
+)
+
 const CustomTextInput = styled.input`
     border-radius: 8px;
     width: 250px;
+    font-size: 25px;
+    margin: 10px;
+    background: #898472;
+    color: #fffecb;
+    &::placeholder {
+        color: #fffecb;
+        opacity: 0.5;
+    }
+`
+
+const CustomTextInputForAdaptPage = styled.input`
+    border-radius: 8px;
+    width: 170px;
     font-size: 25px;
     margin: 10px;
     background: #898472;

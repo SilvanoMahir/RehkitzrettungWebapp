@@ -107,7 +107,7 @@ public class ProtocolController : ControllerBase
         _context.Protocol.Add(protocol);
         await _context.SaveChangesAsync();
 
-        return CreatedAtAction("PostProtocol", new { id = protocol.ProtocolId }, protocol);
+        return Ok(protocolDto);
     }
 
     // DELETE: /api/protocols/5
