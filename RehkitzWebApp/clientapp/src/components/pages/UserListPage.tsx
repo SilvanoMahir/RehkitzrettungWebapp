@@ -80,7 +80,7 @@ const RescueListLayout = styled.div`
 `
 
 const BlockLayout = styled.div`
-    background: #7d6b52;
+    background: #9A8873;
     margin: 1em; 
     padding: 1em;
     border-radius: 10px;
@@ -92,7 +92,6 @@ const BlockLayout = styled.div`
 const RescueListRowLayout = styled.div`
     display: flex;
     flex-direction: row;
-    background: #9A8873;
     height: 100%;
 `
 
