@@ -1,4 +1,4 @@
-﻿import { useContext, useState } from 'react'
+import { useContext, useState } from 'react'
 import styled from 'styled-components/macro'
 import { DiscardProtocolButton, SaveProtocolButton } from '../controls/Button'
 import { ProtocolsContext } from '../../store/context'
@@ -84,7 +84,7 @@ export default function AdaptProtocolPage() {
                 {(isNotMobile) && <Sidebar showSidebar={isNotMobile} />}
                 <RescueListColumnLayout>
                     <ProtocolLayout isNotMobile={isNotMobile}>
-                        <ProtocolTitle>Protokoll {2}</ProtocolTitle>
+                        <ProtocolTitle>Neues Protokoll</ProtocolTitle>
                         <ColumnContainer>
                             <ProtocolEntryForAdaptPage entry="Auftraggeber" value={clientFullName} callbackFunction={setClientFullName} />
                             <ProtocolEntryForAdaptPage entry="Pilot" value={pilotFullName} callbackFunction={setPilotFullName} />
