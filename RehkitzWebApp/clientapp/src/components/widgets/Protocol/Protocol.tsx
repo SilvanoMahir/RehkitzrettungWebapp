@@ -40,12 +40,11 @@ export default function Protocol({ protocolId }: Props) {
         }
         onMount();
     }, [protocolsListLocal, protocolId]);
-
-
+      
     const deleteProtocol = async (protocolId: string) => {
         const response = await fetch(`/api/protocols/${Number(protocolId)}`, {
             method: 'DELETE',
-            headers: {
+            headers: { 
                 'content-type': 'application/json',
                 'Authorization': `Bearer ${token}`, // notice the Bearer before your token
             },

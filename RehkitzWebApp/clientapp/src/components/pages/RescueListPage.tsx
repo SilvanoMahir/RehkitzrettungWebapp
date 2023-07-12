@@ -6,6 +6,8 @@ import Protocol from '../widgets/Protocol/Protocol'
 import Sidebar from '../widgets/Sidebar/Sidebar'
 import { useMediaQuery } from 'react-responsive'
 import { Menu } from '../widgets/Menu'
+import { useNavigate } from 'react-router-dom'
+import { ROUTE_ADAPT_PROTOCOL_PAGE } from '../../App'
 
 export default function RescueListPage() {
 
@@ -14,13 +16,15 @@ export default function RescueListPage() {
     const [loadingProtocols, setLoadingProtocols] = useState(true)
     const { protocolsListLocal, dispatch } = useContext(ProtocolsContext)
     const { dispatch_token } = useContext(AppContext)
+    let navigate = useNavigate()
 
     useEffect(() => {
         const onMount = async () => {
             //token handling can probably be optimized
-            const storageToken = localStorage.getItem('user_token');
-            if (storageToken !== null)
+            const storageToken = localStorage.getItem('user_token'); 
+            if (storageToken !== null) {
                 dispatch_token({ type: 'set-token', value: storageToken })
+            }
             const protocolsListLocal = await fetchProtocols(storageToken)
             setLoadingProtocols(false)
             dispatch({ type: 'get-protocols', protocolsListLocal })
@@ -49,6 +53,7 @@ export default function RescueListPage() {
     }
 
     const createProtocol = async () => {
+        navigate(ROUTE_ADAPT_PROTOCOL_PAGE)
     }
 
     let content;
