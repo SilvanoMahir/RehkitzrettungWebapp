@@ -1,4 +1,4 @@
-﻿import styled from "styled-components"
+import styled from "styled-components"
 import { ProtocolEntries } from "../../../models/ProtocolEntries"
 import ProtocolEntry from './ProtocolEntry'
 
