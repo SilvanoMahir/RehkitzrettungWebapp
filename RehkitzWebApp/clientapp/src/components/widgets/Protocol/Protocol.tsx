@@ -6,7 +6,8 @@ import ProtocolBodySmallScreen from './ProtocolBodySmallScreen'
 import { useMediaQuery } from 'react-responsive'
 import ProtocolBodyLargeScreen from './ProtocolBodyLargeScreen'
 import { AppContext, ProtocolsContext } from '../../../store/context'
-
+import { ROUTE_ADAPT_PROTOCOL_PAGE } from '../../../App'
+import { useNavigate } from 'react-router-dom'
 
 interface Props {
     protocolId: String
@@ -18,6 +19,7 @@ export default function Protocol({ protocolId }: Props) {
     //const { protocolId } = useParams() --> not working now as Router not set, there used Props
     const { token } = useContext(AppContext)
     const { protocolsListLocal, dispatch } = useContext(ProtocolsContext)
+    let navigate = useNavigate()
     const [protocolEntry, setProtocolEntry] = useState<ProtocolEntries>({
         protocolId: "",
         protocolCode: "",
@@ -55,6 +57,7 @@ export default function Protocol({ protocolId }: Props) {
     }
 
     const editProtocol = async () => {
+        navigate(`${ROUTE_ADAPT_PROTOCOL_PAGE}/${protocolId}`)
     }
 
     return (

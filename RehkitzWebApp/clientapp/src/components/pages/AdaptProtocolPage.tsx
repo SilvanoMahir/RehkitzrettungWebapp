@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
 import { DiscardProtocolButton, SaveProtocolButton } from '../controls/Button'
 import { ProtocolsContext } from '../../store/context'
@@ -28,6 +28,27 @@ export default function AdaptProtocolPage() {
     const [injuredFawns, setInjuredFawns] = useState('')
     const { protocolsListLocal, dispatch } = useContext(ProtocolsContext)
     let navigate = useNavigate()
+
+    useEffect(() => {
+        const onMount = async () => {
+            let data = protocolsListLocal.filter(protocols => protocols.id === id)
+            const { protocolCode, clientFullName, localName, date, foundFawns,
+                markedFawns, remark, pilotFullName, regionName, areaSize,
+                injuredFawns } = data[0]
+            setProtocolCode(protocolCode)
+            setClientFullName(clientFullName)
+            setLocalName(localName)
+            setDate(date)
+            setFoundFawns(foundFawns.toString())
+            setMarkedFawns(markedFawns.toString())
+            setRemark(remark)
+            setPilotFullName(pilotFullName)
+            setRegionName(regionName)
+            setAreaSize(areaSize)
+            setInjuredFawns(injuredFawns.toString())
+        }
+        onMount()
+    }, [protocolsListLocal, id])
 
     const discardProtocol = async () => {
         navigate(ROUTE_RESCUE_LIST_PAGE)
@@ -75,6 +96,30 @@ export default function AdaptProtocolPage() {
             dispatch({ type: 'add-protocols', protocolsListLocal, newProtocol })
         }
         navigate(ROUTE_RESCUE_LIST_PAGE)
+    }
+
+    const updateProtocol = async () => {
+        const response = await fetch(`${`/api/protocols`}/${id}`, {
+            method: 'PUT',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({
+                protocolId: '1',
+                protocolCode: protocolCode,
+                clientFullName: clientFullName,
+                localName: localName,
+                date: date,
+                foundFawns: parseInt(foundFawns),
+                markedFawns: parseInt(markedFawns),
+                remark: remark,
+                pilotFullName: pilotFullName,
+                regionName: regionName,
+                areaSize: areaSize,
+                injuredFawns: parseInt(injuredFawns),
+            }),
+        })
+        if (response.ok) {
+            navigate(ROUTE_RESCUE_LIST_PAGE)
+        }
     }
 
     return (
