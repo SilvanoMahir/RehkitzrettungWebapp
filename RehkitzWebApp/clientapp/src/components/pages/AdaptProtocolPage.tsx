@@ -5,7 +5,7 @@ import { ProtocolsContext } from '../../store/context'
 import Sidebar from '../widgets/Sidebar/Sidebar'
 import { useMediaQuery } from 'react-responsive'
 import { Menu } from '../widgets/Menu'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { ROUTE_RESCUE_LIST_PAGE } from '../../App'
 import ProtocolEntryForAdaptPage from '../widgets/Protocol/ProtocolEntryForAdaptPage'
 import DatePicker from "react-datepicker"
@@ -28,17 +28,18 @@ export default function AdaptProtocolPage() {
     const [injuredFawns, setInjuredFawns] = useState('')
     const { protocolsListLocal, dispatch } = useContext(ProtocolsContext)
     let navigate = useNavigate()
+    const { id } = useParams()
 
     useEffect(() => {
         const onMount = async () => {
-            let data = protocolsListLocal.filter(protocols => protocols.id === id)
-            const { protocolCode, clientFullName, localName, date, foundFawns,
+            let data = protocolsListLocal.filter(protocols => protocols.protocolId.toString() === id)
+            const { /*protocolCode,*/ clientFullName, localName, date, foundFawns,
                 markedFawns, remark, pilotFullName, regionName, areaSize,
                 injuredFawns } = data[0]
-            setProtocolCode(protocolCode)
+            // setProtocolCode(protocolCode)
             setClientFullName(clientFullName)
             setLocalName(localName)
-            setDate(date)
+            // setDate(date)
             setFoundFawns(foundFawns.toString())
             setMarkedFawns(markedFawns.toString())
             setRemark(remark)
