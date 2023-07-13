@@ -21,7 +21,7 @@ export default function RescueListPage() {
     useEffect(() => {
         const onMount = async () => {
             //token handling can probably be optimized
-            const storageToken = localStorage.getItem('user_token'); 
+            const storageToken = localStorage.getItem('user_token') 
             if (storageToken !== null) {
                 dispatch_token({ type: 'set-token', value: storageToken })
             }

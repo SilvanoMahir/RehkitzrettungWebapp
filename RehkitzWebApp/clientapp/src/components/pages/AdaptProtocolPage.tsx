@@ -26,6 +26,7 @@ export default function AdaptProtocolPage() {
     const [regionName, setRegionName] = useState('')
     const [areaSize, setAreaSize] = useState('')
     const [injuredFawns, setInjuredFawns] = useState('')
+    const [isNewProtocol, setIsNewProtocol] = useState(false)
     const { protocolsListLocal, dispatch } = useContext(ProtocolsContext)
     let navigate = useNavigate()
     const { id } = useParams()
@@ -33,20 +34,26 @@ export default function AdaptProtocolPage() {
     useEffect(() => {
         const onMount = async () => {
             let data = protocolsListLocal.filter(protocols => protocols.protocolId.toString() === id)
-            const { /*protocolCode,*/ clientFullName, localName, date, foundFawns,
-                markedFawns, remark, pilotFullName, regionName, areaSize,
-                injuredFawns } = data[0]
-            // setProtocolCode(protocolCode)
-            setClientFullName(clientFullName)
-            setLocalName(localName)
-            // setDate(date)
-            setFoundFawns(foundFawns.toString())
-            setMarkedFawns(markedFawns.toString())
-            setRemark(remark)
-            setPilotFullName(pilotFullName)
-            setRegionName(regionName)
-            setAreaSize(areaSize)
-            setInjuredFawns(injuredFawns.toString())
+            if (data.length === 0) {
+                setIsNewProtocol(true)
+            }
+            else {
+                setIsNewProtocol(false)
+                const { /*protocolCode,*/ clientFullName, localName, date, foundFawns,
+                    markedFawns, remark, pilotFullName, regionName, areaSize,
+                    injuredFawns } = data[0]
+                // setProtocolCode(protocolCode)
+                setClientFullName(clientFullName)
+                setLocalName(localName)
+                // setDate(date)
+                setFoundFawns(foundFawns.toString())
+                setMarkedFawns(markedFawns.toString())
+                setRemark(remark)
+                setPilotFullName(pilotFullName)
+                setRegionName(regionName)
+                setAreaSize(areaSize)
+                setInjuredFawns(injuredFawns.toString())
+            }
         }
         onMount()
     }, [protocolsListLocal, id])
@@ -56,7 +63,7 @@ export default function AdaptProtocolPage() {
     }
 
     const saveProtocol = async () => {
-        const storageToken = localStorage.getItem('user_token');
+        const storageToken = localStorage.getItem('user_token')
         const response = await fetch(`/api/protocols`, {
             method: 'POST',
             headers: {
@@ -100,11 +107,15 @@ export default function AdaptProtocolPage() {
     }
 
     const updateProtocol = async () => {
+        const storageToken = localStorage.getItem('user_token')
         const response = await fetch(`${`/api/protocols`}/${id}`, {
             method: 'PUT',
-            headers: { 'content-type': 'application/json' },
+            headers: {
+                'content-type': 'application/json',
+                'Authorization': `Bearer ${storageToken}`,
+            },
             body: JSON.stringify({
-                protocolId: '1',
+                protocolId: id,
                 protocolCode: protocolCode,
                 clientFullName: clientFullName,
                 localName: localName,
@@ -149,7 +160,7 @@ export default function AdaptProtocolPage() {
                     </ProtocolLayout>
                     <RowContainer>
                         <DiscardProtocolButton onClick={() => discardProtocol()}>Verwerfen</DiscardProtocolButton>
-                        <SaveProtocolButton onClick={() => saveProtocol()}>Speichern</SaveProtocolButton>
+                        <SaveProtocolButton onClick={() => isNewProtocol ? saveProtocol() : updateProtocol()}>Speichern</SaveProtocolButton>
                     </RowContainer>
                 </RescueListColumnLayout >
             </RescueListRowLayout>
