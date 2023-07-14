@@ -1,0 +1,36 @@
+trigger:
+  branches:
+    include:
+    - '*'
+  paths:
+    include:
+    - '*'
+
+resources:
+  repositories:
+  - repository: self
+    type: git
+    ref: refs/heads/develop
+
+jobs:
+- job: Job_1
+  displayName: Publish Job
+  pool:
+    vmImage: ubuntu-latest
+  steps:
+  - checkout: self
+    clean: true
+    fetchDepth: 1
+  - task: DotNetCoreCLI@2
+    displayName: dotnet integration api test
+    inputs:
+      command: test
+      projects: '**/*ApiWebAppTesting/*.csproj'
+      arguments: --configuration $(BuildConfiguration)
+  - task: DotNetCoreCLI@2
+    displayName: dotnet publish
+    inputs:
+      command: publish
+      arguments: --configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact: drop'
