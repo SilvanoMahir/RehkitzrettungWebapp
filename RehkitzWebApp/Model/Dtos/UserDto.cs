@@ -8,6 +8,6 @@ public class UserDto
     public string UserMail { get; set; }    
     public string? UserDefinition { get; set; }
     public string? UserFunction { get; set; }
-    public string? UserStateRegion { get; set; }
+    public string? UserRegion { get; set; }
     public string? UserPassword { get; set; }
 }

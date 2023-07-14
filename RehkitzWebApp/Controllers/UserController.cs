@@ -175,7 +175,7 @@ public class UserController : ControllerBase
             UserId = user.UserId,
             UserDefinition = user.UserDefinition,
             UserFunction = userRole + " " + region.RegionName,
-            UserStateRegion = region.RegionState + "/" + region.RegionName,
+            UserRegion = region.RegionName,
             UserFirstName = user.UserFirstName,
             UserLastName = user.UserLastName,
             UserMail = region.ContactPersonMail,

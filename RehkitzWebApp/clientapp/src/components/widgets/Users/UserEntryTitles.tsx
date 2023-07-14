@@ -10,7 +10,7 @@ export default function UserEntryTitles({ entry }: Props) {
 			<Title>ID</Title>
 			<Title>Bezeichnung</Title>
 			<Title>Funktion</Title>
-			<Title>Kanton/Region</Title>
+			<Title>Region</Title>
 		</RowContainer>
 	);
 }
