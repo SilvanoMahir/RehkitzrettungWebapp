@@ -1,8 +1,9 @@
 export interface UserEntries {
     userId: number
+    username: string
     userFirstName: string
     userLastName: string
-    userStateRegion: string
+    userRegion: string
     userDefinition: string
     userFunction: string
     userMail: string

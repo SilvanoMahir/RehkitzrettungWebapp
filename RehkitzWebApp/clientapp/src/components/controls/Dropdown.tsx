@@ -1,0 +1,95 @@
+import { useState } from 'react';
+import Select from 'react-select';
+import styled from 'styled-components';
+
+interface Option {
+    label: string;
+    value: string;
+}
+
+interface Props {
+    entry: string;
+    options: Option[];
+    onChange: (selectedValue: string) => void;
+}
+
+export const Dropdown = ({ entry, options, onChange }: Props) => {
+    const [selectedOption, setSelectedOption] = useState<Option | null>(null);
+
+    const handleChange = (selectedOption: Option | null) => {
+        setSelectedOption(selectedOption);
+        if (selectedOption) {
+            onChange(selectedOption.value);
+        }
+    };
+
+    return (
+        <RowContainer>
+            <Entry>{entry}</Entry>
+            <SelectBox>
+                <Select
+                    options={options}
+                    styles={customStyles}
+                    onChange={handleChange}
+                    placeholder="Auswählen..."
+                />
+            </SelectBox>
+        </RowContainer>
+    );
+};
+
+const RowContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: center
+`
+
+const Entry = styled.div`
+    display: flex;
+    justify-content: center;
+    flex: 1;
+    margin-left: 15px;
+    font-weight: bold;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-align: center;
+    max-width: 200px;
+    line-height: 50px;
+`
+
+const SelectBox = styled.div`
+    display: flex;
+    flex: 1.5;
+    align-items: center;
+    justify-content: center;
+`
+
+const customStyles = {
+    menu: (provided: any) => ({
+        ...provided,
+        width: "100%",
+    }),
+    option: (provided: any, state: { isSelected: any }) => ({
+      ...provided,
+      backgroundColor: "white",
+      color: "#7d6b52",
+      width: "100%",
+      fontSize: 15,
+    }),
+    control: (provided: any) => ({
+      ...provided,
+      backgroundColor: "#7d6b52",
+      fontSize: 20,
+    }),
+    singleValue: (provided: any) => ({
+      ...provided,
+      color: "#fffecb",
+      fontSize: 20,
+    }),
+    placeholder: (provided: any) => ({
+      ...provided,
+      color: "#fffecb",
+      fontSize: 20,
+    }),
+};

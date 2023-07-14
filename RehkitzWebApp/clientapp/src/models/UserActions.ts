@@ -3,7 +3,7 @@ import { UserEntries } from "./UserEntries"
 type addUserAction = {
     type: 'add-user'
     usersListLocal: UserEntries[]
-    newUserList: UserEntries
+    newUser: UserEntries
 }
 
 type deleteUserAction = {

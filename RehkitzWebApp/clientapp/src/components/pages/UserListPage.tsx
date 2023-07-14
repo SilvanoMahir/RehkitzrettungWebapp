@@ -7,6 +7,8 @@ import { Menu } from '../widgets/Menu'
 import User from '../widgets/Users/User'
 import UserEntryTitles from '../widgets/Users/UserEntryTitles'
 import { CreateNewUserButton } from '../controls/Button'
+import { ROUTE_ADAPT_USER_PAGE } from '../../App'
+import { useNavigate } from 'react-router-dom'
 
 export default function UserListPage() {
 
@@ -15,6 +17,7 @@ export default function UserListPage() {
     const [loadingUsers, setLoadingUsers] = useState(true)
     const { usersListLocal, dispatch_users } = useContext(UserContext)
 
+    let navigate = useNavigate()
     useEffect(() => {
         const onMount = async () => {
             const usersListLocal = await fetchUsers()
@@ -38,6 +41,7 @@ export default function UserListPage() {
     }
 
     const addNewUser = async () => {
+        navigate(ROUTE_ADAPT_USER_PAGE)
     }
 
     let content;
