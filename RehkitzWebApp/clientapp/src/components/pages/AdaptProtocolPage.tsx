@@ -39,13 +39,13 @@ export default function AdaptProtocolPage() {
             }
             else {
                 setIsNewProtocol(false)
-                const { /*protocolCode,*/ clientFullName, localName, date, foundFawns,
+                const { protocolCode, clientFullName, localName, date, foundFawns,
                     markedFawns, remark, pilotFullName, regionName, areaSize,
                     injuredFawns } = data[0]
-                // setProtocolCode(protocolCode)
+                setProtocolCode(protocolCode)
                 setClientFullName(clientFullName)
                 setLocalName(localName)
-                // setDate(date)
+                setDate(new Date(date))
                 setFoundFawns(foundFawns.toString())
                 setMarkedFawns(markedFawns.toString())
                 setRemark(remark)
