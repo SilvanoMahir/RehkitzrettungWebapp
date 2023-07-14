@@ -130,8 +130,9 @@ export default function AdaptProtocolPage() {
             }),
         })
         if (response.ok) {
-            navigate(ROUTE_RESCUE_LIST_PAGE)
+            dispatch({ type: 'update-protocols', protocolsListLocal })
         }
+        navigate(ROUTE_RESCUE_LIST_PAGE)
     }
 
     return (
