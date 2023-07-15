@@ -80,7 +80,6 @@ const ProtocolLayout = styled.div`
 	background: #7d6b52;
 	color: beige;
 	border-radius: 10px;
-
 `
 
 const ProtocolTitle = styled.div`

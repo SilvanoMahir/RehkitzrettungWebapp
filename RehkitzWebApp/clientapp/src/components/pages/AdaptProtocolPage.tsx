@@ -63,13 +63,8 @@ export default function AdaptProtocolPage() {
     }
 
     const saveProtocol = async () => {
-<<<<<<< HEAD
-        const storageToken = localStorage.getItem('user_token')
-        const response = await fetch(`/api/protocols`, {
-=======
         const storageToken = localStorage.getItem('user_token');
         const response = await fetch('/api/protocols', {
->>>>>>> b6de713 (added dropdown and started implemting user registration)
             method: 'POST',
             headers: {
                 'content-type': 'application/json',
