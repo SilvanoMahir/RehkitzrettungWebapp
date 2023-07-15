@@ -1,11 +1,11 @@
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
 import { DiscardProtocolButton, SaveProtocolButton } from '../controls/Button'
 import { ProtocolsContext } from '../../store/context'
 import Sidebar from '../widgets/Sidebar/Sidebar'
 import { useMediaQuery } from 'react-responsive'
 import { Menu } from '../widgets/Menu'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { ROUTE_RESCUE_LIST_PAGE } from '../../App'
 import ProtocolEntryForAdaptPage from '../widgets/Protocol/ProtocolEntryForAdaptPage'
 import DatePicker from "react-datepicker"
@@ -26,15 +26,44 @@ export default function AdaptProtocolPage() {
     const [regionName, setRegionName] = useState('')
     const [areaSize, setAreaSize] = useState('')
     const [injuredFawns, setInjuredFawns] = useState('')
+    const [isNewProtocol, setIsNewProtocol] = useState(false)
     const { protocolsListLocal, dispatch } = useContext(ProtocolsContext)
     let navigate = useNavigate()
+    const { id } = useParams()
+
+    useEffect(() => {
+        const onMount = async () => {
+            let data = protocolsListLocal.filter(protocols => protocols.protocolId.toString() === id)
+            if (data.length === 0) {
+                setIsNewProtocol(true)
+            }
+            else {
+                setIsNewProtocol(false)
+                const { protocolCode, clientFullName, localName, date, foundFawns,
+                    markedFawns, remark, pilotFullName, regionName, areaSize,
+                    injuredFawns } = data[0]
+                setProtocolCode(protocolCode)
+                setClientFullName(clientFullName)
+                setLocalName(localName)
+                setDate(new Date(date))
+                setFoundFawns(foundFawns.toString())
+                setMarkedFawns(markedFawns.toString())
+                setRemark(remark)
+                setPilotFullName(pilotFullName)
+                setRegionName(regionName)
+                setAreaSize(areaSize)
+                setInjuredFawns(injuredFawns.toString())
+            }
+        }
+        onMount()
+    }, [protocolsListLocal, id])
 
     const discardProtocol = async () => {
         navigate(ROUTE_RESCUE_LIST_PAGE)
     }
 
     const saveProtocol = async () => {
-        const storageToken = localStorage.getItem('user_token');
+        const storageToken = localStorage.getItem('user_token')
         const response = await fetch(`/api/protocols`, {
             method: 'POST',
             headers: {
@@ -77,6 +106,35 @@ export default function AdaptProtocolPage() {
         navigate(ROUTE_RESCUE_LIST_PAGE)
     }
 
+    const updateProtocol = async () => {
+        const storageToken = localStorage.getItem('user_token')
+        const response = await fetch(`${`/api/protocols`}/${id}`, {
+            method: 'PUT',
+            headers: {
+                'content-type': 'application/json',
+                'Authorization': `Bearer ${storageToken}`,
+            },
+            body: JSON.stringify({
+                protocolId: id,
+                protocolCode: protocolCode,
+                clientFullName: clientFullName,
+                localName: localName,
+                date: date,
+                foundFawns: parseInt(foundFawns),
+                markedFawns: parseInt(markedFawns),
+                remark: remark,
+                pilotFullName: pilotFullName,
+                regionName: regionName,
+                areaSize: areaSize,
+                injuredFawns: parseInt(injuredFawns),
+            }),
+        })
+        if (response.ok) {
+            dispatch({ type: 'update-protocols', protocolsListLocal })
+        }
+        navigate(ROUTE_RESCUE_LIST_PAGE)
+    }
+
     return (
         <RescueListLayout>
             {!isNotMobile && <Menu />}
@@ -103,7 +161,7 @@ export default function AdaptProtocolPage() {
                     </ProtocolLayout>
                     <RowContainer>
                         <DiscardProtocolButton onClick={() => discardProtocol()}>Verwerfen</DiscardProtocolButton>
-                        <SaveProtocolButton onClick={() => saveProtocol()}>Speichern</SaveProtocolButton>
+                        <SaveProtocolButton onClick={() => isNewProtocol ? saveProtocol() : updateProtocol()}>Speichern</SaveProtocolButton>
                     </RowContainer>
                 </RescueListColumnLayout >
             </RescueListRowLayout>

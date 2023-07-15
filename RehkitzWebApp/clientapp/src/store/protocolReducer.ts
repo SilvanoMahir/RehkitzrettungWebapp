@@ -20,6 +20,12 @@ export function protocolReducer(state: ProtocolState, action: ActionProtocols): 
                 ...state,
                 protocolsListLocal: action.protocolsListLocal
             }
+
+        case 'update-protocols':
+            return {
+                ...state,
+                protocolsListLocal: action.protocolsListLocal
+            }
     }
 }
 
