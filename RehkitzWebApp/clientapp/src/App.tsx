@@ -22,6 +22,7 @@ export default function App() {
             <Route path={`${ROUTE_ADAPT_PROTOCOL_PAGE}/:id`} element={<AdaptProtocolPage />} />
             <Route path={ROUTE_MAP_PAGE} element={<MapPage />} />
             <Route path={ROUTE_USER_LIST_PAGE} element={<UserListPage />} />
+            <Route path={`${ROUTE_ADAPT_USER_PAGE}/:id`} element={<AdaptUserPage />} />
             <Route path={ROUTE_ADAPT_USER_PAGE} element={<AdaptUserPage />} />
         </Routes >
     )

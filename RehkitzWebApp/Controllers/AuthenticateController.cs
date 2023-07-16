@@ -98,6 +98,12 @@ public class AuthenticateController : ControllerBase
             return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User already exists!" });
         }
 
+        var MailExists = await _context.Region.FirstOrDefaultAsync(x => x.ContactPersonMail == model.UserEmail);
+        if (MailExists == null)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Mail address of contact person in region does not exist!" });
+        }
+
         IdentityUser user = new()
         {
             Email = model.UserEmail,
@@ -116,10 +122,11 @@ public class AuthenticateController : ControllerBase
             await _roleManager.CreateAsync(role);
         }
 
-        //if (!await _roleManager.RoleExistsAsync(UserRoles.User))
-        //{
-        //    await _roleManager.CreateAsync(new IdentityRole(UserRoles.User));
-        //}
+        if (!await _roleManager.RoleExistsAsync(UserRoles.User))
+        {
+            var role = new IdentityRole(UserRoles.User);
+            await _roleManager.CreateAsync(role);
+        }
 
         if (await _roleManager.RoleExistsAsync(UserRoles.Admin))
         {

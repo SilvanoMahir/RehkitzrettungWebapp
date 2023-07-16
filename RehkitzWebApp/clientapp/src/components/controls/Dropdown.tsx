@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Select from 'react-select';
 import styled from 'styled-components';
 
@@ -10,11 +10,17 @@ interface Option {
 interface Props {
     entry: string;
     options: Option[];
+    value: string
     onChange: (selectedValue: string) => void;
 }
 
-export const Dropdown = ({ entry, options, onChange }: Props) => {
+export const Dropdown = ({ entry, options, value, onChange }: Props) => {
     const [selectedOption, setSelectedOption] = useState<Option | null>(null);
+
+    useEffect(() => {
+        const selected = options.find(option => option.value === value);
+        setSelectedOption(selected || null);
+    }, [options, value]);
 
     const handleChange = (selectedOption: Option | null) => {
         setSelectedOption(selectedOption);
@@ -31,6 +37,7 @@ export const Dropdown = ({ entry, options, onChange }: Props) => {
                     options={options}
                     styles={customStyles}
                     onChange={handleChange}
+                    value={selectedOption}
                     placeholder="Auswählen..."
                 />
             </SelectBox>

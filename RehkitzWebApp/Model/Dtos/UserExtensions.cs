@@ -22,7 +22,8 @@ public static class UserExtensions
             UserFirstName = userDto.UserFirstName,
             UserLastName = userDto.UserLastName,
             UserRegionId = userDto.UserRegion,
-            EntryIsDeleted = entryIsDeleted
+            EntryIsDeleted = entryIsDeleted,
+            UserDefinition = userDto.UserDefinition
         };
     }
 }

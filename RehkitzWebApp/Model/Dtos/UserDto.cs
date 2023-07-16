@@ -9,5 +9,6 @@ public class UserDto
     public string? UserDefinition { get; set; }
     public string? UserFunction { get; set; }
     public string? UserRegion { get; set; }
+    public string? Username { get; set; }
     public string? UserPassword { get; set; }
 }

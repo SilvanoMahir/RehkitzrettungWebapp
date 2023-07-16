@@ -1,29 +1,58 @@
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
 import { DiscardProtocolButton, SaveProtocolButton } from '../controls/Button'
 import { UserContext } from '../../store/context'
 import Sidebar from '../widgets/Sidebar/Sidebar'
 import { useMediaQuery } from 'react-responsive'
 import { Menu } from '../widgets/Menu'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { ROUTE_USER_LIST_PAGE } from '../../App'
 import ProtocolEntryForAdaptPage from '../widgets/Protocol/ProtocolEntryForAdaptPage'
 import { Dropdown } from '../controls/Dropdown'
+import UserEntry from '../widgets/Users/UserEntry'
 
 export default function AdaptUserPage() {
 
     const isNotMobile = useMediaQuery({ query: '(min-width: 426px)' })
 
+    const [userId, setUserId] = useState(0)
     const [userLastName, setUserLastName] = useState('')
     const [userFirstName, setUserFirstName] = useState('')
     const [userDefinition, setUserDefinition] = useState('')
     const [userRegion, setUserRegion] = useState('')
     const [userFunction, setUserFunction] = useState('')
     const [username, setUsername] = useState('')
-    const [userEMail, setUserEMail] = useState('')
+    const [userMail, setUserEMail] = useState('')
     const [userPassword, setUserPassword] = useState('')
+    const [isNewUser, setIsNewUser] = useState(false)
     const { usersListLocal, dispatch_users } = useContext(UserContext)
+    const { id } = useParams()
 
+    useEffect(() => {
+        const onMount = async () => {
+            let data = usersListLocal.filter(protocols => protocols.userId.toString() === id)
+            if (data.length === 0) {
+                setIsNewUser(true)
+            }
+            else {
+                const updateUser = await fetchUsers(id);
+                setIsNewUser(false)
+                const { userId, userFirstName, userLastName, userDefinition, userRegion,
+                    userFunction, username, userMail, userPassword} = updateUser
+
+                setUserId(userId)
+                setUserFirstName(userFirstName)
+                setUserLastName(userLastName)
+                setUserDefinition(userDefinition)
+                setUserRegion(userRegion)
+                setUserFunction(userFunction)
+                setUsername(username)
+                setUserEMail(userMail)
+                setUserPassword(userPassword)
+            }
+        }
+        onMount()
+    }, [usersListLocal, id])
 
     let navigate = useNavigate()
 
@@ -33,12 +62,12 @@ export default function AdaptUserPage() {
 
     const saveUser = async () => {
         const storageToken = localStorage.getItem('user_token');
-        const response = await fetch('/api/authenticate/register-admin', {
+        const response = await fetch(`${`/api/users`}/${id}`, {
             method: 'POST',
             headers: { 'content-type': 'application/json' },
             body: JSON.stringify({
                 username: username,
-                userEmail: userEMail,
+                userEmail: userMail,
                 userpassword: userPassword,
                 userDefinition: userDefinition,
                 userFirstName: userFirstName,
@@ -50,7 +79,7 @@ export default function AdaptUserPage() {
             const newUser = ({
                 userId: 0,
                 username: username,
-                userMail: userEMail,
+                userMail: userMail,
                 userPassword: userPassword,
                 userDefinition: userDefinition,
                 userFirstName: userFirstName,
@@ -61,6 +90,42 @@ export default function AdaptUserPage() {
             dispatch_users({ type: 'add-user', usersListLocal, newUser })
             navigate(ROUTE_USER_LIST_PAGE)
         }
+    }
+
+    const updateUser = async () => {
+        const storageToken = localStorage.getItem('user_token')
+        const response = await fetch(`${`/api/users`}/${id}`, {
+            method: 'PUT',
+            headers: {
+                'content-type': 'application/json',
+                'Authorization': `Bearer ${storageToken}`,
+            },
+            body: JSON.stringify({
+                userId: id,
+                username: username,
+                userMail: userMail,
+                userPassword: userPassword,
+                userDefinition: userDefinition,
+                userFirstName: userFirstName,
+                userLastName: userLastName,
+                userRegion: userRegion,
+                userFunction: userFunction
+            }),
+        })
+        if (response.ok) {
+            dispatch_users({ type: 'update-users', usersListLocal })
+            navigate(ROUTE_USER_LIST_PAGE)
+        }
+    }
+
+    const fetchUsers = async (id: string | undefined) => {
+        const response = await fetch(`/api/users/${id}`, {
+            method: 'GET'
+        })
+        if (response.ok) {
+            return await response.json()
+        }
+        return []
     }
 
     const regions = [
@@ -85,16 +150,16 @@ export default function AdaptUserPage() {
                             <ProtocolEntryForAdaptPage entry="Vorname" value={userFirstName} callbackFunction={setUserFirstName} />
                             <ProtocolEntryForAdaptPage entry="Name" value={userLastName} callbackFunction={setUserLastName} />
                             <ProtocolEntryForAdaptPage entry="Bezeichnung" value={userDefinition} callbackFunction={setUserDefinition} />
-                            <Dropdown entry="Region" options={regions} onChange={setUserRegion} />
-                            <Dropdown entry="Funktion" options={roles} onChange={setUserFunction} />
+                            <Dropdown entry="Region" options={regions} value={userRegion} onChange={setUserRegion} />
+                            <Dropdown entry="Funktion" options={roles} value={userFunction} onChange={setUserFunction} />
                             <ProtocolEntryForAdaptPage entry="Benutzername" value={username} callbackFunction={setUsername} />
-                            <ProtocolEntryForAdaptPage entry="E-Mail" value={userEMail} callbackFunction={setUserEMail} />
+                            <ProtocolEntryForAdaptPage entry="E-Mail" value={userMail} callbackFunction={setUserEMail} />
                             <ProtocolEntryForAdaptPage entry="Passwort" value={userPassword} callbackFunction={setUserPassword} />
                         </ColumnContainer>
                     </ProtocolLayout>
                     <RowContainer>
                         <DiscardProtocolButton onClick={() => discardUser()}>Verwerfen</DiscardProtocolButton>
-                        <SaveProtocolButton onClick={() => saveUser()}>Speichern</SaveProtocolButton>
+                        <SaveProtocolButton onClick={() => isNewUser ? saveUser() : updateUser()}>Speichern</SaveProtocolButton>
                     </RowContainer>
                 </RescueListColumnLayout >
             </RescueListRowLayout>

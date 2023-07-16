@@ -20,6 +20,12 @@ export function userReducer(state: UserState, action: ActionUsers): UserState {
                 ...state,
                 usersListLocal: action.usersListLocal
             }
+        
+        case 'update-users':
+            return {
+                ...state,
+                usersListLocal: action.usersListLocal
+            }
     }
 }
 

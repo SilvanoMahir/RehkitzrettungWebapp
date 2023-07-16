@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RehkitzWebApp.Model;
 using RehkitzWebApp.Model.Dtos;
@@ -38,10 +39,15 @@ public class UserController : ControllerBase
                                     .Where(x => x.UserId == user.OwnerId)
                                     .Select(x => x.RoleId)
                                     .ToListAsync();
+            var username = await _context.Users
+                                    .Where(x => x.Id == user.OwnerId)
+                                    .Select(x => x.UserName)
+                                    .ToListAsync();
+
             if (userRoleId.Count != 0)
             {
                 var userRole = await _context.Roles.FindAsync(userRoleId[0]);
-                var userDto = getUserDto(user, userRegion, userRole.Name);
+                var userDto = getUserDto(user, userRegion, userRole.Name, username[0]);
                 userDtos.Add(userDto.ToUserSmallListDto());
             }
             else
@@ -64,6 +70,7 @@ public class UserController : ControllerBase
         {
             return NotFound();
         }
+
         var userRole = "";
         var user = await _context.User.FindAsync(id);
         if (user == null)
@@ -74,10 +81,16 @@ public class UserController : ControllerBase
                                 .Where(x => x.UserId == user.OwnerId)
                                 .Select(x => x.RoleId)
                                 .ToListAsync();
+
+        var username = await _context.Users
+                        .Where(x => x.Id == user.OwnerId)
+                        .Select(x => x.UserName)
+                        .ToListAsync();
+
         if (userRoleId.Count != 0)
         {
             var userRoleItem = await _context.Roles.FindAsync(userRoleId[0]);
-            var userDto = getUserDto(user, userRegion, userRoleItem.Name);
+            userRole = userRoleItem.Name;
         }
         else
         {
@@ -88,7 +101,7 @@ public class UserController : ControllerBase
         {
             return NotFound();
         }
-        return Ok(getUserDto(user, userRegion, userRole));
+        return Ok(getUserDto(user, userRegion, userRole, username[0]));
     }
 
     // PUT: /api/users/5
@@ -101,9 +114,43 @@ public class UserController : ControllerBase
             return BadRequest();
         }
 
-        bool entryIsDeleted = false;
-        var user = userDto.ToUserEntity(entryIsDeleted);
-        _context.Entry(user).State = EntityState.Modified;
+        var userInUserTable = await _context.User.FindAsync(userDto.UserId);
+        var userInUsersRolesTable = await _context.Users.FindAsync(userInUserTable.OwnerId);
+        var userInUserRolesTable = await _context.UserRoles.FirstOrDefaultAsync(x => x.UserId == userInUserTable.OwnerId);
+        var userInRegionTable = await _context.Region.FirstOrDefaultAsync(x => x.RegionId == int.Parse(userInUserTable.UserRegionId));
+
+
+        userInUserTable.UserFirstName = userDto.UserFirstName;
+        userInUserTable.UserLastName = userDto.UserLastName;
+        userInUserTable.UserDefinition = userDto.UserDefinition;
+
+        // find the region Id for the new region 
+        var userRegionId = await _context.Region
+                            .Where(x => x.RegionName == userDto.UserRegion)
+                            .Select(x => x.RegionId)
+                            .ToListAsync();
+
+        if (userRegionId[0] != null)
+            userInUserTable.UserRegionId = userRegionId[0].ToString();
+
+        userInUsersRolesTable.Email = userDto.UserMail;
+        userInUsersRolesTable.NormalizedEmail = userDto.UserMail.ToUpper();
+        userInRegionTable.ContactPersonMail = userDto.UserMail;
+        userInUsersRolesTable.UserName = userDto.Username;
+        userInUsersRolesTable.NormalizedUserName = userDto.Username.ToUpper();
+
+
+        // updating user does not work:
+        // System.InvalidOperationException: The property 'IdentityUserRole<string>.RoleId' is part of a key and so cannot
+        // be modified or marked as modified. To change the principal of an existing entity with an identifying foreign key,
+        // first delete the dependent and invoke 'SaveChanges', and then associate the dependent with the new principal.
+        // solution --> delete old user, create new; Problem Changes UserId 
+        var userRoleId = await _context.Roles
+                      .Where(x => x.Name == userDto.UserFunction)
+                      .Select(x => x.Id)
+                      .ToListAsync();
+
+        userInUserRolesTable.RoleId = userRoleId[0].ToString();
 
         try
         {
@@ -167,18 +214,19 @@ public class UserController : ControllerBase
         return (_context.User?.Any(e => e.UserId == id)).GetValueOrDefault();
     }
 
-    private UserDto getUserDto(User user, Region region, string userRole)
+    private UserDto getUserDto(User user, Region region, string userRole, string username)
     {
         // the fixed comments depends on the Role which has to be linked first
         return new UserDto
         {
             UserId = user.UserId,
             UserDefinition = user.UserDefinition,
-            UserFunction = userRole + " " + region.RegionName,
+            UserFunction = userRole,
             UserRegion = region.RegionName,
             UserFirstName = user.UserFirstName,
             UserLastName = user.UserLastName,
             UserMail = region.ContactPersonMail,
+            Username = username,
             UserPassword = "Password"
         };
     }

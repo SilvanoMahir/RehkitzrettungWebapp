@@ -1,17 +1,19 @@
 import styled from "styled-components"
 import { UserEntries } from "../../../models/UserEntries"
 import { EditUserButton } from "../../controls/Button"
+import { ROUTE_ADAPT_USER_PAGE } from "../../../App"
+import { useNavigate } from "react-router-dom"
 
 interface Props {
     userEntry: UserEntries
 }
 
 export default function UserBodyLargeScreen({ userEntry }: Props) {
+    let navigate = useNavigate()
 
-    function editProtocol(): void {
-        throw new Error("Function not implemented.")
+    function editUser(): void {
+        navigate(`${ROUTE_ADAPT_USER_PAGE}/${userEntry.userId}`)
     }
-
     return (
         <RowContainer>
             <TextField> {userEntry?.userId}</TextField>
@@ -19,7 +21,7 @@ export default function UserBodyLargeScreen({ userEntry }: Props) {
             <TextField> {userEntry?.userFunction}</TextField>
             <TextField> {userEntry?.userRegion}</TextField>
             <ButtonBox>
-                <EditUserButton onClick={() => editProtocol()}>Bearbeiten</EditUserButton>
+                <EditUserButton onClick={() => editUser()}>Bearbeiten</EditUserButton>
             </ButtonBox>
         </RowContainer>
     )
