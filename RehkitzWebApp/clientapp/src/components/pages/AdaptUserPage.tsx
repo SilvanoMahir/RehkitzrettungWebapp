@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
-import { DiscardProtocolButton, SaveProtocolButton } from '../controls/Button'
+import { DeleteUserButton, DiscardProtocolButton, DiscardUserButton, SaveProtocolButton } from '../controls/Button'
 import { UserContext } from '../../store/context'
 import Sidebar from '../widgets/Sidebar/Sidebar'
 import { useMediaQuery } from 'react-responsive'
@@ -9,7 +9,6 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { ROUTE_USER_LIST_PAGE } from '../../App'
 import ProtocolEntryForAdaptPage from '../widgets/Protocol/ProtocolEntryForAdaptPage'
 import { Dropdown } from '../controls/Dropdown'
-import UserEntry from '../widgets/Users/UserEntry'
 
 export default function AdaptUserPage() {
 
@@ -62,17 +61,18 @@ export default function AdaptUserPage() {
 
     const saveUser = async () => {
         const storageToken = localStorage.getItem('user_token');
-        const response = await fetch(`${`/api/users`}/${id}`, {
+        const response = await fetch('/api/users', {
             method: 'POST',
             headers: { 'content-type': 'application/json' },
             body: JSON.stringify({
                 username: username,
-                userEmail: userMail,
+                userMail: userMail,
                 userpassword: userPassword,
                 userDefinition: userDefinition,
                 userFirstName: userFirstName,
                 userLastName: userLastName,
                 userRegion: userRegion,
+                userFunction: userFunction
             }),
         })
         if (response.ok) {
@@ -118,6 +118,20 @@ export default function AdaptUserPage() {
         }
     }
 
+    const deleteUser = async () => {
+        const storageToken = localStorage.getItem('user_token')
+        const response = await fetch(`${`/api/users`}/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'content-type': 'application/json',
+            }
+        })
+        if (response.ok) {
+            dispatch_users({ type: 'delete-user', usersListLocal, userId })
+            navigate(ROUTE_USER_LIST_PAGE)
+        }
+    }
+
     const fetchUsers = async (id: string | undefined) => {
         const response = await fetch(`/api/users/${id}`, {
             method: 'GET'
@@ -158,7 +172,8 @@ export default function AdaptUserPage() {
                         </ColumnContainer>
                     </ProtocolLayout>
                     <RowContainer>
-                        <DiscardProtocolButton onClick={() => discardUser()}>Verwerfen</DiscardProtocolButton>
+                        <DiscardUserButton onClick={() => discardUser()}>Verwerfen</DiscardUserButton>
+                        {(!isNewUser) && <DeleteUserButton onClick={() => deleteUser()}>Löschen</DeleteUserButton>}
                         <SaveProtocolButton onClick={() => isNewUser ? saveUser() : updateUser()}>Speichern</SaveProtocolButton>
                     </RowContainer>
                 </RescueListColumnLayout >

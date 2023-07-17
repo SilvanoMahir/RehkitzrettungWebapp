@@ -11,10 +11,15 @@ namespace webapi.Controllers;
 public class UserController : ControllerBase
 {
     private readonly ApplicationDbContext _context;
+    private readonly UserManager<IdentityUser> _userManager;
+    private readonly RoleManager<IdentityRole> _roleManager;
 
-    public UserController(ApplicationDbContext context)
+    public UserController(ApplicationDbContext context, UserManager<IdentityUser> userManager,
+        RoleManager<IdentityRole> roleManager)
     {
         _context = context;
+        _userManager = userManager;
+        _roleManager = roleManager;
     }
 
     // GET: /api/users
@@ -139,18 +144,21 @@ public class UserController : ControllerBase
         userInUsersRolesTable.UserName = userDto.Username;
         userInUsersRolesTable.NormalizedUserName = userDto.Username.ToUpper();
 
-
-        // updating user does not work:
-        // System.InvalidOperationException: The property 'IdentityUserRole<string>.RoleId' is part of a key and so cannot
-        // be modified or marked as modified. To change the principal of an existing entity with an identifying foreign key,
-        // first delete the dependent and invoke 'SaveChanges', and then associate the dependent with the new principal.
-        // solution --> delete old user, create new; Problem Changes UserId 
         var userRoleId = await _context.Roles
                       .Where(x => x.Name == userDto.UserFunction)
                       .Select(x => x.Id)
                       .ToListAsync();
 
-        userInUserRolesTable.RoleId = userRoleId[0].ToString();
+        var user = await _userManager.FindByIdAsync(userInUserTable.OwnerId);
+        if (user == null)
+            return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User not found!" });
+        var newRole = await _roleManager.FindByIdAsync(userRoleId[0]);
+        if (newRole == null)
+            return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Role does not exist!" });
+
+        var existingRoles = await _userManager.GetRolesAsync(user);
+        await _userManager.RemoveFromRolesAsync(user, existingRoles);
+        await _userManager.AddToRoleAsync(user, newRole.Name);
 
         try
         {
@@ -180,9 +188,32 @@ public class UserController : ControllerBase
             return NotFound();
         }
 
-        bool entryIsDeleted = false;
-        var user = userDto.ToUserEntity(entryIsDeleted);
-        _context.User.Add(user);
+        IdentityUser user = new()
+        {
+            Email = userDto.UserMail,
+            SecurityStamp = Guid.NewGuid().ToString(),
+            UserName = userDto.Username
+        };
+        var userManger = await _userManager.CreateAsync(user, userDto.UserPassword);
+        await _userManager.AddToRoleAsync(user, userDto.UserFunction);
+
+        var userRegion = await _context.Region
+            .Where(r => r.RegionName == userDto.UserRegion) // Replace "Attribute" with the actual attribute name in your entity
+            .Select(r => (int?)r.RegionId) // Replace "Id" with the actual ID property name in your entity
+            .FirstOrDefaultAsync();
+
+        var newUser = new User
+        {
+            OwnerId = user.Id,
+            UserFirstName = userDto.UserFirstName,
+            UserLastName = userDto.UserLastName,
+            UserRegionId = userRegion.ToString(),
+            UserDefinition = userDto.UserDefinition,
+            EntryIsDeleted = false
+        };
+
+        _context.User.Add(newUser);
+
         await _context.SaveChangesAsync();
 
         return Ok(userDto);

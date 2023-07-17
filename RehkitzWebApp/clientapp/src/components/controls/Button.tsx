@@ -50,6 +50,18 @@ export const DiscardProtocolButton = styled.button`
     margin-top: 20px;
 `
 
+export const DiscardUserButton = styled.button`
+    ${CustomButton};
+    background: red;
+    margin-top: 20px;
+`
+
+export const DeleteUserButton = styled.button`
+    ${CustomButton};
+    background: #820000;
+    margin-top: 20px;
+`
+
 export const SaveProtocolButton = styled.button`
     ${CustomButton};
     background: green;
