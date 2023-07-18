@@ -119,6 +119,8 @@ export default function AdaptUserPage() {
     }
 
     const deleteUser = async () => {
+        const answer = window.confirm("Wirklich löschen?")
+        if (answer){
         const storageToken = localStorage.getItem('user_token')
         const response = await fetch(`${`/api/users`}/${id}`, {
             method: 'DELETE',
@@ -130,6 +132,7 @@ export default function AdaptUserPage() {
             dispatch_users({ type: 'delete-user', usersListLocal, userId })
             navigate(ROUTE_USER_LIST_PAGE)
         }
+    }
     }
 
     const fetchUsers = async (id: string | undefined) => {
@@ -159,7 +162,7 @@ export default function AdaptUserPage() {
                 {(isNotMobile) && <Sidebar showSidebar={isNotMobile} />}
                 <RescueListColumnLayout>
                     <ProtocolLayout isNotMobile={isNotMobile}>
-                        <ProtocolTitle>Neuer Benutzer</ProtocolTitle>
+                        <ProtocolTitle>{isNewUser ? 'Neuer Benutzer' : `Benutzer ${userDefinition}`}</ProtocolTitle>                        
                         <ColumnContainer>
                             <ProtocolEntryForAdaptPage entry="Vorname" value={userFirstName} callbackFunction={setUserFirstName} />
                             <ProtocolEntryForAdaptPage entry="Name" value={userLastName} callbackFunction={setUserLastName} />
@@ -208,27 +211,29 @@ const RowContainer = styled.div`
     margin-bottom: 10px;
 `
 
-const DatePickerRowContainer = styled.div` 
-    display: flex;
-    flex-direction: row;
-    justify-content: center
-`
-
 const ProtocolLayout = styled.div<{ isNotMobile: boolean }>`
     margin: 0px 10px 10px;
     margin-top: ${(props) => (props.isNotMobile ? "5vh" : "8vh")};
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: #7d6b52;
+    background: #9A8873;
     color: beige;
     max-width: 500px;
+    border-radius: 10px;
+    @media (min-width: 426px) {
+        display: inline-block;
+        width: 100%;
+  	}
 `
 
 const ProtocolTitle = styled.div`
+    display: flex;
+    justify-content: center;
     font-weight: 500;
     font-size: 25px;
     margin: 10px;
+    color: #fffecb;
 `
 
 const ColumnContainer = styled.div`

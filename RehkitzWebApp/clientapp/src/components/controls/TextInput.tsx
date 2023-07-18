@@ -47,9 +47,11 @@ const CustomTextInput = styled.input`
 `
 
 const CustomTextInputForAdaptPage = styled.input`
+    display: flex;
+    flex: 1;
     border-radius: 8px;
-    width: 170px;
-    font-size: 25px;
+    width: 100%;
+    font-size: 20px;
     margin: 10px;
     background: #898472;
     color: #fffecb;

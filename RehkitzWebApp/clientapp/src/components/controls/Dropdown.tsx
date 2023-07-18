@@ -47,8 +47,8 @@ export const Dropdown = ({ entry, options, value, onChange }: Props) => {
 
 const RowContainer = styled.div`
     display: flex;
-    flex-direction: row;
-    justify-content: center
+    justify-content: flex-start;
+    margin-left: 0.75em;
 `
 
 const Entry = styled.div`
@@ -63,13 +63,14 @@ const Entry = styled.div`
     text-align: center;
     max-width: 200px;
     line-height: 50px;
+    color: #fffecb;
 `
 
 const SelectBox = styled.div`
     display: flex;
-    flex: 1.5;
+    flex: 1;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
 `
 
 const customStyles = {
@@ -79,14 +80,14 @@ const customStyles = {
     }),
     option: (provided: any, state: { isSelected: any }) => ({
       ...provided,
-      backgroundColor: "white",
+      backgroundColor: "transparent",
       color: "#7d6b52",
       width: "100%",
       fontSize: 15,
     }),
     control: (provided: any) => ({
       ...provided,
-      backgroundColor: "#7d6b52",
+      backgroundColor: "transparent",
       fontSize: 20,
     }),
     singleValue: (provided: any) => ({

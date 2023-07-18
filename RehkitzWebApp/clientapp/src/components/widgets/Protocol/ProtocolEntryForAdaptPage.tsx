@@ -19,8 +19,7 @@ export default function ProtocolEntryForAdaptPage({ entry, value, callbackFuncti
 
 const RowContainer = styled.div`
     display: flex;
-    flex-direction: row;
-    justify-content: center
+
 `
 
 const Entry = styled.div`
@@ -33,4 +32,5 @@ const Entry = styled.div`
     text-align: center;
     max-width: 200px;
     line-height: 50px;
+    color: #fffecb;
 `

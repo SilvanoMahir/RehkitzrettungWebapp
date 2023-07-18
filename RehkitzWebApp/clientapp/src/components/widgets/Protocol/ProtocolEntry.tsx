@@ -27,6 +27,7 @@ const Entry = styled.div`
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    color: #fffecb;
 `
 
 const Value = styled.div`
@@ -35,4 +36,5 @@ const Value = styled.div`
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    color: #fffecb;
 `

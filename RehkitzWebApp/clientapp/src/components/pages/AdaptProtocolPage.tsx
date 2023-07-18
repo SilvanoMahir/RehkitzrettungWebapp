@@ -142,7 +142,7 @@ export default function AdaptProtocolPage() {
                 {(isNotMobile) && <Sidebar showSidebar={isNotMobile} />}
                 <RescueListColumnLayout>
                     <ProtocolLayout isNotMobile={isNotMobile}>
-                        <ProtocolTitle>Neues Protokoll</ProtocolTitle>
+                    <ProtocolTitle>{isNewProtocol ? 'Neuer Benutzer' : `${clientFullName}`}</ProtocolTitle>                        
                         <ColumnContainer>
                             <ProtocolEntryForAdaptPage entry="Auftraggeber" value={clientFullName} callbackFunction={setClientFullName} />
                             <ProtocolEntryForAdaptPage entry="Pilot" value={pilotFullName} callbackFunction={setPilotFullName} />
@@ -150,7 +150,9 @@ export default function AdaptProtocolPage() {
                             <ProtocolEntryForAdaptPage entry="Region" value={regionName} callbackFunction={setRegionName} />
                             <DatePickerRowContainer>
                                 <DatePickerLabel>Datum</DatePickerLabel>
-                                <DatePicker selected={date} onChange={(date) => setDate(date)} dateFormat="dd/MM/yyyy" />
+                                <DatePickerControl>
+                                    <DatePicker selected={date} onChange={(date) => setDate(date)} dateFormat="dd/MM/yyyy" />
+                                </DatePickerControl>
                             </DatePickerRowContainer>
                             <ProtocolEntryForAdaptPage entry="Fläche" value={areaSize} callbackFunction={setAreaSize} />
                             <ProtocolEntryForAdaptPage entry="Gefundene Kitze" value={foundFawns} callbackFunction={setFoundFawns} />
@@ -211,6 +213,7 @@ const DatePickerLabel = styled.div`
     text-align: center;
     max-width: 200px;
     line-height: 50px;
+    color: #fffecb;
 `
 
 const ProtocolLayout = styled.div<{ isNotMobile: boolean }>`
@@ -219,9 +222,10 @@ const ProtocolLayout = styled.div<{ isNotMobile: boolean }>`
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: #7d6b52;
+    background: #9A8873;
     color: beige;
     max-width: 500px;
+    border-radius: 10px;
 `
 
 const ProtocolTitle = styled.div`
@@ -234,4 +238,11 @@ const ColumnContainer = styled.div`
     display: flex;
     flex-direction: column;
     width: 100%;
+`
+
+const DatePickerControl = styled.div`
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
 `
