@@ -74,6 +74,7 @@ export default function Protocol({ protocolId }: Props) {
 
 const ProtocolLayout = styled.div`
 	margin: 10px;
+    padding: 20px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;

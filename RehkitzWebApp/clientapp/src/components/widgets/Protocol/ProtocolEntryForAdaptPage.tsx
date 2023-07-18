@@ -30,7 +30,6 @@ const Entry = styled.div`
     white-space: nowrap;
     text-overflow: ellipsis;
     text-align: center;
-    max-width: 200px;
     line-height: 50px;
     color: #fffecb;
 `

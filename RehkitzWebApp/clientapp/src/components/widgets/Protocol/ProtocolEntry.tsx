@@ -22,7 +22,6 @@ const RowContainer = styled.div`
 
 const Entry = styled.div`
     flex: 1;
-    margin-left: 15px;
     font-weight: bold;
     overflow: hidden;
     white-space: nowrap;
@@ -32,7 +31,6 @@ const Entry = styled.div`
 
 const Value = styled.div`
     flex: 1;
-    margin-left: 15px;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;

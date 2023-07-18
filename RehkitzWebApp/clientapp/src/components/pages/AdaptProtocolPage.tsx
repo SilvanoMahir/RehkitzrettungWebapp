@@ -10,6 +10,7 @@ import { ROUTE_RESCUE_LIST_PAGE } from '../../App'
 import ProtocolEntryForAdaptPage from '../widgets/Protocol/ProtocolEntryForAdaptPage'
 import DatePicker from "react-datepicker"
 import 'react-datepicker/dist/react-datepicker.css'
+import { Dropdown } from '../controls/Dropdown'
 
 export default function AdaptProtocolPage() {
 
@@ -135,6 +136,17 @@ export default function AdaptProtocolPage() {
         navigate(ROUTE_RESCUE_LIST_PAGE)
     }
 
+    const regions = [
+        { label: 'Tasna', value: 'Tasna' },
+        { label: 'Valsot', value: 'Valsot' },
+    ];
+
+    const sizes = [
+        { label: '<0.5ha', value: '<0.5ha' },
+        { label: '<1.5ha', value: '<1.5ha' },
+        { label: '>1.5ha', value: '>1.5ha' },
+    ];
+
     return (
         <RescueListLayout>
             {!isNotMobile && <Menu />}
@@ -147,14 +159,14 @@ export default function AdaptProtocolPage() {
                             <ProtocolEntryForAdaptPage entry="Auftraggeber" value={clientFullName} callbackFunction={setClientFullName} />
                             <ProtocolEntryForAdaptPage entry="Pilot" value={pilotFullName} callbackFunction={setPilotFullName} />
                             <ProtocolEntryForAdaptPage entry="Lokalname" value={localName} callbackFunction={setLocalName} />
-                            <ProtocolEntryForAdaptPage entry="Region" value={regionName} callbackFunction={setRegionName} />
+                            <Dropdown entry="Region" options={regions} value={regionName} onChange={setRegionName} />
                             <DatePickerRowContainer>
                                 <DatePickerLabel>Datum</DatePickerLabel>
                                 <DatePickerControl>
                                     <DatePicker selected={date} onChange={(date) => setDate(date)} dateFormat="dd/MM/yyyy" />
                                 </DatePickerControl>
                             </DatePickerRowContainer>
-                            <ProtocolEntryForAdaptPage entry="Fläche" value={areaSize} callbackFunction={setAreaSize} />
+                            <Dropdown entry="Fläche" options={sizes} value={areaSize} onChange={setAreaSize} />
                             <ProtocolEntryForAdaptPage entry="Gefundene Kitze" value={foundFawns} callbackFunction={setFoundFawns} />
                             <ProtocolEntryForAdaptPage entry="Verletzte Kitze" value={injuredFawns} callbackFunction={setInjuredFawns} />
                             <ProtocolEntryForAdaptPage entry="Markierte Kitze" value={markedFawns} callbackFunction={setMarkedFawns} />
@@ -211,7 +223,6 @@ const DatePickerLabel = styled.div`
     white-space: nowrap;
     text-overflow: ellipsis;
     text-align: center;
-    max-width: 200px;
     line-height: 50px;
     color: #fffecb;
 `
@@ -232,6 +243,7 @@ const ProtocolTitle = styled.div`
     font-weight: 500;
     font-size: 25px;
     margin: 10px;
+    color: #fffecb;
 `
 
 const ColumnContainer = styled.div`
@@ -243,6 +255,5 @@ const ColumnContainer = styled.div`
 const DatePickerControl = styled.div`
     display: flex;
     flex: 1;
-    justify-content: center;
     align-items: center;
 `
