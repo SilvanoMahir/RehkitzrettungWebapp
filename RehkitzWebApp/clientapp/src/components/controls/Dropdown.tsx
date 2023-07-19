@@ -61,6 +61,9 @@ const Entry = styled.div`
     text-align: center;
     line-height: 50px;
     color: #fffecb;
+    @media (min-width: 1400px) {
+        font-size: 1.25em;
+    }
 `
 
 const SelectBox = styled.div`

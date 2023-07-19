@@ -27,6 +27,12 @@ const Entry = styled.div`
     white-space: nowrap;
     text-overflow: ellipsis;
     color: #fffecb;
+    @media (max-width: 430px) {
+        font-size: 0.9em;
+    }
+    @media (min-width: 1400px) {
+        font-size: 1.25em;
+    }
 `
 
 const Value = styled.div`
@@ -35,4 +41,10 @@ const Value = styled.div`
     white-space: nowrap;
     text-overflow: ellipsis;
     color: #fffecb;
+    @media (max-width: 430px) {
+        font-size: 0.9em;
+    }
+    @media (min-width: 1400px) {
+        font-size: 1.25em;
+    }
 `

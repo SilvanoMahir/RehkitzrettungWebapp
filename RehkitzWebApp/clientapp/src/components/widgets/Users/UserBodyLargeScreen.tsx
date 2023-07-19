@@ -38,8 +38,10 @@ const TextField = styled.text`
     color: #fffecb;
     display: flex;
     justify-content: center;
+    font-size: 1.25em;
 `
 
 const ButtonBox = styled.div`
     display: flex;
+    flex-direction: column;
 `

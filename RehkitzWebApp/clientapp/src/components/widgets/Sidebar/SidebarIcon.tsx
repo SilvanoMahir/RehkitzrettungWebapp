@@ -11,5 +11,9 @@ export default function SidebarIcon() {
 
 const Image = styled.img`
     width: 65%;
-    margin: 15px;
+    margin: 0.75em;
+    @media (max-width: 700px) {
+        width: 45%;
+    }
+
 `

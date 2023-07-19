@@ -12,7 +12,9 @@ import { useNavigate } from 'react-router-dom'
 
 export default function UserListPage() {
 
-    const isNotMobile = useMediaQuery({ query: '(min-width: 426px)' })
+    const isNotMobile = useMediaQuery({ query: '(min-width: 700px)' })
+    const isSmallScreen = useMediaQuery({ query: '(min-width: 1200px)' })
+
 
     const [loadingUsers, setLoadingUsers] = useState(true)
     const { usersListLocal, dispatch_users } = useContext(UserContext)
@@ -67,7 +69,7 @@ export default function UserListPage() {
                         placeholder={"Suchen"}></SearchInput>
                     <PageTitle>Benutzerverwaltung</PageTitle>
                     <BlockLayout>
-                        {isNotMobile ? <UserEntryTitles entry={'NotMObile'}></UserEntryTitles> : <></>}
+                        {isSmallScreen ? <UserEntryTitles entry={'NotMObile'}></UserEntryTitles> : <></>}
                         {content}
                     </BlockLayout>
                     <NewUserButton>
@@ -88,7 +90,7 @@ const BlockLayout = styled.div`
     margin: 1em; 
     padding: 1em;
     border-radius: 10px;
-    @media (max-width: 426px) {
+    @media (max-width: 700px) {
         background: transparent;
     }
 `
@@ -114,7 +116,7 @@ const SearchInput = styled.input<{ isNotMobile: boolean }>`
     font-size: 25px;
     background: #898472;
     color: #fffecb;
-    margin-top: ${(props) => (props.isNotMobile ? "5vh" : "8vh")};
+    margin-top: ${(props) => (props.isNotMobile ? "1em" : "3em")};
     margin-right: ${(props) => (props.isNotMobile ? "2vh" : "1vh")};
 
     &::placeholder {
@@ -130,10 +132,9 @@ const PageTitle = styled.div`
     font-weight: 500;
     font-size: 2em;
     margin: 10px;
-    margin-bottom: 1.5em;
     color: #fffecb;
-    @media (max-width: 426px) {
-        margin-bottom: 0.25em;
+    @media (max-width: 700px) {
+        margin-bottom: 1.25em;
     }
 `
 

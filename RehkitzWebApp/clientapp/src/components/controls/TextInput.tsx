@@ -59,4 +59,7 @@ const CustomTextInputForAdaptPage = styled.input`
         color: #fffecb;
         opacity: 0.5;
     }
+    @media (min-width: 1400px) {
+        font-size: 1.25em;
+    }
 `

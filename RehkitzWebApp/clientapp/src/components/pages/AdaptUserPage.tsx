@@ -12,7 +12,7 @@ import { Dropdown } from '../controls/Dropdown'
 
 export default function AdaptUserPage() {
 
-    const isNotMobile = useMediaQuery({ query: '(min-width: 426px)' })
+    const isNotMobile = useMediaQuery({ query: '(min-width: 700px)' })
 
     const [userId, setUserId] = useState(0)
     const [userLastName, setUserLastName] = useState('')
@@ -213,18 +213,21 @@ const RowContainer = styled.div`
 
 const ProtocolLayout = styled.div<{ isNotMobile: boolean }>`
     margin: 0px 10px 10px;
-    margin-top: ${(props) => (props.isNotMobile ? "5vh" : "8vh")};
+    margin-top: ${(props) => (props.isNotMobile ? "1em" : "5em")};
     display: flex;
     flex-direction: column;
     align-items: center;
     background: #9A8873;
     color: beige;
-    max-width: 500px;
+    max-width: 30em;
     border-radius: 10px;
-    @media (min-width: 426px) {
+    @media (min-width: 700px) {
         display: inline-block;
-        width: 100%;
+        width: 90%;
   	}
+    @media (min-width: 1200px) {
+        max-width: 40em;
+    }
 `
 
 const ProtocolTitle = styled.div`

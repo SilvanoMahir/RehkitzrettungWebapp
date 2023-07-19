@@ -5,7 +5,7 @@ import Sidebar from '../widgets/Sidebar/Sidebar'
 import { Menu } from '../widgets/Menu'
 
 export default function RescueListPage() {
-    const isNotMobile = useMediaQuery({ query: '(min-width: 426px)' })
+    const isNotMobile = useMediaQuery({ query: '(min-width: 700px)' })
 
     return (
         <MapLayout>

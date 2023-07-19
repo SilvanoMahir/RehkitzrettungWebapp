@@ -14,7 +14,7 @@ import { Dropdown } from '../controls/Dropdown'
 
 export default function AdaptProtocolPage() {
 
-    const isNotMobile = useMediaQuery({ query: '(min-width: 426px)' })
+    const isNotMobile = useMediaQuery({ query: '(min-width: 700px)' })
 
     const [protocolCode, setProtocolCode] = useState('')
     const [clientFullName, setClientFullName] = useState('')
@@ -154,7 +154,7 @@ export default function AdaptProtocolPage() {
                 {(isNotMobile) && <Sidebar showSidebar={isNotMobile} />}
                 <RescueListColumnLayout>
                     <ProtocolLayout isNotMobile={isNotMobile}>
-                    <ProtocolTitle>{isNewProtocol ? 'Neuer Benutzer' : `${clientFullName}`}</ProtocolTitle>                        
+                    <ProtocolTitle>{isNewProtocol ? 'Neues Protokoll' : `${clientFullName}`}</ProtocolTitle>                        
                         <ColumnContainer>
                             <ProtocolEntryForAdaptPage entry="Auftraggeber" value={clientFullName} callbackFunction={setClientFullName} />
                             <ProtocolEntryForAdaptPage entry="Pilot" value={pilotFullName} callbackFunction={setPilotFullName} />
@@ -225,6 +225,9 @@ const DatePickerLabel = styled.div`
     text-align: center;
     line-height: 50px;
     color: #fffecb;
+    @media (min-width: 1400px) {
+        font-size: 1.25em;
+    }
 `
 
 const ProtocolLayout = styled.div<{ isNotMobile: boolean }>`

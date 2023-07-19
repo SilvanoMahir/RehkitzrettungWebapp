@@ -19,7 +19,6 @@ export default function ProtocolEntryForAdaptPage({ entry, value, callbackFuncti
 
 const RowContainer = styled.div`
     display: flex;
-
 `
 
 const Entry = styled.div`
@@ -32,4 +31,7 @@ const Entry = styled.div`
     text-align: center;
     line-height: 50px;
     color: #fffecb;
+    @media (min-width: 1400px) {
+        font-size: 1.25em;
+    }
 `

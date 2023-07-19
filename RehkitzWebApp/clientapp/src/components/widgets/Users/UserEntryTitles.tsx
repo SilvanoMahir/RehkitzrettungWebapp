@@ -19,7 +19,7 @@ const RowContainer = styled.div`
 	display: grid;
   	grid-template-columns: repeat(5, 1fr);
   	justify-items: stretch;
-  	@media (max-width: 426px) {
+  	@media (max-width: 700px) {
     	display: flex;
     	justify-content: center; 
     	align-items: center; 

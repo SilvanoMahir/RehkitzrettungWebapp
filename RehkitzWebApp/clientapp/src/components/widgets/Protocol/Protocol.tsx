@@ -15,7 +15,9 @@ interface Props {
 
 export default function Protocol({ protocolId }: Props) {
 
-    const isNotMobile = useMediaQuery({ query: '(min-width: 426px)' })
+    const isNotMobile = useMediaQuery({ query: '(min-width: 700px)' })
+    const isSmallScreen = useMediaQuery({ query: '(min-width: 1200px)' })
+
     //const { protocolId } = useParams() --> not working now as Router not set, there used Props
     const { token } = useContext(AppContext)
     const { protocolsListLocal, dispatch } = useContext(ProtocolsContext)
@@ -63,7 +65,7 @@ export default function Protocol({ protocolId }: Props) {
     return (
         <ProtocolLayout>
             <ProtocolTitle>Protokoll {protocolEntry.protocolCode}</ProtocolTitle>
-            {isNotMobile ? <ProtocolBodyLargeScreen protocolEntry={protocolEntry} /> : <ProtocolBodySmallScreen protocolEntry={protocolEntry} />}
+            {isSmallScreen ? <ProtocolBodyLargeScreen protocolEntry={protocolEntry} /> : <ProtocolBodySmallScreen protocolEntry={protocolEntry} />}
             <RowContainer>
                 <DeleteProtocolButton onClick={() => deleteProtocol(protocolEntry.protocolId)}>Löschen</DeleteProtocolButton>
                 <EditProtocolButton onClick={() => editProtocol()}>Bearbeiten</EditProtocolButton>
