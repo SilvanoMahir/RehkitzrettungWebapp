@@ -53,8 +53,12 @@ namespace ApiWebAppTesting
             var user = new
             {
                 username = "admin_test",
-                email = "test@ost.ch",
-                password = "Password@123"
+                userEmail = "admin@tasna.ch",
+                userpassword = "Password@123",
+                userDefinition = "Admin 1",
+                userFirstName = "Silvano",
+                userLastName = "Stecher",
+                userRegion = "Tasna"
             };
 
             var userLogin = new
@@ -69,7 +73,8 @@ namespace ApiWebAppTesting
             var responseRegister = await _httpClient.PostAsync("/api/authenticate/register-admin", content);
 
             //login with previous created admin user
-            var contentLogin = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+            string jsonLoginPayload = JsonConvert.SerializeObject(userLogin);
+            var contentLogin = new StringContent(jsonLoginPayload, Encoding.UTF8, "application/json");
             var responseLogin = await _httpClient.PostAsync("/api/authenticate/login", contentLogin);
 
             //get token of the login
@@ -99,8 +104,12 @@ namespace ApiWebAppTesting
             var user = new
             {
                 username = "admin_test",
-                email = "test@ost.ch",
-                password = "Password@123"
+                userEmail = "admin@tasna.ch",
+                userpassword = "Password@123",
+                userDefinition = "Admin 1",
+                userFirstName = "Silvano",
+                userLastName = "Stecher",
+                userRegion = "Tasna"
             };
 
             var userLogin = new
@@ -115,7 +124,8 @@ namespace ApiWebAppTesting
             var responseRegister = await _httpClient.PostAsync("/api/authenticate/register-admin", content);
 
             // login as admin user
-            var contentLogin = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+            string jsonLoginPayload = JsonConvert.SerializeObject(userLogin);
+            var contentLogin = new StringContent(jsonLoginPayload, Encoding.UTF8, "application/json");
             var responseLogin = await _httpClient.PostAsync("/api/authenticate/login", contentLogin);
 
             // delete the protocol
@@ -164,8 +174,12 @@ namespace ApiWebAppTesting
             var user = new
             {
                 username = "admin_test",
-                email = "test@ost.ch",
-                password = "Password@123"
+                userEmail = "admin@tasna.ch",
+                userpassword = "Password@123",
+                userDefinition = "Admin 1",
+                userFirstName = "Silvano",
+                userLastName = "Stecher",
+                userRegion = "Tasna"
             };
 
             //setup request for getting the protocols

@@ -10,6 +10,7 @@ namespace ApiWebAppTesting
     public class TestModels
     {
         Protocol[] protcolsList;
+        Region[] regionList;
 
         public TestModels() {
 
@@ -22,7 +23,7 @@ namespace ApiWebAppTesting
                     ClientFullName = "Hans Pua",
                     LocalName = "Chomps",
                     PilotFullName = "Johannes Erny",
-                    RegionName = "Sent",
+                    RegionName = "1",
                     Remark = "Keine Bemerkung",
                     AreaSize = ">1ha",
                     FoundFawns = 1,
@@ -37,7 +38,7 @@ namespace ApiWebAppTesting
                     ClientFullName = "Mark Smith",
                     LocalName = "Uina",
                     PilotFullName = "John Kane",
-                    RegionName = "Scuol",
+                    RegionName = "1",
                     Remark = "Keine Bemerkung",
                     AreaSize = "<1ha",
                     FoundFawns = 2,
