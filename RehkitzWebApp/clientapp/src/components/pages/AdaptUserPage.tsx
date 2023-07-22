@@ -9,6 +9,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { ROUTE_USER_LIST_PAGE } from '../../App'
 import ProtocolEntryForAdaptPage from '../widgets/Protocol/ProtocolEntryForAdaptPage'
 import { Dropdown } from '../controls/Dropdown'
+import { toast } from 'react-toastify'
 
 export default function AdaptUserPage() {
 
@@ -89,6 +90,10 @@ export default function AdaptUserPage() {
             })
             dispatch_users({ type: 'add-user', usersListLocal, newUser })
             navigate(ROUTE_USER_LIST_PAGE)
+            toast.success("Benutzer erfolgreich hinzugefügt!", {
+                position: toast.POSITION.TOP_CENTER,
+                containerId: 'LoginToaster'
+            })
         }
     }
 
@@ -115,6 +120,10 @@ export default function AdaptUserPage() {
         if (response.ok) {
             dispatch_users({ type: 'update-users', usersListLocal })
             navigate(ROUTE_USER_LIST_PAGE)
+            toast.success("Benutzer erfolgreich angepasst!", {
+                position: toast.POSITION.TOP_CENTER,
+                containerId: 'LoginToaster'
+            })
         }
     }
 
@@ -131,6 +140,10 @@ export default function AdaptUserPage() {
         if (response.ok) {
             dispatch_users({ type: 'delete-user', usersListLocal, userId })
             navigate(ROUTE_USER_LIST_PAGE)
+            toast.success("Benutzer erfolgreich gelöscht!", {
+                position: toast.POSITION.TOP_CENTER,
+                containerId: 'LoginToaster'
+            })
         }
     }
     }

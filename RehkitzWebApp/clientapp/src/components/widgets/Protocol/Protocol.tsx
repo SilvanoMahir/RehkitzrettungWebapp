@@ -8,6 +8,7 @@ import ProtocolBodyLargeScreen from './ProtocolBodyLargeScreen'
 import { AppContext, ProtocolsContext } from '../../../store/context'
 import { ROUTE_ADAPT_PROTOCOL_PAGE } from '../../../App'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 interface Props {
     protocolId: String
@@ -46,15 +47,22 @@ export default function Protocol({ protocolId }: Props) {
     }, [protocolsListLocal, protocolId]);
       
     const deleteProtocol = async (protocolId: string) => {
-        const response = await fetch(`/api/protocols/${Number(protocolId)}`, {
-            method: 'DELETE',
-            headers: { 
+        const answer = window.confirm("Wirklich löschen?")
+        if (answer){
+            const response = await fetch(`/api/protocols/${Number(protocolId)}`, {
+                method: 'DELETE',
+                headers: { 
                 'content-type': 'application/json',
                 'Authorization': `Bearer ${token}`, // notice the Bearer before your token
-            },
-        })
-        if (response.ok) {
-            dispatch({ type: 'delete-protocols', protocolsListLocal, protocolId })
+                },
+            })
+            if (response.ok) {
+                dispatch({ type: 'delete-protocols', protocolsListLocal, protocolId })
+                toast.success("Protokoll erfolgreich gelöscht!", {
+                position: toast.POSITION.TOP_CENTER,
+                containerId: 'LoginToaster'
+            })
+        }
         }
     }
 

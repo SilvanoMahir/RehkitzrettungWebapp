@@ -11,6 +11,7 @@ import ProtocolEntryForAdaptPage from '../widgets/Protocol/ProtocolEntryForAdapt
 import DatePicker from "react-datepicker"
 import 'react-datepicker/dist/react-datepicker.css'
 import { Dropdown } from '../controls/Dropdown'
+import { toast } from 'react-toastify'
 
 export default function AdaptProtocolPage() {
 
@@ -103,8 +104,12 @@ export default function AdaptProtocolPage() {
             })
 
             dispatch({ type: 'add-protocols', protocolsListLocal, newProtocol })
+            navigate(ROUTE_RESCUE_LIST_PAGE)
+            toast.success("Protokoll erfolgreich hinzugefügt!", {
+                position: toast.POSITION.TOP_CENTER,
+                containerId: 'LoginToaster'
+            })
         }
-        navigate(ROUTE_RESCUE_LIST_PAGE)
     }
 
     const updateProtocol = async () => {
@@ -132,8 +137,12 @@ export default function AdaptProtocolPage() {
         })
         if (response.ok) {
             dispatch({ type: 'update-protocols', protocolsListLocal })
-        }
-        navigate(ROUTE_RESCUE_LIST_PAGE)
+            navigate(ROUTE_RESCUE_LIST_PAGE)
+            toast.success("Protokoll erfolgreich angepasst!", {
+                position: toast.POSITION.TOP_CENTER,
+                containerId: 'LoginToaster'
+            })
+        }    
     }
 
     const regions = [
