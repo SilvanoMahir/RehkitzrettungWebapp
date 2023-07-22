@@ -25,6 +25,8 @@ export default function AdaptUserPage() {
     const [userMail, setUserEMail] = useState('')
     const [userPassword, setUserPassword] = useState('')
     const [isNewUser, setIsNewUser] = useState(false)
+    const [roles, setRoles] = useState<{ label: string; value: string; }[]>([]);
+    const [regions, setRegions] = useState<{ label: string; value: string; }[]>([]);
     const { usersListLocal, dispatch_users } = useContext(UserContext)
     const { id } = useParams()
 
@@ -50,6 +52,19 @@ export default function AdaptUserPage() {
                 setUserEMail(userMail)
                 setUserPassword(userPassword)
             }
+            const rolesData = await fetchUserRoles();
+            const transformedRoles = rolesData.map((role: { roleName: any }) => ({
+                label: role.roleName,
+                value: role.roleName,
+            }));
+            setRoles(transformedRoles);
+
+            const regionsData = await fetchRegions();
+            const transformedRegions = regionsData.map((role: { regionName: any }) => ({
+                label: role.regionName,
+                value: role.regionName,
+            }));
+            setRegions(transformedRegions);
         }
         onMount()
     }, [usersListLocal, id])
@@ -158,15 +173,25 @@ export default function AdaptUserPage() {
         return []
     }
 
-    const regions = [
-        { label: 'Tasna', value: 'Tasna' },
-        { label: 'Valsot', value: 'Valsot' },
-    ];
+    const fetchUserRoles = async () => {
+        const response = await fetch(`/api/users/roles`, {
+            method: 'GET'
+        })
+        if (response.ok) {
+            return await response.json()
+        }
+        return []
+    }
 
-    const roles = [
-        { label: 'Admin', value: 'Admin' },
-        { label: 'Benutzer', value: 'Benutzer' },
-    ];
+    const fetchRegions = async () => {
+        const response = await fetch(`/api/regions`, {
+            method: 'GET'
+        })
+        if (response.ok) {
+            return await response.json()
+        }
+        return []
+    }
 
     return (
         <RescueListLayout>

@@ -109,6 +109,36 @@ public class UserController : ControllerBase
         return Ok(getUserDto(user, userRegion, userRole, username[0]));
     }
 
+    // GET: /api/users/roles
+    [HttpGet("roles")]
+    public async Task<ActionResult<IEnumerable<RoleDto>>> GetUserRoles()
+    {
+        if (_context.User == null)
+        {
+            return NotFound();
+        }
+
+        var roleDtosList = new List<RoleDto>();
+
+        List<string> rolesList = await _context.Roles
+            .Select(x => x.Name)
+            .ToListAsync();
+
+        foreach (var role in rolesList)
+        {
+            var roleDto = new RoleDto
+            {
+                RoleName = role
+            };
+            roleDtosList.Add(roleDto);
+        }
+
+        if (roleDtosList.Count != 0)
+            return Ok(roleDtosList);
+        else
+            return NoContent();
+    }
+
     // PUT: /api/users/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]

@@ -29,6 +29,8 @@ export default function AdaptProtocolPage() {
     const [areaSize, setAreaSize] = useState('')
     const [injuredFawns, setInjuredFawns] = useState('')
     const [isNewProtocol, setIsNewProtocol] = useState(false)
+    const [regions, setRegions] = useState<{ label: string; value: string; }[]>([]);
+    const [areaSizes, setAreaSizes] = useState<{ label: string; value: string; }[]>([]);
     const { protocolsListLocal, dispatch } = useContext(ProtocolsContext)
     let navigate = useNavigate()
     const { id } = useParams()
@@ -56,6 +58,19 @@ export default function AdaptProtocolPage() {
                 setAreaSize(areaSize)
                 setInjuredFawns(injuredFawns.toString())
             }
+            const regionsData = await fetchRegions();
+            const transformedRegions = regionsData.map((role: { regionName: any }) => ({
+                label: role.regionName,
+                value: role.regionName,
+            }));
+            setRegions(transformedRegions);
+
+            const areaSizesData = await fetchAreaSizes();
+            const transformedAreaSizes = areaSizesData.map((role: { areaSize: any }) => ({
+                label: role.areaSize,
+                value: role.areaSize,
+            }));
+            setAreaSizes(transformedAreaSizes);
         }
         onMount()
     }, [protocolsListLocal, id])
@@ -145,16 +160,25 @@ export default function AdaptProtocolPage() {
         }    
     }
 
-    const regions = [
-        { label: 'Tasna', value: 'Tasna' },
-        { label: 'Valsot', value: 'Valsot' },
-    ];
+    const fetchRegions = async () => {
+        const response = await fetch(`/api/regions`, {
+            method: 'GET'
+        })
+        if (response.ok) {
+            return await response.json()
+        }
+        return []
+    }
 
-    const sizes = [
-        { label: '<0.5ha', value: '<0.5ha' },
-        { label: '<1.5ha', value: '<1.5ha' },
-        { label: '>1.5ha', value: '>1.5ha' },
-    ];
+    const fetchAreaSizes = async () => {
+        const response = await fetch(`/api/area `, {
+            method: 'GET'
+        })
+        if (response.ok) {
+            return await response.json()
+        }
+        return []
+    }
 
     return (
         <RescueListLayout>
@@ -175,7 +199,7 @@ export default function AdaptProtocolPage() {
                                     <DatePicker selected={date} onChange={(date) => setDate(date)} dateFormat="dd/MM/yyyy" />
                                 </DatePickerControl>
                             </DatePickerRowContainer>
-                            <Dropdown entry="Fläche" options={sizes} value={areaSize} onChange={setAreaSize} />
+                            <Dropdown entry="Fläche" options={areaSizes} value={areaSize} onChange={setAreaSize} />
                             <ProtocolEntryForAdaptPage entry="Gefundene Kitze" value={foundFawns} callbackFunction={setFoundFawns} />
                             <ProtocolEntryForAdaptPage entry="Verletzte Kitze" value={injuredFawns} callbackFunction={setInjuredFawns} />
                             <ProtocolEntryForAdaptPage entry="Markierte Kitze" value={markedFawns} callbackFunction={setMarkedFawns} />
