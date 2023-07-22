@@ -28,10 +28,14 @@ const Entry = styled.div`
   	text-overflow: ellipsis;
   	font-weight: bold; 
 	font-size: 1.25em;
+	white-space: initial;
+	overflow-wrap: anywhere;
   	@media (max-width: 1200px) {
+		display: flex;
     	flex: 1;
   	}
 	@media (max-width: 480px) {
+		display: flex;
     	flex: 1;
 		font-size: 1em;
   	}
@@ -45,8 +49,13 @@ const Value = styled.div`
   	text-overflow: ellipsis;
   	flex: 1;
 	font-size: 1.25em;
+	white-space: initial;
+	overflow-wrap: anywhere;
 	@media (max-width: 480px) {
     	flex: 1;
 		font-size: 1em;
+  	}
+	  @media (max-width: 1200px) {
+		display: flex;
   	}
 `
