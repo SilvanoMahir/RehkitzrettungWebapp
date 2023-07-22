@@ -8,12 +8,16 @@ import { useMediaQuery } from 'react-responsive'
 import { Menu } from '../widgets/Menu'
 import { useNavigate } from 'react-router-dom'
 import { ROUTE_ADAPT_PROTOCOL_PAGE } from '../../App'
+import { toast } from 'react-toastify'
+import { saveAs } from 'file-saver'; 
+
 
 export default function RescueListPage() {
 
     const isNotMobile = useMediaQuery({ query: '(min-width: 700px)' })
 
     const [loadingProtocols, setLoadingProtocols] = useState(true)
+    const [localToken, setToken] = useState('')
     const { protocolsListLocal, dispatch } = useContext(ProtocolsContext)
     const { dispatch_token } = useContext(AppContext)
     let navigate = useNavigate()
@@ -26,6 +30,9 @@ export default function RescueListPage() {
                 dispatch_token({ type: 'set-token', value: storageToken })
             }
             const protocolsListLocal = await fetchProtocols(storageToken)
+            if (storageToken !== null){
+                setToken(storageToken)
+            }
             setLoadingProtocols(false)
             dispatch({ type: 'get-protocols', protocolsListLocal })
         }
@@ -49,9 +56,40 @@ export default function RescueListPage() {
     const search = async () => {
     }
 
-    const downloadProtocol = async () => {
-    }
-
+    const downloadProtocol = async (storageToken: string | null) => {
+        try {
+            const response = await fetch('/api/protocols/file', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${storageToken}`,
+                },
+            });
+    
+            if (response.ok) {
+                const fileBlob = await response.blob();
+                const currentDate = new Date();
+                const year = currentDate.getFullYear();
+                const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+                const day = currentDate.getDate().toString().padStart(2, '0');
+                saveAs(fileBlob, `RehkitzrettungApp_Protokoll_${year}-${month}-${day}`);
+                toast.success("Erfolgreich heruntergeladen!", {
+                    position: toast.POSITION.TOP_CENTER,
+                    containerId: 'LoginToaster',
+                });
+            } else {
+                toast.error("Herunterladen fehlgeschlagen!", {
+                    position: toast.POSITION.TOP_CENTER,
+                    containerId: 'LoginToaster',
+                });
+            }
+        } catch (error) {
+            toast.error("Herunterladen fehlgeschlagen!", {
+                position: toast.POSITION.TOP_CENTER,
+                containerId: 'LoginToaster',
+            });
+        }
+    };
+    
     const createProtocol = async () => {
         navigate(ROUTE_ADAPT_PROTOCOL_PAGE)
     }
@@ -81,7 +119,7 @@ export default function RescueListPage() {
                     <SiteTitle>Übersicht Protokolle</SiteTitle>
                     {content}
                     <RowContainer>
-                        <DownloadProtocolButton onClick={() => downloadProtocol()}>Bericht herunterladen</DownloadProtocolButton>
+                        <DownloadProtocolButton onClick={() => downloadProtocol(localToken)}>Bericht herunterladen</DownloadProtocolButton>
                         <CreateProtocolButton onClick={() => createProtocol()}>Neues Protokoll erstellen</CreateProtocolButton>
                     </RowContainer>
                 </RescueListColumnLayout >
