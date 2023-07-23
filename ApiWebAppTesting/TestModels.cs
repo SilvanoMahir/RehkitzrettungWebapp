@@ -1,4 +1,5 @@
-﻿using RehkitzWebApp.Model;
+﻿using Microsoft.EntityFrameworkCore;
+using RehkitzWebApp.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,6 @@ namespace ApiWebAppTesting
     public class TestModels
     {
         Protocol[] protcolsList;
-        Region[] regionList;
 
         public TestModels() {
 

@@ -1,11 +1,8 @@
 USE [rehkitzrettung-db]
 GO
 
-INSERT INTO [rehkitzrettung-db].[dbo].[User] 
-			( [OwnerId]
-			, [UserFirstName]
-			, [UserLastName]
-			, [UserRegionId]
+INSERT INTO [rehkitzrettung-db].[dbo].[Area] 
+			( [AreaSize]
 			, [EntryIsDeleted])
 VALUES
     ('<0.5ha', 0),

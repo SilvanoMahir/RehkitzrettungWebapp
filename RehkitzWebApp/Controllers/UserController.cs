@@ -149,46 +149,53 @@ public class UserController : ControllerBase
             return BadRequest();
         }
 
-        var userInUserTable = await _context.User.FindAsync(userDto.UserId);
-        var userInUsersRolesTable = await _context.Users.FindAsync(userInUserTable.OwnerId);
-        var userInUserRolesTable = await _context.UserRoles.FirstOrDefaultAsync(x => x.UserId == userInUserTable.OwnerId);
-        var userInRegionTable = await _context.Region.FirstOrDefaultAsync(x => x.RegionId == int.Parse(userInUserTable.UserRegionId));
+        try
+        {
+            var userInUserTable = await _context.User.FindAsync(userDto.UserId);
+            var userInUsersRolesTable = await _context.Users.FindAsync(userInUserTable.OwnerId);
+            var userInUserRolesTable = await _context.UserRoles.FirstOrDefaultAsync(x => x.UserId == userInUserTable.OwnerId);
+            var userInRegionTable = await _context.Region.FirstOrDefaultAsync(x => x.RegionId == int.Parse(userInUserTable.UserRegionId));
 
 
-        userInUserTable.UserFirstName = userDto.UserFirstName;
-        userInUserTable.UserLastName = userDto.UserLastName;
-        userInUserTable.UserDefinition = userDto.UserDefinition;
+            userInUserTable.UserFirstName = userDto.UserFirstName;
+            userInUserTable.UserLastName = userDto.UserLastName;
+            userInUserTable.UserDefinition = userDto.UserDefinition;
 
-        // find the region Id for the new region 
-        var userRegionId = await _context.Region
-                            .Where(x => x.RegionName == userDto.UserRegion)
-                            .Select(x => x.RegionId)
-                            .ToListAsync();
+            // find the region Id for the new region 
+            var userRegionId = await _context.Region
+                                .Where(x => x.RegionName == userDto.UserRegion)
+                                .Select(x => x.RegionId)
+                                .ToListAsync();
 
-        if (userRegionId[0] != null)
-            userInUserTable.UserRegionId = userRegionId[0].ToString();
+            if (userRegionId[0] != null)
+                userInUserTable.UserRegionId = userRegionId[0].ToString();
 
-        userInUsersRolesTable.Email = userDto.UserMail;
-        userInUsersRolesTable.NormalizedEmail = userDto.UserMail.ToUpper();
-        userInRegionTable.ContactPersonMail = userDto.UserMail;
-        userInUsersRolesTable.UserName = userDto.Username;
-        userInUsersRolesTable.NormalizedUserName = userDto.Username.ToUpper();
+            userInUsersRolesTable.Email = userDto.UserMail;
+            userInUsersRolesTable.NormalizedEmail = userDto.UserMail.ToUpper();
+            userInRegionTable.ContactPersonMail = userDto.UserMail;
+            userInUsersRolesTable.UserName = userDto.Username;
+            userInUsersRolesTable.NormalizedUserName = userDto.Username.ToUpper();
 
-        var userRoleId = await _context.Roles
-                      .Where(x => x.Name == userDto.UserFunction)
-                      .Select(x => x.Id)
-                      .ToListAsync();
+            var userRoleId = await _context.Roles
+                          .Where(x => x.Name == userDto.UserFunction)
+                          .Select(x => x.Id)
+                          .ToListAsync();
 
-        var user = await _userManager.FindByIdAsync(userInUserTable.OwnerId);
-        if (user == null)
-            return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User not found!" });
-        var newRole = await _roleManager.FindByIdAsync(userRoleId[0]);
-        if (newRole == null)
-            return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Role does not exist!" });
+            var user = await _userManager.FindByIdAsync(userInUserTable.OwnerId);
+            if (user == null)
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User not found!" });
+            var newRole = await _roleManager.FindByIdAsync(userRoleId[0]);
+            if (newRole == null)
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Role does not exist!" });
 
-        var existingRoles = await _userManager.GetRolesAsync(user);
-        await _userManager.RemoveFromRolesAsync(user, existingRoles);
-        await _userManager.AddToRoleAsync(user, newRole.Name);
+            var existingRoles = await _userManager.GetRolesAsync(user);
+            await _userManager.RemoveFromRolesAsync(user, existingRoles);
+            await _userManager.AddToRoleAsync(user, newRole.Name);
+        }
+        catch
+        {
+            return NotFound();
+        }
 
         try
         {
@@ -205,7 +212,7 @@ public class UserController : ControllerBase
                 throw;
             }
         }
-        return NoContent();
+        return Ok();
     }
 
     // POST: /api/users
