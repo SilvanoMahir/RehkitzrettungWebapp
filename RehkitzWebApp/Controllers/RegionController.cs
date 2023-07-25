@@ -33,7 +33,7 @@ public class RegionController : ControllerBase
 
         var regionDtosList = new List<RegionNameDto>();
 
-        foreach(var region in regionsList)
+        foreach (var region in regionsList)
         {
             var regionDto = new RegionNameDto
             {
@@ -43,9 +43,13 @@ public class RegionController : ControllerBase
         }
 
         if (regionDtosList.Count != 0)
+        {
             return Ok(regionDtosList);
+        }
         else
+        {
             return NoContent();
+        }
     }
 
     // GET: /api/regions/5

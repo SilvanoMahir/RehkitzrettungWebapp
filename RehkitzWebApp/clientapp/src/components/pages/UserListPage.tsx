@@ -13,8 +13,7 @@ import { useNavigate } from 'react-router-dom'
 export default function UserListPage() {
 
     const isNotMobile = useMediaQuery({ query: '(min-width: 700px)' })
-    const isSmallScreen = useMediaQuery({ query: '(min-width: 1200px)' })
-
+    const isLargeScreen = useMediaQuery({ query: '(min-width: 1200px)' })
 
     const [loadingUsers, setLoadingUsers] = useState(true)
     const { usersListLocal, dispatch_users } = useContext(UserContext)
@@ -69,7 +68,7 @@ export default function UserListPage() {
                         placeholder={"Suchen"}></SearchInput>
                     <PageTitle>Benutzerverwaltung</PageTitle>
                     <BlockLayout>
-                        {isSmallScreen ? <UserEntryTitles entry={'NotMObile'}></UserEntryTitles> : <></>}
+                        {isLargeScreen ? <UserEntryTitles /> : <></>}
                         {content}
                     </BlockLayout>
                     <NewUserButton>

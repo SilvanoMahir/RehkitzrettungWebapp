@@ -1,33 +1,33 @@
-import { useEffect, useState } from 'react';
-import Select from 'react-select';
-import styled from 'styled-components';
+import { useEffect, useState } from 'react'
+import Select from 'react-select'
+import styled from 'styled-components'
 
 interface Option {
-    label: string;
-    value: string;
+    label: string
+    value: string
 }
 
 interface Props {
-    entry: string;
-    options: Option[];
+    entry: string
+    options: Option[]
     value: string
-    onChange: (selectedValue: string) => void;
+    onChange: (selectedValue: string) => void
 }
 
 export const Dropdown = ({ entry, options, value, onChange }: Props) => {
-    const [selectedOption, setSelectedOption] = useState<Option | null>(null);
+    const [selectedOption, setSelectedOption] = useState<Option | null>(null)
 
     useEffect(() => {
-        const selected = options.find(option => option.value === value);
-        setSelectedOption(selected || null);
-    }, [options, value]);
+        const selected = options.find(option => option.value === value)
+        setSelectedOption(selected || null)
+    }, [options, value])
 
     const handleChange = (selectedOption: Option | null) => {
-        setSelectedOption(selectedOption);
+        setSelectedOption(selectedOption)
         if (selectedOption) {
-            onChange(selectedOption.value);
+            onChange(selectedOption.value)
         }
-    };
+    }
 
     return (
         <RowContainer>
@@ -42,8 +42,8 @@ export const Dropdown = ({ entry, options, value, onChange }: Props) => {
                 />
             </SelectBox>
         </RowContainer>
-    );
-};
+    )
+}
 
 const RowContainer = styled.div`
     display: flex;
@@ -80,25 +80,25 @@ const customStyles = {
         width: "100%",
     }),
     option: (provided: any, state: { isSelected: any }) => ({
-      ...provided,
-      backgroundColor: "transparent",
-      color: "#7d6b52",
-      width: "100%",
-      fontSize: 15,
+        ...provided,
+        backgroundColor: "transparent",
+        color: "#7d6b52",
+        width: "100%",
+        fontSize: 15,
     }),
     control: (provided: any) => ({
-      ...provided,
-      backgroundColor: "transparent",
-      fontSize: 20,
+        ...provided,
+        backgroundColor: "transparent",
+        fontSize: 20,
     }),
     singleValue: (provided: any) => ({
-      ...provided,
-      color: "#fffecb",
-      fontSize: 20,
+        ...provided,
+        color: "#fffecb",
+        fontSize: 20,
     }),
     placeholder: (provided: any) => ({
-      ...provided,
-      color: "#fffecb",
-      fontSize: 20,
+        ...provided,
+        color: "#fffecb",
+        fontSize: 20,
     }),
-};
+}

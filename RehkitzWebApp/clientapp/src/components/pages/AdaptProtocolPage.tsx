@@ -29,8 +29,8 @@ export default function AdaptProtocolPage() {
     const [areaSize, setAreaSize] = useState('')
     const [injuredFawns, setInjuredFawns] = useState('')
     const [isNewProtocol, setIsNewProtocol] = useState(false)
-    const [regions, setRegions] = useState<{ label: string; value: string; }[]>([]);
-    const [areaSizes, setAreaSizes] = useState<{ label: string; value: string; }[]>([]);
+    const [regions, setRegions] = useState<{ label: string; value: string; }[]>([])
+    const [areaSizes, setAreaSizes] = useState<{ label: string; value: string; }[]>([])
     const { protocolsListLocal, dispatch } = useContext(ProtocolsContext)
     let navigate = useNavigate()
     const { id } = useParams()
@@ -58,19 +58,19 @@ export default function AdaptProtocolPage() {
                 setAreaSize(areaSize)
                 setInjuredFawns(injuredFawns.toString())
             }
-            const regionsData = await fetchRegions();
+            const regionsData = await fetchRegions()
             const transformedRegions = regionsData.map((role: { regionName: any }) => ({
                 label: role.regionName,
                 value: role.regionName,
-            }));
-            setRegions(transformedRegions);
+            }))
+            setRegions(transformedRegions)
 
-            const areaSizesData = await fetchAreaSizes();
+            const areaSizesData = await fetchAreaSizes()
             const transformedAreaSizes = areaSizesData.map((role: { areaSize: any }) => ({
                 label: role.areaSize,
                 value: role.areaSize,
-            }));
-            setAreaSizes(transformedAreaSizes);
+            }))
+            setAreaSizes(transformedAreaSizes)
         }
         onMount()
     }, [protocolsListLocal, id])
@@ -80,7 +80,7 @@ export default function AdaptProtocolPage() {
     }
 
     const saveProtocol = async () => {
-        const storageToken = localStorage.getItem('user_token');
+        const storageToken = localStorage.getItem('user_token')
         const response = await fetch('/api/protocols', {
             method: 'POST',
             headers: {

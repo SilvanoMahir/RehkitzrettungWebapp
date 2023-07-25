@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RehkitzWebApp.Model;
 using RehkitzWebApp.Model.Dtos;
@@ -42,8 +41,12 @@ public class AreaController : ControllerBase
         }
 
         if (areaSizeDtosList.Count != 0)
+        {
             return Ok(areaSizeDtosList);
+        }
         else
+        {
             return NoContent();
+        }
     }
 }

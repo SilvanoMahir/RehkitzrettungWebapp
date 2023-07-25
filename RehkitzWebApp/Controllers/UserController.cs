@@ -62,9 +62,13 @@ public class UserController : ControllerBase
         }
 
         if (userDtos.Count != 0)
+        {
             return Ok(userDtos);
+        }
         else
+        {
             return NoContent();
+        }
     }
 
     // GET: /api/users/5
@@ -79,7 +83,9 @@ public class UserController : ControllerBase
         var userRole = "";
         var user = await _context.User.FindAsync(id);
         if (user == null)
+        {
             return NotFound();
+        }
 
         var userRegion = await _context.Region.FindAsync(int.Parse(user.UserRegionId));
         var userRoleId = await _context.UserRoles
@@ -134,9 +140,13 @@ public class UserController : ControllerBase
         }
 
         if (roleDtosList.Count != 0)
+        {
             return Ok(roleDtosList);
+        }
         else
+        {
             return NoContent();
+        }
     }
 
     // PUT: /api/users/5
@@ -168,7 +178,9 @@ public class UserController : ControllerBase
                                 .ToListAsync();
 
             if (userRegionId[0] != null)
+            {
                 userInUserTable.UserRegionId = userRegionId[0].ToString();
+            }
 
             userInUsersRolesTable.Email = userDto.UserMail;
             userInUsersRolesTable.NormalizedEmail = userDto.UserMail.ToUpper();
@@ -183,10 +195,15 @@ public class UserController : ControllerBase
 
             var user = await _userManager.FindByIdAsync(userInUserTable.OwnerId);
             if (user == null)
+            {
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User not found!" });
+            }
+
             var newRole = await _roleManager.FindByIdAsync(userRoleId[0]);
             if (newRole == null)
+            {
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Role does not exist!" });
+            }
 
             var existingRoles = await _userManager.GetRolesAsync(user);
             await _userManager.RemoveFromRolesAsync(user, existingRoles);

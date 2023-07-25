@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using RehkitzWebApp.Model;
-using RehkitzWebApp.Model.Dtos;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -18,7 +17,6 @@ public class AuthenticateController : ControllerBase
     private readonly RoleManager<IdentityRole> _roleManager;
     private readonly IConfiguration _configuration;
     private readonly ApplicationDbContext _context;
-
 
     public AuthenticateController(
         UserManager<IdentityUser> userManager,
@@ -138,7 +136,8 @@ public class AuthenticateController : ControllerBase
             .Select(r => (int?)r.RegionId) // Replace "Id" with the actual ID property name in your entity
             .FirstOrDefaultAsync();
 
-        var newUser = new User {
+        var newUser = new User
+        {
             OwnerId = user.Id,
             UserFirstName = model.UserFirstName,
             UserLastName = model.UserLastName,

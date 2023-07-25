@@ -55,7 +55,7 @@ const Value = styled.div`
     	flex: 1;
 		font-size: 1em;
   	}
-	  @media (max-width: 1200px) {
+	@media (max-width: 1200px) {
 		display: flex;
   	}
 `

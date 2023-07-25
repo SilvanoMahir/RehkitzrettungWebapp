@@ -15,5 +15,4 @@ const Image = styled.img`
     @media (max-width: 700px) {
         width: 45%;
     }
-
 `

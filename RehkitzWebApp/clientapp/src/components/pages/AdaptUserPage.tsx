@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
-import { DeleteUserButton, DiscardProtocolButton, DiscardUserButton, SaveProtocolButton } from '../controls/Button'
+import { DeleteUserButton, DiscardUserButton, SaveProtocolButton } from '../controls/Button'
 import { UserContext } from '../../store/context'
 import Sidebar from '../widgets/Sidebar/Sidebar'
 import { useMediaQuery } from 'react-responsive'
@@ -25,22 +25,22 @@ export default function AdaptUserPage() {
     const [userMail, setUserEMail] = useState('')
     const [userPassword, setUserPassword] = useState('')
     const [isNewUser, setIsNewUser] = useState(false)
-    const [roles, setRoles] = useState<{ label: string; value: string; }[]>([]);
-    const [regions, setRegions] = useState<{ label: string; value: string; }[]>([]);
+    const [roles, setRoles] = useState<{ label: string; value: string; }[]>([])
+    const [regions, setRegions] = useState<{ label: string; value: string; }[]>([])
     const { usersListLocal, dispatch_users } = useContext(UserContext)
     const { id } = useParams()
 
     useEffect(() => {
         const onMount = async () => {
-            let data = usersListLocal.filter(protocols => protocols.userId.toString() === id)
+            let data = usersListLocal.filter(users => users.userId.toString() === id)
             if (data.length === 0) {
                 setIsNewUser(true)
             }
             else {
-                const updateUser = await fetchUsers(id);
+                const updateUser = await fetchUsers(id)
                 setIsNewUser(false)
                 const { userId, userFirstName, userLastName, userDefinition, userRegion,
-                    userFunction, username, userMail, userPassword} = updateUser
+                    userFunction, username, userMail, userPassword } = updateUser
 
                 setUserId(userId)
                 setUserFirstName(userFirstName)
@@ -52,19 +52,19 @@ export default function AdaptUserPage() {
                 setUserEMail(userMail)
                 setUserPassword(userPassword)
             }
-            const rolesData = await fetchUserRoles();
+            const rolesData = await fetchUserRoles()
             const transformedRoles = rolesData.map((role: { roleName: any }) => ({
                 label: role.roleName,
                 value: role.roleName,
-            }));
-            setRoles(transformedRoles);
+            }))
+            setRoles(transformedRoles)
 
-            const regionsData = await fetchRegions();
+            const regionsData = await fetchRegions()
             const transformedRegions = regionsData.map((role: { regionName: any }) => ({
                 label: role.regionName,
                 value: role.regionName,
-            }));
-            setRegions(transformedRegions);
+            }))
+            setRegions(transformedRegions)
         }
         onMount()
     }, [usersListLocal, id])
@@ -76,7 +76,6 @@ export default function AdaptUserPage() {
     }
 
     const saveUser = async () => {
-        const storageToken = localStorage.getItem('user_token');
         const response = await fetch('/api/users', {
             method: 'POST',
             headers: { 'content-type': 'application/json' },
@@ -144,23 +143,22 @@ export default function AdaptUserPage() {
 
     const deleteUser = async () => {
         const answer = window.confirm("Wirklich löschen?")
-        if (answer){
-        const storageToken = localStorage.getItem('user_token')
-        const response = await fetch(`${`/api/users`}/${id}`, {
-            method: 'DELETE',
-            headers: {
-                'content-type': 'application/json',
-            }
-        })
-        if (response.ok) {
-            dispatch_users({ type: 'delete-user', usersListLocal, userId })
-            navigate(ROUTE_USER_LIST_PAGE)
-            toast.success("Benutzer erfolgreich gelöscht!", {
-                position: toast.POSITION.TOP_CENTER,
-                containerId: 'LoginToaster'
+        if (answer) {
+            const response = await fetch(`${`/api/users`}/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'content-type': 'application/json',
+                }
             })
+            if (response.ok) {
+                dispatch_users({ type: 'delete-user', usersListLocal, userId })
+                navigate(ROUTE_USER_LIST_PAGE)
+                toast.success("Benutzer erfolgreich gelöscht!", {
+                    position: toast.POSITION.TOP_CENTER,
+                    containerId: 'LoginToaster'
+                })
+            }
         }
-    }
     }
 
     const fetchUsers = async (id: string | undefined) => {
@@ -194,13 +192,13 @@ export default function AdaptUserPage() {
     }
 
     return (
-        <RescueListLayout>
+        <AdaptUserLayout>
             {!isNotMobile && <Menu />}
-            <RescueListRowLayout>
+            <AdaptUserRowLayout>
                 {(isNotMobile) && <Sidebar showSidebar={isNotMobile} />}
-                <RescueListColumnLayout>
-                    <ProtocolLayout isNotMobile={isNotMobile}>
-                        <ProtocolTitle>{isNewUser ? 'Neuer Benutzer' : `Benutzer ${userDefinition}`}</ProtocolTitle>                        
+                <AdaptUserColumnLayout>
+                    <UserLayout isNotMobile={isNotMobile}>
+                        <UserTitle>{isNewUser ? 'Neuer Benutzer' : `Benutzer ${userDefinition}`}</UserTitle>                        
                         <ColumnContainer>
                             <ProtocolEntryForAdaptPage entry="Vorname" value={userFirstName} callbackFunction={setUserFirstName} />
                             <ProtocolEntryForAdaptPage entry="Name" value={userLastName} callbackFunction={setUserLastName} />
@@ -211,29 +209,29 @@ export default function AdaptUserPage() {
                             <ProtocolEntryForAdaptPage entry="E-Mail" value={userMail} callbackFunction={setUserEMail} />
                             <ProtocolEntryForAdaptPage entry="Passwort" value={userPassword} callbackFunction={setUserPassword} />
                         </ColumnContainer>
-                    </ProtocolLayout>
+                    </UserLayout>
                     <RowContainer>
                         <DiscardUserButton onClick={() => discardUser()}>Verwerfen</DiscardUserButton>
                         {(!isNewUser) && <DeleteUserButton onClick={() => deleteUser()}>Löschen</DeleteUserButton>}
                         <SaveProtocolButton onClick={() => isNewUser ? saveUser() : updateUser()}>Speichern</SaveProtocolButton>
                     </RowContainer>
-                </RescueListColumnLayout >
-            </RescueListRowLayout>
-        </RescueListLayout>
+                </AdaptUserColumnLayout >
+            </AdaptUserRowLayout>
+        </AdaptUserLayout>
     )
 }
 
-const RescueListLayout = styled.div`
+const AdaptUserLayout = styled.div`
     height: 100%;
 `
 
-const RescueListRowLayout = styled.div`
+const AdaptUserRowLayout = styled.div`
     display: flex;
     flex-direction: row;
     height: 100%;
 `
 
-const RescueListColumnLayout = styled.div`
+const AdaptUserColumnLayout = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -249,7 +247,7 @@ const RowContainer = styled.div`
     margin-bottom: 10px;
 `
 
-const ProtocolLayout = styled.div<{ isNotMobile: boolean }>`
+const UserLayout = styled.div<{ isNotMobile: boolean }>`
     margin: 0px 10px 10px;
     margin-top: ${(props) => (props.isNotMobile ? "1em" : "5em")};
     display: flex;
@@ -268,7 +266,7 @@ const ProtocolLayout = styled.div<{ isNotMobile: boolean }>`
     }
 `
 
-const ProtocolTitle = styled.div`
+const UserTitle = styled.div`
     display: flex;
     justify-content: center;
     font-weight: 500;

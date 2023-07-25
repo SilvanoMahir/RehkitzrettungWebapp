@@ -12,8 +12,6 @@ import { ROUTE_ADAPT_PROTOCOL_PAGE } from '../../App'
 export default function RescueListPage() {
 
     const isNotMobile = useMediaQuery({ query: '(min-width: 700px)' })
-    const isSmallScreen = useMediaQuery({ query: '(min-width: 1200px)' })
-
 
     const [loadingProtocols, setLoadingProtocols] = useState(true)
     const { protocolsListLocal, dispatch } = useContext(ProtocolsContext)

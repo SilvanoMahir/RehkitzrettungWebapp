@@ -1,10 +1,6 @@
 import styled from "styled-components";
 
-interface Props {
-	entry: string;
-}
-
-export default function UserEntryTitles({ entry }: Props) {
+export default function UserEntryTitles() {
 	return (
 		<RowContainer>
 			<Title>ID</Title>

@@ -11,7 +11,7 @@ export const ROUTE_RESCUE_LIST_PAGE = '/rescuelist'
 export const ROUTE_MAP_PAGE = '/map'
 export const ROUTE_ADAPT_PROTOCOL_PAGE = '/adaptprotocol'
 export const ROUTE_USER_LIST_PAGE = '/users'
-export const ROUTE_ADAPT_USER_PAGE = '/adatptusers'
+export const ROUTE_ADAPT_USER_PAGE = '/adaptuser'
 
 export default function App() {
     return (

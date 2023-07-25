@@ -16,8 +16,7 @@ interface Props {
 
 export default function Protocol({ protocolId }: Props) {
 
-    const isNotMobile = useMediaQuery({ query: '(min-width: 700px)' })
-    const isSmallScreen = useMediaQuery({ query: '(min-width: 1200px)' })
+    const isLargeScreen = useMediaQuery({ query: '(min-width: 1200px)' })
 
     //const { protocolId } = useParams() --> not working now as Router not set, there used Props
     const { token } = useContext(AppContext)
@@ -48,7 +47,7 @@ export default function Protocol({ protocolId }: Props) {
       
     const deleteProtocol = async (protocolId: string) => {
         const answer = window.confirm("Wirklich löschen?")
-        if (answer){
+        if (answer) {
             const response = await fetch(`/api/protocols/${Number(protocolId)}`, {
                 method: 'DELETE',
                 headers: { 
@@ -61,8 +60,8 @@ export default function Protocol({ protocolId }: Props) {
                 toast.success("Protokoll erfolgreich gelöscht!", {
                 position: toast.POSITION.TOP_CENTER,
                 containerId: 'LoginToaster'
-            })
-        }
+                })
+            }
         }
     }
 
@@ -73,7 +72,7 @@ export default function Protocol({ protocolId }: Props) {
     return (
         <ProtocolLayout>
             <ProtocolTitle>Protokoll {protocolEntry.protocolCode}</ProtocolTitle>
-            {isSmallScreen ? <ProtocolBodyLargeScreen protocolEntry={protocolEntry} /> : <ProtocolBodySmallScreen protocolEntry={protocolEntry} />}
+            {isLargeScreen ? <ProtocolBodyLargeScreen protocolEntry={protocolEntry} /> : <ProtocolBodySmallScreen protocolEntry={protocolEntry} />}
             <RowContainer>
                 <DeleteProtocolButton onClick={() => deleteProtocol(protocolEntry.protocolId)}>Löschen</DeleteProtocolButton>
                 <EditProtocolButton onClick={() => editProtocol()}>Bearbeiten</EditProtocolButton>

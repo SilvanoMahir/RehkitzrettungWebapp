@@ -12,8 +12,7 @@ interface Props {
 
 export default function Users({ userId }: Props) {
 
-    const isNotMobile = useMediaQuery({ query: '(min-width: 700px)' })
-    const isSmallScreen = useMediaQuery({ query: '(min-width: 1200px)' })
+    const isLargeScreen = useMediaQuery({ query: '(min-width: 1200px)' })
 
     const { usersListLocal } = useContext(UserContext)
     const [userEntry, setUserEntry] = useState<UserEntries>({
@@ -38,8 +37,8 @@ export default function Users({ userId }: Props) {
 
     return (
         <UserLayout>
-            <RowContainer isSmallScreen={isSmallScreen}>
-                {isSmallScreen ? <UserBodyLargeScreen userEntry={userEntry} />
+            <RowContainer isLargeScreen={isLargeScreen}>
+                {isLargeScreen ? <UserBodyLargeScreen userEntry={userEntry} />
                     : <UserBodySmallScreen userEntry={userEntry} />
                 }
             </RowContainer>
@@ -56,11 +55,11 @@ const UserLayout = styled.div`
     }
 `
 
-const RowContainer = styled.div<{ isSmallScreen: boolean }>`
+const RowContainer = styled.div<{ isLargeScreen: boolean }>`
     @media (max-width: 1200px) {
         margin: 10px;
         display: flex;
-        flex-direction: ${(props) => (props.isSmallScreen ? "row" : "column")};;
+        flex-direction: ${(props) => (props.isLargeScreen ? "row" : "column")};
         align-self: stretch;
         justify-content: space-around
     }
