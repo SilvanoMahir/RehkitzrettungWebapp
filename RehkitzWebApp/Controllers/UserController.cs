@@ -248,8 +248,33 @@ public class UserController : ControllerBase
             SecurityStamp = Guid.NewGuid().ToString(),
             UserName = userDto.Username
         };
+
+        var MailExists = await _context.Region.FirstOrDefaultAsync(x => x.ContactPersonMail == userDto.UserMail);
+        if (MailExists == null)
+        {
+            List<ErrorMsgDto> errorMsg = new List<ErrorMsgDto>
+        {
+            new ErrorMsgDto
+            {
+                Code = "MailaddressDoesNotExist",
+                Description = "Mailaddresse von regionaler Kontaktperson existiert nicht!"
+            }
+            };
+            return BadRequest(errorMsg);
+        }
+
         var userManger = await _userManager.CreateAsync(user, userDto.UserPassword);
-        await _userManager.AddToRoleAsync(user, userDto.UserFunction);
+        if (userManger.Errors.Any()) 
+            return BadRequest(userManger.Errors);
+        
+        try
+        {
+            await _userManager.AddToRoleAsync(user, userDto.UserFunction);
+        }
+        catch
+        {
+            return BadRequest(userManger.Errors);
+        }
 
         var userRegion = await _context.Region
             .Where(r => r.RegionName == userDto.UserRegion) // Replace "Attribute" with the actual attribute name in your entity

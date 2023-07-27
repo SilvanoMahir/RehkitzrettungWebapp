@@ -109,6 +109,29 @@ export default function AdaptUserPage() {
                 containerId: 'LoginToaster'
             })
         }
+        if (response.status === 400) {
+            response.json().then((errorData) => {
+                if (Array.isArray(errorData) && errorData.length > 0) {
+                    errorData.forEach((errorItem) => {
+                        const errorMsg = errorItem.description;
+                        toast.error(errorMsg, {
+                            position: toast.POSITION.TOP_CENTER,
+                            containerId: 'LoginToaster',
+                        });
+                    });
+                } else {
+                    toast.error('An error occurred. Please try again later.', {
+                        position: toast.POSITION.TOP_CENTER,
+                        containerId: 'LoginToaster',
+                    });
+                }
+            });
+        } else {
+            toast.error('An error occurred. Please try again later.', {
+                position: toast.POSITION.TOP_CENTER,
+                containerId: 'LoginToaster',
+            });
+        }
     }
 
     const updateUser = async () => {
@@ -198,7 +221,7 @@ export default function AdaptUserPage() {
                 {(isNotMobile) && <Sidebar showSidebar={isNotMobile} />}
                 <AdaptUserColumnLayout>
                     <UserLayout isNotMobile={isNotMobile}>
-                        <UserTitle>{isNewUser ? 'Neuer Benutzer' : `Benutzer ${userDefinition}`}</UserTitle>                        
+                        <UserTitle>{isNewUser ? 'Neuer Benutzer' : `Benutzer ${userDefinition}`}</UserTitle>
                         <ColumnContainer>
                             <ProtocolEntryForAdaptPage entry="Vorname" value={userFirstName} callbackFunction={setUserFirstName} />
                             <ProtocolEntryForAdaptPage entry="Name" value={userLastName} callbackFunction={setUserLastName} />
