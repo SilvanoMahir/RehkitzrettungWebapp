@@ -44,7 +44,7 @@ public class UserController : ControllerBase
                                     .Where(x => x.UserId == user.OwnerId)
                                     .Select(x => x.RoleId)
                                     .ToListAsync();
-            var username = await _context.Users
+            var userName = await _context.Users
                                     .Where(x => x.Id == user.OwnerId)
                                     .Select(x => x.UserName)
                                     .ToListAsync();
@@ -52,7 +52,7 @@ public class UserController : ControllerBase
             if (userRoleId.Count != 0)
             {
                 var userRole = await _context.Roles.FindAsync(userRoleId[0]);
-                var userDto = getUserDto(user, userRegion, userRole.Name, username[0]);
+                var userDto = getUserDto(user, userRegion, userRole.Name, userName[0]);
                 userDtos.Add(userDto.ToUserSmallListDto());
             }
             else
@@ -93,7 +93,7 @@ public class UserController : ControllerBase
                                 .Select(x => x.RoleId)
                                 .ToListAsync();
 
-        var username = await _context.Users
+        var userName = await _context.Users
                         .Where(x => x.Id == user.OwnerId)
                         .Select(x => x.UserName)
                         .ToListAsync();
@@ -112,7 +112,7 @@ public class UserController : ControllerBase
         {
             return NotFound();
         }
-        return Ok(getUserDto(user, userRegion, userRole, username[0]));
+        return Ok(getUserDto(user, userRegion, userRole, userName[0]));
     }
 
     // GET: /api/users/roles
@@ -185,8 +185,8 @@ public class UserController : ControllerBase
             userInUsersRolesTable.Email = userDto.UserMail;
             userInUsersRolesTable.NormalizedEmail = userDto.UserMail.ToUpper();
             userInRegionTable.ContactPersonMail = userDto.UserMail;
-            userInUsersRolesTable.UserName = userDto.Username;
-            userInUsersRolesTable.NormalizedUserName = userDto.Username.ToUpper();
+            userInUsersRolesTable.UserName = userDto.UserName;
+            userInUsersRolesTable.NormalizedUserName = userDto.UserName.ToUpper();
 
             var userRoleId = await _context.Roles
                           .Where(x => x.Name == userDto.UserFunction)
@@ -246,7 +246,7 @@ public class UserController : ControllerBase
         {
             Email = userDto.UserMail,
             SecurityStamp = Guid.NewGuid().ToString(),
-            UserName = userDto.Username
+            UserName = userDto.UserName
         };
 
         var MailExists = await _context.Region.FirstOrDefaultAsync(x => x.ContactPersonMail == userDto.UserMail);
@@ -264,9 +264,11 @@ public class UserController : ControllerBase
         }
 
         var userManger = await _userManager.CreateAsync(user, userDto.UserPassword);
-        if (userManger.Errors.Any()) 
+        if (userManger.Errors.Any())
+        {
             return BadRequest(userManger.Errors);
-        
+        }
+
         try
         {
             await _userManager.AddToRoleAsync(user, userDto.UserFunction);
@@ -277,8 +279,8 @@ public class UserController : ControllerBase
         }
 
         var userRegion = await _context.Region
-            .Where(r => r.RegionName == userDto.UserRegion) // Replace "Attribute" with the actual attribute name in your entity
-            .Select(r => (int?)r.RegionId) // Replace "Id" with the actual ID property name in your entity
+            .Where(r => r.RegionName == userDto.UserRegion) 
+            .Select(r => (int?)r.RegionId) 
             .FirstOrDefaultAsync();
 
         var newUser = new User
@@ -324,7 +326,7 @@ public class UserController : ControllerBase
         return (_context.User?.Any(e => e.UserId == id)).GetValueOrDefault();
     }
 
-    private UserDto getUserDto(User user, Region region, string userRole, string username)
+    private UserDto getUserDto(User user, Region region, string userRole, string userName)
     {
         // the fixed comments depends on the Role which has to be linked first
         return new UserDto
@@ -336,7 +338,7 @@ public class UserController : ControllerBase
             UserFirstName = user.UserFirstName,
             UserLastName = user.UserLastName,
             UserMail = region.ContactPersonMail,
-            Username = username,
+            UserName = userName,
             UserPassword = "Password"
         };
     }

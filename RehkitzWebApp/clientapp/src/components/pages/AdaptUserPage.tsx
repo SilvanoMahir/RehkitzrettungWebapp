@@ -21,7 +21,7 @@ export default function AdaptUserPage() {
     const [userDefinition, setUserDefinition] = useState('')
     const [userRegion, setUserRegion] = useState('')
     const [userFunction, setUserFunction] = useState('')
-    const [username, setUsername] = useState('')
+    const [userName, setUsername] = useState('')
     const [userMail, setUserEMail] = useState('')
     const [userPassword, setUserPassword] = useState('')
     const [isNewUser, setIsNewUser] = useState(false)
@@ -40,7 +40,7 @@ export default function AdaptUserPage() {
                 const updateUser = await fetchUsers(id)
                 setIsNewUser(false)
                 const { userId, userFirstName, userLastName, userDefinition, userRegion,
-                    userFunction, username, userMail, userPassword } = updateUser
+                    userFunction, userName, userMail, userPassword } = updateUser
 
                 setUserId(userId)
                 setUserFirstName(userFirstName)
@@ -48,7 +48,7 @@ export default function AdaptUserPage() {
                 setUserDefinition(userDefinition)
                 setUserRegion(userRegion)
                 setUserFunction(userFunction)
-                setUsername(username)
+                setUsername(userName)
                 setUserEMail(userMail)
                 setUserPassword(userPassword)
             }
@@ -80,9 +80,9 @@ export default function AdaptUserPage() {
             method: 'POST',
             headers: { 'content-type': 'application/json' },
             body: JSON.stringify({
-                username: username,
+                userName: userName,
                 userMail: userMail,
-                userpassword: userPassword,
+                userPassword: userPassword,
                 userDefinition: userDefinition,
                 userFirstName: userFirstName,
                 userLastName: userLastName,
@@ -93,7 +93,7 @@ export default function AdaptUserPage() {
         if (response.ok) {
             const newUser = ({
                 userId: 0,
-                username: username,
+                userName: userName,
                 userMail: userMail,
                 userPassword: userPassword,
                 userDefinition: userDefinition,
@@ -108,8 +108,7 @@ export default function AdaptUserPage() {
                 position: toast.POSITION.TOP_CENTER,
                 containerId: 'LoginToaster'
             })
-        }
-        if (response.status === 400) {
+        } else if (response.status === 400) {
             response.json().then((errorData) => {
                 if (Array.isArray(errorData) && errorData.length > 0) {
                     errorData.forEach((errorItem) => {
@@ -144,7 +143,7 @@ export default function AdaptUserPage() {
             },
             body: JSON.stringify({
                 userId: id,
-                username: username,
+                userName: userName,
                 userMail: userMail,
                 userPassword: userPassword,
                 userDefinition: userDefinition,
@@ -161,6 +160,28 @@ export default function AdaptUserPage() {
                 position: toast.POSITION.TOP_CENTER,
                 containerId: 'LoginToaster'
             })
+        } else if (response.status === 400) {
+            response.json().then((errorData) => {
+                if (Array.isArray(errorData) && errorData.length > 0) {
+                    errorData.forEach((errorItem) => {
+                        const errorMsg = errorItem.description;
+                        toast.error(errorMsg, {
+                            position: toast.POSITION.TOP_CENTER,
+                            containerId: 'LoginToaster',
+                        });
+                    });
+                } else {
+                    toast.error('An error occurred. Please try again later.', {
+                        position: toast.POSITION.TOP_CENTER,
+                        containerId: 'LoginToaster',
+                    });
+                }
+            });
+        } else {
+            toast.error('An error occurred. Please try again later.', {
+                position: toast.POSITION.TOP_CENTER,
+                containerId: 'LoginToaster',
+            });
         }
     }
 
@@ -228,7 +249,7 @@ export default function AdaptUserPage() {
                             <ProtocolEntryForAdaptPage entry="Bezeichnung" value={userDefinition} callbackFunction={setUserDefinition} />
                             <Dropdown entry="Region" options={regions} value={userRegion} onChange={setUserRegion} />
                             <Dropdown entry="Funktion" options={roles} value={userFunction} onChange={setUserFunction} />
-                            <ProtocolEntryForAdaptPage entry="Benutzername" value={username} callbackFunction={setUsername} />
+                            <ProtocolEntryForAdaptPage entry="Benutzername" value={userName} callbackFunction={setUsername} />
                             <ProtocolEntryForAdaptPage entry="E-Mail" value={userMail} callbackFunction={setUserEMail} />
                             <ProtocolEntryForAdaptPage entry="Passwort" value={userPassword} callbackFunction={setUserPassword} />
                         </ColumnContainer>

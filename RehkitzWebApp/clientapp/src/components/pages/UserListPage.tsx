@@ -29,13 +29,17 @@ export default function UserListPage() {
     }, [dispatch_users])
 
     const fetchUsers = async () => {
-        const response = await fetch('/api/users', {
-            method: 'GET'
-        })
-        if (response.ok) {
-            return await response.json()
+        try {
+            const response = await fetch('/api/users', {
+                method: 'GET'
+            });
+            if (response.ok) {
+                return await response.json();
+            }                
+            return [];
+        } catch (error) {
+            return [];
         }
-        return []
     }
 
     const search = async () => {
@@ -47,7 +51,7 @@ export default function UserListPage() {
 
     let content;
     if (loadingUsers) {
-        content = (<p><em>Laedt Protokolle... Bitte Seite aktualisieren, sobald ASP.NET Backend aufgestartet ist.</em></p>);
+        content = (<p><em>Ladet Benutzer... </em></p>);
     } else if (usersListLocal.length === 0) {
         content = (<p><em>Keine Benutzer gefunden.</em></p>);
     } else {

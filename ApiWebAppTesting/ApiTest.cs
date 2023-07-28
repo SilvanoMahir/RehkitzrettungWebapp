@@ -52,9 +52,9 @@ namespace ApiWebAppTesting
         {
             var user = new
             {
-                username = "admin_test",
+                userName = "admin_test",
                 userEmail = "admin@tasna.ch",
-                userpassword = "Password@123",
+                userPassword = "Password@123",
                 userDefinition = "Admin 1",
                 userFirstName = "Silvano",
                 userLastName = "Stecher",
@@ -103,9 +103,9 @@ namespace ApiWebAppTesting
             int protocolIdToRemove = 2; //protocolId with this number is deleted
             var user = new
             {
-                username = "admin_test",
+                userName = "admin_test",
                 userEmail = "admin@tasna.ch",
-                userpassword = "Password@123",
+                userPassword = "Password@123",
                 userDefinition = "Admin 1",
                 userFirstName = "Silvano",
                 userLastName = "Stecher",
@@ -173,9 +173,9 @@ namespace ApiWebAppTesting
         {
             var user = new
             {
-                username = "admin_test",
+                userName = "admin_test",
                 userEmail = "admin@tasna.ch",
-                userpassword = "Password@123",
+                userPassword = "Password@123",
                 userDefinition = "Admin 1",
                 userFirstName = "Silvano",
                 userLastName = "Stecher",
@@ -198,9 +198,9 @@ namespace ApiWebAppTesting
         {
             var user = new
             {
-                username = "admin_test",
+                userName = "admin_test",
                 userEmail = "admin@tasna.ch",
-                userpassword = "Password@123",
+                userPassword = "Password@123",
                 userDefinition = "Admin 1",
                 userFirstName = "Silvano",
                 userLastName = "Stecher",
@@ -216,7 +216,7 @@ namespace ApiWebAppTesting
             var userAdapted = new
             {
                 userId = "1",
-                username = "admin_test",
+                userName = "admin_test",
                 userMail = "admin@tasna.ch",
                 userPassword = "Password@123",
                 userDefinition = "Admin 2",

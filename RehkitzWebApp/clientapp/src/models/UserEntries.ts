@@ -1,6 +1,6 @@
 export interface UserEntries {
     userId: number
-    username: string
+    userName: string
     userFirstName: string
     userLastName: string
     userRegion: string

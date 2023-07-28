@@ -132,8 +132,8 @@ public class AuthenticateController : ControllerBase
         }
 
         var userRegion = await _context.Region
-            .Where(r => r.RegionName == model.UserRegion) // Replace "Attribute" with the actual attribute name in your entity
-            .Select(r => (int?)r.RegionId) // Replace "Id" with the actual ID property name in your entity
+            .Where(r => r.RegionName == model.UserRegion) 
+            .Select(r => (int?)r.RegionId) 
             .FirstOrDefaultAsync();
 
         var newUser = new User
@@ -148,11 +148,6 @@ public class AuthenticateController : ControllerBase
 
         _context.User.Add(newUser);
         await _context.SaveChangesAsync();
-
-        //if (await _roleManager.RoleExistsAsync(UserRoles.Admin))
-        //{
-        //    await _userManager.AddToRoleAsync(user, UserRoles.User);
-        //}
 
         return Ok(new Response { Status = "Success", Message = "User created successfully!" });
     }

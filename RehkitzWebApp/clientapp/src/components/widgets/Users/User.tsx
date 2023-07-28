@@ -17,7 +17,7 @@ export default function Users({ userId }: Props) {
     const { usersListLocal } = useContext(UserContext)
     const [userEntry, setUserEntry] = useState<UserEntries>({
         userId: 0,
-        username: "",
+        userName: "",
         userFirstName: "",
         userLastName: "",
         userRegion: "",

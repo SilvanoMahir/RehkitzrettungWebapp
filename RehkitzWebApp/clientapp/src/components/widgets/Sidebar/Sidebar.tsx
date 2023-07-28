@@ -80,7 +80,7 @@ const SidebarColumnLayout = styled.div`
     align-items: center;
     background: #393e41;
     width: 100%;
-    @media (min-height: 750px) {
+    @media (min-height: 700px) {
       height: 100%;
     }
 `

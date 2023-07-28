@@ -20,7 +20,7 @@ public class AreaController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<AreaDto>>> GetArea()
     {
-        if (_context.User == null)
+        if (_context.Area == null)
         {
             return NotFound();
         }
