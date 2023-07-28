@@ -14,7 +14,7 @@ export const CustomButton = css`
     border-radius: 8px;
     cursor: pointer;
     color: #def2f1;
-    font-size: 25px;
+    font-size: 1.5em;
     font-weight: 500;
     padding: 4px 8px;
 `
@@ -50,6 +50,18 @@ export const DiscardProtocolButton = styled.button`
     margin-top: 20px;
 `
 
+export const DiscardUserButton = styled.button`
+    ${CustomButton};
+    background: red;
+    margin-top: 20px;
+`
+
+export const DeleteUserButton = styled.button`
+    ${CustomButton};
+    background: #820000;
+    margin-top: 20px;
+`
+
 export const SaveProtocolButton = styled.button`
     ${CustomButton};
     background: green;
@@ -68,5 +80,12 @@ export const LoginButton = styled.button`
 export const EditUserButton = styled.button`
     ${CustomButton};
     background: green;
-    margin-top: 20px;
+    margin-top: 1em;
+`
+
+export const CreateNewUserButton = styled.button`
+    ${CustomButton};
+    background: gray;
+    margin: 10px;
+    font-size: 25px;
 `

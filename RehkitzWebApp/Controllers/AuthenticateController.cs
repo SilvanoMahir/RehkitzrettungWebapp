@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using RehkitzWebApp.Model;
 using System.IdentityModel.Tokens.Jwt;
@@ -15,15 +16,18 @@ public class AuthenticateController : ControllerBase
     private readonly UserManager<IdentityUser> _userManager;
     private readonly RoleManager<IdentityRole> _roleManager;
     private readonly IConfiguration _configuration;
+    private readonly ApplicationDbContext _context;
 
     public AuthenticateController(
         UserManager<IdentityUser> userManager,
         RoleManager<IdentityRole> roleManager,
+        ApplicationDbContext context,
         IConfiguration configuration)
     {
         _userManager = userManager;
         _roleManager = roleManager;
         _configuration = configuration;
+        _context = context;
     }
 
     [HttpPost]
@@ -69,11 +73,11 @@ public class AuthenticateController : ControllerBase
 
         IdentityUser user = new()
         {
-            Email = model.Email,
+            Email = model.UserEmail,
             SecurityStamp = Guid.NewGuid().ToString(),
             UserName = model.Username
         };
-        var result = await _userManager.CreateAsync(user, model.Password);
+        var result = await _userManager.CreateAsync(user, model.UserPassword);
         if (!result.Succeeded)
         {
             return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User creation failed! Please check user details and try again." });
@@ -92,13 +96,19 @@ public class AuthenticateController : ControllerBase
             return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User already exists!" });
         }
 
+        var MailExists = await _context.Region.FirstOrDefaultAsync(x => x.ContactPersonMail == model.UserEmail);
+        if (MailExists == null)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Mail address of contact person in region does not exist!" });
+        }
+
         IdentityUser user = new()
         {
-            Email = model.Email,
+            Email = model.UserEmail,
             SecurityStamp = Guid.NewGuid().ToString(),
             UserName = model.Username
         };
-        var result = await _userManager.CreateAsync(user, model.Password);
+        var result = await _userManager.CreateAsync(user, model.UserPassword);
         if (!result.Succeeded)
         {
             return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User creation failed! Please check user details and try again." });
@@ -106,22 +116,39 @@ public class AuthenticateController : ControllerBase
 
         if (!await _roleManager.RoleExistsAsync(UserRoles.Admin))
         {
-            await _roleManager.CreateAsync(new IdentityRole(UserRoles.Admin));
+            var role = new IdentityRole(UserRoles.Admin);
+            await _roleManager.CreateAsync(role);
         }
 
         if (!await _roleManager.RoleExistsAsync(UserRoles.User))
         {
-            await _roleManager.CreateAsync(new IdentityRole(UserRoles.User));
+            var role = new IdentityRole(UserRoles.User);
+            await _roleManager.CreateAsync(role);
         }
 
         if (await _roleManager.RoleExistsAsync(UserRoles.Admin))
         {
             await _userManager.AddToRoleAsync(user, UserRoles.Admin);
         }
-        if (await _roleManager.RoleExistsAsync(UserRoles.Admin))
+
+        var userRegion = await _context.Region
+            .Where(r => r.RegionName == model.UserRegion) 
+            .Select(r => (int?)r.RegionId) 
+            .FirstOrDefaultAsync();
+
+        var newUser = new User
         {
-            await _userManager.AddToRoleAsync(user, UserRoles.User);
-        }
+            OwnerId = user.Id,
+            UserFirstName = model.UserFirstName,
+            UserLastName = model.UserLastName,
+            UserRegionId = userRegion.ToString(),
+            UserDefinition = model.UserDefinition,
+            EntryIsDeleted = false
+        };
+
+        _context.User.Add(newUser);
+        await _context.SaveChangesAsync();
+
         return Ok(new Response { Status = "Success", Message = "User created successfully!" });
     }
 

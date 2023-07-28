@@ -4,7 +4,7 @@ import SidebarButton from "../Sidebar/SidebarButton"
 import SidebarIcon from "../Sidebar/SidebarIcon"
 import { useContext } from "react"
 import { AppContext } from '../../../store/context'
-import { ROUTE_LOGIN_PAGE,ROUTE_MAP_PAGE, ROUTE_RESCUE_LIST_PAGE, ROUTE_USER_LIST_PAGE } from '../../../App'
+import { ROUTE_LOGIN_PAGE, ROUTE_MAP_PAGE, ROUTE_RESCUE_LIST_PAGE, ROUTE_USER_LIST_PAGE } from '../../../App'
 import { useNavigate } from "react-router"
 import { useMediaQuery } from "react-responsive"
 
@@ -14,7 +14,9 @@ interface Props {
 
 export default function Sidebar({ showSidebar }: Props) {
 
-    const isNotMobile = useMediaQuery({ query: '(min-width: 426px)' })
+    const isNotMobile = useMediaQuery({ query: '(min-width: 700px)' })
+    const isLargeScreen = useMediaQuery({ query: '(min-width: 1200px)' })
+
     const { dispatch_token } = useContext(AppContext)
     let navigate = useNavigate()
 
@@ -45,36 +47,48 @@ export default function Sidebar({ showSidebar }: Props) {
     }
 
     return (
-        <div> {
-            (isNotMobile || showSidebar) &&
-            <SidebarColumnLayout>
-                <SidebarIcon />
-                <SidebarTitle>Willkommen zur Rehkitzrettung App</SidebarTitle>
-                <SidebarButton onClick={() => moveToMyData()} text="Meine Daten" icon=<FaUser /> />
-                <SidebarButton onClick={() => moveToRescues()} text="Rettungen" icon=<FaListUl /> />
-                <SidebarButton onClick={() => moveToMap()} text="Karte" icon=<FaMap /> />
-                <SidebarButton onClick={() => moveToOrganisation()} text="Organisation" icon=<FaUsers /> />
-                <SidebarButton onClick={() => moveToInformation()} text="Information" icon=<FaInfo /> />
-                <SidebarButton onClick={() => logout()} text="Abmelden" icon=<FaRegArrowAltCircleRight /> />
-            </SidebarColumnLayout>
-        }
-        </div>
+        <SidebarDiv showSidebar={showSidebar} isLargeScreen={isLargeScreen}>
+            {(isNotMobile || showSidebar) && (
+                <SidebarColumnLayout>
+                    <SidebarIcon />
+                    <SidebarTitle>Willkommen zur Rehkitzrettung App</SidebarTitle>
+                    <SidebarButton onClick={moveToMyData} text="Meine Daten" icon={<FaUser />} />
+                    <SidebarButton onClick={moveToRescues} text="Rettungen" icon={<FaListUl />} />
+                    <SidebarButton onClick={moveToMap} text="Karte" icon={<FaMap />} />
+                    <SidebarButton onClick={moveToOrganisation} text="Organisation" icon={<FaUsers />} />
+                    <SidebarButton onClick={moveToInformation} text="Information" icon={<FaInfo />} />
+                    <SidebarButton onClick={logout} text="Abmelden" icon={<FaRegArrowAltCircleRight />} />
+                </SidebarColumnLayout>
+            )}
+        </SidebarDiv>
     )
 }
+
+const SidebarDiv = styled.div<{ showSidebar: boolean; isLargeScreen: boolean }>`
+    max-width: ${({ isLargeScreen }) => (isLargeScreen ? "30%" : "100%")};
+    transition: max-width 0.3s ease-in-out;
+    overflow: hidden;
+    overflow-y: auto;
+    @media (min-height: 750px) {
+      overflow-y: none;
+    }
+`
 
 const SidebarColumnLayout = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
     background: #393e41;
-    height: 100%;
+    width: 100%;
+    @media (min-height: 700px) {
+      height: 100%;
+    }
 `
 
 const SidebarTitle = styled.div`
     text-align: center;
     font-weight: 500;
-    font-size: 25px;
-    margin-bottom: 10px;
-    margin: 10px 15px 10px;
+    font-size: 1.5em;
+    margin: 1em;
     color: beige;
 `

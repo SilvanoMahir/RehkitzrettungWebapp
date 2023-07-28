@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using RehkitzWebApp.Model;
 using RehkitzWebApp.Model.Dtos;
+using System.Data;
 
 namespace webapi.Controllers;
 
@@ -18,25 +19,37 @@ public class RegionController : ControllerBase
 
     // GET: /api/regions
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<RegionDto>>> GetRegion()
+    public async Task<ActionResult<IEnumerable<RegionNameDto>>> GetRegion()
     {
         if (_context.Region == null)
         {
             return NotFound();
         }
 
-        var regions = await _context.Region
+        var regionsList = await _context.Region
             .Where(p => p.EntryIsDeleted == false)
+            .Select(p => p.RegionName)
             .ToListAsync();
 
-        var regionDtos = new List<RegionDto>();
+        var regionDtosList = new List<RegionNameDto>();
 
-        foreach (var region in regions)
+        foreach (var region in regionsList)
         {
-            regionDtos.Add(region.ToDto());
+            var regionDto = new RegionNameDto
+            {
+                RegionName = region
+            };
+            regionDtosList.Add(regionDto);
         }
 
-        return Ok(regionDtos);
+        if (regionDtosList.Count != 0)
+        {
+            return Ok(regionDtosList);
+        }
+        else
+        {
+            return NoContent();
+        }
     }
 
     // GET: /api/regions/5

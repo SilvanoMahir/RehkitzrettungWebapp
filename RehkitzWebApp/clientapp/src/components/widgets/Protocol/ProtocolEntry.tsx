@@ -22,17 +22,31 @@ const RowContainer = styled.div`
 
 const Entry = styled.div`
     flex: 1;
-    margin-left: 15px;
     font-weight: bold;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    color: #fffecb;
+    white-space: initial;
+    @media (max-width: 430px) {
+        font-size: 0.9em;
+    }
+    @media (min-width: 1400px) {
+        font-size: 1.25em;
+    }
 `
 
 const Value = styled.div`
     flex: 1;
-    margin-left: 15px;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    color: #fffecb;
+    white-space: initial;
+    @media (max-width: 430px) {
+        font-size: 0.9em;
+    }
+    @media (min-width: 1400px) {
+        font-size: 1.25em;
+    }
 `

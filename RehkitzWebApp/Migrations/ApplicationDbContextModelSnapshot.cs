@@ -346,6 +346,10 @@ namespace RehkitzWebApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<string>("UserDefinition")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)");
+
                     b.Property<string>("UserFirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)");

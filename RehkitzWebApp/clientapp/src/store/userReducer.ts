@@ -6,7 +6,7 @@ export function userReducer(state: UserState, action: ActionUsers): UserState {
         case 'add-user':
             return {
                 ...state,
-                usersListLocal: [...action.usersListLocal, action.newUserList]
+                usersListLocal: [...action.usersListLocal, action.newUser]
             }
 
         case 'delete-user':
@@ -16,6 +16,12 @@ export function userReducer(state: UserState, action: ActionUsers): UserState {
             }
 
         case 'get-users':
+            return {
+                ...state,
+                usersListLocal: action.usersListLocal
+            }
+        
+        case 'update-users':
             return {
                 ...state,
                 usersListLocal: action.usersListLocal
