@@ -12,7 +12,7 @@ using RehkitzWebApp.Model;
 namespace RehkitzWebApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230623193636_Initial")]
+    [Migration("20230707154418_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -346,6 +346,10 @@ namespace RehkitzWebApp.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("OwnerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("UserDefinition")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)");
 

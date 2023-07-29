@@ -47,6 +47,7 @@ public class DatabaseInitializer
 
         //fill the tables with initial data
         FillProtocolTable();
+        FillRegionTable();
     }
 
     private void FillProtocolTable()
@@ -110,7 +111,15 @@ public class DatabaseInitializer
     {
         var regions = new List<Region>
         {
-            // Add Region instances as needed
+            new Region
+            {
+                    RegionName= "Tasna",
+                    RegionState = "GR",
+                    ContactPersonFirstName = "Chomps",
+                    ContactPersonLastName = "Johannes Erny",
+                    ContactPersonMail = "admin@tasna.ch",
+                    EntryIsDeleted = false
+            }
         };
 
         _dbContext.Region.AddRange(regions);

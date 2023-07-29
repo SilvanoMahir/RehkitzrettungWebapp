@@ -9,8 +9,20 @@ public class RegisterModel
 
     [EmailAddress]
     [Required(ErrorMessage = "Email is required")]
-    public string? Email { get; set; }
+    public string? UserEmail { get; set; }
 
     [Required(ErrorMessage = "Password is required")]
-    public string? Password { get; set; }
+    public string? UserPassword { get; set; }
+
+    [Required(ErrorMessage = "User definition is required")]
+    public string? UserDefinition { get; set; }
+
+    [Required(ErrorMessage = "User first name is required")]
+    public string? UserFirstName { get; set; }
+
+    [Required(ErrorMessage = "User last name is required")]
+    public string? UserLastName { get; set; }
+
+    [Required(ErrorMessage = "User region is required")]
+    public string? UserRegion { get; set; }
 }

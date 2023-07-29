@@ -10,10 +10,12 @@ import { ROUTE_RESCUE_LIST_PAGE } from '../../App'
 import ProtocolEntryForAdaptPage from '../widgets/Protocol/ProtocolEntryForAdaptPage'
 import DatePicker from "react-datepicker"
 import 'react-datepicker/dist/react-datepicker.css'
+import { Dropdown } from '../controls/Dropdown'
+import { toast } from 'react-toastify'
 
 export default function AdaptProtocolPage() {
 
-    const isNotMobile = useMediaQuery({ query: '(min-width: 426px)' })
+    const isNotMobile = useMediaQuery({ query: '(min-width: 700px)' })
 
     const [protocolCode, setProtocolCode] = useState('')
     const [clientFullName, setClientFullName] = useState('')
@@ -27,6 +29,8 @@ export default function AdaptProtocolPage() {
     const [areaSize, setAreaSize] = useState('')
     const [injuredFawns, setInjuredFawns] = useState('')
     const [isNewProtocol, setIsNewProtocol] = useState(false)
+    const [regions, setRegions] = useState<{ label: string; value: string; }[]>([])
+    const [areaSizes, setAreaSizes] = useState<{ label: string; value: string; }[]>([])
     const { protocolsListLocal, dispatch } = useContext(ProtocolsContext)
     let navigate = useNavigate()
     const { id } = useParams()
@@ -54,6 +58,19 @@ export default function AdaptProtocolPage() {
                 setAreaSize(areaSize)
                 setInjuredFawns(injuredFawns.toString())
             }
+            const regionsData = await fetchRegions()
+            const transformedRegions = regionsData.map((role: { regionName: any }) => ({
+                label: role.regionName,
+                value: role.regionName,
+            }))
+            setRegions(transformedRegions)
+
+            const areaSizesData = await fetchAreaSizes()
+            const transformedAreaSizes = areaSizesData.map((role: { areaSize: any }) => ({
+                label: role.areaSize,
+                value: role.areaSize,
+            }))
+            setAreaSizes(transformedAreaSizes)
         }
         onMount()
     }, [protocolsListLocal, id])
@@ -64,7 +81,7 @@ export default function AdaptProtocolPage() {
 
     const saveProtocol = async () => {
         const storageToken = localStorage.getItem('user_token')
-        const response = await fetch(`/api/protocols`, {
+        const response = await fetch('/api/protocols', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json',
@@ -102,8 +119,12 @@ export default function AdaptProtocolPage() {
             })
 
             dispatch({ type: 'add-protocols', protocolsListLocal, newProtocol })
+            navigate(ROUTE_RESCUE_LIST_PAGE)
+            toast.success("Protokoll erfolgreich hinzugefügt!", {
+                position: toast.POSITION.TOP_CENTER,
+                containerId: 'LoginToaster'
+            })
         }
-        navigate(ROUTE_RESCUE_LIST_PAGE)
     }
 
     const updateProtocol = async () => {
@@ -131,8 +152,32 @@ export default function AdaptProtocolPage() {
         })
         if (response.ok) {
             dispatch({ type: 'update-protocols', protocolsListLocal })
+            navigate(ROUTE_RESCUE_LIST_PAGE)
+            toast.success("Protokoll erfolgreich angepasst!", {
+                position: toast.POSITION.TOP_CENTER,
+                containerId: 'LoginToaster'
+            })
+        }    
+    }
+
+    const fetchRegions = async () => {
+        const response = await fetch(`/api/regions`, {
+            method: 'GET'
+        })
+        if (response.ok) {
+            return await response.json()
         }
-        navigate(ROUTE_RESCUE_LIST_PAGE)
+        return []
+    }
+
+    const fetchAreaSizes = async () => {
+        const response = await fetch(`/api/area `, {
+            method: 'GET'
+        })
+        if (response.ok) {
+            return await response.json()
+        }
+        return []
     }
 
     return (
@@ -142,17 +187,19 @@ export default function AdaptProtocolPage() {
                 {(isNotMobile) && <Sidebar showSidebar={isNotMobile} />}
                 <RescueListColumnLayout>
                     <ProtocolLayout isNotMobile={isNotMobile}>
-                        <ProtocolTitle>Neues Protokoll</ProtocolTitle>
+                    <ProtocolTitle>{isNewProtocol ? 'Neues Protokoll' : `${clientFullName}`}</ProtocolTitle>                        
                         <ColumnContainer>
                             <ProtocolEntryForAdaptPage entry="Auftraggeber" value={clientFullName} callbackFunction={setClientFullName} />
                             <ProtocolEntryForAdaptPage entry="Pilot" value={pilotFullName} callbackFunction={setPilotFullName} />
                             <ProtocolEntryForAdaptPage entry="Lokalname" value={localName} callbackFunction={setLocalName} />
-                            <ProtocolEntryForAdaptPage entry="Region" value={regionName} callbackFunction={setRegionName} />
+                            <Dropdown entry="Region" options={regions} value={regionName} onChange={setRegionName} />
                             <DatePickerRowContainer>
                                 <DatePickerLabel>Datum</DatePickerLabel>
-                                <DatePicker selected={date} onChange={(date) => setDate(date)} dateFormat="dd/MM/yyyy" />
+                                <DatePickerControl>
+                                    <DatePicker selected={date} onChange={(date) => setDate(date)} dateFormat="dd/MM/yyyy" />
+                                </DatePickerControl>
                             </DatePickerRowContainer>
-                            <ProtocolEntryForAdaptPage entry="Fläche" value={areaSize} callbackFunction={setAreaSize} />
+                            <Dropdown entry="Fläche" options={areaSizes} value={areaSize} onChange={setAreaSize} />
                             <ProtocolEntryForAdaptPage entry="Gefundene Kitze" value={foundFawns} callbackFunction={setFoundFawns} />
                             <ProtocolEntryForAdaptPage entry="Verletzte Kitze" value={injuredFawns} callbackFunction={setInjuredFawns} />
                             <ProtocolEntryForAdaptPage entry="Markierte Kitze" value={markedFawns} callbackFunction={setMarkedFawns} />
@@ -176,7 +223,6 @@ const RescueListLayout = styled.div`
 const RescueListRowLayout = styled.div`
     display: flex;
     flex-direction: row;
-    background: #9A8873;
     height: 100%;
 `
 
@@ -184,6 +230,7 @@ const RescueListColumnLayout = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+    align-items: center;
     width: 100%;
 `
 
@@ -209,8 +256,11 @@ const DatePickerLabel = styled.div`
     white-space: nowrap;
     text-overflow: ellipsis;
     text-align: center;
-    max-width: 200px;
     line-height: 50px;
+    color: #fffecb;
+    @media (min-width: 1400px) {
+        font-size: 1.25em;
+    }
 `
 
 const ProtocolLayout = styled.div<{ isNotMobile: boolean }>`
@@ -219,19 +269,27 @@ const ProtocolLayout = styled.div<{ isNotMobile: boolean }>`
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: #7d6b52;
+    background: #9A8873;
     color: beige;
     max-width: 500px;
+    border-radius: 10px;
 `
 
 const ProtocolTitle = styled.div`
     font-weight: 500;
     font-size: 25px;
     margin: 10px;
+    color: #fffecb;
 `
 
 const ColumnContainer = styled.div`
     display: flex;
     flex-direction: column;
     width: 100%;
+`
+
+const DatePickerControl = styled.div`
+    display: flex;
+    flex: 1;
+    align-items: center;
 `

@@ -9,7 +9,7 @@ public static class UserExtensions
             UserId = user.UserId,
             UserDefinition = user.UserDefinition,
             UserFunction = user.UserFunction,
-            UserStateRegion = user.UserStateRegion
+            UserRegion = user.UserRegion
         };
     }
 
@@ -21,8 +21,9 @@ public static class UserExtensions
             OwnerId = "0",
             UserFirstName = userDto.UserFirstName,
             UserLastName = userDto.UserLastName,
-            UserRegionId = userDto.UserStateRegion,
-            EntryIsDeleted = entryIsDeleted
+            UserRegionId = userDto.UserRegion,
+            EntryIsDeleted = entryIsDeleted,
+            UserDefinition = userDto.UserDefinition
         };
     }
 }

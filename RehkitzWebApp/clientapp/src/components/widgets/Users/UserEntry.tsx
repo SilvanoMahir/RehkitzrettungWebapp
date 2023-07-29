@@ -25,12 +25,19 @@ const RowContainer = styled.div`
 
 const Entry = styled.div`
   	overflow: hidden;
-  	white-space: nowrap;
   	text-overflow: ellipsis;
   	font-weight: bold; 
-  	@media (max-width: 426px) {
-    	margin-left: 15px;
+	font-size: 1.25em;
+	white-space: initial;
+	overflow-wrap: anywhere;
+  	@media (max-width: 1200px) {
+		display: flex;
     	flex: 1;
+  	}
+	@media (max-width: 480px) {
+		display: flex;
+    	flex: 1;
+		font-size: 1em;
   	}
 `
 
@@ -39,8 +46,16 @@ const Value = styled.div`
   	grid-template-columns: repeat(5, 1fr);
   	justify-items: stretch;
  	overflow: hidden;
-  	white-space: nowrap;
   	text-overflow: ellipsis;
-  	margin-left: 15px;
   	flex: 1;
+	font-size: 1.25em;
+	white-space: initial;
+	overflow-wrap: anywhere;
+	@media (max-width: 480px) {
+    	flex: 1;
+		font-size: 1em;
+  	}
+	@media (max-width: 1200px) {
+		display: flex;
+  	}
 `

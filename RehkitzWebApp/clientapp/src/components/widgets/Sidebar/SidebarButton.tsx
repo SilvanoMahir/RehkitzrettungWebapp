@@ -23,7 +23,7 @@ export const Button = styled.button`
     flex-direction: row;
     justify-content: space-between;
     color: beige;
-    padding: 15px;
+    padding: 0.5em;
 `
 
 const RowLayout = styled.div` 
@@ -31,5 +31,5 @@ const RowLayout = styled.div`
     flex-direction: row;
     align-self: stretch;
     justify-content: space-evenly;
-    margin: 11px;
+    margin: 0.5em;
 `

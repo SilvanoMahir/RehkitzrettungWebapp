@@ -5,6 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RehkitzWebApp.Model;
+using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http.Headers;
 using System.Text;
 
@@ -36,7 +37,6 @@ namespace ApiWebAppTesting
             _options = new DbContextOptionsBuilder<ApiTestDbContext>()
                 .UseSqlServer(testConnectionString)
                 .Options;
-
             resetAndInitializeTestDB();
         }
 
@@ -52,9 +52,13 @@ namespace ApiWebAppTesting
         {
             var user = new
             {
-                username = "admin_test",
-                email = "test@ost.ch",
-                password = "Password@123"
+                userName = "admin_test",
+                userEmail = "admin@tasna.ch",
+                userPassword = "Password@123",
+                userDefinition = "Admin 1",
+                userFirstName = "Silvano",
+                userLastName = "Stecher",
+                userRegion = "Tasna"
             };
 
             var userLogin = new
@@ -69,7 +73,8 @@ namespace ApiWebAppTesting
             var responseRegister = await _httpClient.PostAsync("/api/authenticate/register-admin", content);
 
             //login with previous created admin user
-            var contentLogin = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+            string jsonLoginPayload = JsonConvert.SerializeObject(userLogin);
+            var contentLogin = new StringContent(jsonLoginPayload, Encoding.UTF8, "application/json");
             var responseLogin = await _httpClient.PostAsync("/api/authenticate/login", contentLogin);
 
             //get token of the login
@@ -98,9 +103,13 @@ namespace ApiWebAppTesting
             int protocolIdToRemove = 2; //protocolId with this number is deleted
             var user = new
             {
-                username = "admin_test",
-                email = "test@ost.ch",
-                password = "Password@123"
+                userName = "admin_test",
+                userEmail = "admin@tasna.ch",
+                userPassword = "Password@123",
+                userDefinition = "Admin 1",
+                userFirstName = "Silvano",
+                userLastName = "Stecher",
+                userRegion = "Tasna"
             };
 
             var userLogin = new
@@ -115,7 +124,8 @@ namespace ApiWebAppTesting
             var responseRegister = await _httpClient.PostAsync("/api/authenticate/register-admin", content);
 
             // login as admin user
-            var contentLogin = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+            string jsonLoginPayload = JsonConvert.SerializeObject(userLogin);
+            var contentLogin = new StringContent(jsonLoginPayload, Encoding.UTF8, "application/json");
             var responseLogin = await _httpClient.PostAsync("/api/authenticate/login", contentLogin);
 
             // delete the protocol
@@ -163,9 +173,13 @@ namespace ApiWebAppTesting
         {
             var user = new
             {
-                username = "admin_test",
-                email = "test@ost.ch",
-                password = "Password@123"
+                userName = "admin_test",
+                userEmail = "admin@tasna.ch",
+                userPassword = "Password@123",
+                userDefinition = "Admin 1",
+                userFirstName = "Silvano",
+                userLastName = "Stecher",
+                userRegion = "Tasna"
             };
 
             //setup request for getting the protocols
@@ -177,6 +191,88 @@ namespace ApiWebAppTesting
             var stringResult = await response.Content.ReadAsStringAsync();
 
             Assert.IsTrue(response.ToString().Contains("StatusCode: 200"));
+        }
+
+        [TestMethod]
+        public async Task adaptAdminUserTest()
+        {
+            var user = new
+            {
+                userName = "admin_test",
+                userEmail = "admin@tasna.ch",
+                userPassword = "Password@123",
+                userDefinition = "Admin 1",
+                userFirstName = "Silvano",
+                userLastName = "Stecher",
+                userRegion = "Tasna"
+            };
+
+            var userLogin = new
+            {
+                username = "admin_test",
+                password = "Password@123"
+            };
+
+            var userAdapted = new
+            {
+                userId = "1",
+                userName = "admin_test",
+                userMail = "admin@tasna.ch",
+                userPassword = "Password@123",
+                userDefinition = "Admin 2",
+                userFirstName = "Fabio",
+                userLastName = "Stecher",
+                userRegion = "Tasna",
+                userFunction = "Admin"
+            };
+
+            //register new admin client
+            string jsonPayload = JsonConvert.SerializeObject(user);
+            var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+            var responseRegister = await _httpClient.PostAsync("/api/authenticate/register-admin", content);
+
+            //login with previous created admin user
+            string jsonLoginPayload = JsonConvert.SerializeObject(userLogin);
+            var contentLogin = new StringContent(jsonLoginPayload, Encoding.UTF8, "application/json");
+            var responseLogin = await _httpClient.PostAsync("/api/authenticate/login", contentLogin);
+
+            //get token of the login
+            string responseString = await responseLogin.Content.ReadAsStringAsync();
+            var responseJson = JObject.Parse(responseString);
+            string token = responseJson["token"].Value<string>();
+
+            // Serialize the payload to JSON
+            string jsonPayloadAdaptAdmin = JsonConvert.SerializeObject(userAdapted);
+
+            // Setup request for adapting the user
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Put,
+                RequestUri = new Uri("/api/users/1", UriKind.Relative),
+                Content = new StringContent(jsonPayloadAdaptAdmin, Encoding.UTF8, "application/json")
+            };
+
+            request.Headers.Add("Authorization", "Bearer " + token);
+            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            // Send the request
+            var responsePut = await _httpClient.SendAsync(request);
+
+            //setup request for getting the users
+            request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new Uri("/api/users", UriKind.Relative)
+            };
+            request.Headers.Add("Authorization", "Bearer " + token);
+            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            //send request
+            var responseGet = await _httpClient.SendAsync(request);
+            var stringResult = await responseGet.Content.ReadAsStringAsync();
+
+            Assert.IsTrue(responsePut.ToString().Contains("StatusCode: 200"));
+            Assert.IsTrue(stringResult.ToString().Contains("Admin 2"));
         }
 
         private void resetAndInitializeTestDB()
@@ -193,6 +289,5 @@ namespace ApiWebAppTesting
                 throw new Exception("No connection to test DB");
             }
         }
-
     }
 }

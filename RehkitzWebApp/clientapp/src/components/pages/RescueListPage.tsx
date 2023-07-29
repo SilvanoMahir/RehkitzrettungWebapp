@@ -11,7 +11,7 @@ import { ROUTE_ADAPT_PROTOCOL_PAGE } from '../../App'
 
 export default function RescueListPage() {
 
-    const isNotMobile = useMediaQuery({ query: '(min-width: 426px)' })
+    const isNotMobile = useMediaQuery({ query: '(min-width: 700px)' })
 
     const [loadingProtocols, setLoadingProtocols] = useState(true)
     const { protocolsListLocal, dispatch } = useContext(ProtocolsContext)
@@ -97,7 +97,6 @@ const RescueListLayout = styled.div`
 const RescueListRowLayout = styled.div`
     display: flex;
     flex-direction: row;
-    background: #9A8873;
     height: 100%;
 `
 

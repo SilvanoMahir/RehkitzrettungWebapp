@@ -70,7 +70,7 @@ export default function RescueListPage() {
                     <RowContainer>
                         <LoginButton onClick={() => login()}>Anmelden <FaSignInAlt /></LoginButton>
                     </RowContainer>
-                    <VersionText>v0.3</VersionText>
+                    <VersionText>v0.1</VersionText>
                     <LoadingBar>{promiseInProgress ? (<FadeLoader height={8} color="#fffecb" />) : ("")} </LoadingBar>
                 </LoginPageColumnLayout >
             </LoginPageRowLayout>
@@ -81,7 +81,6 @@ export default function RescueListPage() {
 const LoginPageRowLayout = styled.div`
     display: flex; 
     justify-content: center;
-    background: #9A8873;
     align-items: flex-start;
 `
 
