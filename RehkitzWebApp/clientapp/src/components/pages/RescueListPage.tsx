@@ -9,7 +9,7 @@ import { Menu } from '../widgets/Menu'
 import { useNavigate } from 'react-router-dom'
 import { ROUTE_ADAPT_PROTOCOL_PAGE } from '../../App'
 import { toast } from 'react-toastify'
-import { saveAs } from 'file-saver'; 
+import { saveAs } from 'file-saver'
 
 
 export default function RescueListPage() {
@@ -17,7 +17,7 @@ export default function RescueListPage() {
     const isNotMobile = useMediaQuery({ query: '(min-width: 700px)' })
 
     const [loadingProtocols, setLoadingProtocols] = useState(true)
-    const [localToken, setToken] = useState('')
+    const [localToken, setLocalToken] = useState('')
     const { protocolsListLocal, dispatch } = useContext(ProtocolsContext)
     const { dispatch_token } = useContext(AppContext)
     let navigate = useNavigate()
@@ -30,8 +30,8 @@ export default function RescueListPage() {
                 dispatch_token({ type: 'set-token', value: storageToken })
             }
             const protocolsListLocal = await fetchProtocols(storageToken)
-            if (storageToken !== null){
-                setToken(storageToken)
+            if (storageToken !== null) {
+                setLocalToken(storageToken)
             }
             setLoadingProtocols(false)
             dispatch({ type: 'get-protocols', protocolsListLocal })
@@ -63,43 +63,43 @@ export default function RescueListPage() {
                 headers: {
                     'Authorization': `Bearer ${storageToken}`,
                 },
-            });
+            })
     
             if (response.ok) {
-                const fileBlob = await response.blob();
-                const currentDate = new Date();
-                const year = currentDate.getFullYear();
-                const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
-                const day = currentDate.getDate().toString().padStart(2, '0');
-                saveAs(fileBlob, `RehkitzrettungApp_Protokoll_${year}-${month}-${day}`);
+                const fileBlob = await response.blob()
+                const currentDate = new Date()
+                const year = currentDate.getFullYear()
+                const month = (currentDate.getMonth() + 1).toString().padStart(2, '0')
+                const day = currentDate.getDate().toString().padStart(2, '0')
+                saveAs(fileBlob, `RehkitzrettungApp_Protokoll_${year}-${month}-${day}`)
                 toast.success("Erfolgreich heruntergeladen!", {
                     position: toast.POSITION.TOP_CENTER,
                     containerId: 'LoginToaster',
-                });
+                })
             } else {
                 toast.error("Herunterladen fehlgeschlagen!", {
                     position: toast.POSITION.TOP_CENTER,
                     containerId: 'LoginToaster',
-                });
+                })
             }
         } catch (error) {
             toast.error("Herunterladen fehlgeschlagen!", {
                 position: toast.POSITION.TOP_CENTER,
                 containerId: 'LoginToaster',
-            });
+            })
         }
-    };
+    }
     
     const createProtocol = async () => {
         navigate(ROUTE_ADAPT_PROTOCOL_PAGE)
     }
 
-    let content;
+    let content
 
     if (loadingProtocols) {
-        content = (<p><em>Laedt Protokolle... Bitte Seite aktualisieren, sobald ASP.NET Backend aufgestartet ist.</em></p>);
+        content = (<p><em>Laedt Protokolle... Bitte Seite aktualisieren, sobald ASP.NET Backend aufgestartet ist.</em></p>)
     } else if (protocolsListLocal.length === 0) {
-        content = (<p><em>Keine Protokolle gefunden.</em></p>);
+        content = (<p><em>Keine Protokolle gefunden.</em></p>)
     } else {
         content = protocolsListLocal.map(protocolEntry => (
             <Protocol key={protocolEntry.protocolId} protocolId={protocolEntry.protocolId} />

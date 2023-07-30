@@ -13,14 +13,14 @@ public class ExcelExporter
             var worksheet = workbook.Worksheets.Add("Rehkitzrettung Protokolle");
             int row = 1;
 
-            //Title
+            // Title
             worksheet.Cell(row, 1).Value = "Rehkitzrettung Protokolle " + DateTime.Now.Date.Year;
             worksheet.Cell(row, 1).Style.Font.FontSize = 16;
             worksheet.Cell(row, 1).Style.Font.Bold = true;
             worksheet.Cell(row, 1).Style.Font.Underline = XLFontUnderlineValues.Single;
             row++;
 
-            //Date and User
+            // Date and User
             worksheet.Cell(row, 1).Value = "Datum: " + DateTime.Now.ToString("d-M-yyyy");
 
             row = 4;
