@@ -16,6 +16,8 @@ export default function MainPage() {
 
     const isNotMobile = useMediaQuery({ query: '(min-width: 426px)' })
 
+    const [userName, setUserName] = useState('')
+    const [regionName, setRegionName] = useState('')
     const [numberOfProtocols, setNumberOfProtocols] = useState(0)
     const [foundFawns, setFoundFawns] = useState(0)
     const [injuredFawns, setInjuredFawns] = useState(0)
@@ -30,6 +32,8 @@ export default function MainPage() {
             if (storageToken !== null) {
                 dispatch_token({ type: 'set-token', value: storageToken })
             }
+            setUserName('Some user')
+            setRegionName('Some region')
             const protocolOverview = await fetchProtocolOverview(storageToken)
 
             setNumberOfProtocols(protocolOverview.numberOfProtocols)
@@ -60,8 +64,9 @@ export default function MainPage() {
             <RescueListRowLayout>
                 {(isNotMobile) && <Sidebar showSidebar={isNotMobile} />}
                 <RescueListColumnLayout>
+                    <PageTitle>Willkommen {userName}</PageTitle>
                     <ProtocolLayout isNotMobile={isNotMobile}>
-                        <ProtocolTitle>Saisonübersicht (TODO: Region einfügen)</ProtocolTitle>
+                        <ProtocolTitle>Saisonübersicht {regionName}</ProtocolTitle>
                         <ColumnContainer>
                             <ProtocolEntry entry="Anzahl Aufgebote" value={numberOfProtocols} />
                             <ProtocolEntry entry="Gerettete Kitze" value={foundFawns} />
@@ -114,4 +119,17 @@ const ColumnContainer = styled.div`
     display: flex;
     flex-direction: column;
     width: 100%;
+`
+
+const PageTitle = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    font-weight: 500;
+    font-size: 2em;
+    margin: 10px;
+    color: #fffecb;
+    @media (max-width: 700px) {
+        margin-bottom: 1.25em;
+    }
 `
