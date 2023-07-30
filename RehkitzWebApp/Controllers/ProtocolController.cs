@@ -78,9 +78,9 @@ public class ProtocolController : ControllerBase
         return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "RehkitzrettungProtokolle" + DateTime.Now.ToString("yyyy-M-d") + ".xlsx");
     }
 
-    // POST: /api/protocols/overview
+    // GET: /api/protocols/overview
     [HttpGet("overview")]
-    public async Task<ActionResult<ProtocolOverviewDto>> PostProtocolsOverview(string regionName)
+    public async Task<ActionResult<ProtocolOverviewDto>> PostProtocolsOverview()
     {
         if (_context.Protocol == null)
         {
@@ -98,7 +98,7 @@ public class ProtocolController : ControllerBase
 
         foreach (var protocol in protocolsList)
         {
-            if (protocol.RegionName == regionName)
+            if (protocol.RegionName == "Scuol")
             {
                 ++numberOfProtocols;
                 foundFawns += protocol.FoundFawns;

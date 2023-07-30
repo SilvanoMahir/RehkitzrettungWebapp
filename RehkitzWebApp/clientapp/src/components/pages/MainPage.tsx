@@ -30,29 +30,28 @@ export default function MainPage() {
             if (storageToken !== null) {
                 dispatch_token({ type: 'set-token', value: storageToken })
             }
-            await fetchProtocolOverview(storageToken)
+            const protocolOverview = await fetchProtocolOverview(storageToken)
+
+            setNumberOfProtocols(protocolOverview.numberOfProtocols)
+            setFoundFawns(protocolOverview.foundFawns)
+            setInjuredFawns(protocolOverview.injuredFawns)
+            setMarkedFawns(protocolOverview.markedFawns)
         }
         onMount()
     }, [dispatch_token])
 
     const fetchProtocolOverview = async (storageToken: string | null) => {
-        await fetch('/api/protocols/overview', {
-            method: 'POST',
+        const response = await fetch('/api/protocols/overview', {
+            method: 'GET',
             headers: {
                 'Content-type': 'application/json',
                 'Authorization': `Bearer ${storageToken}`,
             },
-            body: JSON.stringify({
-                regionName: "Valsot",
-            })
         })
-        .then((response) => response.json())
-        .then((data) => {
-            setNumberOfProtocols(data.NumberOfProtocols)
-            setFoundFawns(data.FoundFawns)
-            setInjuredFawns(data.InjuredFawns)
-            setMarkedFawns(data.MarkedFawns)
-        })
+        if (response.ok) {
+            return await response.json()
+        }
+        return []
     }
 
     return (
