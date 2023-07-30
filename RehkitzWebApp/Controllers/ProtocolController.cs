@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using RehkitzWebApp.FileController;
 using RehkitzWebApp.Model;
 using RehkitzWebApp.Model.Dtos;
 
@@ -57,6 +58,24 @@ public class ProtocolController : ControllerBase
         }
 
         return Ok(protocol.ToDto());
+    }
+
+    // GET: /api/protocols/file
+    [HttpGet("file")]
+    public async Task<IActionResult> ExportProtocolsToExcelAsync()
+    {
+        if (_context.Protocol == null)
+        {
+            return NotFound();
+        }
+
+        var protocolsList = await _context.Protocol
+            .Where(p => p.EntryIsDeleted == false)
+            .ToListAsync();
+
+        ExcelExporter exporter = new ExcelExporter();
+        var stream = exporter.ExportToExcel(protocolsList);
+        return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "RehkitzrettungProtokolle" + DateTime.Now.ToString("yyyy-M-d") + ".xlsx");
     }
 
     // PUT: /api/protocols/5
