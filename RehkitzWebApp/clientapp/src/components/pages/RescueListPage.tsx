@@ -160,12 +160,12 @@ const SearchInput = styled.input<{ isNotMobile: boolean }>`
     width: 250px;
     font-size: 25px;
     background: #898472;
-    color: #fffecb;
+    color: #ffeccb;
     margin-top: ${(props) => (props.isNotMobile ? "5vh" : "8vh")};
     margin-right: 0.75em; 
 
     &::placeholder {
-        color: #fffecb; /* Change this to the desired color */
+        color: #ffeccb; /* Change this to the desired color */
         opacity: 0.5;
     }
 `
@@ -177,5 +177,5 @@ const SiteTitle = styled.div`
     font-weight: 500;
     font-size: 2em;
     margin: 10px;
-    color: #fffecb;
+    color: #ffeccb;
 `

@@ -28,5 +28,5 @@ const Title = styled.div`
   	flex: 1;
   	font-weight: bold;
   	font-size: 1.25em;
-  	color: #fffecb;
+  	color: #ffeccb;
 `

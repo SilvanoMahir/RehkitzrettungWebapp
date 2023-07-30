@@ -13,13 +13,13 @@ export default function ProtocolBodySmallScreen({ protocolEntry }: Props) {
             <ProtocolEntry entry="Auftraggeber" value={protocolEntry?.clientFullName} />
             <ProtocolEntry entry="Lokalname" value={protocolEntry?.localName} />
             <ProtocolEntry entry="Datum" value={protocolEntry?.date} />
-            <ProtocolEntry entry="Gefundene Kitze" value={protocolEntry?.foundFawns} />
-            <ProtocolEntry entry="Markierte Kitze" value={protocolEntry?.markedFawns} />
-            <ProtocolEntry entry="Bemerkung" value={protocolEntry?.remark} />
             <ProtocolEntry entry="Pilot" value={protocolEntry?.pilotFullName} />
             <ProtocolEntry entry="Region" value={protocolEntry?.regionName} />
             <ProtocolEntry entry="Fläche" value={protocolEntry?.areaSize} />
+            <ProtocolEntry entry="Gefundene Kitze" value={protocolEntry?.foundFawns} />
+            <ProtocolEntry entry="Markierte Kitze" value={protocolEntry?.markedFawns} />
             <ProtocolEntry entry="Verletzte Kitze" value={protocolEntry?.injuredFawns} />
+            <ProtocolEntry entry="Bemerkung" value={protocolEntry?.remark} />
         </ColumnContainer>
     )
 }
@@ -28,4 +28,7 @@ const ColumnContainer = styled.div`
     display: flex;
     flex-direction: column;
     width: 100%;
+    @media (max-width: 400px) {
+        display: unset;
+    }
 `

@@ -58,9 +58,10 @@ const Entry = styled.div`
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    text-align: center;
+    text-align: end;
     line-height: 50px;
-    color: #fffecb;
+    color: #ffeccb;
+    justify-content: flex-end;
     @media (min-width: 1400px) {
         font-size: 1.25em;
     }
@@ -93,12 +94,12 @@ const customStyles = {
     }),
     singleValue: (provided: any) => ({
         ...provided,
-        color: "#fffecb",
+        color: "#ffeccb",
         fontSize: 20,
     }),
     placeholder: (provided: any) => ({
         ...provided,
-        color: "#fffecb",
+        color: "#ffeccb",
         fontSize: 20,
     }),
 }

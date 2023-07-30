@@ -297,7 +297,7 @@ const UserLayout = styled.div<{ isNotMobile: boolean }>`
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: #9A8873;
+    background: #7C6B57;
     color: beige;
     max-width: 30em;
     border-radius: 10px;
@@ -305,9 +305,6 @@ const UserLayout = styled.div<{ isNotMobile: boolean }>`
         display: inline-block;
         width: 90%;
   	}
-    @media (min-width: 1200px) {
-        max-width: 40em;
-    }
 `
 
 const UserTitle = styled.div`
@@ -316,7 +313,7 @@ const UserTitle = styled.div`
     font-weight: 500;
     font-size: 25px;
     margin: 10px;
-    color: #fffecb;
+    color: #ffeccb;
 `
 
 const ColumnContainer = styled.div`

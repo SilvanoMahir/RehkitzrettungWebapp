@@ -255,9 +255,9 @@ const DatePickerLabel = styled.div`
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    text-align: center;
+    text-align: end;
     line-height: 50px;
-    color: #fffecb;
+    color: #ffeccb;
     @media (min-width: 1400px) {
         font-size: 1.25em;
     }
@@ -269,7 +269,7 @@ const ProtocolLayout = styled.div<{ isNotMobile: boolean }>`
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: #9A8873;
+    background: #7C6B57;
     color: beige;
     max-width: 500px;
     border-radius: 10px;
@@ -279,7 +279,7 @@ const ProtocolTitle = styled.div`
     font-weight: 500;
     font-size: 25px;
     margin: 10px;
-    color: #fffecb;
+    color: #ffeccb;
 `
 
 const ColumnContainer = styled.div`
@@ -292,4 +292,6 @@ const DatePickerControl = styled.div`
     display: flex;
     flex: 1;
     align-items: center;
+    padding-left: 1.25em;
+
 `

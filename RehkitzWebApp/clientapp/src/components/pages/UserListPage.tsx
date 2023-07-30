@@ -89,13 +89,10 @@ const RescueListLayout = styled.div`
 `
 
 const BlockLayout = styled.div`
-    background: #9A8873;
+    background: #7C6B57;
     margin: 1em; 
     padding: 1em;
     border-radius: 10px;
-    @media (max-width: 700px) {
-        background: transparent;
-    }
 `
 
 const RescueListRowLayout = styled.div`
@@ -118,12 +115,12 @@ const SearchInput = styled.input<{ isNotMobile: boolean }>`
     width: 250px;
     font-size: 25px;
     background: #898472;
-    color: #fffecb;
+    color: #ffeccb;
     margin-top: ${(props) => (props.isNotMobile ? "1em" : "3em")};
     margin-right: ${(props) => (props.isNotMobile ? "2vh" : "1vh")};
 
     &::placeholder {
-        color: #fffecb; 
+        color: #ffeccb; 
         opacity: 0.5;
     }
 `
@@ -135,7 +132,7 @@ const PageTitle = styled.div`
     font-weight: 500;
     font-size: 2em;
     margin: 10px;
-    color: #fffecb;
+    color: #ffeccb;
     @media (max-width: 700px) {
         margin-bottom: 1.25em;
     }

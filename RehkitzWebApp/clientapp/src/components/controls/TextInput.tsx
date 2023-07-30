@@ -39,9 +39,9 @@ const CustomTextInput = styled.input`
     font-size: 25px;
     margin: 10px;
     background: #898472;
-    color: #fffecb;
+    color: #ffeccb;
     &::placeholder {
-        color: #fffecb;
+        color: #ffeccb;
         opacity: 0.5;
     }
 `
@@ -54,9 +54,9 @@ const CustomTextInputForAdaptPage = styled.input`
     font-size: 20px;
     margin: 10px;
     background: #898472;
-    color: #fffecb;
+    color: #ffeccb;
     &::placeholder {
-        color: #fffecb;
+        color: #ffeccb;
         opacity: 0.5;
     }
     @media (min-width: 1400px) {

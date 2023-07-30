@@ -30,6 +30,9 @@ const Entry = styled.div`
 	font-size: 1.25em;
 	white-space: initial;
 	overflow-wrap: anywhere;
+	justify-content: flex-end;
+    text-align: end;
+    margin-right: 1em;
   	@media (max-width: 1200px) {
 		display: flex;
     	flex: 1;
@@ -37,7 +40,6 @@ const Entry = styled.div`
 	@media (max-width: 480px) {
 		display: flex;
     	flex: 1;
-		font-size: 1em;
   	}
 `
 
@@ -53,7 +55,6 @@ const Value = styled.div`
 	overflow-wrap: anywhere;
 	@media (max-width: 480px) {
     	flex: 1;
-		font-size: 1em;
   	}
 	@media (max-width: 1200px) {
 		display: flex;

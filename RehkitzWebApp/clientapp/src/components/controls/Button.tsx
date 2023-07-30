@@ -71,7 +71,7 @@ export const SaveProtocolButton = styled.button`
 export const LoginButton = styled.button`
     ${CustomButton};
     background: #16d129;
-    color: #fffecb;
+    color: #ffeccb;
     font-size: 20px;
     padding: 15px;
     margin: 20px;
