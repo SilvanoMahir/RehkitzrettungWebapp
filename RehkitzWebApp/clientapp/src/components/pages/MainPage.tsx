@@ -1,7 +1,7 @@
 ﻿import { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
 import { DiscardProtocolButton, SaveProtocolButton } from '../controls/Button'
-import { ProtocolsContext } from '../../store/context'
+import { AppContext, ProtocolsContext } from '../../store/context'
 import Sidebar from '../widgets/Sidebar/Sidebar'
 import { useMediaQuery } from 'react-responsive'
 import { Menu } from '../widgets/Menu'
@@ -16,48 +16,44 @@ export default function MainPage() {
 
     const isNotMobile = useMediaQuery({ query: '(min-width: 426px)' })
 
-    const [protocolCode, setProtocolCode] = useState('')
-    const [clientFullName, setClientFullName] = useState('')
-    const [localName, setLocalName] = useState('')
-    const [date, setDate] = useState<Date | null>(new Date())
-    const [foundFawns, setFoundFawns] = useState('')
-    const [markedFawns, setMarkedFawns] = useState('')
-    const [remark, setRemark] = useState('')
-    const [pilotFullName, setPilotFullName] = useState('')
-    const [regionName, setRegionName] = useState('')
-    const [areaSize, setAreaSize] = useState('')
-    const [injuredFawns, setInjuredFawns] = useState('')
-    const [isNewProtocol, setIsNewProtocol] = useState(false)
-    const { protocolsListLocal, dispatch } = useContext(ProtocolsContext)
-    let navigate = useNavigate()
-    const { id } = useParams()
+    const [numberOfProtocols, setNumberOfProtocols] = useState(0)
+    const [foundFawns, setFoundFawns] = useState(0)
+    const [injuredFawns, setInjuredFawns] = useState(0)
+    const [markedFawns, setMarkedFawns] = useState(0)
+
+    const { dispatch_token } = useContext(AppContext)
 
     useEffect(() => {
         const onMount = async () => {
-            let data = protocolsListLocal.filter(protocols => protocols.protocolId.toString() === id)
-            if (data.length === 0) {
-                setIsNewProtocol(true)
+            //token handling can probably be optimized
+            const storageToken = localStorage.getItem('user_token')
+            if (storageToken !== null) {
+                dispatch_token({ type: 'set-token', value: storageToken })
             }
-            else {
-                setIsNewProtocol(false)
-                const { protocolCode, clientFullName, localName, date, foundFawns,
-                    markedFawns, remark, pilotFullName, regionName, areaSize,
-                    injuredFawns } = data[0]
-                setProtocolCode(protocolCode)
-                setClientFullName(clientFullName)
-                setLocalName(localName)
-                setDate(new Date(date))
-                setFoundFawns(foundFawns.toString())
-                setMarkedFawns(markedFawns.toString())
-                setRemark(remark)
-                setPilotFullName(pilotFullName)
-                setRegionName(regionName)
-                setAreaSize(areaSize)
-                setInjuredFawns(injuredFawns.toString())
-            }
+            await fetchProtocolOverview(storageToken)
         }
         onMount()
-    }, [protocolsListLocal, id])
+    }, [dispatch_token])
+
+    const fetchProtocolOverview = async (storageToken: string | null) => {
+        await fetch('/api/protocols/overview', {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': `Bearer ${storageToken}`,
+            },
+            body: JSON.stringify({
+                regionName: "Valsot",
+            })
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            setNumberOfProtocols(data.NumberOfProtocols)
+            setFoundFawns(data.FoundFawns)
+            setInjuredFawns(data.InjuredFawns)
+            setMarkedFawns(data.MarkedFawns)
+        })
+    }
 
     return (
         <RescueListLayout>
@@ -68,10 +64,10 @@ export default function MainPage() {
                     <ProtocolLayout isNotMobile={isNotMobile}>
                         <ProtocolTitle>Saisonübersicht (TODO: Region einfügen)</ProtocolTitle>
                         <ColumnContainer>
-                            <ProtocolEntry entry="Anzahl Aufgebote" value={0} />
-                            <ProtocolEntry entry="Gerettete Kitze" value={1} />
-                            <ProtocolEntry entry="Verletzte Kitze" value={2} />
-                            <ProtocolEntry entry="Markierte Kitze" value={3} />
+                            <ProtocolEntry entry="Anzahl Aufgebote" value={numberOfProtocols} />
+                            <ProtocolEntry entry="Gerettete Kitze" value={foundFawns} />
+                            <ProtocolEntry entry="Verletzte Kitze" value={injuredFawns} />
+                            <ProtocolEntry entry="Markierte Kitze" value={markedFawns} />
                         </ColumnContainer>
                     </ProtocolLayout>
                 </RescueListColumnLayout >
