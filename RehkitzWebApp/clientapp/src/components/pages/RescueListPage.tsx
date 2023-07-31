@@ -117,7 +117,9 @@ export default function RescueListPage() {
                         isNotMobile={isNotMobile}
                         placeholder={'Suchen'}></SearchInput>
                     <SiteTitle>Übersicht Protokolle</SiteTitle>
-                    {content}
+                        <RescueListItems>
+                            {content}
+                        </RescueListItems>
                     <RowContainer>
                         <DownloadProtocolButton onClick={() => downloadProtocol(localToken)}>Bericht herunterladen</DownloadProtocolButton>
                         <CreateProtocolButton onClick={() => createProtocol()}>Neues Protokoll erstellen</CreateProtocolButton>
@@ -132,6 +134,12 @@ const RescueListLayout = styled.div`
     height: 100%;
 `
 
+const RescueListItems = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+`
+
 const RescueListRowLayout = styled.div<{ isNotMobile: boolean }>`
     display: flex;
     flex-direction: row;
@@ -139,7 +147,7 @@ const RescueListRowLayout = styled.div<{ isNotMobile: boolean }>`
     margin-left: ${({ isNotMobile }) => (isNotMobile ? "30%" : "none")};
     @media (min-width: 1800px) {
         margin-left: 530px;
-      }
+    }
 `
 
 const RescueListColumnLayout = styled.div`
