@@ -11,6 +11,7 @@ import ProtocolEntryForAdaptPage from '../widgets/Protocol/ProtocolEntryForAdapt
 import DatePicker from "react-datepicker"
 import 'react-datepicker/dist/react-datepicker.css'
 import ProtocolEntry from '../widgets/Protocol/ProtocolEntry'
+import ProtocolOverviewEntry from '../widgets/Protocol/ProtocolOverviewEntry'
 
 export default function MainPage() {
 
@@ -68,10 +69,10 @@ export default function MainPage() {
                     <ProtocolLayout isNotMobile={isNotMobile}>
                         <ProtocolTitle>Saisonübersicht {regionName}</ProtocolTitle>
                         <ColumnContainer>
-                            <ProtocolEntry entry="Anzahl Aufgebote" value={numberOfProtocols} />
-                            <ProtocolEntry entry="Gerettete Kitze" value={foundFawns} />
-                            <ProtocolEntry entry="Verletzte Kitze" value={injuredFawns} />
-                            <ProtocolEntry entry="Markierte Kitze" value={markedFawns} />
+                            <ProtocolOverviewEntry entry="Anzahl Aufgebote" value={numberOfProtocols} />
+                            <ProtocolOverviewEntry entry="Gerettete Kitze" value={foundFawns} />
+                            <ProtocolOverviewEntry entry="Verletzte Kitze" value={injuredFawns} />
+                            <ProtocolOverviewEntry entry="Markierte Kitze" value={markedFawns} />
                         </ColumnContainer>
                     </ProtocolLayout>
                 </RescueListColumnLayout >
