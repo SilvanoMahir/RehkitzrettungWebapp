@@ -64,7 +64,7 @@ export default function MainPage() {
             <RescueListRowLayout>
                 {(isNotMobile) && <Sidebar showSidebar={isNotMobile} />}
                 <RescueListColumnLayout>
-                    <PageTitle>Willkommen {userName}</PageTitle>
+                    <PageTitle isNotMobile={isNotMobile}>Willkommen {userName}</PageTitle>
                     <ProtocolLayout isNotMobile={isNotMobile}>
                         <ProtocolTitle>Saisonübersicht {regionName}</ProtocolTitle>
                         <ColumnContainer>
@@ -108,6 +108,7 @@ const ProtocolLayout = styled.div<{ isNotMobile: boolean }>`
     background: #7d6b52;
     color: beige;
     max-width: 500px;
+    border-radius: 10px;
 `
 
 const ProtocolTitle = styled.div`
@@ -122,7 +123,7 @@ const ColumnContainer = styled.div`
     width: 100%;
 `
 
-const PageTitle = styled.div`
+const PageTitle = styled.div<{ isNotMobile: boolean }>`
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -130,6 +131,7 @@ const PageTitle = styled.div`
     font-size: 2em;
     margin: 10px;
     color: #fffecb;
+    margin-top: ${(props) => (props.isNotMobile ? "5vh" : "8vh")};
     @media (max-width: 700px) {
         margin-bottom: 1.25em;
     }
