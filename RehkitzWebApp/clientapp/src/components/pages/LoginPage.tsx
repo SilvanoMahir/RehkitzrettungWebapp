@@ -41,16 +41,18 @@ export default function RescueListPage() {
                 "password": inputPassword
             }),
         })
-        const { token } = await response.json()
+        const { token, userId } = await response.json()
         if (response.ok) {
             localStorage.setItem('user_token', token);
             dispatch_token({ type: 'set-token', value: token })
+            localStorage.setItem('user_id', userId);
+            dispatch_token({ type: 'set-user-id', value: userId })
             navigate(ROUTE_RESCUE_LIST_PAGE)
         } else {
             toast.error("Login fehlgeschlagen. Password oder Benutzername falsch", {
                 position: toast.POSITION.TOP_CENTER,
                 containerId: 'LoginToaster'
-            });
+            })
         }
     }
 

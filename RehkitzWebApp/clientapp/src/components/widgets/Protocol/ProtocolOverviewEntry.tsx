@@ -37,7 +37,7 @@ const Entry = styled.div`
 `
 
 const Value = styled.div`
-    flex: 1;
+    flex: 2;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -45,6 +45,7 @@ const Value = styled.div`
     white-space: initial;
     @media (max-width: 430px) {
         font-size: 0.9em;
+        flex: 1;
     }
     @media (min-width: 1400px) {
         font-size: 1.25em;

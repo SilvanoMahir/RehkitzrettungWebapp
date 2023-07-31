@@ -43,7 +43,7 @@ interface AppState2 extends AuthState {
 
 const initialState: AppState2 = {
     ...initialAuthState,
-    dispatch_token: (action: Action) => { }
+    dispatch_token: (action: Action) => { },
 }
 
 export const AppContext = createContext<AppState2>(initialState)

@@ -52,10 +52,21 @@ public class AuthenticateController : ControllerBase
 
             var token = GetToken(authClaims);
 
+            var userOwnerId = await _context.Users
+                .Where(r => r.UserName == model.Username)
+                .Select(r => r.Id)
+                .FirstOrDefaultAsync();
+
+            var userId = await _context.User
+                .Where(r => r.OwnerId == userOwnerId)
+                .Select(r => r.UserId)
+                .FirstOrDefaultAsync();
+
             return Ok(new
             {
                 token = new JwtSecurityTokenHandler().WriteToken(token),
-                expiration = token.ValidTo
+                expiration = token.ValidTo,
+                userId,
             });
         }
         return Unauthorized();
@@ -132,8 +143,8 @@ public class AuthenticateController : ControllerBase
         }
 
         var userRegion = await _context.Region
-            .Where(r => r.RegionName == model.UserRegion) 
-            .Select(r => (int?)r.RegionId) 
+            .Where(r => r.RegionName == model.UserRegion)
+            .Select(r => (int?)r.RegionId)
             .FirstOrDefaultAsync();
 
         var newUser = new User

@@ -33,8 +33,11 @@ export default function MainPage() {
             if (storageToken !== null) {
                 dispatch_token({ type: 'set-token', value: storageToken })
             }
-            setUserName('Some user')
-            setRegionName('Some region')
+            const userId = localStorage.getItem('user_id')
+            const user = await fetchUser(storageToken, userId)
+            const { userRegion, userName } = user
+            setUserName(userName)
+            setRegionName(userRegion)
             const protocolOverview = await fetchProtocolOverview(storageToken)
 
             setNumberOfProtocols(protocolOverview.numberOfProtocols)
@@ -44,6 +47,20 @@ export default function MainPage() {
         }
         onMount()
     }, [dispatch_token])
+
+    const fetchUser = async (storageToken: string | null, id: string | null) => {
+        const response = await fetch(`/api/users/${id}`, {
+            method: 'GET',
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': `Bearer ${storageToken}`,
+            },
+        })
+        if (response.ok) {
+            return await response.json()
+        }
+        return []
+    }
 
     const fetchProtocolOverview = async (storageToken: string | null) => {
         const response = await fetch('/api/protocols/overview', {
