@@ -20,7 +20,7 @@ export default function AdaptProtocolPage() {
     const [protocolCode, setProtocolCode] = useState('')
     const [clientFullName, setClientFullName] = useState('')
     const [localName, setLocalName] = useState('')
-    const [date, setDate] = useState<Date | null>(new Date())
+    const [date, setDate] = useState<Date | null>(new Date()); 
     const [foundFawns, setFoundFawns] = useState('')
     const [markedFawns, setMarkedFawns] = useState('')
     const [remark, setRemark] = useState('')
@@ -49,7 +49,8 @@ export default function AdaptProtocolPage() {
                 setProtocolCode(protocolCode)
                 setClientFullName(clientFullName)
                 setLocalName(localName)
-                setDate(new Date(date))
+                const dateObject = new Date(Date.parse(date.replace(/(\d{2}).(\d{2}).(\d{4})/, '$2/$1/$3')))
+                setDate(dateObject)
                 setFoundFawns(foundFawns.toString())
                 setMarkedFawns(markedFawns.toString())
                 setRemark(remark)
@@ -196,7 +197,7 @@ export default function AdaptProtocolPage() {
                             <DatePickerRowContainer>
                                 <DatePickerLabel>Datum</DatePickerLabel>
                                 <DatePickerControl>
-                                    <DatePicker selected={date} onChange={(date) => setDate(date)} dateFormat="dd/MM/yyyy" />
+                                    <DatePicker selected={date} onChange={(date) => setDate(date)} dateFormat="dd.MM.yyyy" />
                                 </DatePickerControl>
                             </DatePickerRowContainer>
                             <Dropdown entry="Fläche" options={areaSizes} value={areaSize} onChange={setAreaSize} />
@@ -254,7 +255,6 @@ const DatePickerRowContainer = styled.div`
 
 const DatePickerLabel = styled.div`
     flex: 1;
-    margin-left: 15px;
     font-weight: bold;
     overflow: hidden;
     white-space: nowrap;
