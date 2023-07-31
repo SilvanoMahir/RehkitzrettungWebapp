@@ -157,7 +157,7 @@ export default function AdaptProtocolPage() {
                 position: toast.POSITION.TOP_CENTER,
                 containerId: 'LoginToaster'
             })
-        }    
+        }
     }
 
     const fetchRegions = async () => {
@@ -183,11 +183,11 @@ export default function AdaptProtocolPage() {
     return (
         <RescueListLayout>
             {!isNotMobile && <Menu />}
-            <RescueListRowLayout>
+            <RescueListRowLayout isNotMobile={isNotMobile}>
                 {(isNotMobile) && <Sidebar showSidebar={isNotMobile} />}
                 <RescueListColumnLayout>
                     <ProtocolLayout isNotMobile={isNotMobile}>
-                    <ProtocolTitle>{isNewProtocol ? 'Neues Protokoll' : `${clientFullName}`}</ProtocolTitle>                        
+                        <ProtocolTitle>{isNewProtocol ? 'Neues Protokoll' : `${clientFullName}`}</ProtocolTitle>
                         <ColumnContainer>
                             <ProtocolEntryForAdaptPage entry="Auftraggeber" value={clientFullName} callbackFunction={setClientFullName} />
                             <ProtocolEntryForAdaptPage entry="Pilot" value={pilotFullName} callbackFunction={setPilotFullName} />
@@ -220,10 +220,14 @@ const RescueListLayout = styled.div`
     height: 100%;
 `
 
-const RescueListRowLayout = styled.div`
+const RescueListRowLayout = styled.div<{ isNotMobile: boolean }>`
     display: flex;
     flex-direction: row;
     height: 100%;
+    margin-left: ${({ isNotMobile }) => (isNotMobile ? "30%" : "none")};
+    @media (min-width: 1800px) {
+        margin-left: 530px;
+    }
 `
 
 const RescueListColumnLayout = styled.div`
@@ -265,7 +269,7 @@ const DatePickerLabel = styled.div`
 
 const ProtocolLayout = styled.div<{ isNotMobile: boolean }>`
     margin: 0px 10px 10px;
-    margin-top: ${(props) => (props.isNotMobile ? "5vh" : "8vh")};
+    margin-top: 5em;
     display: flex;
     flex-direction: column;
     align-items: center;

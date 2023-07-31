@@ -25,7 +25,7 @@ export default function RescueListPage() {
     useEffect(() => {
         const onMount = async () => {
             //token handling can probably be optimized
-            const storageToken = localStorage.getItem('user_token') 
+            const storageToken = localStorage.getItem('user_token')
             if (storageToken !== null) {
                 dispatch_token({ type: 'set-token', value: storageToken })
             }
@@ -64,7 +64,7 @@ export default function RescueListPage() {
                     'Authorization': `Bearer ${storageToken}`,
                 },
             })
-    
+
             if (response.ok) {
                 const fileBlob = await response.blob()
                 const currentDate = new Date()
@@ -89,7 +89,7 @@ export default function RescueListPage() {
             })
         }
     }
-    
+
     const createProtocol = async () => {
         navigate(ROUTE_ADAPT_PROTOCOL_PAGE)
     }
@@ -109,7 +109,7 @@ export default function RescueListPage() {
     return (
         <RescueListLayout>
             {!isNotMobile && <Menu />}
-            <RescueListRowLayout>
+            <RescueListRowLayout isNotMobile={isNotMobile}>
                 {(isNotMobile) && <Sidebar showSidebar={isNotMobile} />}
                 <RescueListColumnLayout>
                     <SearchInput onChange={search}
@@ -132,10 +132,14 @@ const RescueListLayout = styled.div`
     height: 100%;
 `
 
-const RescueListRowLayout = styled.div`
+const RescueListRowLayout = styled.div<{ isNotMobile: boolean }>`
     display: flex;
     flex-direction: row;
     height: 100%;
+    margin-left: ${({ isNotMobile }) => (isNotMobile ? "30%" : "none")};
+    @media (min-width: 1800px) {
+        margin-left: 530px;
+      }
 `
 
 const RescueListColumnLayout = styled.div`

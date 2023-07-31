@@ -35,7 +35,7 @@ export default function UserListPage() {
             });
             if (response.ok) {
                 return await response.json();
-            }                
+            }
             return [];
         } catch (error) {
             return [];
@@ -63,7 +63,7 @@ export default function UserListPage() {
     return (
         <RescueListLayout>
             {!isNotMobile && <Menu />}
-            <RescueListRowLayout>
+            <RescueListRowLayout isNotMobile={isNotMobile}>
                 {(isNotMobile) && <Sidebar showSidebar={isNotMobile} />}
                 <RescueListColumnLayout>
                     <SearchInput onChange={search}
@@ -95,10 +95,14 @@ const BlockLayout = styled.div`
     border-radius: 10px;
 `
 
-const RescueListRowLayout = styled.div`
+const RescueListRowLayout = styled.div<{ isNotMobile: boolean }>`
     display: flex;
     flex-direction: row;
     height: 100%;
+    margin-left: ${({ isNotMobile }) => (isNotMobile ? "30%" : "none")};
+    @media (min-width: 1800px) {
+        margin-left: 530px;
+    }
 `
 
 const RescueListColumnLayout = styled.div`
