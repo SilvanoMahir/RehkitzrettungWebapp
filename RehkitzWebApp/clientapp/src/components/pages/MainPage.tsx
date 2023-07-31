@@ -94,13 +94,14 @@ const RescueListRowLayout = styled.div`
 const RescueListColumnLayout = styled.div`
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    align-items: center;
     width: 100%;
 `
 
 const ProtocolLayout = styled.div<{ isNotMobile: boolean }>`
     margin: 0px 10px 10px;
     margin-top: ${(props) => (props.isNotMobile ? "5vh" : "8vh")};
+    padding: 20px 50px 30px 50px;
     display: flex;
     flex-direction: column;
     align-items: center;
