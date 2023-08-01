@@ -1,16 +1,10 @@
 ﻿import { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
-import { DiscardProtocolButton, SaveProtocolButton } from '../controls/Button'
-import { AppContext, ProtocolsContext } from '../../store/context'
+import { AppContext } from '../../store/context'
 import Sidebar from '../widgets/Sidebar/Sidebar'
 import { useMediaQuery } from 'react-responsive'
 import { Menu } from '../widgets/Menu'
-import { useNavigate, useParams } from 'react-router-dom'
-import { ROUTE_RESCUE_LIST_PAGE } from '../../App'
-import ProtocolEntryForAdaptPage from '../widgets/Protocol/ProtocolEntryForAdaptPage'
-import DatePicker from "react-datepicker"
 import 'react-datepicker/dist/react-datepicker.css'
-import ProtocolEntry from '../widgets/Protocol/ProtocolEntry'
 import ProtocolOverviewEntry from '../widgets/Protocol/ProtocolOverviewEntry'
 
 export default function MainPage() {
@@ -118,7 +112,7 @@ const RescueListColumnLayout = styled.div`
 
 const ProtocolLayout = styled.div<{ isNotMobile: boolean }>`
     margin: 0px 10px 10px;
-    margin-top: ${(props) => (props.isNotMobile ? "5vh" : "8vh")};
+    margin-top: ${(props) => (props.isNotMobile ? "5vh" : "0vh")};
     padding: 20px 50px 30px 50px;
     display: flex;
     flex-direction: column;
