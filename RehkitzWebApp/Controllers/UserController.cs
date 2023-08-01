@@ -279,8 +279,8 @@ public class UserController : ControllerBase
         }
 
         var userRegion = await _context.Region
-            .Where(r => r.RegionName == userDto.UserRegion) 
-            .Select(r => (int?)r.RegionId) 
+            .Where(r => r.RegionName == userDto.UserRegion)
+            .Select(r => (int?)r.RegionId)
             .FirstOrDefaultAsync();
 
         var newUser = new User
@@ -328,7 +328,6 @@ public class UserController : ControllerBase
 
     private UserDto getUserDto(User user, Region region, string userRole, string userName)
     {
-        // the fixed comments depends on the Role which has to be linked first
         return new UserDto
         {
             UserId = user.UserId,

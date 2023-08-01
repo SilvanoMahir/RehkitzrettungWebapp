@@ -32,7 +32,7 @@ export default function MainPage() {
             const { userRegion, userName } = user
             setUserName(userName)
             setRegionName(userRegion)
-            const protocolOverview = await fetchProtocolOverview(storageToken)
+            const protocolOverview = await fetchProtocolOverview(storageToken, userRegion)
 
             setNumberOfProtocols(protocolOverview.numberOfProtocols)
             setFoundFawns(protocolOverview.foundFawns)
@@ -56,13 +56,14 @@ export default function MainPage() {
         return []
     }
 
-    const fetchProtocolOverview = async (storageToken: string | null) => {
-        const response = await fetch('/api/protocols/overview', {
+    const fetchProtocolOverview = async (storageToken: string | null, userRegion: string | undefined) => {
+        const response = await fetch('/api/protocols/overview?' + new URLSearchParams({
+            userRegion: userRegion! }), {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json',
                 'Authorization': `Bearer ${storageToken}`,
-            },
+            }
         })
         if (response.ok) {
             return await response.json()

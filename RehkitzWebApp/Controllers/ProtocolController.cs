@@ -80,7 +80,7 @@ public class ProtocolController : ControllerBase
 
     // GET: /api/protocols/overview
     [HttpGet("overview")]
-    public async Task<ActionResult<ProtocolOverviewDto>> PostProtocolsOverview()
+    public async Task<ActionResult<ProtocolOverviewDto>> GetProtocolsOverview([FromQuery(Name = "userRegion")] string userRegion)
     {
         if (_context.Protocol == null)
         {
@@ -98,7 +98,7 @@ public class ProtocolController : ControllerBase
 
         foreach (var protocol in protocolsList)
         {
-            if (protocol.RegionName == "Scuol")
+            if (protocol.RegionName == userRegion)
             {
                 ++numberOfProtocols;
                 foundFawns += protocol.FoundFawns;

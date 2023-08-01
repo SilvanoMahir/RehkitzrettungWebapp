@@ -51,13 +51,13 @@ export default function UserListPage() {
 
     let content;
     if (loadingUsers) {
-        content = (<p><em>Ladet Benutzer... </em></p>);
+        content = (<p><em>Lädt Benutzer... </em></p>)
     } else if (usersListLocal.length === 0) {
         content = (<p><em>Keine Benutzer gefunden.</em></p>);
     } else {
         content = usersListLocal.map(userEntry => (
             <User key={userEntry.userId} userId={userEntry.userId} />
-        ));
+        ))
     }
 
     return (
