@@ -72,46 +72,46 @@ export default function MainPage() {
     }
 
     return (
-        <RescueListLayout>
+        <MainPageLayout>
             {!isNotMobile && <Menu />}
-            <RescueListRowLayout>
+            <MainPageRowLayout>
                 {(isNotMobile) && <Sidebar showSidebar={isNotMobile} />}
-                <RescueListColumnLayout>
+                <MainPageColumnLayout>
                     <PageTitle isNotMobile={isNotMobile}>Willkommen {userName}</PageTitle>
-                    <ProtocolLayout isNotMobile={isNotMobile}>
-                        <ProtocolTitle>Saisonübersicht {regionName}</ProtocolTitle>
+                    <ProtocolOverviewLayout isNotMobile={isNotMobile}>
+                        <ProtocolOverviewTitle>Saisonübersicht {regionName}</ProtocolOverviewTitle>
                         <ColumnContainer>
                             <ProtocolOverviewEntry entry="Anzahl Aufgebote" value={numberOfProtocols} />
                             <ProtocolOverviewEntry entry="Gerettete Kitze" value={foundFawns} />
                             <ProtocolOverviewEntry entry="Verletzte Kitze" value={injuredFawns} />
                             <ProtocolOverviewEntry entry="Markierte Kitze" value={markedFawns} />
                         </ColumnContainer>
-                    </ProtocolLayout>
-                </RescueListColumnLayout >
-            </RescueListRowLayout>
-        </RescueListLayout>
+                    </ProtocolOverviewLayout>
+                </MainPageColumnLayout >
+            </MainPageRowLayout>
+        </MainPageLayout>
     )
 }
 
-const RescueListLayout = styled.div`
+const MainPageLayout = styled.div`
     height: 100%;
 `
 
-const RescueListRowLayout = styled.div`
+const MainPageRowLayout = styled.div`
     display: flex;
     flex-direction: row;
     background: #9A8873;
     height: 100%;
 `
 
-const RescueListColumnLayout = styled.div`
+const MainPageColumnLayout = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
 `
 
-const ProtocolLayout = styled.div<{ isNotMobile: boolean }>`
+const ProtocolOverviewLayout = styled.div<{ isNotMobile: boolean }>`
     margin: 0px 10px 10px;
     margin-top: ${(props) => (props.isNotMobile ? "5vh" : "0vh")};
     padding: 20px 50px 30px 50px;
@@ -124,7 +124,7 @@ const ProtocolLayout = styled.div<{ isNotMobile: boolean }>`
     border-radius: 10px;
 `
 
-const ProtocolTitle = styled.div`
+const ProtocolOverviewTitle = styled.div`
     font-weight: 500;
     font-size: 25px;
     margin: 10px;

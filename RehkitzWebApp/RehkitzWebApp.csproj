@@ -38,21 +38,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="clientapp\src\components\pages\MainPage.tsx" />
-    <None Remove="clientapp\src\components\widgets\Protocol\ProtocolOverviewEntry.tsx" />
-  </ItemGroup>
-
-  <ItemGroup>
     <InternalsVisibleTo Include="ApiWebAppTesting" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Migrations\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <TypeScriptCompile Include="clientapp\src\components\pages\MainPage.tsx" />
-    <TypeScriptCompile Include="clientapp\src\components\widgets\Protocol\ProtocolOverviewEntry.tsx" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
