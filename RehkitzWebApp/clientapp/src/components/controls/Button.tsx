@@ -21,56 +21,56 @@ export const CustomButton = css`
 
 export const DownloadProtocolButton = styled.button`
     ${CustomButton};
-    background: gray;
+    background: #3a605a;
     margin: 10px;
-    font-size: 20px;
+    font-size: 25px;
 `
 
 export const CreateProtocolButton = styled.button`
     ${CustomButton};
-    background: gray;
+    background: #3a605a;
     margin: 10px;
-    font-size: 20px;
+    font-size: 25px;
 `
 export const DeleteProtocolButton = styled.button`
     ${CustomButton};
-    background: red;
+    background: #c25450;
     margin-top: 20px;
 `
 
 export const EditProtocolButton = styled.button`
     ${CustomButton};
-    background: green;
+    background: #3e765d;
     margin-top: 20px;
 `
 
 export const DiscardProtocolButton = styled.button`
     ${CustomButton};
-    background: red;
+    background: #c25450;
     margin-top: 20px;
 `
 
 export const DiscardUserButton = styled.button`
     ${CustomButton};
-    background: red;
+    background: #c08521;
     margin-top: 20px;
 `
 
 export const DeleteUserButton = styled.button`
     ${CustomButton};
-    background: #820000;
+    background: #be4e2c;
     margin-top: 20px;
 `
 
 export const SaveProtocolButton = styled.button`
     ${CustomButton};
-    background: green;
+    background: #3e765d;
     margin-top: 20px;
 `
 
 export const LoginButton = styled.button`
     ${CustomButton};
-    background: #16d129;
+    background: #3e765d;
     color: #ffeccb;
     font-size: 20px;
     padding: 15px;
@@ -79,13 +79,14 @@ export const LoginButton = styled.button`
 
 export const EditUserButton = styled.button`
     ${CustomButton};
-    background: green;
+    background: #3e765d;
     margin-top: 1em;
+    max-width: 10em;
 `
 
 export const CreateNewUserButton = styled.button`
     ${CustomButton};
-    background: gray;
+    background: #3a605a;
     margin: 10px;
     font-size: 25px;
 `

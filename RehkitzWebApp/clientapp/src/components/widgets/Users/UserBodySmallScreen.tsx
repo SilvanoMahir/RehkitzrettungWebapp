@@ -22,7 +22,9 @@ export default function UserBodySmallScreen({ userEntry }: Props) {
             <UserEntry entry="Bezeichnung" value={userEntry?.userDefinition} />
             <UserEntry entry="Funktion" value={userEntry?.userFunction} />
             <UserEntry entry="Region" value={userEntry?.userRegion} />
-            <EditUserButton onClick={() => editUser()}>Bearbeiten</EditUserButton>
+            <UserEditSection>
+                <EditUserButton onClick={() => editUser()}>Bearbeiten</EditUserButton>
+            </UserEditSection>
         </ColumnContainer>
     )
 }
@@ -30,5 +32,11 @@ export default function UserBodySmallScreen({ userEntry }: Props) {
 const ColumnContainer = styled.div`
     display: flex;
     flex-direction: column;
+    width: 100%;
+`
+
+const UserEditSection = styled.div`
+    display: flex;
+    justify-content: center;
     width: 100%;
 `

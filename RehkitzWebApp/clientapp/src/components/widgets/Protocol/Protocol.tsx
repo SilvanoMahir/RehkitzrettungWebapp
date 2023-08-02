@@ -87,7 +87,7 @@ const ProtocolLayout = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-    background: #7C6B57;
+    background: #7c6b57;
 	color: beige;
 	border-radius: 10px;
     max-width: 850px;

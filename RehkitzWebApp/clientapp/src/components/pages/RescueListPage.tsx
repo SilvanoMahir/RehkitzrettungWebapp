@@ -169,15 +169,15 @@ const SearchInput = styled.input<{ isNotMobile: boolean }>`
     display: flex;
     align-self: flex-end;
     border-radius: 8px;
+    border: 2px solid #7c6b57; 
     width: 250px;
     font-size: 25px;
     background: #898472;
     color: #ffeccb;
-    margin-top: ${(props) => (props.isNotMobile ? "5vh" : "8vh")};
+    margin-top: ${(isNotMobile) => (isNotMobile ? "5vh" : "8vh")};
     margin-right: 0.75em; 
-
     &::placeholder {
-        color: #ffeccb; /* Change this to the desired color */
+        color: #ffeccb; 
         opacity: 0.5;
     }
 `

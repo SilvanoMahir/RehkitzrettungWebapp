@@ -89,7 +89,7 @@ const RescueListLayout = styled.div`
 `
 
 const BlockLayout = styled.div`
-    background: #7C6B57;
+    background: #7c6b57;
     margin: 1em; 
     padding: 1em;
     border-radius: 10px;
@@ -115,14 +115,14 @@ const RescueListColumnLayout = styled.div`
 const SearchInput = styled.input<{ isNotMobile: boolean }>` 
     display: flex;
     align-self: flex-end;
+    border: 2px solid #7c6b57; 
     border-radius: 8px;
     width: 250px;
     font-size: 25px;
     background: #898472;
     color: #ffeccb;
-    margin-top: ${(props) => (props.isNotMobile ? "1em" : "3em")};
-    margin-right: ${(props) => (props.isNotMobile ? "2vh" : "1vh")};
-
+    margin-top: ${(isNotMobile) => (isNotMobile ? "1em" : "3em")};
+    margin-right: ${(isNotMobile) => (isNotMobile ? "2vh" : "1vh")};
     &::placeholder {
         color: #ffeccb; 
         opacity: 0.5;

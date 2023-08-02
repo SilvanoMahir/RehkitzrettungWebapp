@@ -20,7 +20,7 @@ export default function AdaptProtocolPage() {
     const [protocolCode, setProtocolCode] = useState('')
     const [clientFullName, setClientFullName] = useState('')
     const [localName, setLocalName] = useState('')
-    const [date, setDate] = useState<Date | null>(new Date()); 
+    const [date, setDate] = useState<Date | null>(new Date())
     const [foundFawns, setFoundFawns] = useState('')
     const [markedFawns, setMarkedFawns] = useState('')
     const [remark, setRemark] = useState('')
@@ -273,7 +273,7 @@ const ProtocolLayout = styled.div<{ isNotMobile: boolean }>`
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: #7C6B57;
+    background: #7c6b57;
     color: beige;
     max-width: 500px;
     border-radius: 10px;
@@ -297,5 +297,4 @@ const DatePickerControl = styled.div`
     flex: 1;
     align-items: center;
     padding-left: 1.25em;
-
 `

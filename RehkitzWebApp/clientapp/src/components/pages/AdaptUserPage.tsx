@@ -301,7 +301,7 @@ const UserLayout = styled.div<{ isNotMobile: boolean }>`
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: #7C6B57;
+    background: #7c6b57;
     color: beige;
     max-width: 30em;
     border-radius: 10px;
