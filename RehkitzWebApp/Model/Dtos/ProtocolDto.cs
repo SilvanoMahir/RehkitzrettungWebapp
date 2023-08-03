@@ -13,5 +13,5 @@ public class ProtocolDto
     public int FoundFawns { get; set; }
     public int InjuredFawns { get; set; }
     public int MarkedFawns { get; set; }
-    public DateTime Date { get; set; }
+    public string? Date { get; set; }
 }
