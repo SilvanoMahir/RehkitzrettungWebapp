@@ -26,7 +26,7 @@ const Entry = styled.div`
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    color: #fffecb;
+    color: #ffeccb;
     white-space: initial;
     @media (max-width: 430px) {
         font-size: 0.9em;

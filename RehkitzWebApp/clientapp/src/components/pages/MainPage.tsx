@@ -9,7 +9,7 @@ import ProtocolOverviewEntry from '../widgets/Protocol/ProtocolOverviewEntry'
 
 export default function MainPage() {
 
-    const isNotMobile = useMediaQuery({ query: '(min-width: 426px)' })
+    const isNotMobile = useMediaQuery({ query: '(min-width: 700px)' })
 
     const [userName, setUserName] = useState('')
     const [regionName, setRegionName] = useState('')
@@ -74,7 +74,7 @@ export default function MainPage() {
     return (
         <MainPageLayout>
             {!isNotMobile && <Menu />}
-            <MainPageRowLayout>
+            <MainPageRowLayout isNotMobile={isNotMobile}>
                 {(isNotMobile) && <Sidebar showSidebar={isNotMobile} />}
                 <MainPageColumnLayout>
                     <PageTitle isNotMobile={isNotMobile}>Willkommen {userName}</PageTitle>
@@ -97,11 +97,11 @@ const MainPageLayout = styled.div`
     height: 100%;
 `
 
-const MainPageRowLayout = styled.div`
+const MainPageRowLayout = styled.div<{ isNotMobile: boolean }>`
     display: flex;
     flex-direction: row;
-    background: #9A8873;
     height: 100%;
+    margin-left: ${({ isNotMobile }) => (isNotMobile ? "30%" : "none")};
 `
 
 const MainPageColumnLayout = styled.div`
@@ -113,27 +113,28 @@ const MainPageColumnLayout = styled.div`
 
 const ProtocolOverviewLayout = styled.div<{ isNotMobile: boolean }>`
     margin: 0px 10px 10px;
-    margin-top: ${(props) => (props.isNotMobile ? "5vh" : "0vh")};
-    padding: 20px 50px 30px 50px;
+    margin-top: ${({ isNotMobile }) => (isNotMobile ? "5vh" : "0vh")};
+    padding: 20px 50px 30px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: #7d6b52;
-    color: beige;
+    background: #7c6b57;
     max-width: 500px;
     border-radius: 10px;
 `
 
 const ProtocolOverviewTitle = styled.div`
     font-weight: 500;
-    font-size: 25px;
+    font-size: 2em;
     margin: 10px;
+    color: #ffeccb;
 `
 
 const ColumnContainer = styled.div`
     display: flex;
     flex-direction: column;
     width: 100%;
+    padding: 20px 50px 10px;
 `
 
 const PageTitle = styled.div<{ isNotMobile: boolean }>`
@@ -143,8 +144,8 @@ const PageTitle = styled.div<{ isNotMobile: boolean }>`
     font-weight: 500;
     font-size: 2em;
     margin: 10px;
-    color: #fffecb;
-    margin-top: ${(props) => (props.isNotMobile ? "5vh" : "8vh")};
+    color: #ffeccb;
+    margin-top: ${({ isNotMobile }) => (isNotMobile ? "5vh" : "12vh")};
     @media (max-width: 700px) {
         margin-bottom: 1.25em;
     }

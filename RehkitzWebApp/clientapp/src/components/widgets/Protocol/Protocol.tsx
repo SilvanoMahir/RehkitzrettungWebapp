@@ -18,7 +18,6 @@ export default function Protocol({ protocolId }: Props) {
 
     const isLargeScreen = useMediaQuery({ query: '(min-width: 1200px)' })
 
-    //const { protocolId } = useParams() --> not working now as Router not set, there used Props
     const { token } = useContext(AppContext)
     const { protocolsListLocal, dispatch } = useContext(ProtocolsContext)
     let navigate = useNavigate()
@@ -52,7 +51,7 @@ export default function Protocol({ protocolId }: Props) {
                 method: 'DELETE',
                 headers: { 
                 'content-type': 'application/json',
-                'Authorization': `Bearer ${token}`, // notice the Bearer before your token
+                'Authorization': `Bearer ${token}`
                 },
             })
             if (response.ok) {
