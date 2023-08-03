@@ -25,7 +25,7 @@ export default function RescueListPage() {
     useEffect(() => {
         const onMount = async () => {
             //token handling can probably be optimized
-            const storageToken = localStorage.getItem('user_token') 
+            const storageToken = localStorage.getItem('user_token')
             if (storageToken !== null) {
                 dispatch_token({ type: 'set-token', value: storageToken })
             }
@@ -64,7 +64,7 @@ export default function RescueListPage() {
                     'Authorization': `Bearer ${storageToken}`,
                 },
             })
-    
+
             if (response.ok) {
                 const fileBlob = await response.blob()
                 const currentDate = new Date()
@@ -89,7 +89,7 @@ export default function RescueListPage() {
             })
         }
     }
-    
+
     const createProtocol = async () => {
         navigate(ROUTE_ADAPT_PROTOCOL_PAGE)
     }
@@ -109,7 +109,7 @@ export default function RescueListPage() {
     return (
         <RescueListLayout>
             {!isNotMobile && <Menu />}
-            <RescueListRowLayout>
+            <RescueListRowLayout isNotMobile={isNotMobile}>
                 {(isNotMobile) && <Sidebar showSidebar={isNotMobile} />}
                 <RescueListColumnLayout>
                     <SearchInput onChange={search}
@@ -117,7 +117,9 @@ export default function RescueListPage() {
                         isNotMobile={isNotMobile}
                         placeholder={'Suchen'}></SearchInput>
                     <SiteTitle>Übersicht Protokolle</SiteTitle>
-                    {content}
+                        <RescueListItems>
+                            {content}
+                        </RescueListItems>
                     <RowContainer>
                         <DownloadProtocolButton onClick={() => downloadProtocol(localToken)}>Bericht herunterladen</DownloadProtocolButton>
                         <CreateProtocolButton onClick={() => createProtocol()}>Neues Protokoll erstellen</CreateProtocolButton>
@@ -132,10 +134,20 @@ const RescueListLayout = styled.div`
     height: 100%;
 `
 
-const RescueListRowLayout = styled.div`
+const RescueListItems = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+`
+
+const RescueListRowLayout = styled.div<{ isNotMobile: boolean }>`
     display: flex;
     flex-direction: row;
     height: 100%;
+    margin-left: ${({ isNotMobile }) => (isNotMobile ? "30%" : "none")};
+    @media (min-width: 1800px) {
+        margin-left: 530px;
+    }
 `
 
 const RescueListColumnLayout = styled.div`
@@ -157,15 +169,15 @@ const SearchInput = styled.input<{ isNotMobile: boolean }>`
     display: flex;
     align-self: flex-end;
     border-radius: 8px;
+    border: 2px solid #7c6b57; 
     width: 250px;
     font-size: 25px;
     background: #898472;
-    color: #fffecb;
-    margin-top: ${(props) => (props.isNotMobile ? "5vh" : "8vh")};
+    color: #ffeccb;
+    margin-top: ${(isNotMobile) => (isNotMobile ? "5vh" : "8vh")};
     margin-right: 0.75em; 
-
     &::placeholder {
-        color: #fffecb; /* Change this to the desired color */
+        color: #ffeccb; 
         opacity: 0.5;
     }
 `
@@ -177,5 +189,5 @@ const SiteTitle = styled.div`
     font-weight: 500;
     font-size: 2em;
     margin: 10px;
-    color: #fffecb;
+    color: #ffeccb;
 `

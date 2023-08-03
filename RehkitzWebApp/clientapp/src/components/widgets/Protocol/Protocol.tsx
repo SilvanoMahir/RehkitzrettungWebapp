@@ -87,16 +87,18 @@ const ProtocolLayout = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-    background: #9A8873;
+    background: #7c6b57;
 	color: beige;
 	border-radius: 10px;
+    max-width: 850px;
+    width: -webkit-fill-available;
 `
 
 const ProtocolTitle = styled.div`
 	font-weight: 500;
 	font-size: 25px;
 	margin: 10px;
-    color: #fffecb;
+    color: #ffeccb;
 `
 
 const RowContainer = styled.div`

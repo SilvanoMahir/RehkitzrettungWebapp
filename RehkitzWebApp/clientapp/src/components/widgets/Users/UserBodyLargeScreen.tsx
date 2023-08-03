@@ -35,7 +35,7 @@ const RowContainer = styled.div`
 `
 
 const TextField = styled.text`
-    color: #fffecb;
+    color: #ffeccb;
     display: flex;
     justify-content: center;
     font-size: 1.25em;

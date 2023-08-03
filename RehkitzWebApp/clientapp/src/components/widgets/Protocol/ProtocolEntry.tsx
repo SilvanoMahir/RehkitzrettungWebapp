@@ -18,6 +18,9 @@ export default function ProtocolEntry({ entry, value }: Props) {
 const RowContainer = styled.div`
     display: flex;
     flex-direction: row;
+    @media (max-width: 400px) {
+        flex-direction: column;
+    }
 `
 
 const Entry = styled.div`
@@ -26,13 +29,12 @@ const Entry = styled.div`
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    color: #fffecb;
+    color: #ffeccb;
     white-space: initial;
-    @media (max-width: 430px) {
-        font-size: 0.9em;
-    }
-    @media (min-width: 1400px) {
-        font-size: 1.25em;
+    font-size: 20px;
+    @media (min-width: 400px) {
+        text-align: end;
+        margin-right: 1em;
     }
 `
 
@@ -41,12 +43,7 @@ const Value = styled.div`
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    color: #fffecb;
+    color: #ffeccb;
     white-space: initial;
-    @media (max-width: 430px) {
-        font-size: 0.9em;
-    }
-    @media (min-width: 1400px) {
-        font-size: 1.25em;
-    }
+    font-size: 20px;
 `
