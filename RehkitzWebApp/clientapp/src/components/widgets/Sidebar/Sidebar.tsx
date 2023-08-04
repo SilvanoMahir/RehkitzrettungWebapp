@@ -4,7 +4,7 @@ import SidebarButton from "../Sidebar/SidebarButton"
 import SidebarIcon from "../Sidebar/SidebarIcon"
 import { useContext } from "react"
 import { AppContext } from '../../../store/context'
-import { MAIN_PAGE, ROUTE_LOGIN_PAGE, ROUTE_MAP_PAGE, ROUTE_RESCUE_LIST_PAGE, ROUTE_USER_LIST_PAGE } from '../../../App'
+import { ROUTE_LOGIN_PAGE, ROUTE_MAIN_PAGE, ROUTE_MAP_PAGE, ROUTE_RESCUE_LIST_PAGE, ROUTE_USER_LIST_PAGE } from '../../../App'
 import { useNavigate } from "react-router"
 import { useMediaQuery } from "react-responsive"
 
@@ -27,7 +27,7 @@ export default function Sidebar({ showSidebar }: Props) {
     }
 
     function moveToInformation(): void {
-        navigate(MAIN_PAGE)
+        navigate(ROUTE_MAIN_PAGE)
     }
 
     function moveToOrganisation(): void {

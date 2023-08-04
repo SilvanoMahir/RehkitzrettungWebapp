@@ -5,7 +5,7 @@ interface Props {
     value?: string | number
 }
 
-export default function ProtocolEntry({ entry, value }: Props) {
+export default function InformationOverviewEntry({ entry, value }: Props) {
 
     return (
         <RowContainer>
