@@ -52,10 +52,21 @@ public class AuthenticateController : ControllerBase
 
             var token = GetToken(authClaims);
 
+            var userOwnerId = await _context.Users
+                .Where(r => r.UserName == model.Username)
+                .Select(r => r.Id)
+                .FirstOrDefaultAsync();
+
+            var userId = await _context.User
+                .Where(r => r.OwnerId == userOwnerId)
+                .Select(r => r.UserId)
+                .FirstOrDefaultAsync();
+
             return Ok(new
             {
                 token = new JwtSecurityTokenHandler().WriteToken(token),
-                expiration = token.ValidTo
+                expiration = token.ValidTo,
+                userId
             });
         }
         return Unauthorized();
@@ -68,7 +79,7 @@ public class AuthenticateController : ControllerBase
         var userExists = await _userManager.FindByNameAsync(model.Username);
         if (userExists != null)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User already exists!" });
+            return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Benutzer existiert bereits!" });
         }
 
         IdentityUser user = new()
@@ -80,7 +91,7 @@ public class AuthenticateController : ControllerBase
         var result = await _userManager.CreateAsync(user, model.UserPassword);
         if (!result.Succeeded)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User creation failed! Please check user details and try again." });
+            return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Benutzererstellung fehlgeschlagen! Bitte Benutzerangaben überprüfen oder später probieren." });
         }
 
         return Ok(new Response { Status = "Success", Message = "User created successfully!" });
@@ -93,13 +104,13 @@ public class AuthenticateController : ControllerBase
         var userExists = await _userManager.FindByNameAsync(model.Username);
         if (userExists != null)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User already exists!" });
+            return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Benutzer existiert bereits!" });
         }
 
         var MailExists = await _context.Region.FirstOrDefaultAsync(x => x.ContactPersonMail == model.UserEmail);
         if (MailExists == null)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Mail address of contact person in region does not exist!" });
+            return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Mailadresse von Kontaktperson existiert nicht." });
         }
 
         IdentityUser user = new()
@@ -111,7 +122,7 @@ public class AuthenticateController : ControllerBase
         var result = await _userManager.CreateAsync(user, model.UserPassword);
         if (!result.Succeeded)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User creation failed! Please check user details and try again." });
+            return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Benutzererstellung fehlgeschlagen! Bitte Benutzerangaben überprüfen oder später probieren." });
         }
 
         if (!await _roleManager.RoleExistsAsync(UserRoles.Admin))
@@ -132,8 +143,8 @@ public class AuthenticateController : ControllerBase
         }
 
         var userRegion = await _context.Region
-            .Where(r => r.RegionName == model.UserRegion) 
-            .Select(r => (int?)r.RegionId) 
+            .Where(r => r.RegionName == model.UserRegion)
+            .Select(r => (int?)r.RegionId)
             .FirstOrDefaultAsync();
 
         var newUser = new User

@@ -51,13 +51,13 @@ export default function UserListPage() {
 
     let content;
     if (loadingUsers) {
-        content = (<p><em>Ladet Benutzer... </em></p>);
+        content = (<p><em>Lädt Benutzer... </em></p>)
     } else if (usersListLocal.length === 0) {
         content = (<p><em>Keine Benutzer gefunden.</em></p>);
     } else {
         content = usersListLocal.map(userEntry => (
             <User key={userEntry.userId} userId={userEntry.userId} />
-        ));
+        ))
     }
 
     return (
@@ -121,8 +121,8 @@ const SearchInput = styled.input<{ isNotMobile: boolean }>`
     font-size: 25px;
     background: #898472;
     color: #ffeccb;
-    margin-top: ${(isNotMobile) => (isNotMobile ? "1em" : "3em")};
-    margin-right: ${(isNotMobile) => (isNotMobile ? "2vh" : "1vh")};
+    margin-top: ${({ isNotMobile }) => (isNotMobile ? "1em" : "3em")};
+    margin-right: ${({ isNotMobile }) => (isNotMobile ? "2vh" : "1vh")};
     &::placeholder {
         color: #ffeccb; 
         opacity: 0.5;

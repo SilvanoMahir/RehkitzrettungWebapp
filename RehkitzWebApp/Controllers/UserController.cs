@@ -196,13 +196,13 @@ public class UserController : ControllerBase
             var user = await _userManager.FindByIdAsync(userInUserTable.OwnerId);
             if (user == null)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User not found!" });
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User nicht gefunden!" });
             }
 
             var newRole = await _roleManager.FindByIdAsync(userRoleId[0]);
             if (newRole == null)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Role does not exist!" });
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Rolle existiert nicht!" });
             }
 
             var existingRoles = await _userManager.GetRolesAsync(user);
@@ -279,8 +279,8 @@ public class UserController : ControllerBase
         }
 
         var userRegion = await _context.Region
-            .Where(r => r.RegionName == userDto.UserRegion) 
-            .Select(r => (int?)r.RegionId) 
+            .Where(r => r.RegionName == userDto.UserRegion)
+            .Select(r => (int?)r.RegionId)
             .FirstOrDefaultAsync();
 
         var newUser = new User
@@ -328,7 +328,6 @@ public class UserController : ControllerBase
 
     private UserDto getUserDto(User user, Region region, string userRole, string userName)
     {
-        // the fixed comments depends on the Role which has to be linked first
         return new UserDto
         {
             UserId = user.UserId,

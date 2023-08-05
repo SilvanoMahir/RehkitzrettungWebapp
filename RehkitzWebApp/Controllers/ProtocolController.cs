@@ -78,6 +78,46 @@ public class ProtocolController : ControllerBase
         return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "RehkitzrettungProtokolle" + DateTime.Now.ToString("yyyy-M-d") + ".xlsx");
     }
 
+    // GET: /api/protocols/overview
+    [HttpGet("overview")]
+    public async Task<ActionResult<ProtocolOverviewDto>> GetProtocolsOverview([FromQuery(Name = "userRegion")] string userRegion)
+    {
+        if (_context.Protocol == null)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Der Server ist akutell nicht erreichbar! Bitte probieren Sie es später nochmals." });
+        }
+
+        var protocolsList = await _context.Protocol
+            .Where(p => p.EntryIsDeleted == false)
+            .ToListAsync();
+
+        int numberOfProtocols = 0;
+        int foundFawns = 0;
+        int injuredFawns = 0;
+        int markedFawns = 0;
+
+        foreach (var protocol in protocolsList)
+        {
+            if (protocol.RegionName == userRegion)
+            {
+                ++numberOfProtocols;
+                foundFawns += protocol.FoundFawns;
+                injuredFawns += protocol.InjuredFawns;
+                markedFawns += protocol.MarkedFawns;
+            }
+        }
+
+        var protocolOverviewDto = new ProtocolOverviewDto
+        {
+            NumberOfProtocols = numberOfProtocols,
+            FoundFawns = foundFawns,
+            InjuredFawns = injuredFawns,
+            MarkedFawns = markedFawns,
+        };
+
+        return Ok(protocolOverviewDto);
+    }
+
     // PUT: /api/protocols/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]

@@ -174,7 +174,7 @@ const SearchInput = styled.input<{ isNotMobile: boolean }>`
     font-size: 25px;
     background: #898472;
     color: #ffeccb;
-    margin-top: ${(isNotMobile) => (isNotMobile ? "5vh" : "8vh")};
+    margin-top: ${({ isNotMobile }) => (isNotMobile ? "5vh" : "12vh")};
     margin-right: 0.75em; 
     &::placeholder {
         color: #ffeccb; 

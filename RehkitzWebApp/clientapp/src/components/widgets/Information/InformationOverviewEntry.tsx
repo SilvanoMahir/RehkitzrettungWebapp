@@ -1,11 +1,11 @@
-import styled from "styled-components"
+﻿import styled from "styled-components"
 
 interface Props {
     entry: string
     value?: string | number
 }
 
-export default function ProtocolEntry({ entry, value }: Props) {
+export default function InformationOverviewEntry({ entry, value }: Props) {
 
     return (
         <RowContainer>
@@ -18,32 +18,36 @@ export default function ProtocolEntry({ entry, value }: Props) {
 const RowContainer = styled.div`
     display: flex;
     flex-direction: row;
-    @media (max-width: 400px) {
-        flex-direction: column;
-    }
 `
 
 const Entry = styled.div`
-    flex: 5;
+    flex: 6;
     font-weight: bold;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
     color: #ffeccb;
     white-space: initial;
-    font-size: 20px;
-    @media (min-width: 400px) {
-        text-align: end;
-        margin-right: 1em;
+    @media (max-width: 430px) {
+        font-size: 0.9em;
+    }
+    @media (min-width: 1400px) {
+        font-size: 1.25em;
     }
 `
 
 const Value = styled.div`
-    flex: 4;
+    flex: 2;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    color: #ffeccb;
+    color: #fffecb;
     white-space: initial;
-    font-size: 20px;
+    @media (max-width: 430px) {
+        font-size: 0.9em;
+        flex: 1;
+    }
+    @media (min-width: 1400px) {
+        font-size: 1.25em;
+    }
 `
