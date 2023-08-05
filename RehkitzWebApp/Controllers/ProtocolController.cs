@@ -84,7 +84,7 @@ public class ProtocolController : ControllerBase
     {
         if (_context.Protocol == null)
         {
-            return NotFound();
+            return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "The server is currently unreachable! Please try again later." });
         }
 
         var protocolsList = await _context.Protocol

@@ -6,6 +6,7 @@ import { useMediaQuery } from 'react-responsive'
 import { Menu } from '../widgets/Menu'
 import 'react-datepicker/dist/react-datepicker.css'
 import InformationOverviewEntry from '../widgets/Information/InformationOverviewEntry'
+import { toast } from 'react-toastify'
 
 export default function MainPage() {
 
@@ -67,8 +68,26 @@ export default function MainPage() {
         })
         if (response.ok) {
             return await response.json()
+        } else if (response.status === 500) {
+            response.json().then((errorData) => {
+                if (Array.isArray(errorData) && errorData.length > 0) {
+                    errorData.forEach((errorItem) => {
+                        const errorMsg = errorItem.description
+                        toast.error(errorMsg, {
+                            position: toast.POSITION.TOP_CENTER,
+                            containerId: 'LoginToaster',
+                        })
+                        return []
+                    })
+                } else {
+                    toast.error('An error occurred. Please try again later.', {
+                        position: toast.POSITION.TOP_CENTER,
+                        containerId: 'LoginToaster',
+                    })
+                    return []
+                }
+            })
         }
-        return []
     }
 
     return (
