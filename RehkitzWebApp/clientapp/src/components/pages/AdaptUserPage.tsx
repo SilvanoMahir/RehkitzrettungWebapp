@@ -119,14 +119,14 @@ export default function AdaptUserPage() {
                         })
                     })
                 } else {
-                    toast.error('An error occurred. Please try again later.', {
+                    toast.error('Ein Fehler ist aufgetreten! Bitte probieren Sie es später nochmals.', {
                         position: toast.POSITION.TOP_CENTER,
                         containerId: 'LoginToaster',
                     })
                 }
             })
         } else {
-            toast.error('An error occurred. Please try again later.', {
+            toast.error('Ein Fehler ist aufgetreten! Bitte probieren Sie es später nochmals.', {
                 position: toast.POSITION.TOP_CENTER,
                 containerId: 'LoginToaster',
             })
@@ -171,14 +171,14 @@ export default function AdaptUserPage() {
                         })
                     })
                 } else {
-                    toast.error('An error occurred. Please try again later.', {
+                    toast.error('Ein Fehler ist aufgetreten! Bitte probieren Sie es später nochmals.', {
                         position: toast.POSITION.TOP_CENTER,
                         containerId: 'LoginToaster',
                     })
                 }
             })
         } else {
-            toast.error('An error occurred. Please try again later.', {
+            toast.error('Ein Fehler ist aufgetreten! Bitte probieren Sie es später nochmals.', {
                 position: toast.POSITION.TOP_CENTER,
                 containerId: 'LoginToaster',
             })
