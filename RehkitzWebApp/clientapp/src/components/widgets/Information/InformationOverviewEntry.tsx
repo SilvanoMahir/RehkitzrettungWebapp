@@ -5,7 +5,7 @@ interface Props {
     value?: string | number
 }
 
-export default function ProtocolEntry({ entry, value }: Props) {
+export default function InformationOverviewEntry({ entry, value }: Props) {
 
     return (
         <RowContainer>
@@ -26,7 +26,7 @@ const Entry = styled.div`
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    color: #fffecb;
+    color: #ffeccb;
     white-space: initial;
     @media (max-width: 430px) {
         font-size: 0.9em;

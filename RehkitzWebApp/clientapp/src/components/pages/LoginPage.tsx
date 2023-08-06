@@ -4,7 +4,7 @@ import { useContext, useState } from 'react'
 import { TextInput, TextInputPassword } from '../controls/TextInput'
 import LoginIcon from "../widgets/Login/LoginIcon"
 import BackgroundIcon from "../widgets/Login/LoginBackground"
-import { ROUTE_RESCUE_LIST_PAGE } from '../../App'
+import { ROUTE_MAIN_PAGE, ROUTE_RESCUE_LIST_PAGE } from '../../App'
 import { useNavigate } from 'react-router-dom'
 import { FaSignInAlt } from "react-icons/fa"
 import { AppContext } from '../../store/context'
@@ -47,7 +47,7 @@ export default function RescueListPage() {
             dispatch_token({ type: 'set-token', value: token })
             localStorage.setItem('user_id', userId)
             dispatch_token({ type: 'set-user-id', value: userId })
-            navigate(ROUTE_RESCUE_LIST_PAGE)
+            navigate(ROUTE_MAIN_PAGE)
         } else {
             toast.error("Login fehlgeschlagen. Password oder Benutzername falsch", {
                 position: toast.POSITION.TOP_CENTER,
@@ -73,7 +73,7 @@ export default function RescueListPage() {
                         <LoginButton onClick={() => login()}>Anmelden <FaSignInAlt /></LoginButton>
                     </RowContainer>
                     <VersionText>v0.1</VersionText>
-                    <LoadingBar>{promiseInProgress ? (<FadeLoader height={8} color="#fffecb" />) : ("")} </LoadingBar>
+                    <LoadingBar>{promiseInProgress ? (<FadeLoader height={8} color="#ffeccb" />) : ("")} </LoadingBar>
                 </LoginPageColumnLayout >
             </LoginPageRowLayout>
         </div>
@@ -102,13 +102,13 @@ const RowContainer = styled.div`
 `
 
 const TitleText = styled.div`
-    color: #fffecb;
+    color: #ffeccb;
     font-size: 30px;
     font-weight: bold;
 `
 
 const VersionText = styled.div`
-    color: #fffecb;
+    color: #ffeccb;
     font-size: 15px;
     margin-bottom: 20px;
 `

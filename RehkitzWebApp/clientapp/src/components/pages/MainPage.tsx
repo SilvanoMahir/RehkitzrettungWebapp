@@ -5,11 +5,12 @@ import Sidebar from '../widgets/Sidebar/Sidebar'
 import { useMediaQuery } from 'react-responsive'
 import { Menu } from '../widgets/Menu'
 import 'react-datepicker/dist/react-datepicker.css'
-import ProtocolOverviewEntry from '../widgets/Protocol/ProtocolOverviewEntry'
+import InformationOverviewEntry from '../widgets/Information/InformationOverviewEntry'
+import { toast } from 'react-toastify'
 
 export default function MainPage() {
 
-    const isNotMobile = useMediaQuery({ query: '(min-width: 426px)' })
+    const isNotMobile = useMediaQuery({ query: '(min-width: 700px)' })
 
     const [userName, setUserName] = useState('')
     const [regionName, setRegionName] = useState('')
@@ -67,26 +68,44 @@ export default function MainPage() {
         })
         if (response.ok) {
             return await response.json()
+        } else if (response.status === 500) {
+            response.json().then((errorData) => {
+                if (Array.isArray(errorData) && errorData.length > 0) {
+                    errorData.forEach((errorItem) => {
+                        const errorMsg = errorItem.description
+                        toast.error(errorMsg, {
+                            position: toast.POSITION.TOP_CENTER,
+                            containerId: 'LoginToaster',
+                        })
+                        return []
+                    })
+                } else {
+                    toast.error('Ein Fehler ist aufgetreten! Bitte probieren Sie es später nochmals.', {
+                        position: toast.POSITION.TOP_CENTER,
+                        containerId: 'LoginToaster',
+                    })
+                    return []
+                }
+            })
         }
-        return []
     }
 
     return (
         <MainPageLayout>
             {!isNotMobile && <Menu />}
-            <MainPageRowLayout>
+            <MainPageRowLayout isNotMobile={isNotMobile}>
                 {(isNotMobile) && <Sidebar showSidebar={isNotMobile} />}
                 <MainPageColumnLayout>
                     <PageTitle isNotMobile={isNotMobile}>Willkommen {userName}</PageTitle>
-                    <ProtocolOverviewLayout isNotMobile={isNotMobile}>
-                        <ProtocolOverviewTitle>Saisonübersicht {regionName}</ProtocolOverviewTitle>
+                    <InformationOverviewLayout isNotMobile={isNotMobile}>
+                        <InformationOverviewTitle>Saisonübersicht {regionName}</InformationOverviewTitle>
                         <ColumnContainer>
-                            <ProtocolOverviewEntry entry="Anzahl Aufgebote" value={numberOfProtocols} />
-                            <ProtocolOverviewEntry entry="Gerettete Kitze" value={foundFawns} />
-                            <ProtocolOverviewEntry entry="Verletzte Kitze" value={injuredFawns} />
-                            <ProtocolOverviewEntry entry="Markierte Kitze" value={markedFawns} />
+                            <InformationOverviewEntry entry="Anzahl Aufgebote" value={numberOfProtocols} />
+                            <InformationOverviewEntry entry="Gerettete Kitze" value={foundFawns} />
+                            <InformationOverviewEntry entry="Verletzte Kitze" value={injuredFawns} />
+                            <InformationOverviewEntry entry="Markierte Kitze" value={markedFawns} />
                         </ColumnContainer>
-                    </ProtocolOverviewLayout>
+                    </InformationOverviewLayout>
                 </MainPageColumnLayout >
             </MainPageRowLayout>
         </MainPageLayout>
@@ -97,11 +116,11 @@ const MainPageLayout = styled.div`
     height: 100%;
 `
 
-const MainPageRowLayout = styled.div`
+const MainPageRowLayout = styled.div<{ isNotMobile: boolean }>`
     display: flex;
     flex-direction: row;
-    background: #9A8873;
     height: 100%;
+    margin-left: ${({ isNotMobile }) => (isNotMobile ? "30%" : "none")};
 `
 
 const MainPageColumnLayout = styled.div`
@@ -111,29 +130,30 @@ const MainPageColumnLayout = styled.div`
     width: 100%;
 `
 
-const ProtocolOverviewLayout = styled.div<{ isNotMobile: boolean }>`
+const InformationOverviewLayout = styled.div<{ isNotMobile: boolean }>`
     margin: 0px 10px 10px;
-    margin-top: ${(props) => (props.isNotMobile ? "5vh" : "0vh")};
-    padding: 20px 50px 30px 50px;
+    margin-top: ${({ isNotMobile }) => (isNotMobile ? "5vh" : "0vh")};
+    padding: 20px 50px 30px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: #7d6b52;
-    color: beige;
+    background: #7c6b57;
     max-width: 500px;
     border-radius: 10px;
 `
 
-const ProtocolOverviewTitle = styled.div`
+const InformationOverviewTitle = styled.div`
     font-weight: 500;
-    font-size: 25px;
+    font-size: 2em;
     margin: 10px;
+    color: #ffeccb;
 `
 
 const ColumnContainer = styled.div`
     display: flex;
     flex-direction: column;
     width: 100%;
+    padding: 20px 50px 10px;
 `
 
 const PageTitle = styled.div<{ isNotMobile: boolean }>`
@@ -143,8 +163,8 @@ const PageTitle = styled.div<{ isNotMobile: boolean }>`
     font-weight: 500;
     font-size: 2em;
     margin: 10px;
-    color: #fffecb;
-    margin-top: ${(props) => (props.isNotMobile ? "5vh" : "8vh")};
+    color: #ffeccb;
+    margin-top: ${({ isNotMobile }) => (isNotMobile ? "5vh" : "12vh")};
     @media (max-width: 700px) {
         margin-bottom: 1.25em;
     }

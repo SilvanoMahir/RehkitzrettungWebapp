@@ -35,7 +35,7 @@ export default function UserListPage() {
             });
             if (response.ok) {
                 return await response.json();
-            }                
+            }
             return [];
         } catch (error) {
             return [];
@@ -63,7 +63,7 @@ export default function UserListPage() {
     return (
         <RescueListLayout>
             {!isNotMobile && <Menu />}
-            <RescueListRowLayout>
+            <RescueListRowLayout isNotMobile={isNotMobile}>
                 {(isNotMobile) && <Sidebar showSidebar={isNotMobile} />}
                 <RescueListColumnLayout>
                     <SearchInput onChange={search}
@@ -89,19 +89,20 @@ const RescueListLayout = styled.div`
 `
 
 const BlockLayout = styled.div`
-    background: #9A8873;
+    background: #7c6b57;
     margin: 1em; 
     padding: 1em;
     border-radius: 10px;
-    @media (max-width: 700px) {
-        background: transparent;
-    }
 `
 
-const RescueListRowLayout = styled.div`
+const RescueListRowLayout = styled.div<{ isNotMobile: boolean }>`
     display: flex;
     flex-direction: row;
     height: 100%;
+    margin-left: ${({ isNotMobile }) => (isNotMobile ? "30%" : "none")};
+    @media (min-width: 1800px) {
+        margin-left: 530px;
+    }
 `
 
 const RescueListColumnLayout = styled.div`
@@ -114,16 +115,16 @@ const RescueListColumnLayout = styled.div`
 const SearchInput = styled.input<{ isNotMobile: boolean }>` 
     display: flex;
     align-self: flex-end;
+    border: 2px solid #7c6b57; 
     border-radius: 8px;
     width: 250px;
     font-size: 25px;
     background: #898472;
-    color: #fffecb;
-    margin-top: ${(props) => (props.isNotMobile ? "1em" : "3em")};
-    margin-right: ${(props) => (props.isNotMobile ? "2vh" : "1vh")};
-
+    color: #ffeccb;
+    margin-top: ${({ isNotMobile }) => (isNotMobile ? "1em" : "3em")};
+    margin-right: ${({ isNotMobile }) => (isNotMobile ? "2vh" : "1vh")};
     &::placeholder {
-        color: #fffecb; 
+        color: #ffeccb; 
         opacity: 0.5;
     }
 `
@@ -135,7 +136,7 @@ const PageTitle = styled.div`
     font-weight: 500;
     font-size: 2em;
     margin: 10px;
-    color: #fffecb;
+    color: #ffeccb;
     @media (max-width: 700px) {
         margin-bottom: 1.25em;
     }

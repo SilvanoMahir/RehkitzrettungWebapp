@@ -196,13 +196,13 @@ public class UserController : ControllerBase
             var user = await _userManager.FindByIdAsync(userInUserTable.OwnerId);
             if (user == null)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User not found!" });
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User nicht gefunden!" });
             }
 
             var newRole = await _roleManager.FindByIdAsync(userRoleId[0]);
             if (newRole == null)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Role does not exist!" });
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Rolle existiert nicht!" });
             }
 
             var existingRoles = await _userManager.GetRolesAsync(user);

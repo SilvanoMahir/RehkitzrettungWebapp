@@ -10,7 +10,7 @@ export default function RescueListPage() {
     return (
         <MapLayout>
             {!isNotMobile && <Menu />}
-            <MapRowLayout>
+            <MapRowLayout isNotMobile={isNotMobile}>
                 {(isNotMobile) && <Sidebar showSidebar={isNotMobile} />}
                 <MapBlock>
                     <Iframe url="https://geogr.mapplus.ch/viewer/geogr/"
@@ -34,7 +34,11 @@ const MapLayout = styled.div`
     height: 100%;
 `
 
-const MapRowLayout = styled.div`
+const MapRowLayout = styled.div<{ isNotMobile: boolean }>`
     display: flex;
     height: 100%;
+    margin-left: ${({ isNotMobile }) => (isNotMobile ? "30%" : "none")};
+    @media (min-width: 1800px) {
+        margin-left: 530px;
+    }
 `

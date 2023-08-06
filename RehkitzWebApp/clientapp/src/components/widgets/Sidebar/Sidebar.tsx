@@ -47,7 +47,7 @@ export default function Sidebar({ showSidebar }: Props) {
     }
 
     return (
-        <SidebarDiv showSidebar={showSidebar} isLargeScreen={isLargeScreen}>
+        <SidebarDiv isNotMobile={isNotMobile} isLargeScreen={isLargeScreen}>
             {(isNotMobile || showSidebar) && (
                 <SidebarColumnLayout>
                     <SidebarIcon />
@@ -64,13 +64,18 @@ export default function Sidebar({ showSidebar }: Props) {
     )
 }
 
-const SidebarDiv = styled.div<{ showSidebar: boolean; isLargeScreen: boolean }>`
-    max-width: ${({ isLargeScreen }) => (isLargeScreen ? "30%" : "100%")};
+const SidebarDiv = styled.div<{ isNotMobile: boolean; isLargeScreen: boolean }>`
+    max-width: ${({ isNotMobile }) => (isNotMobile ? "30%" : "100%")};
     transition: max-width 0.3s ease-in-out;
     overflow: hidden;
     overflow-y: auto;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    background: #393e41;
     @media (min-height: 750px) {
-      overflow-y: none;
+        overflow-y: none;
     }
 `
 

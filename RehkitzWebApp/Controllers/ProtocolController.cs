@@ -84,7 +84,7 @@ public class ProtocolController : ControllerBase
     {
         if (_context.Protocol == null)
         {
-            return NotFound();
+            return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Der Server ist akutell nicht erreichbar! Bitte probieren Sie es später nochmals." });
         }
 
         var protocolsList = await _context.Protocol

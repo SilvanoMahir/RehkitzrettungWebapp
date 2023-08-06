@@ -28,9 +28,9 @@ const Entry = styled.div`
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    text-align: center;
+    text-align: end;
     line-height: 50px;
-    color: #fffecb;
+    color: #ffeccb;
     @media (min-width: 1400px) {
         font-size: 1.25em;
     }

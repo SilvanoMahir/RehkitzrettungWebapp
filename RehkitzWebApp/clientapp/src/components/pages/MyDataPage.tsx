@@ -5,7 +5,7 @@ import Sidebar from '../widgets/Sidebar/Sidebar'
 import { useMediaQuery } from 'react-responsive'
 import { Menu } from '../widgets/Menu'
 import 'react-datepicker/dist/react-datepicker.css'
-import ProtocolOverviewEntry from '../widgets/Protocol/ProtocolOverviewEntry'
+import InformationOverviewEntry from '../widgets/Information/InformationOverviewEntry'
 
 export default function MyDataPage() {
 
@@ -83,12 +83,12 @@ export default function MyDataPage() {
                     <MyDataLayout isNotMobile={isNotMobile}>
                         <MyDataTitle>Benutzer {1}</MyDataTitle>
                         <ColumnContainer>
-                            <ProtocolOverviewEntry entry="ID" value={2} />
-                            <ProtocolOverviewEntry entry="Name, Vorname" value={3} />
-                            <ProtocolOverviewEntry entry="Bezeichnung" value={4} />
-                            <ProtocolOverviewEntry entry="Kanton/Region" value={5} />
-                            <ProtocolOverviewEntry entry="Funktion" value={6} />
-                            <ProtocolOverviewEntry entry="E-Mail" value={7} />
+                            <InformationOverviewEntry entry="ID" value={2} />
+                            <InformationOverviewEntry entry="Name, Vorname" value={3} />
+                            <InformationOverviewEntry entry="Bezeichnung" value={4} />
+                            <InformationOverviewEntry entry="Kanton/Region" value={5} />
+                            <InformationOverviewEntry entry="Funktion" value={6} />
+                            <InformationOverviewEntry entry="E-Mail" value={7} />
                         </ColumnContainer>
                     </MyDataLayout>
                 </MyDataPageColumnLayout >

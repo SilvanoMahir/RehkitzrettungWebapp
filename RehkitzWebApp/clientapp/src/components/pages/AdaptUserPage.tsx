@@ -112,24 +112,24 @@ export default function AdaptUserPage() {
             response.json().then((errorData) => {
                 if (Array.isArray(errorData) && errorData.length > 0) {
                     errorData.forEach((errorItem) => {
-                        const errorMsg = errorItem.description;
+                        const errorMsg = errorItem.description
                         toast.error(errorMsg, {
                             position: toast.POSITION.TOP_CENTER,
                             containerId: 'LoginToaster',
-                        });
-                    });
+                        })
+                    })
                 } else {
-                    toast.error('An error occurred. Please try again later.', {
+                    toast.error('Ein Fehler ist aufgetreten! Bitte probieren Sie es später nochmals.', {
                         position: toast.POSITION.TOP_CENTER,
                         containerId: 'LoginToaster',
-                    });
+                    })
                 }
-            });
+            })
         } else {
-            toast.error('An error occurred. Please try again later.', {
+            toast.error('Ein Fehler ist aufgetreten! Bitte probieren Sie es später nochmals.', {
                 position: toast.POSITION.TOP_CENTER,
                 containerId: 'LoginToaster',
-            });
+            })
         }
     }
 
@@ -164,24 +164,24 @@ export default function AdaptUserPage() {
             response.json().then((errorData) => {
                 if (Array.isArray(errorData) && errorData.length > 0) {
                     errorData.forEach((errorItem) => {
-                        const errorMsg = errorItem.description;
+                        const errorMsg = errorItem.description
                         toast.error(errorMsg, {
                             position: toast.POSITION.TOP_CENTER,
                             containerId: 'LoginToaster',
-                        });
-                    });
+                        })
+                    })
                 } else {
-                    toast.error('An error occurred. Please try again later.', {
+                    toast.error('Ein Fehler ist aufgetreten! Bitte probieren Sie es später nochmals.', {
                         position: toast.POSITION.TOP_CENTER,
                         containerId: 'LoginToaster',
-                    });
+                    })
                 }
-            });
+            })
         } else {
-            toast.error('An error occurred. Please try again later.', {
+            toast.error('Ein Fehler ist aufgetreten! Bitte probieren Sie es später nochmals.', {
                 position: toast.POSITION.TOP_CENTER,
                 containerId: 'LoginToaster',
-            });
+            })
         }
     }
 
@@ -238,7 +238,7 @@ export default function AdaptUserPage() {
     return (
         <AdaptUserLayout>
             {!isNotMobile && <Menu />}
-            <AdaptUserRowLayout>
+            <AdaptUserRowLayout isNotMobile={isNotMobile}>
                 {(isNotMobile) && <Sidebar showSidebar={isNotMobile} />}
                 <AdaptUserColumnLayout>
                     <UserLayout isNotMobile={isNotMobile}>
@@ -269,10 +269,14 @@ const AdaptUserLayout = styled.div`
     height: 100%;
 `
 
-const AdaptUserRowLayout = styled.div`
+const AdaptUserRowLayout = styled.div<{ isNotMobile: boolean }>`
     display: flex;
     flex-direction: row;
     height: 100%;
+    margin-left: ${({ isNotMobile }) => (isNotMobile ? "30%" : "none")};
+    @media (min-width: 1800px) {
+        margin-left: 530px;
+    }
 `
 
 const AdaptUserColumnLayout = styled.div`
@@ -293,11 +297,11 @@ const RowContainer = styled.div`
 
 const UserLayout = styled.div<{ isNotMobile: boolean }>`
     margin: 0px 10px 10px;
-    margin-top: ${(props) => (props.isNotMobile ? "1em" : "5em")};
+    margin-top: 5em;
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: #9A8873;
+    background: #7c6b57;
     color: beige;
     max-width: 30em;
     border-radius: 10px;
@@ -305,9 +309,6 @@ const UserLayout = styled.div<{ isNotMobile: boolean }>`
         display: inline-block;
         width: 90%;
   	}
-    @media (min-width: 1200px) {
-        max-width: 40em;
-    }
 `
 
 const UserTitle = styled.div`
@@ -316,7 +317,7 @@ const UserTitle = styled.div`
     font-weight: 500;
     font-size: 25px;
     margin: 10px;
-    color: #fffecb;
+    color: #ffeccb;
 `
 
 const ColumnContainer = styled.div`
