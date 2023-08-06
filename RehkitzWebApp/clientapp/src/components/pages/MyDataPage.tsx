@@ -5,7 +5,7 @@ import Sidebar from '../widgets/Sidebar/Sidebar'
 import { useMediaQuery } from 'react-responsive'
 import { Menu } from '../widgets/Menu'
 import 'react-datepicker/dist/react-datepicker.css'
-import InformationOverviewEntry from '../widgets/Information/InformationOverviewEntry'
+import MyDataEntry from '../widgets/MyData/MyDataEntry'
 
 export default function MyDataPage() {
 
@@ -66,12 +66,12 @@ export default function MyDataPage() {
                     <MyDataLayout isNotMobile={isNotMobile}>
                         <MyDataTitle>Benutzer {name}</MyDataTitle>
                         <ColumnContainer>
-                            <InformationOverviewEntry entry="ID" value={id} />
-                            <InformationOverviewEntry entry="Name, Vorname" value={`${lastName}, ${firstName}`} />
-                            <InformationOverviewEntry entry="Bezeichnung" value={name} />
-                            <InformationOverviewEntry entry="Kanton/Region" value={region} />
-                            <InformationOverviewEntry entry="Funktion" value={userFunction} />
-                            <InformationOverviewEntry entry="E-Mail" value={mail} />
+                            <MyDataEntry entry="ID" value={id} />
+                            <MyDataEntry entry="Name, Vorname" value={`${lastName}, ${firstName}`} />
+                            <MyDataEntry entry="Bezeichnung" value={name} />
+                            <MyDataEntry entry="Kanton/Region" value={region} />
+                            <MyDataEntry entry="Funktion" value={userFunction} />
+                            <MyDataEntry entry="E-Mail" value={mail} />
                         </ColumnContainer>
                     </MyDataLayout>
                 </MyDataPageColumnLayout>

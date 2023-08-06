@@ -62,7 +62,7 @@ export default function RescueListPage() {
             <LoginPageRowLayout>
                 <LoginPageColumnLayout>
                     <LoginIcon />
-                    <div><TitleText data-testid="login-anmelden-title">Anmelden</TitleText></div>
+                    <TitleText data-testid="login-anmelden-title">Anmelden</TitleText>
                     <TextInput onChange={setUserName}
                         value={inputUserName}
                         placeholder="Benutzername"></TextInput>
@@ -73,7 +73,7 @@ export default function RescueListPage() {
                         <LoginButton onClick={() => login()}>Anmelden <FaSignInAlt /></LoginButton>
                     </RowContainer>
                     <VersionText>v0.1</VersionText>
-                    <LoadingBar>{promiseInProgress ? (<FadeLoader height={8} color="#ffeccb" />) : ("")} </LoadingBar>
+                    <LoadingBar>{promiseInProgress ? (<FadeLoader height={8} color='#ffeccb' />) : ('')} </LoadingBar>
                 </LoginPageColumnLayout >
             </LoginPageRowLayout>
         </div>
