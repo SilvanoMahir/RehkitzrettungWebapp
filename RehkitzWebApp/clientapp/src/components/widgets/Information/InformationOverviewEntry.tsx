@@ -38,7 +38,6 @@ const Entry = styled.div`
 
 const Value = styled.div`
     flex: 2;
-    overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
     color: #fffecb;

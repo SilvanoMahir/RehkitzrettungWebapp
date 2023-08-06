@@ -4,7 +4,7 @@ import { useContext, useState } from 'react'
 import { TextInput, TextInputPassword } from '../controls/TextInput'
 import LoginIcon from "../widgets/Login/LoginIcon"
 import BackgroundIcon from "../widgets/Login/LoginBackground"
-import { ROUTE_MAIN_PAGE, ROUTE_RESCUE_LIST_PAGE } from '../../App'
+import { ROUTE_MAIN_PAGE } from '../../App'
 import { useNavigate } from 'react-router-dom'
 import { FaSignInAlt } from "react-icons/fa"
 import { AppContext } from '../../store/context'

@@ -14,7 +14,7 @@ export default function MyDataPage() {
     const [id, setId] = useState('')
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
-    const [role, setRole] = useState('')
+    const [name, setName] = useState('')
     const [region, setRegion] = useState('')
     const [userFunction, setUserFunction] = useState('')
     const [mail, setMail] = useState('')
@@ -23,22 +23,21 @@ export default function MyDataPage() {
 
     useEffect(() => {
         const onMount = async () => {
-            //token handling can probably be optimized
             const storageToken = localStorage.getItem('user_token')
             if (storageToken !== null) {
                 dispatch_token({ type: 'set-token', value: storageToken })
             }
-            const userId = localStorage.getItem('user_id')
-            const user = await fetchUser(storageToken, userId)
-            const { userRegion, userName } = user
-            // setUserName(userName)
-            // setRegionName(userRegion)
-            const protocolOverview = await fetchProtocolOverview(storageToken, userRegion)
-
-            // setNumberOfProtocols(protocolOverview.numberOfProtocols)
-            // setFoundFawns(protocolOverview.foundFawns)
-            // setInjuredFawns(protocolOverview.injuredFawns)
-            // setMarkedFawns(protocolOverview.markedFawns)
+            const id = localStorage.getItem('user_id')
+            const user = await fetchUser(storageToken, id)
+            const { userId, userFirstName, userLastName, userMail, userFunction,
+                userRegion, userName } = user
+            setId(userId)
+            setFirstName(userFirstName)
+            setLastName(userLastName)
+            setMail(userMail)
+            setUserFunction(userFunction)
+            setRegion(userRegion)
+            setName(userName)
         }
         onMount()
     }, [dispatch_token])
@@ -57,22 +56,6 @@ export default function MyDataPage() {
         return []
     }
 
-    const fetchProtocolOverview = async (storageToken: string | null, userRegion: string | undefined) => {
-        const response = await fetch('/api/protocols/overview?' + new URLSearchParams({
-            userRegion: userRegion!
-        }), {
-            method: 'GET',
-            headers: {
-                'Content-type': 'application/json',
-                'Authorization': `Bearer ${storageToken}`,
-            }
-        })
-        if (response.ok) {
-            return await response.json()
-        }
-        return []
-    }
-
     return (
         <MyDataPageLayout>
             {!isNotMobile && <Menu />}
@@ -81,14 +64,14 @@ export default function MyDataPage() {
                 <MyDataPageColumnLayout>
                     <PageTitle isNotMobile={isNotMobile}>Meine Daten</PageTitle>
                     <MyDataLayout isNotMobile={isNotMobile}>
-                        <MyDataTitle>Benutzer {1}</MyDataTitle>
+                        <MyDataTitle>Benutzer {name}</MyDataTitle>
                         <ColumnContainer>
-                            <InformationOverviewEntry entry="ID" value={2} />
-                            <InformationOverviewEntry entry="Name, Vorname" value={3} />
-                            <InformationOverviewEntry entry="Bezeichnung" value={4} />
-                            <InformationOverviewEntry entry="Kanton/Region" value={5} />
-                            <InformationOverviewEntry entry="Funktion" value={6} />
-                            <InformationOverviewEntry entry="E-Mail" value={7} />
+                            <InformationOverviewEntry entry="ID" value={id} />
+                            <InformationOverviewEntry entry="Name, Vorname" value={`${lastName}, ${firstName}`} />
+                            <InformationOverviewEntry entry="Bezeichnung" value={name} />
+                            <InformationOverviewEntry entry="Kanton/Region" value={region} />
+                            <InformationOverviewEntry entry="Funktion" value={userFunction} />
+                            <InformationOverviewEntry entry="E-Mail" value={mail} />
                         </ColumnContainer>
                     </MyDataLayout>
                 </MyDataPageColumnLayout>
