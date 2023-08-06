@@ -32,7 +32,7 @@ const Entry = styled.div`
     color: #ffeccb;
     white-space: initial;
     font-size: 20px;
-    @media (min-width: 400px) {
+    @media (min-width: 401px) {
         text-align: end;
         margin-right: 1em;
     }

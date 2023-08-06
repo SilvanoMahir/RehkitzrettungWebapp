@@ -18,6 +18,9 @@ export default function MyDataEntry({ entry, value }: Props) {
 const RowContainer = styled.div`
     display: flex;
     flex-direction: row;
+    @media (max-width: 400px) {
+        flex-direction: column;
+    }
 `
 
 const Entry = styled.div`
@@ -28,11 +31,10 @@ const Entry = styled.div`
     text-overflow: ellipsis;
     color: #ffeccb;
     white-space: initial;
-    @media (max-width: 430px) {
-        font-size: 0.9em;
-    }
-    @media (min-width: 1400px) {
-        font-size: 1.25em;
+    font-size: 20px;
+    @media (min-width: 401px) {
+        text-align: end;
+        margin-right: 1em;
     }
 `
 
@@ -42,10 +44,5 @@ const Value = styled.div`
     text-overflow: ellipsis;
     color: #fffecb;
     white-space: initial;
-    @media (max-width: 430px) {
-        font-size: 0.9em;
-    }
-    @media (min-width: 1400px) {
-        font-size: 1.25em;
-    }
+    font-size: 20px;
 `

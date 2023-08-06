@@ -14,7 +14,7 @@ export default function MyDataPage() {
     const [id, setId] = useState('')
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
-    const [name, setName] = useState('')
+    const [definition, setDefinition] = useState('')
     const [region, setRegion] = useState('')
     const [userFunction, setUserFunction] = useState('')
     const [mail, setMail] = useState('')
@@ -30,14 +30,14 @@ export default function MyDataPage() {
             const id = localStorage.getItem('user_id')
             const user = await fetchUser(storageToken, id)
             const { userId, userFirstName, userLastName, userMail, userFunction,
-                userRegion, userName } = user
+                userRegion, userDefinition } = user
             setId(userId)
             setFirstName(userFirstName)
             setLastName(userLastName)
             setMail(userMail)
             setUserFunction(userFunction)
             setRegion(userRegion)
-            setName(userName)
+            setDefinition(userDefinition)
         }
         onMount()
     }, [dispatch_token])
@@ -64,11 +64,11 @@ export default function MyDataPage() {
                 <MyDataPageColumnLayout>
                     <PageTitle isNotMobile={isNotMobile}>Meine Daten</PageTitle>
                     <MyDataLayout isNotMobile={isNotMobile}>
-                        <MyDataTitle>Benutzer {name}</MyDataTitle>
+                        <MyDataTitle>Benutzer {definition}</MyDataTitle>
                         <ColumnContainer>
                             <MyDataEntry entry="ID" value={id} />
                             <MyDataEntry entry="Name, Vorname" value={`${lastName}, ${firstName}`} />
-                            <MyDataEntry entry="Bezeichnung" value={name} />
+                            <MyDataEntry entry="Bezeichnung" value={definition} />
                             <MyDataEntry entry="Kanton/Region" value={region} />
                             <MyDataEntry entry="Funktion" value={userFunction} />
                             <MyDataEntry entry="E-Mail" value={mail} />
