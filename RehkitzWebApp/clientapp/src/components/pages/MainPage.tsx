@@ -106,7 +106,7 @@ export default function MainPage() {
                             <InformationOverviewEntry entry="Markierte Kitze" value={markedFawns} />
                         </ColumnContainer>
                     </InformationOverviewLayout>
-                </MainPageColumnLayout >
+                </MainPageColumnLayout>
             </MainPageRowLayout>
         </MainPageLayout>
     )
