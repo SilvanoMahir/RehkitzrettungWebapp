@@ -10,7 +10,15 @@ test('labels are present in the MainPage component', () => {
       <MainPage />
     </MemoryRouter>
   )
-  const labels = screen.queryAllByText(/Anzahl Aufgebote|Gerettete Kitze|Verletzte Kitze|Markierte Kitze/i)
-  expect(labels).toHaveLength(4)
+
+  const rescueNumbersLabel = screen.getByText('Anzahl Aufgebote')
+  const savedFawnsLabel = screen.getByText('Gerettete Kitze')
+  const injuredFawnsLabel = screen.getByText('Verletzte Kitze')
+  const markedFawnsLabel = screen.getByText('Markierte Kitze')
+
+  expect(rescueNumbersLabel).toBeInTheDocument()
+  expect(savedFawnsLabel).toBeInTheDocument()
+  expect(injuredFawnsLabel).toBeInTheDocument()
+  expect(markedFawnsLabel).toBeInTheDocument()
 })
 

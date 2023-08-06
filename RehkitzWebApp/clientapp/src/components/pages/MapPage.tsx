@@ -19,7 +19,9 @@ export default function MapPage() {
                         id=""
                         className=""
                         display="block"
-                        position="relative" />
+                        position="relative"
+                        title="geogr-mapplus"
+                        />
                 </MapBlock>
             </MapRowLayout>
         </MapLayout>
