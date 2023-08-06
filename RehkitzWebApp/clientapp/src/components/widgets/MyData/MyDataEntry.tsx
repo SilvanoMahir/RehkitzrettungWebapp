@@ -5,7 +5,7 @@ interface Props {
     value?: string | number
 }
 
-export default function InformationOverviewEntry({ entry, value }: Props) {
+export default function MyDataEntry({ entry, value }: Props) {
 
     return (
         <RowContainer>
@@ -39,7 +39,7 @@ const Entry = styled.div`
 `
 
 const Value = styled.div`
-    flex: 2;
+    flex: 4;
     white-space: nowrap;
     text-overflow: ellipsis;
     color: #fffecb;
