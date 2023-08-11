@@ -29,7 +29,12 @@ export default function RescueListPage() {
             if (storageToken !== null) {
                 dispatch_token({ type: 'set-token', value: storageToken })
             }
-            const protocolsListLocal = await fetchProtocols(storageToken)
+            const fetchedProtocolList = await fetchProtocols(storageToken)
+            const protocolsListLocal = [...fetchedProtocolList].sort((a, b) => {
+                const dateA: Date = new Date(a.date.split('.').reverse().join('-'))
+                const dateB: Date = new Date(b.date.split('.').reverse().join('-'))
+                return dateB.getTime() - dateA.getTime()
+            })
             if (storageToken !== null) {
                 setLocalToken(storageToken)
             }
@@ -103,7 +108,7 @@ export default function RescueListPage() {
     } else {
         content = protocolsListLocal.map(protocolEntry => (
             <Protocol key={protocolEntry.protocolId} protocolId={protocolEntry.protocolId} />
-        ));
+        ))
     }
 
     return (
@@ -116,14 +121,14 @@ export default function RescueListPage() {
                         value={''}
                         isNotMobile={isNotMobile}
                         placeholder={'Suchen'}></SearchInput>
-                    <SiteTitle>Übersicht Protokolle</SiteTitle>
-                        <RescueListItems>
-                            {content}
-                        </RescueListItems>
                     <RowContainer>
                         <DownloadProtocolButton onClick={() => downloadProtocol(localToken)}>Bericht herunterladen</DownloadProtocolButton>
                         <CreateProtocolButton onClick={() => createProtocol()}>Neues Protokoll erstellen</CreateProtocolButton>
                     </RowContainer>
+                    <SiteTitle>Übersicht Protokolle</SiteTitle>
+                        <RescueListItems>
+                            {content}
+                        </RescueListItems>
                 </RescueListColumnLayout >
             </RescueListRowLayout>
         </RescueListLayout>

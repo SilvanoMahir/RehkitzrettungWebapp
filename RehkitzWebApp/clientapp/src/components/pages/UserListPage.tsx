@@ -51,7 +51,7 @@ export default function UserListPage() {
 
     let content;
     if (loadingUsers) {
-        content = (<p><em>Lädt Benutzer... </em></p>)
+        content = (<p><em>Lï¿½dt Benutzer... </em></p>)
     } else if (usersListLocal.length === 0) {
         content = (<p><em>Keine Benutzer gefunden.</em></p>);
     } else {
@@ -70,14 +70,14 @@ export default function UserListPage() {
                         value={''}
                         isNotMobile={isNotMobile}
                         placeholder={"Suchen"}></SearchInput>
+                    <NewUserButton>
+                        <CreateNewUserButton onClick={() => addNewUser()}> Neuer Benutzer erstellen</CreateNewUserButton>
+                    </NewUserButton>
                     <PageTitle>Benutzerverwaltung</PageTitle>
                     <BlockLayout>
                         {isLargeScreen ? <UserEntryTitles /> : <></>}
                         {content}
                     </BlockLayout>
-                    <NewUserButton>
-                        <CreateNewUserButton onClick={() => addNewUser()}> Neuer Benutzer erstellen</CreateNewUserButton>
-                    </NewUserButton>
                 </RescueListColumnLayout >
             </RescueListRowLayout>
         </RescueListLayout>
@@ -144,5 +144,5 @@ const PageTitle = styled.div`
 
 const NewUserButton = styled.div`
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
 `
