@@ -23,7 +23,7 @@ export default function RescueListPage() {
         if (inputUserName === "" || inputPassword === "") {
             toast.error("Bitte Benutzername und Password einsetzen!", {
                 position: toast.POSITION.TOP_CENTER,
-                containerId: 'LoginToaster'
+                containerId: 'ToasterNotification'
             })
         } else {
             trackPromise(
@@ -51,7 +51,7 @@ export default function RescueListPage() {
         } else {
             toast.error("Login fehlgeschlagen. Password oder Benutzername falsch", {
                 position: toast.POSITION.TOP_CENTER,
-                containerId: 'LoginToaster'
+                containerId: 'ToasterNotification'
             })
         }
     }

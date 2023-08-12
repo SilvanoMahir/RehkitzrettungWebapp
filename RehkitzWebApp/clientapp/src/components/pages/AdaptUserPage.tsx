@@ -76,6 +76,14 @@ export default function AdaptUserPage() {
     }
 
     const saveUser = async () => {
+        if (userName === "" || userMail === "" || userPassword === "" || userDefinition === "" || userFirstName === ""
+            || userLastName === "" || userRegion === "" || userFunction === "") {
+            toast.error("Bitte alle Felder ausfüllen!", {
+                position: toast.POSITION.TOP_CENTER,
+                containerId: 'ToasterNotification'
+            })
+            return
+        }
         const response = await fetch('/api/users', {
             method: 'POST',
             headers: { 'content-type': 'application/json' },
@@ -106,7 +114,7 @@ export default function AdaptUserPage() {
             navigate(ROUTE_USER_LIST_PAGE)
             toast.success("Benutzer erfolgreich hinzugefügt!", {
                 position: toast.POSITION.TOP_CENTER,
-                containerId: 'LoginToaster'
+                containerId: 'ToasterNotification'
             })
         } else if (response.status === 400) {
             response.json().then((errorData) => {
@@ -115,25 +123,33 @@ export default function AdaptUserPage() {
                         const errorMsg = errorItem.description
                         toast.error(errorMsg, {
                             position: toast.POSITION.TOP_CENTER,
-                            containerId: 'LoginToaster',
+                            containerId: 'ToasterNotification',
                         })
                     })
                 } else {
                     toast.error('Ein Fehler ist aufgetreten! Bitte probieren Sie es später nochmals.', {
                         position: toast.POSITION.TOP_CENTER,
-                        containerId: 'LoginToaster',
+                        containerId: 'ToasterNotification',
                     })
                 }
             })
         } else {
             toast.error('Ein Fehler ist aufgetreten! Bitte probieren Sie es später nochmals.', {
                 position: toast.POSITION.TOP_CENTER,
-                containerId: 'LoginToaster',
+                containerId: 'ToasterNotification',
             })
         }
     }
 
     const updateUser = async () => {
+        if (userName === "" || userMail === "" || userDefinition === "" || userFirstName === ""
+            || userLastName === "" || userRegion === "" || userFunction === "") {
+            toast.error("Bitte alle Felder ausfüllen!", {
+                position: toast.POSITION.TOP_CENTER,
+                containerId: 'ToasterNotification'
+            })
+            return
+        }
         const storageToken = localStorage.getItem('user_token')
         const response = await fetch(`${`/api/users`}/${id}`, {
             method: 'PUT',
@@ -158,7 +174,7 @@ export default function AdaptUserPage() {
             navigate(ROUTE_USER_LIST_PAGE)
             toast.success("Benutzer erfolgreich angepasst!", {
                 position: toast.POSITION.TOP_CENTER,
-                containerId: 'LoginToaster'
+                containerId: 'ToasterNotification'
             })
         } else if (response.status === 400) {
             response.json().then((errorData) => {
@@ -167,20 +183,20 @@ export default function AdaptUserPage() {
                         const errorMsg = errorItem.description
                         toast.error(errorMsg, {
                             position: toast.POSITION.TOP_CENTER,
-                            containerId: 'LoginToaster',
+                            containerId: 'ToasterNotification',
                         })
                     })
                 } else {
                     toast.error('Ein Fehler ist aufgetreten! Bitte probieren Sie es später nochmals.', {
                         position: toast.POSITION.TOP_CENTER,
-                        containerId: 'LoginToaster',
+                        containerId: 'ToasterNotification',
                     })
                 }
             })
         } else {
             toast.error('Ein Fehler ist aufgetreten! Bitte probieren Sie es später nochmals.', {
                 position: toast.POSITION.TOP_CENTER,
-                containerId: 'LoginToaster',
+                containerId: 'ToasterNotification',
             })
         }
     }
@@ -199,7 +215,7 @@ export default function AdaptUserPage() {
                 navigate(ROUTE_USER_LIST_PAGE)
                 toast.success("Benutzer erfolgreich gelöscht!", {
                     position: toast.POSITION.TOP_CENTER,
-                    containerId: 'LoginToaster'
+                    containerId: 'ToasterNotification'
                 })
             }
         }

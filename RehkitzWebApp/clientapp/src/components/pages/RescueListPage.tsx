@@ -79,18 +79,18 @@ export default function RescueListPage() {
                 saveAs(fileBlob, `RehkitzrettungApp_Protokoll_${year}-${month}-${day}`)
                 toast.success("Erfolgreich heruntergeladen!", {
                     position: toast.POSITION.TOP_CENTER,
-                    containerId: 'LoginToaster',
+                    containerId: 'ToasterNotification',
                 })
             } else {
                 toast.error("Herunterladen fehlgeschlagen!", {
                     position: toast.POSITION.TOP_CENTER,
-                    containerId: 'LoginToaster',
+                    containerId: 'ToasterNotification',
                 })
             }
         } catch (error) {
             toast.error("Herunterladen fehlgeschlagen!", {
                 position: toast.POSITION.TOP_CENTER,
-                containerId: 'LoginToaster',
+                containerId: 'ToasterNotification',
             })
         }
     }
@@ -102,7 +102,7 @@ export default function RescueListPage() {
     let content
 
     if (loadingProtocols) {
-        content = (<p><em>Laedt Protokolle... Bitte Seite aktualisieren, sobald ASP.NET Backend aufgestartet ist.</em></p>)
+        content = (<p><em>Lädt Protokolle... Bitte Seite aktualisieren, sobald ASP.NET Backend aufgestartet ist.</em></p>)
     } else if (protocolsListLocal.length === 0) {
         content = (<p><em>Keine Protokolle gefunden.</em></p>)
     } else {

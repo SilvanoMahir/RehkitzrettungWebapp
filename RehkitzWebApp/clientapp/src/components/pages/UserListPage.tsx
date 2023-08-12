@@ -51,7 +51,7 @@ export default function UserListPage() {
 
     let content;
     if (loadingUsers) {
-        content = (<p><em>L�dt Benutzer... </em></p>)
+        content = (<p><em>Lädt Benutzer... </em></p>)
     } else if (usersListLocal.length === 0) {
         content = (<p><em>Keine Benutzer gefunden.</em></p>);
     } else {
@@ -131,18 +131,14 @@ const SearchInput = styled.input<{ isNotMobile: boolean }>`
 
 const PageTitle = styled.div`
     display: flex;
-    flex-direction: row;
     justify-content: center;
     font-weight: 500;
     font-size: 2em;
-    margin: 10px;
     color: #ffeccb;
-    @media (max-width: 700px) {
-        margin-bottom: 1.25em;
-    }
-`
+`;
 
 const NewUserButton = styled.div`
     display: flex;
     justify-content: flex-end;
-`
+    align-items: center;
+`;
