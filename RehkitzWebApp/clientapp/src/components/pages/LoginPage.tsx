@@ -1,7 +1,8 @@
 import styled from 'styled-components/macro'
 import { LoginButton } from '../controls/Button'
 import { useContext, useState } from 'react'
-import { TextInput, TextInputPassword } from '../controls/TextInput'
+import { TextInput } from '../controls/TextInput'
+import { TextInputPassword } from '../controls/TextInputPassword'
 import LoginIcon from "../widgets/Login/LoginIcon"
 import BackgroundIcon from "../widgets/Login/LoginBackground"
 import { ROUTE_MAIN_PAGE } from '../../App'
@@ -66,9 +67,10 @@ export default function RescueListPage() {
                     <TextInput onChange={setUserName}
                         value={inputUserName}
                         placeholder="Benutzername"></TextInput>
-                    <TextInputPassword onChange={setPassword}
-                        value={inputPassword}
-                        placeholder="Passwort"></TextInputPassword>
+                    <TextInputPassword
+                        placeholder="Passwort"
+                        onChange={setPassword}
+                        value={inputPassword} />
                     <RowContainer>
                         <LoginButton onClick={() => login()}>Anmelden <FaSignInAlt /></LoginButton>
                     </RowContainer>

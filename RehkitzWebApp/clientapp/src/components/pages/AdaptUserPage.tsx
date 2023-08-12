@@ -10,6 +10,7 @@ import { ROUTE_USER_LIST_PAGE } from '../../App'
 import ProtocolEntryForAdaptPage from '../widgets/Protocol/ProtocolEntryForAdaptPage'
 import { Dropdown } from '../controls/Dropdown'
 import { toast } from 'react-toastify'
+import PasswordEntryForAdaptPage from '../widgets/Protocol/PasswordEntryForAdaptPage'
 
 export default function AdaptUserPage() {
 
@@ -267,7 +268,7 @@ export default function AdaptUserPage() {
                             <Dropdown entry="Funktion" options={roles} value={userFunction} onChange={setUserFunction} />
                             <ProtocolEntryForAdaptPage entry="Benutzername" value={userName} callbackFunction={setUsername} />
                             <ProtocolEntryForAdaptPage entry="E-Mail" value={userMail} callbackFunction={setUserEMail} />
-                            <ProtocolEntryForAdaptPage entry="Passwort" value={userPassword} callbackFunction={setUserPassword} />
+                            <PasswordEntryForAdaptPage entry={isNewUser ? 'Passwort' : `Neues Passwort`} value={userPassword} callbackFunction={setUserPassword} />
                         </ColumnContainer>
                     </UserLayout>
                     <RowContainer>
