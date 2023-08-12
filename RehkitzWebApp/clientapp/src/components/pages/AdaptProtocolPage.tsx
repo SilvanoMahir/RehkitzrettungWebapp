@@ -107,6 +107,13 @@ export default function AdaptProtocolPage() {
             })
             return
         }
+        if (remark.length > 250) {
+            toast.error("Bemerkung zu lang!", {
+                position: toast.POSITION.TOP_CENTER,
+                containerId: 'ToasterNotification'
+            })
+            return
+        }
         const storageToken = localStorage.getItem('user_token')
         const response = await fetch('/api/protocols', {
             method: 'POST',
@@ -165,6 +172,13 @@ export default function AdaptProtocolPage() {
         }
         if (!isValidNumericString(injuredFawns) || !isValidNumericString(markedFawns) || !isValidNumericString(foundFawns)) {
             toast.error("Felder gefundene, verletzte oder markierte Kitze sind keine Zahlen!", {
+                position: toast.POSITION.TOP_CENTER,
+                containerId: 'ToasterNotification'
+            })
+            return
+        }
+        if (remark.length > 250) {
+            toast.error("Bemerkung zu lang!", {
                 position: toast.POSITION.TOP_CENTER,
                 containerId: 'ToasterNotification'
             })
