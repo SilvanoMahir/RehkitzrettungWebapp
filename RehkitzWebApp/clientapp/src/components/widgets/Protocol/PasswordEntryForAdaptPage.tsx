@@ -12,7 +12,7 @@ export default function PasswordEntryForAdaptPage({ entry, value, callbackFuncti
     return (
         <RowContainer>
             <Entry>{entry}</Entry>
-            <TextInputPasswordEntry placeholder="" onChange={callbackFunction} value={""}/>
+            <TextInputPasswordEntry placeholder="" onChange={callbackFunction} value={value}/>
         </RowContainer>
     )
 }

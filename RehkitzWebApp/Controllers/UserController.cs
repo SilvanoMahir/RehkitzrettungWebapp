@@ -182,9 +182,14 @@ public class UserController : ControllerBase
                 userInUserTable.UserRegionId = userRegionId[0].ToString();
             }
 
-            userInUsersRolesTable.Email = userDto.UserMail;
-            userInUsersRolesTable.NormalizedEmail = userDto.UserMail.ToUpper();
-            userInRegionTable.ContactPersonMail = userDto.UserMail;
+            var userEmail = await _context.Region
+                .Where(r => r.RegionName == userDto.UserRegion)
+                .Select(r => r.ContactPersonMail)
+                .FirstOrDefaultAsync();
+
+            userInUsersRolesTable.Email = userEmail;
+            userInUsersRolesTable.NormalizedEmail = userEmail.ToUpper();
+            userInRegionTable.ContactPersonMail = userEmail;
             userInUsersRolesTable.UserName = userDto.UserName;
             userInUsersRolesTable.NormalizedUserName = userDto.UserName.ToUpper();
 
@@ -242,26 +247,17 @@ public class UserController : ControllerBase
             return NotFound();
         }
 
+        var userEmail = await _context.Region
+            .Where(r => r.RegionName == userDto.UserRegion)
+            .Select(r => r.ContactPersonMail)
+            .FirstOrDefaultAsync();
+
         IdentityUser user = new()
         {
-            Email = userDto.UserMail,
+            Email = userEmail,
             SecurityStamp = Guid.NewGuid().ToString(),
             UserName = userDto.UserName
         };
-
-        var MailExists = await _context.Region.FirstOrDefaultAsync(x => x.ContactPersonMail == userDto.UserMail);
-        if (MailExists == null)
-        {
-            List<ErrorMsgDto> errorMsg = new List<ErrorMsgDto>
-        {
-            new ErrorMsgDto
-            {
-                Code = "MailaddressDoesNotExist",
-                Description = "Mailaddresse von regionaler Kontaktperson existiert nicht!"
-            }
-            };
-            return BadRequest(errorMsg);
-        }
 
         var userManger = await _userManager.CreateAsync(user, userDto.UserPassword);
         if (userManger.Errors.Any())
@@ -336,7 +332,6 @@ public class UserController : ControllerBase
             UserRegion = region.RegionName,
             UserFirstName = user.UserFirstName,
             UserLastName = user.UserLastName,
-            UserMail = region.ContactPersonMail,
             UserName = userName,
             UserPassword = "Password"
         };

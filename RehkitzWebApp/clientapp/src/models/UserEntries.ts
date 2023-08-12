@@ -6,6 +6,5 @@ export interface UserEntries {
     userRegion: string
     userDefinition: string
     userFunction: string
-    userMail: string
     userPassword: string
 }

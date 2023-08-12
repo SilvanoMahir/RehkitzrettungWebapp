@@ -23,7 +23,6 @@ export default function AdaptUserPage() {
     const [userRegion, setUserRegion] = useState('')
     const [userFunction, setUserFunction] = useState('')
     const [userName, setUsername] = useState('')
-    const [userMail, setUserEMail] = useState('')
     const [userPassword, setUserPassword] = useState('')
     const [isNewUser, setIsNewUser] = useState(false)
     const [roles, setRoles] = useState<{ label: string; value: string; }[]>([])
@@ -50,7 +49,6 @@ export default function AdaptUserPage() {
                 setUserRegion(userRegion)
                 setUserFunction(userFunction)
                 setUsername(userName)
-                setUserEMail(userMail)
                 setUserPassword(userPassword)
             }
             const rolesData = await fetchUserRoles()
@@ -77,7 +75,7 @@ export default function AdaptUserPage() {
     }
 
     const saveUser = async () => {
-        if (userName === "" || userMail === "" || userPassword === "" || userDefinition === "" || userFirstName === ""
+        if (userName === "" || userPassword === "" || userDefinition === "" || userFirstName === ""
             || userLastName === "" || userRegion === "" || userFunction === "") {
             toast.error("Bitte alle Felder ausfüllen!", {
                 position: toast.POSITION.TOP_CENTER,
@@ -90,7 +88,6 @@ export default function AdaptUserPage() {
             headers: { 'content-type': 'application/json' },
             body: JSON.stringify({
                 userName: userName,
-                userMail: userMail,
                 userPassword: userPassword,
                 userDefinition: userDefinition,
                 userFirstName: userFirstName,
@@ -103,7 +100,6 @@ export default function AdaptUserPage() {
             const newUser = ({
                 userId: 0,
                 userName: userName,
-                userMail: userMail,
                 userPassword: userPassword,
                 userDefinition: userDefinition,
                 userFirstName: userFirstName,
@@ -143,7 +139,7 @@ export default function AdaptUserPage() {
     }
 
     const updateUser = async () => {
-        if (userName === "" || userMail === "" || userDefinition === "" || userFirstName === ""
+        if (userName === "" || userDefinition === "" || userFirstName === ""
             || userLastName === "" || userRegion === "" || userFunction === "") {
             toast.error("Bitte alle Felder ausfüllen!", {
                 position: toast.POSITION.TOP_CENTER,
@@ -161,7 +157,6 @@ export default function AdaptUserPage() {
             body: JSON.stringify({
                 userId: id,
                 userName: userName,
-                userMail: userMail,
                 userPassword: userPassword,
                 userDefinition: userDefinition,
                 userFirstName: userFirstName,
@@ -267,7 +262,6 @@ export default function AdaptUserPage() {
                             <Dropdown entry="Region" options={regions} value={userRegion} onChange={setUserRegion} />
                             <Dropdown entry="Funktion" options={roles} value={userFunction} onChange={setUserFunction} />
                             <ProtocolEntryForAdaptPage entry="Benutzername" value={userName} callbackFunction={setUsername} />
-                            <ProtocolEntryForAdaptPage entry="E-Mail" value={userMail} callbackFunction={setUserEMail} />
                             <PasswordEntryForAdaptPage entry={isNewUser ? 'Passwort' : `Neues Passwort`} value={userPassword} callbackFunction={setUserPassword} />
                         </ColumnContainer>
                     </UserLayout>

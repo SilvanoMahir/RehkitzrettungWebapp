@@ -23,7 +23,6 @@ export default function Users({ userId }: Props) {
         userRegion: "",
         userDefinition: "",
         userFunction: "",
-        userMail: "",
         userPassword: ""
     })
 
