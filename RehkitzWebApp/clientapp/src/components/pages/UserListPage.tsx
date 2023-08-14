@@ -140,7 +140,7 @@ const PageTitle = styled.div`
     @media (min-width: 700px) {
         margin-left: 0px;
     }
-`;
+`
 
 const NewUserButton = styled.div`
     display: flex;
@@ -150,7 +150,7 @@ const NewUserButton = styled.div`
     @media (min-width: 1000px) {
         align-items: flex-end;
     }
-`;
+`
 
 const TitleBlock = styled.div`
     display: flex;
@@ -160,4 +160,4 @@ const TitleBlock = styled.div`
     @media (min-width: 1000px) {
         align-items: stretch;
     }
-`;
+`

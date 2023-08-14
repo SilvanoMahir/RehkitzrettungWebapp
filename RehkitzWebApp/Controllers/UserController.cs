@@ -184,12 +184,12 @@ public class UserController : ControllerBase
 
             var userEmail = await _context.Region
                 .Where(r => r.RegionName == userDto.UserRegion)
-                .Select(r => r.ContactPersonMail)
+                .Select(r => r.ContactPersonEmail)
                 .FirstOrDefaultAsync();
 
             userInUsersRolesTable.Email = userEmail;
             userInUsersRolesTable.NormalizedEmail = userEmail.ToUpper();
-            userInRegionTable.ContactPersonMail = userEmail;
+            userInRegionTable.ContactPersonEmail = userEmail;
             userInUsersRolesTable.UserName = userDto.UserName;
             userInUsersRolesTable.NormalizedUserName = userDto.UserName.ToUpper();
 
@@ -249,7 +249,7 @@ public class UserController : ControllerBase
 
         var userEmail = await _context.Region
             .Where(r => r.RegionName == userDto.UserRegion)
-            .Select(r => r.ContactPersonMail)
+            .Select(r => r.ContactPersonEmail)
             .FirstOrDefaultAsync();
 
         IdentityUser user = new()

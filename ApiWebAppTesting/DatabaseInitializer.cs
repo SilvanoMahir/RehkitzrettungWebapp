@@ -78,10 +78,11 @@ public class DatabaseInitializer
                 CREATE TABLE Region (
                     RegionId INT IDENTITY(1, 1) PRIMARY KEY,
                     RegionName NVARCHAR(50) NOT NULL,
+                    RegionDistrict NVARCHAR(50) NOT NULL,
                     RegionState NVARCHAR(50) NOT NULL,
                     ContactPersonLastName NVARCHAR(50) NULL,
                     ContactPersonFirstName NVARCHAR(50) NULL,
-                    ContactPersonMail NVARCHAR(50) NULL,
+                    ContactPersonEmail NVARCHAR(50) NULL,
                     EntryIsDeleted BIT NOT NULL
                 );");
 
@@ -115,9 +116,10 @@ public class DatabaseInitializer
             {
                     RegionName= "Tasna",
                     RegionState = "GR",
+                    RegionDistrict = "Bezirk 10",
                     ContactPersonFirstName = "Chomps",
                     ContactPersonLastName = "Johannes Erny",
-                    ContactPersonMail = "admin@tasna.ch",
+                    ContactPersonEmail = "admin@tasna.ch",
                     EntryIsDeleted = false
             }
         };

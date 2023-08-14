@@ -13,7 +13,7 @@ export function TextInputPasswordEntry({ placeholder, onChange, value }: TextInp
 
     const togglePasswordVisibility = () => {
         setPasswordShown(!passwordShown)
-    };
+    }
 
     return (
         <PasswordInputContainer>
@@ -34,7 +34,7 @@ const PasswordInputContainer = styled.div`
   display: flex;
   flex: 1;
   position: relative;
-`;
+`
 
 const PasswordInput = styled.input`
   display: flex;
@@ -53,7 +53,7 @@ const PasswordInput = styled.input`
   @media (min-width: 1400px) {
       font-size: 1.25em;
   }
-`;
+`
 
 const TogglePasswordVisibility = styled.button`
   position: absolute;
@@ -66,4 +66,4 @@ const TogglePasswordVisibility = styled.button`
   color: #777;
   font-size: 18px;
   color: #ffeccb;
-`;
+`

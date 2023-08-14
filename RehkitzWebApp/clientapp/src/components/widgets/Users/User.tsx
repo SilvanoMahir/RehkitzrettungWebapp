@@ -29,10 +29,10 @@ export default function Users({ userId }: Props) {
     useEffect(() => {
         const onMount = async () => {
             const data = usersListLocal.filter(user => user.userId === userId);
-            setUserEntry(data[0]);
+            setUserEntry(data[0])
         }
         onMount();
-    }, [usersListLocal, userId]);
+    }, [usersListLocal, userId])
 
     return (
         <UserLayout>

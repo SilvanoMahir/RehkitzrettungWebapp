@@ -40,7 +40,7 @@ export default function AdaptUserPage() {
                 const updateUser = await fetchUsers(id)
                 setIsNewUser(false)
                 const { userId, userFirstName, userLastName, userDefinition, userRegion,
-                    userFunction, userName, userMail, userPassword } = updateUser
+                    userFunction, userName, userPassword } = updateUser
 
                 setUserId(userId)
                 setUserFirstName(userFirstName)

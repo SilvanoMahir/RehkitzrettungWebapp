@@ -12,7 +12,7 @@ public static class RegionExtensions
             RegionState = region.RegionState,
             ContactPersonFirstName = region.ContactPersonFirstName,
             ContactPersonLastName = region.ContactPersonLastName,
-            ContactPersonMail = region.ContactPersonMail,
+            ContactPersonEmail = region.ContactPersonEmail,
         };
     }
 
@@ -25,7 +25,7 @@ public static class RegionExtensions
             RegionState = regionDto.RegionState,
             ContactPersonFirstName = regionDto.ContactPersonFirstName,
             ContactPersonLastName = regionDto.ContactPersonLastName,
-            ContactPersonMail = regionDto.ContactPersonMail,
+            ContactPersonEmail = regionDto.ContactPersonEmail,
             EntryIsDeleted = entryIsDeleted,
         };
     }

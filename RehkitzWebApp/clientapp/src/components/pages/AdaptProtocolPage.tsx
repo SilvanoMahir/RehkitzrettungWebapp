@@ -78,7 +78,7 @@ export default function AdaptProtocolPage() {
 
     const isValidNumericString = (string: string) => {
         return /^\d+$/.test(string);
-    };
+    }
 
     const discardProtocol = async () => {
         navigate(ROUTE_RESCUE_LIST_PAGE)
@@ -100,15 +100,8 @@ export default function AdaptProtocolPage() {
             })
             return
         }
-        if (!isValidNumericString(injuredFawns) || !isValidNumericString(markedFawns) || !isValidNumericString(foundFawns)) {
-            toast.error("Felder gefundene, verletzte oder markierte Kitze sind keine Zahlen!", {
-                position: toast.POSITION.TOP_CENTER,
-                containerId: 'ToasterNotification'
-            })
-            return
-        }
         if (remark.length > 250) {
-            toast.error("Bemerkung zu lang!", {
+            toast.error("Bemerkung zu lang! Mehr als 250 Zeichen sind nicht erlaubt.", {
                 position: toast.POSITION.TOP_CENTER,
                 containerId: 'ToasterNotification'
             })
@@ -178,7 +171,7 @@ export default function AdaptProtocolPage() {
             return
         }
         if (remark.length > 250) {
-            toast.error("Bemerkung zu lang!", {
+            toast.error("Bemerkung zu lang! Mehr als 250 Zeichen sind nicht erlaubt.", {
                 position: toast.POSITION.TOP_CENTER,
                 containerId: 'ToasterNotification'
             })
