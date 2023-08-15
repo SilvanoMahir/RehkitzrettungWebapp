@@ -37,22 +37,23 @@ public class ProtocolController : ControllerBase
             .Where(p => p.EntryIsDeleted == false)
             .ToListAsync();
 
-        var protocolDtos = new List<ProtocolDto>();
-
         if (searchString != "getAllProtocols")
         {
-            protocols = protocols.Where(p => p.ProtocolCode!.Contains(searchString) ||
-                                             p.ClientFullName!.Contains(searchString) ||
-                                             p.LocalName!.Contains(searchString) ||
-                                             p.PilotFullName!.Contains(searchString) ||
-                                             p.RegionName!.Contains(searchString) ||
-                                             p.Remark!.Contains(searchString) ||
-                                             p.AreaSize!.Contains(searchString) ||
+            searchString = searchString.ToLower();
+            protocols = protocols.Where(p => p.ProtocolCode!.ToLower().Contains(searchString) ||
+                                             p.ClientFullName!.ToLower().Contains(searchString) ||
+                                             p.LocalName!.ToLower().Contains(searchString) ||
+                                             p.PilotFullName!.ToLower().Contains(searchString) ||
+                                             p.RegionName!.ToLower().Contains(searchString) ||
+                                             p.Remark!.ToLower().Contains(searchString) ||
+                                             p.AreaSize!.ToLower().Contains(searchString) ||
                                              p.FoundFawns.ToString()!.Contains(searchString) ||
                                              p.InjuredFawns.ToString()!.Contains(searchString) ||
                                              p.MarkedFawns.ToString()!.Contains(searchString) ||
-                                             p.Date.ToString()!.Contains(searchString)).ToList();
+                                             p.Date.ToShortDateString()!.Contains(searchString)).ToList();
         }
+
+        var protocolDtos = new List<ProtocolDto>();
 
         foreach (var protocol in protocols)
         {
