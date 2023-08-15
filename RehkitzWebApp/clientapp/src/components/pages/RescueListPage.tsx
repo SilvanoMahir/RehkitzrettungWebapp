@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom'
 import { ROUTE_ADAPT_PROTOCOL_PAGE } from '../../App'
 import { toast } from 'react-toastify'
 import { saveAs } from 'file-saver'
+import { fetchUser } from './MyDataPage'
 
 
 export default function RescueListPage() {
@@ -18,6 +19,7 @@ export default function RescueListPage() {
 
     const [loadingProtocols, setLoadingProtocols] = useState(true)
     const [localToken, setLocalToken] = useState('')
+    const [userFunction, setUserFunction] = useState('')
     const { protocolsListLocal, dispatch } = useContext(ProtocolsContext)
     const { dispatch_token } = useContext(AppContext)
     let navigate = useNavigate()
@@ -29,6 +31,11 @@ export default function RescueListPage() {
             if (storageToken !== null) {
                 dispatch_token({ type: 'set-token', value: storageToken })
             }
+            const userId = localStorage.getItem('user_id')
+            const { userFunction } = await fetchUser(storageToken, userId)
+            localStorage.setItem('user_function', userFunction)
+            setUserFunction(userFunction)
+
             const fetchedProtocolList = await fetchProtocols(storageToken)
             const protocolsListLocal = [...fetchedProtocolList].sort((a, b) => {
                 const dateA: Date = new Date(a.date.split('.').reverse().join('-'))
@@ -107,7 +114,7 @@ export default function RescueListPage() {
         content = (<p><em>Keine Protokolle gefunden.</em></p>)
     } else {
         content = protocolsListLocal.map(protocolEntry => (
-            <Protocol key={protocolEntry.protocolId} protocolId={protocolEntry.protocolId} />
+            <Protocol key={protocolEntry.protocolId} protocolId={protocolEntry.protocolId} userFunction={userFunction} />
         ))
     }
 
@@ -123,12 +130,14 @@ export default function RescueListPage() {
                         placeholder={'Suchen'}></SearchInput>
                     <RowContainer>
                         <DownloadProtocolButton onClick={() => downloadProtocol(localToken)}>Bericht herunterladen</DownloadProtocolButton>
-                        <CreateProtocolButton onClick={() => createProtocol()}>Neues Protokoll erstellen</CreateProtocolButton>
+                        {(userFunction !== 'Wildhut') && (
+                            <CreateProtocolButton onClick={() => createProtocol()}>Neues Protokoll erstellen</CreateProtocolButton>
+                        )}
                     </RowContainer>
                     <SiteTitle>Übersicht Protokolle</SiteTitle>
-                        <RescueListItems>
-                            {content}
-                        </RescueListItems>
+                    <RescueListItems>
+                        {content}
+                    </RescueListItems>
                 </RescueListColumnLayout >
             </RescueListRowLayout>
         </RescueListLayout>

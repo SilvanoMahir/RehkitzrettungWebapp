@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RehkitzWebApp.Model;
 using RehkitzWebApp.Model.Dtos;
@@ -6,6 +7,7 @@ using System.Data;
 
 namespace webapi.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/regions")]
 public class RegionController : ControllerBase

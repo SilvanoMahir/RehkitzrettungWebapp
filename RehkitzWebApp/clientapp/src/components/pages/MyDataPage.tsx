@@ -42,20 +42,6 @@ export default function MyDataPage() {
         onMount()
     }, [dispatch_token])
 
-    const fetchUser = async (storageToken: string | null, id: string | null) => {
-        const response = await fetch(`/api/users/${id}`, {
-            method: 'GET',
-            headers: {
-                'Content-type': 'application/json',
-                'Authorization': `Bearer ${storageToken}`,
-            },
-        })
-        if (response.ok) {
-            return await response.json()
-        }
-        return []
-    }
-
     return (
         <MyDataPageLayout>
             {!isNotMobile && <Menu />}
@@ -78,6 +64,20 @@ export default function MyDataPage() {
             </MyDataPageRowLayout>
         </MyDataPageLayout>
     )
+}
+
+export const fetchUser = async (storageToken: string | null, id: string | null) => {
+    const response = await fetch(`/api/users/${id}`, {
+        method: 'GET',
+        headers: {
+            'Content-type': 'application/json',
+            'Authorization': `Bearer ${storageToken}`,
+        },
+    })
+    if (response.ok) {
+        return await response.json()
+    }
+    return []
 }
 
 const MyDataPageLayout = styled.div`

@@ -5,7 +5,8 @@ import Sidebar from "./Sidebar/Sidebar"
 
 
 export const Menu = () => {
-    const [open, setOpen] = useState<boolean>(false);
+    const [open, setOpen] = useState<boolean>(false)
+    
     return (
         <div>
             <StyledMenu open={open}>

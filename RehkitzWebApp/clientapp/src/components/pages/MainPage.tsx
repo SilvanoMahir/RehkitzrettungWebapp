@@ -7,6 +7,7 @@ import { Menu } from '../widgets/Menu'
 import 'react-datepicker/dist/react-datepicker.css'
 import InformationOverviewEntry from '../widgets/Information/InformationOverviewEntry'
 import { toast } from 'react-toastify'
+import { fetchUser } from './MyDataPage'
 
 export default function MainPage() {
 
@@ -41,20 +42,6 @@ export default function MainPage() {
         }
         onMount()
     }, [dispatch_token])
-
-    const fetchUser = async (storageToken: string | null, id: string | null) => {
-        const response = await fetch(`/api/users/${id}`, {
-            method: 'GET',
-            headers: {
-                'Content-type': 'application/json',
-                'Authorization': `Bearer ${storageToken}`,
-            },
-        })
-        if (response.ok) {
-            return await response.json()
-        }
-        return []
-    }
 
     const fetchProtocolOverview = async (storageToken: string | null, userRegion: string | undefined) => {
         const response = await fetch('/api/protocols/overview?' + new URLSearchParams({

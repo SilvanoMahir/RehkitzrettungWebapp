@@ -77,7 +77,7 @@ export default function AdaptProtocolPage() {
     }, [protocolsListLocal, id])
 
     const isValidNumericString = (string: string) => {
-        return /^\d+$/.test(string);
+        return /^\d+$/.test(string)
     }
 
     const discardProtocol = async () => {

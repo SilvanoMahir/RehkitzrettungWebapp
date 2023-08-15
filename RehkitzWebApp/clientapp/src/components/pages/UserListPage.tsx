@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
-import { UserContext } from '../../store/context'
+import { AppContext, UserContext } from '../../store/context'
 import Sidebar from '../widgets/Sidebar/Sidebar'
 import { useMediaQuery } from 'react-responsive'
 import { Menu } from '../widgets/Menu'
@@ -14,31 +14,40 @@ export default function UserListPage() {
 
     const isNotMobile = useMediaQuery({ query: '(min-width: 700px)' })
     const isLargeScreen = useMediaQuery({ query: '(min-width: 1200px)' })
-
+    
     const [loadingUsers, setLoadingUsers] = useState(true)
     const { usersListLocal, dispatch_users } = useContext(UserContext)
-
+    const { dispatch_token } = useContext(AppContext)
     let navigate = useNavigate()
+    
     useEffect(() => {
         const onMount = async () => {
-            const usersListLocal = await fetchUsers()
+            const storageToken = localStorage.getItem('user_token')
+            if (storageToken !== null) {
+                dispatch_token({ type: 'set-token', value: storageToken })
+            }
+            const usersListLocal = await fetchUsers(storageToken)
             setLoadingUsers(false)
             dispatch_users({ type: 'get-users', usersListLocal })
         }
         onMount()
-    }, [dispatch_users])
+    }, [dispatch_users, dispatch_token])
 
-    const fetchUsers = async () => {
+    const fetchUsers = async (storageToken: string | null) => {
         try {
             const response = await fetch('/api/users', {
-                method: 'GET'
-            });
+                method: 'GET',
+                headers: {
+                    'Content-type': 'application/json',
+                    'Authorization': `Bearer ${storageToken}`,
+                }
+            })
             if (response.ok) {
-                return await response.json();
+                return await response.json()
             }
-            return [];
+            return []
         } catch (error) {
-            return [];
+            return []
         }
     }
 
@@ -49,11 +58,11 @@ export default function UserListPage() {
         navigate(ROUTE_ADAPT_USER_PAGE)
     }
 
-    let content;
+    let content
     if (loadingUsers) {
         content = (<p><em>Lädt Benutzer... </em></p>)
     } else if (usersListLocal.length === 0) {
-        content = (<p><em>Keine Benutzer gefunden.</em></p>);
+        content = (<p><em>Keine Benutzer gefunden.</em></p>)
     } else {
         content = usersListLocal.map(userEntry => (
             <User key={userEntry.userId} userId={userEntry.userId} />
