@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom/client'
 import './index.css'
 import { BrowserRouter } from 'react-router-dom'
 import { ProtocolProvider, AppProvider, UserProvider } from './store/context'
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
@@ -22,7 +22,7 @@ root.render(
                     </BrowserRouter>
                 </UserProvider>
             </ProtocolProvider>
-            <ToastContainer enableMultiContainer containerId={'LoginToaster'} position={toast.POSITION.BOTTOM_LEFT} />
+            <ToastContainer enableMultiContainer containerId={'ToasterNotification'} />
         </AppProvider>
     </div>
 );

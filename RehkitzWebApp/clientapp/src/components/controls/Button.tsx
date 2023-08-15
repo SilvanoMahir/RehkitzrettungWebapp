@@ -46,7 +46,7 @@ export const EditProtocolButton = styled.button`
 
 export const DiscardProtocolButton = styled.button`
     ${CustomButton};
-    background: #c25450;
+    background: #c08521;
     margin-top: 20px;
 `
 

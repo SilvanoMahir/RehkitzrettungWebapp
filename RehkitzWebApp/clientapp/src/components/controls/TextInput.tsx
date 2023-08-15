@@ -15,15 +15,6 @@ export const TextInput = ({ onChange, value, placeholder }: Props) => (
     />
 )
 
-export const TextInputPassword = ({ onChange, value, placeholder }: Props) => (
-    <CustomTextInput
-        onChange={e => onChange(e.target.value)}
-        value={value}
-        type="password"
-        placeholder={placeholder}
-    />
-)
-
 export const TextInputForAdaptPage = ({ onChange, value, placeholder }: Props) => (
     <CustomTextInputForAdaptPage
         type="text"

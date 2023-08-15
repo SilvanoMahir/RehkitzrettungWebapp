@@ -37,4 +37,13 @@ public class CustomIdentityErrorDescriber : IdentityErrorDescriber
             Description = "Passwort muss mindestens ein Zeichen haben, dass Grossgeschrieben ist (A-Z)."
         };
     }
+
+    public override IdentityError InvalidUserName(string username)
+    {
+        return new IdentityError
+        {
+            Code = nameof(InvalidUserName),
+            Description = $"Benutzername '{username}' ist ungültig. Es sind nur Buchstaben oder Zahlen erlaubt."
+        };
+    }
 }

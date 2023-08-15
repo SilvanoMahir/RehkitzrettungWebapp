@@ -76,11 +76,37 @@ export default function AdaptProtocolPage() {
         onMount()
     }, [protocolsListLocal, id])
 
+    const isValidNumericString = (string: string) => {
+        return /^\d+$/.test(string);
+    }
+
     const discardProtocol = async () => {
         navigate(ROUTE_RESCUE_LIST_PAGE)
     }
 
     const saveProtocol = async () => {
+        if (clientFullName === "" || localName === "" || foundFawns === "" || markedFawns === ""
+            || pilotFullName === "" || regionName === "" || areaSize === "" || injuredFawns === "") {
+            toast.error("Bitte alle Felder ausfüllen!", {
+                position: toast.POSITION.TOP_CENTER,
+                containerId: 'ToasterNotification'
+            })
+            return
+        }
+        if (!isValidNumericString(injuredFawns) || !isValidNumericString(markedFawns) || !isValidNumericString(foundFawns)) {
+            toast.error("Felder gefundene, verletzte oder markierte Kitze sind keine Zahlen!", {
+                position: toast.POSITION.TOP_CENTER,
+                containerId: 'ToasterNotification'
+            })
+            return
+        }
+        if (remark.length > 250) {
+            toast.error("Bemerkung zu lang! Mehr als 250 Zeichen sind nicht erlaubt.", {
+                position: toast.POSITION.TOP_CENTER,
+                containerId: 'ToasterNotification'
+            })
+            return
+        }
         const storageToken = localStorage.getItem('user_token')
         const response = await fetch('/api/protocols', {
             method: 'POST',
@@ -123,12 +149,34 @@ export default function AdaptProtocolPage() {
             navigate(ROUTE_RESCUE_LIST_PAGE)
             toast.success("Protokoll erfolgreich hinzugefügt!", {
                 position: toast.POSITION.TOP_CENTER,
-                containerId: 'LoginToaster'
+                containerId: 'ToasterNotification'
             })
         }
     }
 
     const updateProtocol = async () => {
+        if (clientFullName === "" || localName === "" || foundFawns === "" || markedFawns === ""
+            || pilotFullName === "" || regionName === "" || areaSize === "" || injuredFawns === "") {
+            toast.error("Bitte alle Felder ausfüllen!", {
+                position: toast.POSITION.TOP_CENTER,
+                containerId: 'ToasterNotification'
+            })
+            return
+        }
+        if (!isValidNumericString(injuredFawns) || !isValidNumericString(markedFawns) || !isValidNumericString(foundFawns)) {
+            toast.error("Felder gefundene, verletzte oder markierte Kitze sind keine Zahlen!", {
+                position: toast.POSITION.TOP_CENTER,
+                containerId: 'ToasterNotification'
+            })
+            return
+        }
+        if (remark.length > 250) {
+            toast.error("Bemerkung zu lang! Mehr als 250 Zeichen sind nicht erlaubt.", {
+                position: toast.POSITION.TOP_CENTER,
+                containerId: 'ToasterNotification'
+            })
+            return
+        }
         const storageToken = localStorage.getItem('user_token')
         const response = await fetch(`${`/api/protocols`}/${id}`, {
             method: 'PUT',
@@ -156,7 +204,7 @@ export default function AdaptProtocolPage() {
             navigate(ROUTE_RESCUE_LIST_PAGE)
             toast.success("Protokoll erfolgreich angepasst!", {
                 position: toast.POSITION.TOP_CENTER,
-                containerId: 'LoginToaster'
+                containerId: 'ToasterNotification'
             })
         }
     }

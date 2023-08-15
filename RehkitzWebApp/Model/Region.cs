@@ -21,6 +21,10 @@ public class Region
 
     [Required]
     [Column(TypeName = "nvarchar(50)")]
+    public string? RegionDistrict { get; set; }
+
+    [Required]
+    [Column(TypeName = "nvarchar(50)")]
     public string? ContactPersonFirstName { get; set; }
 
     [Required]
@@ -29,7 +33,7 @@ public class Region
 
     [Required]
     [Column(TypeName = "nvarchar(50)")]
-    public string? ContactPersonMail { get; set; }
+    public string? ContactPersonEmail { get; set; }
 
     [Required]
     [Column(TypeName = "bit")]

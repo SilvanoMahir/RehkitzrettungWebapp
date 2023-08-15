@@ -10,6 +10,7 @@ import { ROUTE_USER_LIST_PAGE } from '../../App'
 import ProtocolEntryForAdaptPage from '../widgets/Protocol/ProtocolEntryForAdaptPage'
 import { Dropdown } from '../controls/Dropdown'
 import { toast } from 'react-toastify'
+import PasswordEntryForAdaptPage from '../widgets/Protocol/PasswordEntryForAdaptPage'
 
 export default function AdaptUserPage() {
 
@@ -22,7 +23,6 @@ export default function AdaptUserPage() {
     const [userRegion, setUserRegion] = useState('')
     const [userFunction, setUserFunction] = useState('')
     const [userName, setUsername] = useState('')
-    const [userMail, setUserEMail] = useState('')
     const [userPassword, setUserPassword] = useState('')
     const [isNewUser, setIsNewUser] = useState(false)
     const [roles, setRoles] = useState<{ label: string; value: string; }[]>([])
@@ -40,7 +40,7 @@ export default function AdaptUserPage() {
                 const updateUser = await fetchUsers(id)
                 setIsNewUser(false)
                 const { userId, userFirstName, userLastName, userDefinition, userRegion,
-                    userFunction, userName, userMail, userPassword } = updateUser
+                    userFunction, userName, userPassword } = updateUser
 
                 setUserId(userId)
                 setUserFirstName(userFirstName)
@@ -49,7 +49,6 @@ export default function AdaptUserPage() {
                 setUserRegion(userRegion)
                 setUserFunction(userFunction)
                 setUsername(userName)
-                setUserEMail(userMail)
                 setUserPassword(userPassword)
             }
             const rolesData = await fetchUserRoles()
@@ -76,12 +75,19 @@ export default function AdaptUserPage() {
     }
 
     const saveUser = async () => {
+        if (userName === "" || userPassword === "" || userDefinition === "" || userFirstName === ""
+            || userLastName === "" || userRegion === "" || userFunction === "") {
+            toast.error("Bitte alle Felder ausfüllen!", {
+                position: toast.POSITION.TOP_CENTER,
+                containerId: 'ToasterNotification'
+            })
+            return
+        }
         const response = await fetch('/api/users', {
             method: 'POST',
             headers: { 'content-type': 'application/json' },
             body: JSON.stringify({
                 userName: userName,
-                userMail: userMail,
                 userPassword: userPassword,
                 userDefinition: userDefinition,
                 userFirstName: userFirstName,
@@ -94,7 +100,6 @@ export default function AdaptUserPage() {
             const newUser = ({
                 userId: 0,
                 userName: userName,
-                userMail: userMail,
                 userPassword: userPassword,
                 userDefinition: userDefinition,
                 userFirstName: userFirstName,
@@ -106,7 +111,7 @@ export default function AdaptUserPage() {
             navigate(ROUTE_USER_LIST_PAGE)
             toast.success("Benutzer erfolgreich hinzugefügt!", {
                 position: toast.POSITION.TOP_CENTER,
-                containerId: 'LoginToaster'
+                containerId: 'ToasterNotification'
             })
         } else if (response.status === 400) {
             response.json().then((errorData) => {
@@ -115,25 +120,33 @@ export default function AdaptUserPage() {
                         const errorMsg = errorItem.description
                         toast.error(errorMsg, {
                             position: toast.POSITION.TOP_CENTER,
-                            containerId: 'LoginToaster',
+                            containerId: 'ToasterNotification',
                         })
                     })
                 } else {
                     toast.error('Ein Fehler ist aufgetreten! Bitte probieren Sie es später nochmals.', {
                         position: toast.POSITION.TOP_CENTER,
-                        containerId: 'LoginToaster',
+                        containerId: 'ToasterNotification',
                     })
                 }
             })
         } else {
             toast.error('Ein Fehler ist aufgetreten! Bitte probieren Sie es später nochmals.', {
                 position: toast.POSITION.TOP_CENTER,
-                containerId: 'LoginToaster',
+                containerId: 'ToasterNotification',
             })
         }
     }
 
     const updateUser = async () => {
+        if (userName === "" || userDefinition === "" || userFirstName === ""
+            || userLastName === "" || userRegion === "" || userFunction === "") {
+            toast.error("Bitte alle Felder ausfüllen!", {
+                position: toast.POSITION.TOP_CENTER,
+                containerId: 'ToasterNotification'
+            })
+            return
+        }
         const storageToken = localStorage.getItem('user_token')
         const response = await fetch(`${`/api/users`}/${id}`, {
             method: 'PUT',
@@ -144,7 +157,6 @@ export default function AdaptUserPage() {
             body: JSON.stringify({
                 userId: id,
                 userName: userName,
-                userMail: userMail,
                 userPassword: userPassword,
                 userDefinition: userDefinition,
                 userFirstName: userFirstName,
@@ -158,7 +170,7 @@ export default function AdaptUserPage() {
             navigate(ROUTE_USER_LIST_PAGE)
             toast.success("Benutzer erfolgreich angepasst!", {
                 position: toast.POSITION.TOP_CENTER,
-                containerId: 'LoginToaster'
+                containerId: 'ToasterNotification'
             })
         } else if (response.status === 400) {
             response.json().then((errorData) => {
@@ -167,20 +179,20 @@ export default function AdaptUserPage() {
                         const errorMsg = errorItem.description
                         toast.error(errorMsg, {
                             position: toast.POSITION.TOP_CENTER,
-                            containerId: 'LoginToaster',
+                            containerId: 'ToasterNotification',
                         })
                     })
                 } else {
                     toast.error('Ein Fehler ist aufgetreten! Bitte probieren Sie es später nochmals.', {
                         position: toast.POSITION.TOP_CENTER,
-                        containerId: 'LoginToaster',
+                        containerId: 'ToasterNotification',
                     })
                 }
             })
         } else {
             toast.error('Ein Fehler ist aufgetreten! Bitte probieren Sie es später nochmals.', {
                 position: toast.POSITION.TOP_CENTER,
-                containerId: 'LoginToaster',
+                containerId: 'ToasterNotification',
             })
         }
     }
@@ -199,7 +211,7 @@ export default function AdaptUserPage() {
                 navigate(ROUTE_USER_LIST_PAGE)
                 toast.success("Benutzer erfolgreich gelöscht!", {
                     position: toast.POSITION.TOP_CENTER,
-                    containerId: 'LoginToaster'
+                    containerId: 'ToasterNotification'
                 })
             }
         }
@@ -250,8 +262,7 @@ export default function AdaptUserPage() {
                             <Dropdown entry="Region" options={regions} value={userRegion} onChange={setUserRegion} />
                             <Dropdown entry="Funktion" options={roles} value={userFunction} onChange={setUserFunction} />
                             <ProtocolEntryForAdaptPage entry="Benutzername" value={userName} callbackFunction={setUsername} />
-                            <ProtocolEntryForAdaptPage entry="E-Mail" value={userMail} callbackFunction={setUserEMail} />
-                            <ProtocolEntryForAdaptPage entry="Passwort" value={userPassword} callbackFunction={setUserPassword} />
+                            <PasswordEntryForAdaptPage entry={isNewUser ? 'Passwort' : `Neues Passwort`} value={userPassword} callbackFunction={setUserPassword} />
                         </ColumnContainer>
                     </UserLayout>
                     <RowContainer>

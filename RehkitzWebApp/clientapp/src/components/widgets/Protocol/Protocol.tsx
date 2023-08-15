@@ -58,7 +58,7 @@ export default function Protocol({ protocolId }: Props) {
                 dispatch({ type: 'delete-protocols', protocolsListLocal, protocolId })
                 toast.success("Protokoll erfolgreich gelöscht!", {
                 position: toast.POSITION.TOP_CENTER,
-                containerId: 'LoginToaster'
+                containerId: 'ToasterNotification'
                 })
             }
         }

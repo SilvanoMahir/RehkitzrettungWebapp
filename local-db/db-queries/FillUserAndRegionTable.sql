@@ -16,11 +16,12 @@ GO
 INSERT INTO [rehkitzrettung-db].[dbo].[Region] 
 			( [RegionName]
 			, [RegionState]
+			, [RegionDistrict]
 			, [EntryIsDeleted]
 			, [ContactPersonFirstName]
 			, [ContactPersonLastName]
-			, [ContactPersonMail])
+			, [ContactPersonEmail])
 VALUES
-    ('Tasna', 'GR', 0, 'Hans','Schmid', 'tasna'),
-    ('Valsot', 'GR', 0, 'Urs', 'Locher', 'valsot');
+    ('Tasna', 'GR','Bezirk 10', 0, 'Hans','Schmid', 'tasna'),
+    ('Valsot', 'GR','Bezirk 10', 0, 'Urs', 'Locher', 'valsot');
 GO

@@ -1,4 +1,4 @@
-﻿import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
 import { AppContext } from '../../store/context'
 import Sidebar from '../widgets/Sidebar/Sidebar'
@@ -74,14 +74,14 @@ export default function MainPage() {
                         const errorMsg = errorItem.description
                         toast.error(errorMsg, {
                             position: toast.POSITION.TOP_CENTER,
-                            containerId: 'LoginToaster',
+                            containerId: 'ToasterNotification',
                         })
                         return []
                     })
                 } else {
                     toast.error('Ein Fehler ist aufgetreten! Bitte probieren Sie es später nochmals.', {
                         position: toast.POSITION.TOP_CENTER,
-                        containerId: 'LoginToaster',
+                        containerId: 'ToasterNotification',
                     })
                     return []
                 }
