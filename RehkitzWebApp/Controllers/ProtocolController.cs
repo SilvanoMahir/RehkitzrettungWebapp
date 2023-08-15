@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using RehkitzWebApp.FileController;
 using RehkitzWebApp.Model;
 using RehkitzWebApp.Model.Dtos;
+using System.Linq;
 
 namespace RehkitzWebApp.Controllers;
 
@@ -87,9 +88,20 @@ public class ProtocolController : ControllerBase
             return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Der Server ist akutell nicht erreichbar! Bitte probieren Sie es später nochmals." });
         }
 
+        var userRegionTable = await _context.Region
+                                        .Where(p => p.RegionName == userRegion)
+                                        .ToListAsync();
+
+        var userDistrict = userRegionTable[0].RegionDistrict;
+
+        var userRegionListFromDistrict = await _context.Region
+                                                .Where(p => p.RegionDistrict == userDistrict)
+                                                .Select(p => p.RegionName)
+                                                .ToListAsync();
+
         var protocolsList = await _context.Protocol
-            .Where(p => p.EntryIsDeleted == false)
-            .ToListAsync();
+                                    .Where(p => p.EntryIsDeleted == false && userRegionListFromDistrict.Contains(p.RegionName))
+                                    .ToListAsync();
 
         int numberOfProtocols = 0;
         int foundFawns = 0;
@@ -98,7 +110,7 @@ public class ProtocolController : ControllerBase
 
         foreach (var protocol in protocolsList)
         {
-            if (protocol.RegionName == userRegion)
+            if (userRegionListFromDistrict.Contains(protocol.RegionName))
             {
                 ++numberOfProtocols;
                 foundFawns += protocol.FoundFawns;
@@ -113,6 +125,7 @@ public class ProtocolController : ControllerBase
             FoundFawns = foundFawns,
             InjuredFawns = injuredFawns,
             MarkedFawns = markedFawns,
+            DistrictName = userDistrict
         };
 
         return Ok(protocolOverviewDto);

@@ -14,7 +14,7 @@ export default function MainPage() {
     const isNotMobile = useMediaQuery({ query: '(min-width: 700px)' })
 
     const [userName, setUserName] = useState('')
-    const [regionName, setRegionName] = useState('')
+    const [districtName, setDistrictName] = useState('')
     const [numberOfProtocols, setNumberOfProtocols] = useState(0)
     const [foundFawns, setFoundFawns] = useState(0)
     const [injuredFawns, setInjuredFawns] = useState(0)
@@ -31,21 +31,22 @@ export default function MainPage() {
             const userId = localStorage.getItem('user_id')
             const user = await fetchUser(storageToken, userId)
             const { userRegion, userName } = user
+            const { numberOfProtocols, foundFawns, injuredFawns, markedFawns, districtName } = await fetchProtocolOverview(storageToken, userRegion)
             setUserName(userName)
-            setRegionName(userRegion)
-            const protocolOverview = await fetchProtocolOverview(storageToken, userRegion)
-
-            setNumberOfProtocols(protocolOverview.numberOfProtocols)
-            setFoundFawns(protocolOverview.foundFawns)
-            setInjuredFawns(protocolOverview.injuredFawns)
-            setMarkedFawns(protocolOverview.markedFawns)
+            setNumberOfProtocols(numberOfProtocols)
+            setFoundFawns(foundFawns)
+            setInjuredFawns(injuredFawns)
+            setMarkedFawns(markedFawns)
+            setMarkedFawns(markedFawns)
+            setDistrictName(districtName)
         }
         onMount()
     }, [dispatch_token])
 
     const fetchProtocolOverview = async (storageToken: string | null, userRegion: string | undefined) => {
         const response = await fetch('/api/protocols/overview?' + new URLSearchParams({
-            userRegion: userRegion! }), {
+            userRegion: userRegion!
+        }), {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json',
@@ -84,7 +85,7 @@ export default function MainPage() {
                 <MainPageColumnLayout>
                     <PageTitle isNotMobile={isNotMobile}>Willkommen {userName}</PageTitle>
                     <InformationOverviewLayout isNotMobile={isNotMobile}>
-                        <InformationOverviewTitle>Saisonübersicht {regionName}</InformationOverviewTitle>
+                        <InformationOverviewTitle>Saisonübersicht {districtName}</InformationOverviewTitle>
                         <ColumnContainer>
                             <InformationOverviewEntry entry="Anzahl Aufgebote" value={numberOfProtocols} />
                             <InformationOverviewEntry entry="Gerettete Kitze" value={foundFawns} />

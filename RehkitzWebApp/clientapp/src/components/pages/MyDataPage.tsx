@@ -18,6 +18,7 @@ export default function MyDataPage() {
     const [region, setRegion] = useState('')
     const [userFunction, setUserFunction] = useState('')
     const [mail, setMail] = useState('')
+    const [userName, setUserName] = useState('')
 
     const { dispatch_token } = useContext(AppContext)
 
@@ -29,15 +30,16 @@ export default function MyDataPage() {
             }
             const id = localStorage.getItem('user_id')
             const user = await fetchUser(storageToken, id)
-            const { userId, userFirstName, userLastName, userMail, userFunction,
-                userRegion, userDefinition } = user
+            const { userId, userFirstName, userLastName, userEmail, userFunction,
+                userRegion, userDefinition, userName } = user
             setId(userId)
             setFirstName(userFirstName)
             setLastName(userLastName)
-            setMail(userMail)
+            setMail(userEmail)
             setUserFunction(userFunction)
             setRegion(userRegion)
             setDefinition(userDefinition)
+            setUserName(userName)
         }
         onMount()
     }, [dispatch_token])
@@ -50,7 +52,7 @@ export default function MyDataPage() {
                 <MyDataPageColumnLayout>
                     <PageTitle isNotMobile={isNotMobile}>Meine Daten</PageTitle>
                     <MyDataLayout isNotMobile={isNotMobile}>
-                        <MyDataTitle>Benutzer {definition}</MyDataTitle>
+                        <MyDataTitle>Benutzer {userName}</MyDataTitle>
                         <ColumnContainer>
                             <MyDataEntry entry="ID" value={id} />
                             <MyDataEntry entry="Name, Vorname" value={`${lastName}, ${firstName}`} />

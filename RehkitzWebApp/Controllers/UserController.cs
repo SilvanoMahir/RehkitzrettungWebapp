@@ -54,7 +54,11 @@ public class UserController : ControllerBase
             if (userRoleId.Count != 0)
             {
                 var userRole = await _context.Roles.FindAsync(userRoleId[0]);
-                var userDto = getUserDto(user, userRegion, userRole.Name, userName[0]);
+                var userEmail = await _context.Region
+                        .Where(x => x.RegionId == userRegion.RegionId)
+                        .Select(x => x.ContactPersonEmail)
+                        .ToListAsync();
+                var userDto = getUserDto(user, userRegion, userRole.Name, userName[0], userEmail[0]);
                 userDtos.Add(userDto.ToUserSmallListDto());
             }
             else
@@ -95,6 +99,11 @@ public class UserController : ControllerBase
                                 .Select(x => x.RoleId)
                                 .ToListAsync();
 
+        var userEmail = await _context.Region
+                                .Where(x => x.RegionId == userRegion.RegionId)
+                                .Select(x => x.ContactPersonEmail)
+                                .ToListAsync();
+
         var userName = await _context.Users
                         .Where(x => x.Id == user.OwnerId)
                         .Select(x => x.UserName)
@@ -114,7 +123,7 @@ public class UserController : ControllerBase
         {
             return NotFound();
         }
-        return Ok(getUserDto(user, userRegion, userRole, userName[0]));
+        return Ok(getUserDto(user, userRegion, userRole, userName[0], userEmail[0]));
     }
 
     // GET: /api/users/roles
@@ -324,7 +333,7 @@ public class UserController : ControllerBase
         return (_context.User?.Any(e => e.UserId == id)).GetValueOrDefault();
     }
 
-    private UserDto getUserDto(User user, Region region, string userRole, string userName)
+    private UserDto getUserDto(User user, Region region, string userRole, string userName, string userEmail)
     {
         return new UserDto
         {
@@ -335,6 +344,7 @@ public class UserController : ControllerBase
             UserFirstName = user.UserFirstName,
             UserLastName = user.UserLastName,
             UserName = userName,
+            UserEmail = userEmail,
             UserPassword = "Password"
         };
     }
