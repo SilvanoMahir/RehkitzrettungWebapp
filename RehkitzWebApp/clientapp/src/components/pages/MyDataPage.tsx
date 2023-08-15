@@ -1,4 +1,4 @@
-﻿import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
 import { AppContext } from '../../store/context'
 import Sidebar from '../widgets/Sidebar/Sidebar'

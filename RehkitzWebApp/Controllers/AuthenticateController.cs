@@ -107,7 +107,7 @@ public class AuthenticateController : ControllerBase
             return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Benutzer existiert bereits!" });
         }
 
-        var MailExists = await _context.Region.FirstOrDefaultAsync(x => x.ContactPersonMail == model.UserEmail);
+        var MailExists = await _context.Region.FirstOrDefaultAsync(x => x.ContactPersonEmail == model.UserEmail);
         if (MailExists == null)
         {
             return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Mailadresse von Kontaktperson existiert nicht." });
@@ -134,6 +134,18 @@ public class AuthenticateController : ControllerBase
         if (!await _roleManager.RoleExistsAsync(UserRoles.User))
         {
             var role = new IdentityRole(UserRoles.User);
+            await _roleManager.CreateAsync(role);
+        }
+
+        if (!await _roleManager.RoleExistsAsync(UserRoles.Central))
+        {
+            var role = new IdentityRole(UserRoles.Central);
+            await _roleManager.CreateAsync(role);
+        }
+
+        if (!await _roleManager.RoleExistsAsync(UserRoles.Ranger))
+        {
+            var role = new IdentityRole(UserRoles.Ranger);
             await _roleManager.CreateAsync(role);
         }
 

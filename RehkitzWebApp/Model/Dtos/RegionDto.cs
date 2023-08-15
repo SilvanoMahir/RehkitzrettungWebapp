@@ -7,5 +7,5 @@ public class RegionDto
     public string? RegionState { get; set; }
     public string? ContactPersonFirstName { get; set; }
     public string? ContactPersonLastName { get; set; }
-    public string? ContactPersonMail { get; set; }
+    public string? ContactPersonEmail { get; set; }
 }

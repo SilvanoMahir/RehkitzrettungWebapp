@@ -51,7 +51,7 @@ export default function UserListPage() {
 
     let content;
     if (loadingUsers) {
-        content = (<p><em>Lädt Benutzer... </em></p>)
+        content = (<p><em>LÃ¤dt Benutzer... </em></p>)
     } else if (usersListLocal.length === 0) {
         content = (<p><em>Keine Benutzer gefunden.</em></p>);
     } else {
@@ -70,14 +70,16 @@ export default function UserListPage() {
                         value={''}
                         isNotMobile={isNotMobile}
                         placeholder={"Suchen"}></SearchInput>
-                    <PageTitle>Benutzerverwaltung</PageTitle>
-                    <BlockLayout>
+                    <TitleBlock>
+                        <PageTitle>Benutzerverwaltung</PageTitle>
+                        <NewUserButton>
+                            <CreateNewUserButton onClick={() => addNewUser()}> Neuer Benutzer erstellen</CreateNewUserButton>
+                        </NewUserButton>
+                    </TitleBlock>
+                    <UserListBlock>
                         {isLargeScreen ? <UserEntryTitles /> : <></>}
                         {content}
-                    </BlockLayout>
-                    <NewUserButton>
-                        <CreateNewUserButton onClick={() => addNewUser()}> Neuer Benutzer erstellen</CreateNewUserButton>
-                    </NewUserButton>
+                    </UserListBlock>
                 </RescueListColumnLayout >
             </RescueListRowLayout>
         </RescueListLayout>
@@ -88,7 +90,7 @@ const RescueListLayout = styled.div`
     height: 100%;
 `
 
-const BlockLayout = styled.div`
+const UserListBlock = styled.div`
     background: #7c6b57;
     margin: 1em; 
     padding: 1em;
@@ -131,18 +133,31 @@ const SearchInput = styled.input<{ isNotMobile: boolean }>`
 
 const PageTitle = styled.div`
     display: flex;
-    flex-direction: row;
     justify-content: center;
     font-weight: 500;
     font-size: 2em;
-    margin: 10px;
     color: #ffeccb;
-    @media (max-width: 700px) {
-        margin-bottom: 1.25em;
+    @media (min-width: 700px) {
+        margin-left: 0px;
     }
 `
 
 const NewUserButton = styled.div`
     display: flex;
     justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    @media (min-width: 1000px) {
+        align-items: flex-end;
+    }
+`
+
+const TitleBlock = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    @media (min-width: 1000px) {
+        align-items: stretch;
+    }
 `

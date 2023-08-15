@@ -30,7 +30,12 @@ export default function RescueListPage() {
             if (storageToken !== null) {
                 dispatch_token({ type: 'set-token', value: storageToken })
             }
-            const protocolsListLocal = await fetchProtocols(storageToken, '')
+            const fetchedProtocolList = await fetchProtocols(storageToken, '')
+            const protocolsListLocal = [...fetchedProtocolList].sort((a, b) => {
+                const dateA: Date = new Date(a.date.split('.').reverse().join('-'))
+                const dateB: Date = new Date(b.date.split('.').reverse().join('-'))
+                return dateB.getTime() - dateA.getTime()
+            })
             if (storageToken !== null) {
                 setLocalToken(storageToken)
             }
@@ -80,18 +85,18 @@ export default function RescueListPage() {
                 saveAs(fileBlob, `RehkitzrettungApp_Protokoll_${year}-${month}-${day}`)
                 toast.success("Erfolgreich heruntergeladen!", {
                     position: toast.POSITION.TOP_CENTER,
-                    containerId: 'LoginToaster',
+                    containerId: 'ToasterNotification',
                 })
             } else {
                 toast.error("Herunterladen fehlgeschlagen!", {
                     position: toast.POSITION.TOP_CENTER,
-                    containerId: 'LoginToaster',
+                    containerId: 'ToasterNotification',
                 })
             }
         } catch (error) {
             toast.error("Herunterladen fehlgeschlagen!", {
                 position: toast.POSITION.TOP_CENTER,
-                containerId: 'LoginToaster',
+                containerId: 'ToasterNotification',
             })
         }
     }
@@ -100,25 +105,30 @@ export default function RescueListPage() {
         navigate(ROUTE_ADAPT_PROTOCOL_PAGE)
     }
 
+    const handleSearchInputChange = async (event: { target: { value: string | undefined } }) => {
+        const protocolsListLocal = await fetchProtocols(localToken, event.target.value)
+        // const fetchedProtocolList = await fetchProtocols(localToken, event.target.value)
+        // const protocolsListLocal = [...fetchedProtocolList].sort((a, b) => {
+        //     const dateA: Date = new Date(a.date.split('.').reverse().join('-'))
+        //     const dateB: Date = new Date(b.date.split('.').reverse().join('-'))
+        //     return dateB.getTime() - dateA.getTime()
+        // })
+
+        if (protocolsListLocal !== undefined) {
+            dispatch({ type: 'get-protocols', protocolsListLocal })
+        }
+    }
+
     let content
 
     if (loadingProtocols) {
-        content = (<p><em>Laedt Protokolle... Bitte Seite aktualisieren, sobald ASP.NET Backend aufgestartet ist.</em></p>)
+        content = (<p><em>Lädt Protokolle... Bitte Seite aktualisieren, sobald ASP.NET Backend aufgestartet ist.</em></p>)
     } else if (protocolsListLocal.length === 0) {
         content = (<p><em>Keine Protokolle gefunden.</em></p>)
     } else {
         content = protocolsListLocal.map(protocolEntry => (
             <Protocol key={protocolEntry.protocolId} protocolId={protocolEntry.protocolId} />
         ))
-    }
-
-    const handleChange = async (event: { target: { value: string | undefined } }) => {
-        const protocolsListLocal = await fetchProtocols(localToken, event.target.value)
-        setLoadingProtocols(false)
-
-        if (protocolsListLocal !== undefined) {
-            dispatch({ type: 'get-protocols', protocolsListLocal })
-        }
     }
 
     return (
@@ -128,17 +138,17 @@ export default function RescueListPage() {
                 {(isNotMobile) && <Sidebar showSidebar={isNotMobile} />}
                 <RescueListColumnLayout>
                     <SearchInput
-                        onChange={handleChange}
+                        onChange={handleSearchInputChange}
                         isNotMobile={isNotMobile}
                         placeholder={'Suchen'}></SearchInput>
-                    <SiteTitle>Übersicht Protokolle</SiteTitle>
-                        <RescueListItems>
-                            {content}
-                        </RescueListItems>
                     <RowContainer>
                         <DownloadProtocolButton onClick={() => downloadProtocol(localToken)}>Bericht herunterladen</DownloadProtocolButton>
                         <CreateProtocolButton onClick={() => createProtocol()}>Neues Protokoll erstellen</CreateProtocolButton>
                     </RowContainer>
+                    <SiteTitle>Übersicht Protokolle</SiteTitle>
+                        <RescueListItems>
+                            {content}
+                        </RescueListItems>
                 </RescueListColumnLayout >
             </RescueListRowLayout>
         </RescueListLayout>
