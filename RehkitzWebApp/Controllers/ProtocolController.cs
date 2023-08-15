@@ -21,11 +21,16 @@ public class ProtocolController : ControllerBase
 
     // GET: /api/protocols
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<ProtocolDto>>> GetProtocol()
+    public async Task<ActionResult<IEnumerable<ProtocolDto>>> GetProtocol([FromQuery(Name = "searchString")] string searchString)
     {
         if (_context.Protocol == null)
         {
             return NotFound();
+        }
+
+        if (searchString == null)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Suchtext ist null!" });
         }
 
         var protocols = await _context.Protocol
@@ -33,6 +38,11 @@ public class ProtocolController : ControllerBase
             .ToListAsync();
 
         var protocolDtos = new List<ProtocolDto>();
+
+        if (searchString != "getAllProtocols")
+        {
+            protocols = protocols.Where(p => p.ClientFullName!.Contains(searchString)).ToList();
+        }
 
         foreach (var protocol in protocols)
         {

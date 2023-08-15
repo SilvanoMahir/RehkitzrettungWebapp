@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react'
+import { SetStateAction, useContext, useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
 import { DownloadProtocolButton, CreateProtocolButton } from '../controls/Button'
 import { AppContext, ProtocolsContext } from '../../store/context'
@@ -18,6 +18,7 @@ export default function RescueListPage() {
 
     const [loadingProtocols, setLoadingProtocols] = useState(true)
     const [localToken, setLocalToken] = useState('')
+    const [searchString, setSearchString] = useState('')
     const { protocolsListLocal, dispatch } = useContext(ProtocolsContext)
     const { dispatch_token } = useContext(AppContext)
     let navigate = useNavigate()
@@ -29,7 +30,7 @@ export default function RescueListPage() {
             if (storageToken !== null) {
                 dispatch_token({ type: 'set-token', value: storageToken })
             }
-            const protocolsListLocal = await fetchProtocols(storageToken)
+            const protocolsListLocal = await fetchProtocols(storageToken, 'getAllProtocols')
             if (storageToken !== null) {
                 setLocalToken(storageToken)
             }
@@ -39,8 +40,13 @@ export default function RescueListPage() {
         onMount()
     }, [dispatch, dispatch_token])
 
-    const fetchProtocols = async (storageToken: string | null) => {
-        const response = await fetch('/api/protocols', {
+    const fetchProtocols = async (storageToken: string | null, searchString: string | undefined) => {
+        if (searchString?.length === 1) {
+            return
+        }
+        const response = await fetch('/api/protocols?' + new URLSearchParams({
+            searchString: searchString!
+        }), {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json',
@@ -51,9 +57,6 @@ export default function RescueListPage() {
             return await response.json()
         }
         return []
-    }
-
-    const search = async () => {
     }
 
     const downloadProtocol = async (storageToken: string | null) => {
@@ -103,7 +106,16 @@ export default function RescueListPage() {
     } else {
         content = protocolsListLocal.map(protocolEntry => (
             <Protocol key={protocolEntry.protocolId} protocolId={protocolEntry.protocolId} />
-        ));
+        ))
+    }
+
+    const handleChange = async (event: { target: { value: string | undefined } }) => {
+        const protocolsListLocal = await fetchProtocols(localToken, event.target.value)
+        setLoadingProtocols(false)
+
+        if (protocolsListLocal !== undefined) {
+            dispatch({ type: 'get-protocols', protocolsListLocal })
+        }
     }
 
     return (
@@ -112,8 +124,8 @@ export default function RescueListPage() {
             <RescueListRowLayout isNotMobile={isNotMobile}>
                 {(isNotMobile) && <Sidebar showSidebar={isNotMobile} />}
                 <RescueListColumnLayout>
-                    <SearchInput onChange={search}
-                        value={''}
+                    <SearchInput
+                        onChange={handleChange}
                         isNotMobile={isNotMobile}
                         placeholder={'Suchen'}></SearchInput>
                     <SiteTitle>Übersicht Protokolle</SiteTitle>
