@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Spreadsheet;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RehkitzWebApp.FileController;
@@ -22,16 +24,45 @@ public class ProtocolController : ControllerBase
 
     // GET: /api/protocols
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<ProtocolDto>>> GetProtocol()
+    public async Task<ActionResult<IEnumerable<ProtocolDto>>> GetProtocols([FromQuery(Name = "userId")] string userId)
     {
         if (_context.Protocol == null)
         {
             return NotFound();
         }
 
-        var protocols = await _context.Protocol
-            .Where(p => p.EntryIsDeleted == false)
-            .ToListAsync();
+        var userInUserList = await _context.User.FindAsync(int.Parse(userId));
+
+        var userRoleId = await _context.UserRoles
+                                    .Where(x => x.UserId == userInUserList.OwnerId)
+                                    .Select(x => x.RoleId)
+                                    .ToListAsync();
+
+        var userRegion = await _context.Region.FindAsync(int.Parse(userInUserList.UserRegionId));
+
+        var userRegionTable = await _context.Region
+                                .Where(p => p.RegionName == userRegion.RegionName)
+                                .ToListAsync();
+
+        var userDistrict = userRegionTable[0].RegionDistrict;
+
+        var userRegionListFromDistrict = await _context.Region
+                                                .Where(p => p.RegionDistrict == userDistrict)
+                                                .Select(p => p.RegionName)
+                                                .ToListAsync();
+
+        var userRole = await _context.Roles.FindAsync(userRoleId[0]);
+        List<Protocol> protocols = new List<Protocol>();
+        if (userRole.Name == "Admin") { 
+            protocols = await _context.Protocol
+                                    .Where(p => p.EntryIsDeleted == false)
+                                    .ToListAsync();
+        } else
+        {
+            protocols = await _context.Protocol
+                                    .Where(p => p.EntryIsDeleted == false && userRegionListFromDistrict.Contains(p.RegionName))
+                                    .ToListAsync();
+        }
 
         var protocolDtos = new List<ProtocolDto>();
 

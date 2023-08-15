@@ -34,8 +34,8 @@ public class UserController : ControllerBase
         }
 
         var users = await _context.User
-            .Where(p => p.EntryIsDeleted == false)
-            .ToListAsync();
+                            .Where(p => p.EntryIsDeleted == false)
+                            .ToListAsync();
 
         var userDtos = new List<UserSmallDto>();
 

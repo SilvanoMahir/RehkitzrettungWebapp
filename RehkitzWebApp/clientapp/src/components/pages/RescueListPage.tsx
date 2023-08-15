@@ -33,10 +33,10 @@ export default function RescueListPage() {
             }
             const userId = localStorage.getItem('user_id')
             const { userFunction } = await fetchUser(storageToken, userId)
+            console.log(userId)
             localStorage.setItem('user_function', userFunction)
             setUserFunction(userFunction)
-
-            const fetchedProtocolList = await fetchProtocols(storageToken)
+            const fetchedProtocolList = await fetchProtocols(storageToken, userId)
             const protocolsListLocal = [...fetchedProtocolList].sort((a, b) => {
                 const dateA: Date = new Date(a.date.split('.').reverse().join('-'))
                 const dateB: Date = new Date(b.date.split('.').reverse().join('-'))
@@ -51,8 +51,10 @@ export default function RescueListPage() {
         onMount()
     }, [dispatch, dispatch_token])
 
-    const fetchProtocols = async (storageToken: string | null) => {
-        const response = await fetch('/api/protocols', {
+    const fetchProtocols = async (storageToken: string | null, userId: string | null) => {
+        const response = await fetch('/api/protocols?'+ new URLSearchParams({
+            userId: userId!
+        }), {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json',
