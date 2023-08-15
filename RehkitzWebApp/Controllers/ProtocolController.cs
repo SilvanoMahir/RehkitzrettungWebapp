@@ -41,7 +41,17 @@ public class ProtocolController : ControllerBase
 
         if (searchString != "getAllProtocols")
         {
-            protocols = protocols.Where(p => p.ClientFullName!.Contains(searchString)).ToList();
+            protocols = protocols.Where(p => p.ProtocolCode!.Contains(searchString) ||
+                                             p.ClientFullName!.Contains(searchString) ||
+                                             p.LocalName!.Contains(searchString) ||
+                                             p.PilotFullName!.Contains(searchString) ||
+                                             p.RegionName!.Contains(searchString) ||
+                                             p.Remark!.Contains(searchString) ||
+                                             p.AreaSize!.Contains(searchString) ||
+                                             p.FoundFawns.ToString()!.Contains(searchString) ||
+                                             p.InjuredFawns.ToString()!.Contains(searchString) ||
+                                             p.MarkedFawns.ToString()!.Contains(searchString) ||
+                                             p.Date.ToString()!.Contains(searchString)).ToList();
         }
 
         foreach (var protocol in protocols)
