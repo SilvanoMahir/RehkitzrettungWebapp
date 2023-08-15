@@ -30,7 +30,7 @@ export default function RescueListPage() {
             if (storageToken !== null) {
                 dispatch_token({ type: 'set-token', value: storageToken })
             }
-            const protocolsListLocal = await fetchProtocols(storageToken, 'getAllProtocols')
+            const protocolsListLocal = await fetchProtocols(storageToken, '')
             if (storageToken !== null) {
                 setLocalToken(storageToken)
             }
@@ -43,6 +43,9 @@ export default function RescueListPage() {
     const fetchProtocols = async (storageToken: string | null, searchString: string | undefined) => {
         if (searchString?.length === 1) {
             return
+        }
+        if (searchString === '') {
+            searchString = 'getAllProtocols'
         }
         const response = await fetch('/api/protocols?' + new URLSearchParams({
             searchString: searchString!
