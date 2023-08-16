@@ -14,28 +14,32 @@ export default function UserListPage() {
 
     const isNotMobile = useMediaQuery({ query: '(min-width: 700px)' })
     const isLargeScreen = useMediaQuery({ query: '(min-width: 1200px)' })
-    
+
     const [loadingUsers, setLoadingUsers] = useState(true)
     const { usersListLocal, dispatch_users } = useContext(UserContext)
     const { dispatch_token } = useContext(AppContext)
     let navigate = useNavigate()
-    
+
     useEffect(() => {
         const onMount = async () => {
             const storageToken = localStorage.getItem('user_token')
             if (storageToken !== null) {
                 dispatch_token({ type: 'set-token', value: storageToken })
             }
-            const usersListLocal = await fetchUsers(storageToken)
+            const userId = localStorage.getItem('user_id')
+            console.log(userId)
+            const usersListLocal = await fetchUsers(storageToken, userId)
             setLoadingUsers(false)
             dispatch_users({ type: 'get-users', usersListLocal })
         }
         onMount()
     }, [dispatch_users, dispatch_token])
 
-    const fetchUsers = async (storageToken: string | null) => {
+    const fetchUsers = async (storageToken: string | null, userId: string | null) => {
         try {
-            const response = await fetch('/api/users', {
+            const response = await fetch('/api/users?' + new URLSearchParams({
+                userId: userId!
+            }), {
                 method: 'GET',
                 headers: {
                     'Content-type': 'application/json',

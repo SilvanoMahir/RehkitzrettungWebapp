@@ -26,16 +26,48 @@ public class UserController : ControllerBase
 
     // GET: /api/users
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<UserSmallDto>>> GetUser()
+    public async Task<ActionResult<IEnumerable<UserSmallDto>>> GetUser([FromQuery(Name = "userId")] string userId)
     {
         if (_context.User == null)
         {
             return NotFound();
         }
 
-        var users = await _context.User
-                            .Where(p => p.EntryIsDeleted == false)
-                            .ToListAsync();
+        var userInUserList = await _context.User.FindAsync(int.Parse(userId));
+
+        var loggedInUserRoleId = await _context.UserRoles
+                                    .Where(x => x.UserId == userInUserList.OwnerId)
+                                    .Select(x => x.RoleId)
+                                    .ToListAsync();
+
+        var loggedInUserRegion = await _context.Region.FindAsync(int.Parse(userInUserList.UserRegionId));
+
+        var userRegionIdTable = await _context.Region
+                                .Where(p => p.RegionId == int.Parse(userInUserList.UserRegionId))
+                                .ToListAsync();
+
+        var userDistrict = userRegionIdTable[0].RegionDistrict;
+
+        var userRegionListFromDistrict = await _context.Region
+                                                .Where(p => p.RegionDistrict == userDistrict)
+                                                .Select(p => p.RegionId.ToString())
+                                                .ToListAsync();
+        
+        var loggedInUserRole = await _context.Roles.FindAsync(loggedInUserRoleId[0]);
+       
+        List<User> users = new List<User>();
+        if (loggedInUserRole.Name == "Admin")
+        {
+            users = await _context.User
+                                .Where(p => p.EntryIsDeleted == false)
+                                .ToListAsync();
+        }
+        else
+        {
+            users = await _context.User
+                                .Where(p => p.EntryIsDeleted == false && userRegionListFromDistrict.Contains(p.UserRegionId))
+                                .ToListAsync();
+        }
 
         var userDtos = new List<UserSmallDto>();
 
