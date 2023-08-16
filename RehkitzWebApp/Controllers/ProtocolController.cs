@@ -31,27 +31,25 @@ public class ProtocolController : ControllerBase
             return NotFound();
         }
 
+        // get user district and the regions part of this district 
         var userInUserList = await _context.User.FindAsync(int.Parse(userId));
+        var userRegionIdList = await _context.Region
+                                        .Where(p => p.RegionId == int.Parse(userInUserList.UserRegionId))
+                                        .ToListAsync();
 
-        var userRoleId = await _context.UserRoles
+        var userDistrict = userRegionIdList[0].RegionDistrict;
+        var userRegionsFromDistrictList = await _context.Region
+                                                    .Where(p => p.RegionDistrict == userDistrict)
+                                                    .Select(p => p.RegionName)
+                                                    .ToListAsync();
+        // get logged in user role
+        var userRoleIdList = await _context.UserRoles
                                     .Where(x => x.UserId == userInUserList.OwnerId)
                                     .Select(x => x.RoleId)
                                     .ToListAsync();
 
-        var userRegion = await _context.Region.FindAsync(int.Parse(userInUserList.UserRegionId));
+        var userRole = await _context.Roles.FindAsync(userRoleIdList[0]);
 
-        var userRegionTable = await _context.Region
-                                .Where(p => p.RegionName == userRegion.RegionName)
-                                .ToListAsync();
-
-        var userDistrict = userRegionTable[0].RegionDistrict;
-
-        var userRegionListFromDistrict = await _context.Region
-                                                .Where(p => p.RegionDistrict == userDistrict)
-                                                .Select(p => p.RegionName)
-                                                .ToListAsync();
-
-        var userRole = await _context.Roles.FindAsync(userRoleId[0]);
         List<Protocol> protocols = new List<Protocol>();
         if (userRole.Name == "Admin") { 
             protocols = await _context.Protocol
@@ -60,7 +58,7 @@ public class ProtocolController : ControllerBase
         } else
         {
             protocols = await _context.Protocol
-                                    .Where(p => p.EntryIsDeleted == false && userRegionListFromDistrict.Contains(p.RegionName))
+                                    .Where(p => p.EntryIsDeleted == false && userRegionsFromDistrictList.Contains(p.RegionName))
                                     .ToListAsync();
         }
 
@@ -118,13 +116,11 @@ public class ProtocolController : ControllerBase
         {
             return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Der Server ist akutell nicht erreichbar! Bitte probieren Sie es später nochmals." });
         }
-
         var userRegionTable = await _context.Region
                                         .Where(p => p.RegionName == userRegion)
                                         .ToListAsync();
 
         var userDistrict = userRegionTable[0].RegionDistrict;
-
         var userRegionListFromDistrict = await _context.Region
                                                 .Where(p => p.RegionDistrict == userDistrict)
                                                 .Select(p => p.RegionName)
