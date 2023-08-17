@@ -5,7 +5,7 @@ namespace RehkitzWebApp.FileController;
 
 public class ExcelExporter
 {
-    internal Stream ExportToExcel(List<Protocol> protocolsList)
+    internal Stream ExportToExcel(List<Protocol> protocolsList, string district)
     {
         // Create the Excel file using ClosedXML
         using (var workbook = new XLWorkbook())
@@ -31,12 +31,13 @@ public class ExcelExporter
             worksheet.Cell(row, 4).Value = "Datum der Suche";
             worksheet.Cell(row, 5).Value = "Lokaler Ortsname";
             worksheet.Cell(row, 6).Value = "Grösse Suchfeld";
-            worksheet.Cell(row, 7).Value = "Region";
-            worksheet.Cell(row, 8).Value = "Gerettete Kitze";
-            worksheet.Cell(row, 9).Value = "Verletzte Kitze";
-            worksheet.Cell(row, 10).Value = "Markierte Kitze";
-            worksheet.Cell(row, 11).Value = "Kommentar";
-            for (int i = 1; i < 12; i++)
+            worksheet.Cell(row, 7).Value = "Bezirk";
+            worksheet.Cell(row, 8).Value = "Region";
+            worksheet.Cell(row, 9).Value = "Gerettete Kitze";
+            worksheet.Cell(row, 10).Value = "Verletzte Kitze";
+            worksheet.Cell(row, 11).Value = "Markierte Kitze";
+            worksheet.Cell(row, 12).Value = "Kommentar";
+            for (int i = 1; i < 13; i++)
             {
                 worksheet.Cell(row, i).Style.Font.Bold = true;
             }
@@ -51,11 +52,12 @@ public class ExcelExporter
                 worksheet.Cell(row, 4).Value = protocol.Date;
                 worksheet.Cell(row, 5).Value = protocol.LocalName;
                 worksheet.Cell(row, 6).Value = protocol.AreaSize;
-                worksheet.Cell(row, 7).Value = protocol.RegionName;
-                worksheet.Cell(row, 8).Value = protocol.FoundFawns;
-                worksheet.Cell(row, 9).Value = protocol.InjuredFawns;
-                worksheet.Cell(row, 10).Value = protocol.MarkedFawns;
-                worksheet.Cell(row, 11).Value = protocol.Remark;
+                worksheet.Cell(row, 7).Value = district;
+                worksheet.Cell(row, 8).Value = protocol.RegionName;
+                worksheet.Cell(row, 9).Value = protocol.FoundFawns;
+                worksheet.Cell(row, 10).Value = protocol.InjuredFawns;
+                worksheet.Cell(row, 11).Value = protocol.MarkedFawns;
+                worksheet.Cell(row, 12).Value = protocol.Remark;
 
                 row++;
             }

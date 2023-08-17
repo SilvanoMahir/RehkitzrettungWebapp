@@ -20,6 +20,7 @@ export default function RescueListPage() {
     const [loadingProtocols, setLoadingProtocols] = useState(true)
     const [localToken, setLocalToken] = useState('')
     const [userFunction, setUserFunction] = useState('')
+    const [loggedUserId, setUserId] = useState('')
     const { protocolsListLocal, dispatch } = useContext(ProtocolsContext)
     const { dispatch_token } = useContext(AppContext)
     let navigate = useNavigate()
@@ -35,6 +36,7 @@ export default function RescueListPage() {
             const { userFunction } = await fetchUser(storageToken, userId)
             localStorage.setItem('user_function', userFunction)
             setUserFunction(userFunction)
+            setUserId(userId as string);
             const fetchedProtocolList = await fetchProtocols(storageToken, userId)
             const protocolsListLocal = [...fetchedProtocolList].sort((a, b) => {
                 const dateA: Date = new Date(a.date.split('.').reverse().join('-'))
@@ -69,9 +71,11 @@ export default function RescueListPage() {
     const search = async () => {
     }
 
-    const downloadProtocol = async (storageToken: string | null) => {
+    const downloadProtocol = async (storageToken: string | null, userId: string | null) => {
         try {
-            const response = await fetch('/api/protocols/file', {
+            const response = await fetch('/api/protocols/file?'+ new URLSearchParams({
+                userId: userId!
+            }), {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${storageToken}`,
@@ -130,7 +134,7 @@ export default function RescueListPage() {
                         isNotMobile={isNotMobile}
                         placeholder={'Suchen'}></SearchInput>
                     <RowContainer>
-                        <DownloadProtocolButton onClick={() => downloadProtocol(localToken)}>Bericht herunterladen</DownloadProtocolButton>
+                        <DownloadProtocolButton onClick={() => downloadProtocol(localToken, loggedUserId)}>Bericht herunterladen</DownloadProtocolButton>
                         {(userFunction !== 'Wildhut') && (
                             <CreateProtocolButton onClick={() => createProtocol()}>Neues Protokoll erstellen</CreateProtocolButton>
                         )}

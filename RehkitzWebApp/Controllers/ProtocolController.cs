@@ -92,19 +92,48 @@ public class ProtocolController : ControllerBase
 
     // GET: /api/protocols/file
     [HttpGet("file")]
-    public async Task<IActionResult> ExportProtocolsToExcelAsync()
+    public async Task<IActionResult> ExportProtocolsToExcelAsync([FromQuery(Name = "userId")] string userId)
     {
         if (_context.Protocol == null)
         {
             return NotFound();
         }
 
-        var protocolsList = await _context.Protocol
-                                    .Where(p => p.EntryIsDeleted == false)
+        // get user district and the regions part of this district 
+        var userInUserList = await _context.User.FindAsync(int.Parse(userId));
+        var userRegionIdList = await _context.Region
+                                        .Where(p => p.RegionId == int.Parse(userInUserList.UserRegionId))
+                                        .ToListAsync();
+
+        var userDistrict = userRegionIdList[0].RegionDistrict;
+        var userRegionsFromDistrictList = await _context.Region
+                                                    .Where(p => p.RegionDistrict == userDistrict)
+                                                    .Select(p => p.RegionName)
+                                                    .ToListAsync();
+        // get logged in user role
+        var userRoleIdList = await _context.UserRoles
+                                    .Where(x => x.UserId == userInUserList.OwnerId)
+                                    .Select(x => x.RoleId)
                                     .ToListAsync();
 
+        var userRole = await _context.Roles.FindAsync(userRoleIdList[0]);
+
+        List<Protocol> protocolsList = new List<Protocol>();
+        if (userRole.Name == "Admin")
+        {
+            protocolsList = await _context.Protocol
+                                    .Where(p => p.EntryIsDeleted == false)
+                                    .ToListAsync();
+        }
+        else
+        {
+            protocolsList = await _context.Protocol
+                                    .Where(p => p.EntryIsDeleted == false && userRegionsFromDistrictList.Contains(p.RegionName))
+                                    .ToListAsync();
+        }
+
         ExcelExporter exporter = new ExcelExporter();
-        var stream = exporter.ExportToExcel(protocolsList);
+        var stream = exporter.ExportToExcel(protocolsList, userDistrict);
         return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "RehkitzrettungProtokolle" + DateTime.Now.ToString("yyyy-M-d") + ".xlsx");
     }
 
