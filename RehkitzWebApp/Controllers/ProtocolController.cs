@@ -100,8 +100,8 @@ public class ProtocolController : ControllerBase
         }
 
         var protocolsList = await _context.Protocol
-            .Where(p => p.EntryIsDeleted == false)
-            .ToListAsync();
+                                    .Where(p => p.EntryIsDeleted == false)
+                                    .ToListAsync();
 
         ExcelExporter exporter = new ExcelExporter();
         var stream = exporter.ExportToExcel(protocolsList);

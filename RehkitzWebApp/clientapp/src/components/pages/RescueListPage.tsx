@@ -190,8 +190,8 @@ const SearchInput = styled.input<{ isNotMobile: boolean }>`
     font-size: 25px;
     background: #898472;
     color: #ffeccb;
-    margin-top: ${({ isNotMobile }) => (isNotMobile ? "5vh" : "12vh")};
-    margin-right: 0.75em; 
+    margin-top: ${({ isNotMobile }) => (isNotMobile ? "1em" : "3em")};
+    margin-right: ${({ isNotMobile }) => (isNotMobile ? "2vh" : "1vh")};
     &::placeholder {
         color: #ffeccb; 
         opacity: 0.5;
