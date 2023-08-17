@@ -109,13 +109,17 @@ export default function RescueListPage() {
     }
 
     const handleSearchInputChange = async (event: { target: { value: string | undefined } }) => {
-        const protocolsListLocal = await fetchProtocols(localToken, event.target.value)
-        // const fetchedProtocolList = await fetchProtocols(localToken, event.target.value)
-        // const protocolsListLocal = [...fetchedProtocolList].sort((a, b) => {
-        //     const dateA: Date = new Date(a.date.split('.').reverse().join('-'))
-        //     const dateB: Date = new Date(b.date.split('.').reverse().join('-'))
-        //     return dateB.getTime() - dateA.getTime()
-        // })
+        const fetchedProtocolList = await fetchProtocols(localToken, event.target.value)
+
+        if (fetchedProtocolList == null) {
+            return
+        }
+
+        const protocolsListLocal = [...fetchedProtocolList].sort((a, b) => {
+            const dateA: Date = new Date(a.date.split('.').reverse().join('-'))
+            const dateB: Date = new Date(b.date.split('.').reverse().join('-'))
+            return dateB.getTime() - dateA.getTime()
+        })
 
         if (protocolsListLocal !== undefined) {
             dispatch_protocols({ type: 'get-protocols', protocolsListLocal })
