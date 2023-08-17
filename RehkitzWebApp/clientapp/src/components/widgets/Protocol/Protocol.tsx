@@ -19,7 +19,7 @@ export default function Protocol({ protocolId }: Props) {
     const isLargeScreen = useMediaQuery({ query: '(min-width: 1200px)' })
 
     const { token } = useContext(AppContext)
-    const { protocolsListLocal, dispatch } = useContext(ProtocolsContext)
+    const { protocolsListLocal, dispatch_protocols } = useContext(ProtocolsContext)
     let navigate = useNavigate()
     const [protocolEntry, setProtocolEntry] = useState<ProtocolEntries>({
         protocolId: "",
@@ -55,7 +55,7 @@ export default function Protocol({ protocolId }: Props) {
                 },
             })
             if (response.ok) {
-                dispatch({ type: 'delete-protocols', protocolsListLocal, protocolId })
+                dispatch_protocols({ type: 'delete-protocols', protocolsListLocal, protocolId })
                 toast.success("Protokoll erfolgreich gelöscht!", {
                 position: toast.POSITION.TOP_CENTER,
                 containerId: 'ToasterNotification'

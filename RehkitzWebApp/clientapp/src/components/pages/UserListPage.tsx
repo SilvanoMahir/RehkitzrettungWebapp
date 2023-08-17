@@ -21,32 +21,45 @@ export default function UserListPage() {
     let navigate = useNavigate()
     useEffect(() => {
         const onMount = async () => {
-            const usersListLocal = await fetchUsers()
+            const usersListLocal = await fetchUsers('')
             setLoadingUsers(false)
             dispatch_users({ type: 'get-users', usersListLocal })
         }
         onMount()
     }, [dispatch_users])
 
-    const fetchUsers = async () => {
+    const fetchUsers = async (searchString: string | undefined) => {
+        if (searchString?.length === 1) {
+            return
+        }
+        if (searchString === '') {
+            searchString = 'getAllUsers'
+        }
         try {
-            const response = await fetch('/api/users', {
+            const response = await fetch('/api/users?' + new URLSearchParams({
+                searchString: searchString!
+            }), {
                 method: 'GET'
-            });
+            })
             if (response.ok) {
                 return await response.json();
             }
-            return [];
+            return []
         } catch (error) {
-            return [];
+            return []
         }
-    }
-
-    const search = async () => {
     }
 
     const addNewUser = async () => {
         navigate(ROUTE_ADAPT_USER_PAGE)
+    }
+
+    const handleSearchInputChange = async (event: { target: { value: string | undefined } }) => {
+        const usersListLocal = await fetchUsers(event.target.value)
+
+        if (usersListLocal !== undefined) {
+            dispatch_users({ type: 'get-users', usersListLocal })
+        }
     }
 
     let content;
@@ -66,8 +79,7 @@ export default function UserListPage() {
             <RescueListRowLayout isNotMobile={isNotMobile}>
                 {(isNotMobile) && <Sidebar showSidebar={isNotMobile} />}
                 <RescueListColumnLayout>
-                    <SearchInput onChange={search}
-                        value={''}
+                    <SearchInput onChange={handleSearchInputChange}
                         isNotMobile={isNotMobile}
                         placeholder={"Suchen"}></SearchInput>
                     <TitleBlock>

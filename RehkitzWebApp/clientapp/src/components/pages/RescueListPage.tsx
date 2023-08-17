@@ -18,8 +18,7 @@ export default function RescueListPage() {
 
     const [loadingProtocols, setLoadingProtocols] = useState(true)
     const [localToken, setLocalToken] = useState('')
-    const [searchString, setSearchString] = useState('')
-    const { protocolsListLocal, dispatch } = useContext(ProtocolsContext)
+    const { protocolsListLocal, dispatch_protocols } = useContext(ProtocolsContext)
     const { dispatch_token } = useContext(AppContext)
     let navigate = useNavigate()
 
@@ -40,10 +39,10 @@ export default function RescueListPage() {
                 setLocalToken(storageToken)
             }
             setLoadingProtocols(false)
-            dispatch({ type: 'get-protocols', protocolsListLocal })
+            dispatch_protocols({ type: 'get-protocols', protocolsListLocal })
         }
         onMount()
-    }, [dispatch, dispatch_token])
+    }, [dispatch_protocols, dispatch_token])
 
     const fetchProtocols = async (storageToken: string | null, searchString: string | undefined) => {
         if (searchString?.length === 1) {
@@ -52,19 +51,23 @@ export default function RescueListPage() {
         if (searchString === '') {
             searchString = 'getAllProtocols'
         }
-        const response = await fetch('/api/protocols?' + new URLSearchParams({
-            searchString: searchString!
-        }), {
-            method: 'GET',
-            headers: {
-                'Content-type': 'application/json',
-                'Authorization': `Bearer ${storageToken}`,
+        try {
+            const response = await fetch('/api/protocols?' + new URLSearchParams({
+                searchString: searchString!
+            }), {
+                method: 'GET',
+                headers: {
+                    'Content-type': 'application/json',
+                    'Authorization': `Bearer ${storageToken}`,
+                }
+            })
+            if (response.ok) {
+                return await response.json()
             }
-        })
-        if (response.ok) {
-            return await response.json()
+            return []
+        } catch (error) {
+            return []
         }
-        return []
     }
 
     const downloadProtocol = async (storageToken: string | null) => {
@@ -115,7 +118,7 @@ export default function RescueListPage() {
         // })
 
         if (protocolsListLocal !== undefined) {
-            dispatch({ type: 'get-protocols', protocolsListLocal })
+            dispatch_protocols({ type: 'get-protocols', protocolsListLocal })
         }
     }
 
