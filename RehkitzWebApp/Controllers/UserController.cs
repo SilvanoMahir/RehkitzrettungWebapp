@@ -24,11 +24,16 @@ public class UserController : ControllerBase
 
     // GET: /api/users
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<UserSmallDto>>> GetUser()
+    public async Task<ActionResult<IEnumerable<UserSmallDto>>> GetUser([FromQuery(Name = "searchString")] string searchString)
     {
         if (_context.User == null)
         {
             return NotFound();
+        }
+
+        if (searchString == null)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Suchtext ist null!" });
         }
 
         var users = await _context.User
@@ -55,6 +60,15 @@ public class UserController : ControllerBase
                 var userDto = getUserDto(user, userRegion, userRole.Name, userName[0]);
                 userDtos.Add(userDto.ToUserSmallListDto());
             }
+        }
+
+        if (searchString != "getAllUsers")
+        {
+            searchString = searchString.ToLower();
+            userDtos = userDtos.Where(u => u.UserId.ToString()!.Contains(searchString) ||
+                                           u.UserDefinition!.ToLower().Contains(searchString) ||
+                                           u.UserFunction!.ToLower().Contains(searchString) ||
+                                           u.UserRegion!.ToLower().Contains(searchString)).ToList();
         }
 
         if (userDtos.Count != 0)
