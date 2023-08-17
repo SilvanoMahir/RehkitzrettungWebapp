@@ -55,10 +55,6 @@ public class UserController : ControllerBase
                 var userDto = getUserDto(user, userRegion, userRole.Name, userName[0]);
                 userDtos.Add(userDto.ToUserSmallListDto());
             }
-            else
-            {
-                return NoContent();
-            }
         }
 
         if (userDtos.Count != 0)
