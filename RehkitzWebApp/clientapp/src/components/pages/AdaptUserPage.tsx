@@ -37,6 +37,7 @@ export default function AdaptUserPage() {
             if (storageToken !== null) {
                 dispatch_token({ type: 'set-token', value: storageToken })
             }
+            const userId = localStorage.getItem('user_id')
             let data = usersListLocal.filter(users => users.userId.toString() === id)
             if (data.length === 0) {
                 setIsNewUser(true)
@@ -56,14 +57,14 @@ export default function AdaptUserPage() {
                 setUsername(userName)
                 setUserPassword(userPassword)
             }
-            const rolesData = await fetchUserRoles(storageToken)
+            const rolesData = await fetchUserRoles(storageToken, userId)
             const transformedRoles = rolesData.map((role: { roleName: any }) => ({
                 label: role.roleName,
                 value: role.roleName,
             }))
             setRoles(transformedRoles)
 
-            const regionsData = await fetchRegions(storageToken)
+            const regionsData = await fetchRegions(storageToken, userId)
             const transformedRegions = regionsData.map((role: { regionName: any }) => ({
                 label: role.regionName,
                 value: role.regionName,
@@ -240,8 +241,10 @@ export default function AdaptUserPage() {
         return []
     }
 
-    const fetchUserRoles = async (storageToken: string | null) => {
-        const response = await fetch(`/api/users/roles`, {
+    const fetchUserRoles = async (storageToken: string | null, userId: string | null) => {
+        const response = await fetch('/api/users/roles?' + new URLSearchParams({
+            userId: userId!
+        }), {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json',
@@ -254,8 +257,10 @@ export default function AdaptUserPage() {
         return []
     }
 
-    const fetchRegions = async (storageToken: string | null) => {
-        const response = await fetch(`/api/regions`, {
+    const fetchRegions = async (storageToken: string | null, userId: string | null) => {
+        const response = await fetch('/api/regions?' + new URLSearchParams({
+            userId: userId!
+        }), {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json',

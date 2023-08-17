@@ -89,6 +89,7 @@ public class UserController : ControllerBase
                                         .Where(x => x.RegionId == userRegion.RegionId)
                                         .Select(x => x.ContactPersonEmail)
                                         .ToListAsync();
+
                 var userDto = getUserDto(user, userRegion, userRole.Name, userName[0], userEmail[0]);
                 userDtos.Add(userDto.ToUserSmallListDto());
             }
@@ -159,18 +160,38 @@ public class UserController : ControllerBase
 
     // GET: /api/users/roles
     [HttpGet("roles")]
-    public async Task<ActionResult<IEnumerable<RoleDto>>> GetUserRoles()
+    public async Task<ActionResult<IEnumerable<RoleDto>>> GetUserRoles([FromQuery(Name = "userId")] string userId)
     {
         if (_context.User == null)
         {
             return NotFound();
         }
 
-        var roleDtosList = new List<RoleDto>();
+        // get logged in user role
+        var userInUserList = await _context.User.FindAsync(int.Parse(userId));
+        var userRoleIdList = await _context.UserRoles
+                                    .Where(x => x.UserId == userInUserList.OwnerId)
+                                    .Select(x => x.RoleId)
+                                    .ToListAsync();
 
-        List<string> rolesList = await _context.Roles
-            .Select(x => x.Name)
-            .ToListAsync();
+        var userRole = await _context.Roles.FindAsync(userRoleIdList[0]);
+
+        var roleDtosList = new List<RoleDto>();
+        List<string> rolesList = new List<string>(); 
+
+        if (userRole.Name == "Admin")
+        {
+            rolesList = await _context.Roles
+                                .Select(x => x.Name)
+                                .ToListAsync();
+        }
+        else
+        {
+            rolesList = await _context.Roles
+                                .Where(x => x.Name != "Admin")
+                                .Select(x => x.Name)
+                                .ToListAsync();
+        }
 
         foreach (var role in rolesList)
         {

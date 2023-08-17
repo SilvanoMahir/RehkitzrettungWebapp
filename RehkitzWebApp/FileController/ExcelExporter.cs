@@ -21,7 +21,7 @@ public class ExcelExporter
             row++;
 
             // Date and User
-            worksheet.Cell(row, 1).Value = "Datum: " + DateTime.Now.ToString("d-M-yyyy");
+            worksheet.Cell(row, 1).Value = "Erstelldatum: " + DateTime.Now.ToString("d.M.yyyy");
 
             row = 4;
             // Add column headers
