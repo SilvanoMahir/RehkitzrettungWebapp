@@ -27,7 +27,6 @@ export default function UserListPage() {
                 dispatch_token({ type: 'set-token', value: storageToken })
             }
             const userId = localStorage.getItem('user_id')
-            console.log(userId)
             const usersListLocal = await fetchUsers(storageToken, userId)
             setLoadingUsers(false)
             dispatch_users({ type: 'get-users', usersListLocal })

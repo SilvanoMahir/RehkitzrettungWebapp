@@ -33,7 +33,6 @@ export default function RescueListPage() {
             }
             const userId = localStorage.getItem('user_id')
             const { userFunction } = await fetchUser(storageToken, userId)
-            console.log(userId)
             localStorage.setItem('user_function', userFunction)
             setUserFunction(userFunction)
             const fetchedProtocolList = await fetchProtocols(storageToken, userId)
