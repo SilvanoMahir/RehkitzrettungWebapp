@@ -85,25 +85,6 @@ public class UserController : ControllerBase
             if (userRoleId.Count != 0)
             {
                 var userRole = await _context.Roles.FindAsync(userRoleId[0]);
-                /*if (loggedInUserRole.Name == "Admin")
-                {
-                    var userEmail = await _context.Region
-                                            .Where(x => x.RegionId == userRegion.RegionId)
-                                            .Select(x => x.ContactPersonEmail)
-                                            .ToListAsync();
-                    var userDto = getUserDto(user, userRegion, userRole.Name, userName[0], userEmail[0]);
-                    userDtos.Add(userDto.ToUserSmallListDto());
-
-                } else if (userRole.Name != "Admin")
-                {
-                    var userEmail = await _context.Region
-                        .Where(x => x.RegionId == userRegion.RegionId)
-                        .Select(x => x.ContactPersonEmail)
-                        .ToListAsync();
-                    var userDto = getUserDto(user, userRegion, userRole.Name, userName[0], userEmail[0]);
-                    userDtos.Add(userDto.ToUserSmallListDto());
-
-                }*/
                 if (loggedInUserRole.Name == "Admin" || userRole.Name != "Admin")
                 {
                     var userEmail = await _context.Region
@@ -114,7 +95,6 @@ public class UserController : ControllerBase
                     var userDto = getUserDto(user, userRegion, userRole.Name, userName[0], userEmail);
                     userDtos.Add(userDto.ToUserSmallListDto());
                 }
-
             }
             else
             {
