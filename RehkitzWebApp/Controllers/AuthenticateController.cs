@@ -35,6 +35,17 @@ public class AuthenticateController : ControllerBase
     public async Task<IActionResult> Login([FromBody] LoginModel model)
     {
         var user = await _userManager.FindByNameAsync(model.Username);
+
+        var userDeleted = await _context.User
+                            .Where(x => x.OwnerId == user.Id)
+                            .Select(x => x.EntryIsDeleted)
+                            .ToListAsync();
+
+        if (userDeleted[0] == true)
+        {
+            return Unauthorized();
+        }
+
         if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
         {
             var userRoles = await _userManager.GetRolesAsync(user);

@@ -20,7 +20,7 @@ export default function RescueListPage() {
     const [loadingProtocols, setLoadingProtocols] = useState(true)
     const [localToken, setLocalToken] = useState('')
     const [userFunction, setUserFunction] = useState('')
-    const [loggedUserId, setUserId] = useState('')
+    const [loggedUserId, setloggedUserId] = useState('')
     const { protocolsListLocal, dispatch } = useContext(ProtocolsContext)
     const { dispatch_token } = useContext(AppContext)
     let navigate = useNavigate()
@@ -36,7 +36,7 @@ export default function RescueListPage() {
             const { userFunction } = await fetchUser(storageToken, userId)
             localStorage.setItem('user_function', userFunction)
             setUserFunction(userFunction)
-            setUserId(userId as string);
+            setloggedUserId(userId as string)
             const fetchedProtocolList = await fetchProtocols(storageToken, userId)
             const protocolsListLocal = [...fetchedProtocolList].sort((a, b) => {
                 const dateA: Date = new Date(a.date.split('.').reverse().join('-'))

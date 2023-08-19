@@ -55,7 +55,8 @@ public class ProtocolController : ControllerBase
             protocols = await _context.Protocol
                                     .Where(p => p.EntryIsDeleted == false)
                                     .ToListAsync();
-        } else
+        } 
+        else
         {
             protocols = await _context.Protocol
                                     .Where(p => p.EntryIsDeleted == false && userRegionsFromDistrictList.Contains(p.RegionName))

@@ -17,7 +17,7 @@ export default function MyDataPage() {
     const [definition, setDefinition] = useState('')
     const [region, setRegion] = useState('')
     const [userFunction, setUserFunction] = useState('')
-    const [mail, setMail] = useState('')
+    const [email , setEmail] = useState('')
     const [userName, setUserName] = useState('')
 
     const { dispatch_token } = useContext(AppContext)
@@ -35,7 +35,7 @@ export default function MyDataPage() {
             setId(userId)
             setFirstName(userFirstName)
             setLastName(userLastName)
-            setMail(userEmail)
+            setEmail(userEmail)
             setUserFunction(userFunction)
             setRegion(userRegion)
             setDefinition(userDefinition)
@@ -59,7 +59,7 @@ export default function MyDataPage() {
                             <MyDataEntry entry="Bezeichnung" value={definition} />
                             <MyDataEntry entry="Kanton/Region" value={region} />
                             <MyDataEntry entry="Funktion" value={userFunction} />
-                            <MyDataEntry entry="E-Mail" value={mail} />
+                            <MyDataEntry entry="E-Mail" value={email} />
                         </ColumnContainer>
                     </MyDataLayout>
                 </MyDataPageColumnLayout>
