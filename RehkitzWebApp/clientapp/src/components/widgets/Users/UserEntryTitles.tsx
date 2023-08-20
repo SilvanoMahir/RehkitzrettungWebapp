@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from "styled-components"
 
 export default function UserEntryTitles() {
 	return (
@@ -8,7 +8,7 @@ export default function UserEntryTitles() {
 			<Title>Funktion</Title>
 			<Title>Region</Title>
 		</RowContainer>
-	);
+	)
 }
 
 const RowContainer = styled.div`

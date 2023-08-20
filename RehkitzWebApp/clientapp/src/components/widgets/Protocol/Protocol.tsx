@@ -12,9 +12,10 @@ import { toast } from 'react-toastify'
 
 interface Props {
     protocolId: String
+    userFunction: String
 }
 
-export default function Protocol({ protocolId }: Props) {
+export default function Protocol({ protocolId, userFunction }: Props) {
 
     const isLargeScreen = useMediaQuery({ query: '(min-width: 1200px)' })
 
@@ -38,27 +39,27 @@ export default function Protocol({ protocolId }: Props) {
 
     useEffect(() => {
         const onMount = async () => {
-            const data = protocolsListLocal.filter(protocol => protocol.protocolId === protocolId);
-            setProtocolEntry(data[0]);
+            const data = protocolsListLocal.filter(protocol => protocol.protocolId === protocolId)
+            setProtocolEntry(data[0])
         }
         onMount();
     }, [protocolsListLocal, protocolId]);
-      
+
     const deleteProtocol = async (protocolId: string) => {
         const answer = window.confirm("Wirklich löschen?")
         if (answer) {
             const response = await fetch(`/api/protocols/${Number(protocolId)}`, {
                 method: 'DELETE',
-                headers: { 
-                'content-type': 'application/json',
-                'Authorization': `Bearer ${token}`
+                headers: {
+                    'content-type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 },
             })
             if (response.ok) {
                 dispatch_protocols({ type: 'delete-protocols', protocolsListLocal, protocolId })
                 toast.success("Protokoll erfolgreich gelöscht!", {
-                position: toast.POSITION.TOP_CENTER,
-                containerId: 'ToasterNotification'
+                    position: toast.POSITION.TOP_CENTER,
+                    containerId: 'ToasterNotification'
                 })
             }
         }
@@ -73,8 +74,12 @@ export default function Protocol({ protocolId }: Props) {
             <ProtocolTitle>Protokoll {protocolEntry.protocolCode}</ProtocolTitle>
             {isLargeScreen ? <ProtocolBodyLargeScreen protocolEntry={protocolEntry} /> : <ProtocolBodySmallScreen protocolEntry={protocolEntry} />}
             <RowContainer>
-                <DeleteProtocolButton onClick={() => deleteProtocol(protocolEntry.protocolId)}>Löschen</DeleteProtocolButton>
-                <EditProtocolButton onClick={() => editProtocol()}>Bearbeiten</EditProtocolButton>
+                {(userFunction !== 'Wildhut' && userFunction !== 'Benutzer') && (
+                    <DeleteProtocolButton onClick={() => deleteProtocol(protocolEntry.protocolId)}>Löschen</DeleteProtocolButton>
+                )}
+                {(userFunction !== 'Wildhut') && (
+                    <EditProtocolButton onClick={() => editProtocol()}>Bearbeiten</EditProtocolButton>
+                )}
             </RowContainer>
         </ProtocolLayout>
     )

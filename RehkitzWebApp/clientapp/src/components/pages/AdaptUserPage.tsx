@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
 import { DeleteUserButton, DiscardUserButton, SaveProtocolButton } from '../controls/Button'
-import { UserContext } from '../../store/context'
+import { AppContext, UserContext } from '../../store/context'
 import Sidebar from '../widgets/Sidebar/Sidebar'
 import { useMediaQuery } from 'react-responsive'
 import { Menu } from '../widgets/Menu'
@@ -28,16 +28,22 @@ export default function AdaptUserPage() {
     const [roles, setRoles] = useState<{ label: string; value: string; }[]>([])
     const [regions, setRegions] = useState<{ label: string; value: string; }[]>([])
     const { usersListLocal, dispatch_users } = useContext(UserContext)
+    const { dispatch_token } = useContext(AppContext)
     const { id } = useParams()
 
     useEffect(() => {
         const onMount = async () => {
+            const storageToken = localStorage.getItem('user_token')
+            if (storageToken !== null) {
+                dispatch_token({ type: 'set-token', value: storageToken })
+            }
+            const userId = localStorage.getItem('user_id')
             let data = usersListLocal.filter(users => users.userId.toString() === id)
             if (data.length === 0) {
                 setIsNewUser(true)
             }
             else {
-                const updateUser = await fetchUsers(id)
+                const updateUser = await fetchUsers(id, storageToken)
                 setIsNewUser(false)
                 const { userId, userFirstName, userLastName, userDefinition, userRegion,
                     userFunction, userName, userPassword } = updateUser
@@ -51,14 +57,14 @@ export default function AdaptUserPage() {
                 setUsername(userName)
                 setUserPassword(userPassword)
             }
-            const rolesData = await fetchUserRoles()
+            const rolesData = await fetchUserRoles(storageToken, userId)
             const transformedRoles = rolesData.map((role: { roleName: any }) => ({
                 label: role.roleName,
                 value: role.roleName,
             }))
             setRoles(transformedRoles)
 
-            const regionsData = await fetchRegions()
+            const regionsData = await fetchRegions(storageToken, userId)
             const transformedRegions = regionsData.map((role: { regionName: any }) => ({
                 label: role.regionName,
                 value: role.regionName,
@@ -66,7 +72,7 @@ export default function AdaptUserPage() {
             setRegions(transformedRegions)
         }
         onMount()
-    }, [usersListLocal, id])
+    }, [usersListLocal, id, dispatch_token])
 
     let navigate = useNavigate()
 
@@ -83,9 +89,13 @@ export default function AdaptUserPage() {
             })
             return
         }
+        const storageToken = localStorage.getItem('user_token')
         const response = await fetch('/api/users', {
             method: 'POST',
-            headers: { 'content-type': 'application/json' },
+            headers: {
+                'content-type': 'application/json',
+                'Authorization': `Bearer ${storageToken}`,
+            },
             body: JSON.stringify({
                 userName: userName,
                 userPassword: userPassword,
@@ -217,9 +227,13 @@ export default function AdaptUserPage() {
         }
     }
 
-    const fetchUsers = async (id: string | undefined) => {
+    const fetchUsers = async (id: string | undefined, storageToken: string | null) => {
         const response = await fetch(`/api/users/${id}`, {
-            method: 'GET'
+            method: 'GET',
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': `Bearer ${storageToken}`,
+            }
         })
         if (response.ok) {
             return await response.json()
@@ -227,9 +241,15 @@ export default function AdaptUserPage() {
         return []
     }
 
-    const fetchUserRoles = async () => {
-        const response = await fetch(`/api/users/roles`, {
-            method: 'GET'
+    const fetchUserRoles = async (storageToken: string | null, userId: string | null) => {
+        const response = await fetch('/api/users/roles?' + new URLSearchParams({
+            userId: userId!
+        }), {
+            method: 'GET',
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': `Bearer ${storageToken}`,
+            }
         })
         if (response.ok) {
             return await response.json()
@@ -237,9 +257,15 @@ export default function AdaptUserPage() {
         return []
     }
 
-    const fetchRegions = async () => {
-        const response = await fetch(`/api/regions`, {
-            method: 'GET'
+    const fetchRegions = async (storageToken: string | null, userId: string | null) => {
+        const response = await fetch('/api/regions?' + new URLSearchParams({
+            userId: userId!
+        }), {
+            method: 'GET',
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': `Bearer ${storageToken}`,
+            }
         })
         if (response.ok) {
             return await response.json()

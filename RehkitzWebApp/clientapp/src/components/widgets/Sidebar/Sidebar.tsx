@@ -2,11 +2,12 @@ import { FaInfo, FaListUl, FaMap, FaRegArrowAltCircleRight, FaUser, FaUsers } fr
 import styled from "styled-components"
 import SidebarButton from "../Sidebar/SidebarButton"
 import SidebarIcon from "../Sidebar/SidebarIcon"
-import { useContext } from "react"
+import { useContext, useEffect, useState } from "react"
 import { AppContext } from '../../../store/context'
 import { ROUTE_MAIN_PAGE, ROUTE_LOGIN_PAGE, ROUTE_MAP_PAGE, ROUTE_RESCUE_LIST_PAGE, ROUTE_USER_LIST_PAGE, ROUTE_MY_DATA_PAGE } from '../../../App'
 import { useNavigate } from "react-router"
 import { useMediaQuery } from "react-responsive"
+import { fetchUser } from "../../pages/MyDataPage"
 
 interface Props {
     showSidebar: boolean
@@ -18,7 +19,22 @@ export default function Sidebar({ showSidebar }: Props) {
     const isLargeScreen = useMediaQuery({ query: '(min-width: 1200px)' })
 
     const { dispatch_token } = useContext(AppContext)
+    const [userFunction, setUserFunction] = useState('')
     let navigate = useNavigate()
+
+    useEffect(() => {
+        const onMount = async () => {
+            const storageToken = localStorage.getItem('user_token')
+            if (storageToken !== null) {
+                dispatch_token({ type: 'set-token', value: storageToken })
+            }
+            const userId = localStorage.getItem('user_id')
+            const { userFunction } = await fetchUser(storageToken, userId)
+            localStorage.setItem('user_function', userFunction)
+            setUserFunction(userFunction)
+        }
+        onMount()
+    }, [userFunction, dispatch_token])
 
     function logout(): void {
         dispatch_token({ type: 'set-token', value: '' })
@@ -55,7 +71,9 @@ export default function Sidebar({ showSidebar }: Props) {
                     <SidebarButton onClick={moveToMyData} text="Meine Daten" icon={<FaUser />} />
                     <SidebarButton onClick={moveToRescues} text="Rettungen" icon={<FaListUl />} />
                     <SidebarButton onClick={moveToMap} text="Karte" icon={<FaMap />} />
-                    <SidebarButton onClick={moveToOrganisation} text="Organisation" icon={<FaUsers />} />
+                    {(userFunction === 'Admin' || userFunction === 'Zentrale') && (
+                        <SidebarButton onClick={moveToOrganisation} text="Organisation" icon={<FaUsers />} />
+                    )}
                     <SidebarButton onClick={moveToInformation} text="Information" icon={<FaInfo />} />
                     <SidebarButton onClick={logout} text="Abmelden" icon={<FaRegArrowAltCircleRight />} />
                 </SidebarColumnLayout>

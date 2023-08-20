@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
 import { DiscardProtocolButton, SaveProtocolButton } from '../controls/Button'
-import { ProtocolsContext } from '../../store/context'
+import { AppContext, ProtocolsContext } from '../../store/context'
 import Sidebar from '../widgets/Sidebar/Sidebar'
 import { useMediaQuery } from 'react-responsive'
 import { Menu } from '../widgets/Menu'
@@ -32,11 +32,18 @@ export default function AdaptProtocolPage() {
     const [regions, setRegions] = useState<{ label: string; value: string; }[]>([])
     const [areaSizes, setAreaSizes] = useState<{ label: string; value: string; }[]>([])
     const { protocolsListLocal, dispatch_protocols } = useContext(ProtocolsContext)
+    const { dispatch_token } = useContext(AppContext)
+
     let navigate = useNavigate()
     const { id } = useParams()
 
     useEffect(() => {
         const onMount = async () => {
+            const storageToken = localStorage.getItem('user_token')
+            if (storageToken !== null) {
+                dispatch_token({ type: 'set-token', value: storageToken })
+            }
+            const userId = localStorage.getItem('user_id')
             let data = protocolsListLocal.filter(protocols => protocols.protocolId.toString() === id)
             if (data.length === 0) {
                 setIsNewProtocol(true)
@@ -59,14 +66,14 @@ export default function AdaptProtocolPage() {
                 setAreaSize(areaSize)
                 setInjuredFawns(injuredFawns.toString())
             }
-            const regionsData = await fetchRegions()
+            const regionsData = await fetchRegions(storageToken, userId)
             const transformedRegions = regionsData.map((role: { regionName: any }) => ({
                 label: role.regionName,
                 value: role.regionName,
             }))
             setRegions(transformedRegions)
 
-            const areaSizesData = await fetchAreaSizes()
+            const areaSizesData = await fetchAreaSizes(storageToken)
             const transformedAreaSizes = areaSizesData.map((role: { areaSize: any }) => ({
                 label: role.areaSize,
                 value: role.areaSize,
@@ -74,10 +81,10 @@ export default function AdaptProtocolPage() {
             setAreaSizes(transformedAreaSizes)
         }
         onMount()
-    }, [protocolsListLocal, id])
+    }, [protocolsListLocal, id, dispatch_token])
 
     const isValidNumericString = (string: string) => {
-        return /^\d+$/.test(string);
+        return /^\d+$/.test(string)
     }
 
     const discardProtocol = async () => {
@@ -209,9 +216,15 @@ export default function AdaptProtocolPage() {
         }
     }
 
-    const fetchRegions = async () => {
-        const response = await fetch(`/api/regions`, {
-            method: 'GET'
+    const fetchRegions = async (storageToken: string | null, userId: string | null) => {
+        const response = await fetch('/api/regions?' + new URLSearchParams({
+            userId: userId!
+        }), {
+            method: 'GET',
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': `Bearer ${storageToken}`,
+            }
         })
         if (response.ok) {
             return await response.json()
@@ -219,9 +232,13 @@ export default function AdaptProtocolPage() {
         return []
     }
 
-    const fetchAreaSizes = async () => {
+    const fetchAreaSizes = async (storageToken: string | null) => {
         const response = await fetch(`/api/area `, {
-            method: 'GET'
+            method: 'GET',
+            headers: {
+                'content-type': 'application/json',
+                'Authorization': `Bearer ${storageToken}`,
+            },
         })
         if (response.ok) {
             return await response.json()

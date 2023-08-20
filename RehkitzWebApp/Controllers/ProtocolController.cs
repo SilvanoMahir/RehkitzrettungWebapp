@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using DocumentFormat.OpenXml;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RehkitzWebApp.FileController;
@@ -21,37 +22,61 @@ public class ProtocolController : ControllerBase
 
     // GET: /api/protocols
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<ProtocolDto>>> GetProtocol([FromQuery(Name = "searchString")] string searchString)
+    public async Task<ActionResult<IEnumerable<ProtocolDto>>> GetProtocols([FromQuery(Name = "userId")] string userId)
     {
         if (_context.Protocol == null)
         {
             return NotFound();
         }
 
-        if (searchString == null)
+        // get user district and the regions part of this district 
+        var userInUserList = await _context.User.FindAsync(int.Parse(userId));
+        var userRegionIdList = await _context.Region
+                                        .Where(p => p.RegionId == int.Parse(userInUserList.UserRegionId))
+                                        .ToListAsync();
+
+        var userDistrict = userRegionIdList[0].RegionDistrict;
+        var userRegionsFromDistrictList = await _context.Region
+                                                    .Where(p => p.RegionDistrict == userDistrict)
+                                                    .Select(p => p.RegionName)
+                                                    .ToListAsync();
+        // get logged in user role
+        var userRoleIdList = await _context.UserRoles
+                                    .Where(x => x.UserId == userInUserList.OwnerId)
+                                    .Select(x => x.RoleId)
+                                    .ToListAsync();
+
+        var userRole = await _context.Roles.FindAsync(userRoleIdList[0]);
+
+        List<Protocol> protocols = new List<Protocol>();
+        if (userRole.Name == "Admin")
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Suchtext ist null!" });
+            protocols = await _context.Protocol
+                                    .Where(p => p.EntryIsDeleted == false)
+                                    .ToListAsync();
+        }
+        else
+        {
+            protocols = await _context.Protocol
+                                    .Where(p => p.EntryIsDeleted == false && userRegionsFromDistrictList.Contains(p.RegionName))
+                                    .ToListAsync();
         }
 
-        var protocols = await _context.Protocol
-            .Where(p => p.EntryIsDeleted == false)
-            .ToListAsync();
-
-        if (searchString != "getAllProtocols")
-        {
-            searchString = searchString.ToLower();
-            protocols = protocols.Where(p => p.ProtocolCode!.ToLower().Contains(searchString) ||
-                                             p.ClientFullName!.ToLower().Contains(searchString) ||
-                                             p.LocalName!.ToLower().Contains(searchString) ||
-                                             p.PilotFullName!.ToLower().Contains(searchString) ||
-                                             p.RegionName!.ToLower().Contains(searchString) ||
-                                             p.Remark!.ToLower().Contains(searchString) ||
-                                             p.AreaSize!.ToLower().Contains(searchString) ||
-                                             p.FoundFawns.ToString()!.Contains(searchString) ||
-                                             p.InjuredFawns.ToString()!.Contains(searchString) ||
-                                             p.MarkedFawns.ToString()!.Contains(searchString) ||
-                                             p.Date.ToShortDateString()!.Contains(searchString)).ToList();
-        }
+        // if (searchString != "getAllProtocols")
+        // {
+        //     searchString = searchString.ToLower();
+        //     protocols = protocols.Where(p => p.ProtocolCode!.ToLower().Contains(searchString) ||
+        //                                      p.ClientFullName!.ToLower().Contains(searchString) ||
+        //                                      p.LocalName!.ToLower().Contains(searchString) ||
+        //                                      p.PilotFullName!.ToLower().Contains(searchString) ||
+        //                                      p.RegionName!.ToLower().Contains(searchString) ||
+        //                                      p.Remark!.ToLower().Contains(searchString) ||
+        //                                      p.AreaSize!.ToLower().Contains(searchString) ||
+        //                                      p.FoundFawns.ToString()!.Contains(searchString) ||
+        //                                      p.InjuredFawns.ToString()!.Contains(searchString) ||
+        //                                      p.MarkedFawns.ToString()!.Contains(searchString) ||
+        //                                      p.Date.ToShortDateString()!.Contains(searchString)).ToList();
+        // }
 
         var protocolDtos = new List<ProtocolDto>();
 
@@ -83,19 +108,48 @@ public class ProtocolController : ControllerBase
 
     // GET: /api/protocols/file
     [HttpGet("file")]
-    public async Task<IActionResult> ExportProtocolsToExcelAsync()
+    public async Task<IActionResult> ExportProtocolsToExcelAsync([FromQuery(Name = "userId")] string userId)
     {
         if (_context.Protocol == null)
         {
             return NotFound();
         }
 
-        var protocolsList = await _context.Protocol
-            .Where(p => p.EntryIsDeleted == false)
-            .ToListAsync();
+        // get user district and the regions part of this district 
+        var userInUserList = await _context.User.FindAsync(int.Parse(userId));
+        var userRegionIdList = await _context.Region
+                                        .Where(p => p.RegionId == int.Parse(userInUserList.UserRegionId))
+                                        .ToListAsync();
+
+        var userDistrict = userRegionIdList[0].RegionDistrict;
+        var userRegionsFromDistrictList = await _context.Region
+                                                    .Where(p => p.RegionDistrict == userDistrict)
+                                                    .Select(p => p.RegionName)
+                                                    .ToListAsync();
+        // get logged in user role
+        var userRoleIdList = await _context.UserRoles
+                                    .Where(x => x.UserId == userInUserList.OwnerId)
+                                    .Select(x => x.RoleId)
+                                    .ToListAsync();
+
+        var userRole = await _context.Roles.FindAsync(userRoleIdList[0]);
+
+        List<Protocol> protocolsList = new List<Protocol>();
+        if (userRole.Name == "Admin")
+        {
+            protocolsList = await _context.Protocol
+                                    .Where(p => p.EntryIsDeleted == false)
+                                    .ToListAsync();
+        }
+        else
+        {
+            protocolsList = await _context.Protocol
+                                    .Where(p => p.EntryIsDeleted == false && userRegionsFromDistrictList.Contains(p.RegionName))
+                                    .ToListAsync();
+        }
 
         ExcelExporter exporter = new ExcelExporter();
-        var stream = exporter.ExportToExcel(protocolsList);
+        var stream = exporter.ExportToExcel(protocolsList, userDistrict);
         return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "RehkitzrettungProtokolle" + DateTime.Now.ToString("yyyy-M-d") + ".xlsx");
     }
 
@@ -107,10 +161,19 @@ public class ProtocolController : ControllerBase
         {
             return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Der Server ist akutell nicht erreichbar! Bitte probieren Sie es später nochmals." });
         }
+        var userRegionTable = await _context.Region
+                                        .Where(p => p.RegionName == userRegion)
+                                        .ToListAsync();
+
+        var userDistrict = userRegionTable[0].RegionDistrict;
+        var userRegionListFromDistrict = await _context.Region
+                                                .Where(p => p.RegionDistrict == userDistrict)
+                                                .Select(p => p.RegionName)
+                                                .ToListAsync();
 
         var protocolsList = await _context.Protocol
-            .Where(p => p.EntryIsDeleted == false)
-            .ToListAsync();
+                                    .Where(p => p.EntryIsDeleted == false && userRegionListFromDistrict.Contains(p.RegionName))
+                                    .ToListAsync();
 
         int numberOfProtocols = 0;
         int foundFawns = 0;
@@ -119,7 +182,7 @@ public class ProtocolController : ControllerBase
 
         foreach (var protocol in protocolsList)
         {
-            if (protocol.RegionName == userRegion)
+            if (userRegionListFromDistrict.Contains(protocol.RegionName))
             {
                 ++numberOfProtocols;
                 foundFawns += protocol.FoundFawns;
@@ -134,6 +197,7 @@ public class ProtocolController : ControllerBase
             FoundFawns = foundFawns,
             InjuredFawns = injuredFawns,
             MarkedFawns = markedFawns,
+            DistrictName = userDistrict
         };
 
         return Ok(protocolOverviewDto);

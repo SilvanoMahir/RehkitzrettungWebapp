@@ -17,7 +17,8 @@ export default function MyDataPage() {
     const [definition, setDefinition] = useState('')
     const [region, setRegion] = useState('')
     const [userFunction, setUserFunction] = useState('')
-    const [mail, setMail] = useState('')
+    const [email , setEmail] = useState('')
+    const [userName, setUserName] = useState('')
 
     const { dispatch_token } = useContext(AppContext)
 
@@ -29,32 +30,19 @@ export default function MyDataPage() {
             }
             const id = localStorage.getItem('user_id')
             const user = await fetchUser(storageToken, id)
-            const { userId, userFirstName, userLastName, userMail, userFunction,
-                userRegion, userDefinition } = user
+            const { userId, userFirstName, userLastName, userEmail, userFunction,
+                userRegion, userDefinition, userName } = user
             setId(userId)
             setFirstName(userFirstName)
             setLastName(userLastName)
-            setMail(userMail)
+            setEmail(userEmail)
             setUserFunction(userFunction)
             setRegion(userRegion)
             setDefinition(userDefinition)
+            setUserName(userName)
         }
         onMount()
     }, [dispatch_token])
-
-    const fetchUser = async (storageToken: string | null, id: string | null) => {
-        const response = await fetch(`/api/users/${id}`, {
-            method: 'GET',
-            headers: {
-                'Content-type': 'application/json',
-                'Authorization': `Bearer ${storageToken}`,
-            },
-        })
-        if (response.ok) {
-            return await response.json()
-        }
-        return []
-    }
 
     return (
         <MyDataPageLayout>
@@ -64,20 +52,34 @@ export default function MyDataPage() {
                 <MyDataPageColumnLayout>
                     <PageTitle isNotMobile={isNotMobile}>Meine Daten</PageTitle>
                     <MyDataLayout isNotMobile={isNotMobile}>
-                        <MyDataTitle>Benutzer {definition}</MyDataTitle>
+                        <MyDataTitle>Benutzer {userName}</MyDataTitle>
                         <ColumnContainer>
                             <MyDataEntry entry="ID" value={id} />
                             <MyDataEntry entry="Name, Vorname" value={`${lastName}, ${firstName}`} />
                             <MyDataEntry entry="Bezeichnung" value={definition} />
                             <MyDataEntry entry="Kanton/Region" value={region} />
                             <MyDataEntry entry="Funktion" value={userFunction} />
-                            <MyDataEntry entry="E-Mail" value={mail} />
+                            <MyDataEntry entry="E-Mail" value={email} />
                         </ColumnContainer>
                     </MyDataLayout>
                 </MyDataPageColumnLayout>
             </MyDataPageRowLayout>
         </MyDataPageLayout>
     )
+}
+
+export const fetchUser = async (storageToken: string | null, id: string | null) => {
+    const response = await fetch(`/api/users/${id}`, {
+        method: 'GET',
+        headers: {
+            'Content-type': 'application/json',
+            'Authorization': `Bearer ${storageToken}`,
+        },
+    })
+    if (response.ok) {
+        return await response.json()
+    }
+    return []
 }
 
 const MyDataPageLayout = styled.div`

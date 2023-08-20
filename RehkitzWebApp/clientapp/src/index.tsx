@@ -10,7 +10,7 @@ const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
 const rootStyles = {
     height: '100%',
-};
+}
 
 root.render(
     <div style={rootStyles}>
@@ -25,5 +25,5 @@ root.render(
             <ToastContainer enableMultiContainer containerId={'ToasterNotification'} />
         </AppProvider>
     </div>
-);
+)
 
