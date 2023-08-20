@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom'
 import { ROUTE_ADAPT_PROTOCOL_PAGE } from '../../App'
 import { toast } from 'react-toastify'
 import { saveAs } from 'file-saver'
+import { fetchUser } from './MyDataPage'
 
 
 export default function RescueListPage() {
@@ -18,6 +19,8 @@ export default function RescueListPage() {
 
     const [loadingProtocols, setLoadingProtocols] = useState(true)
     const [localToken, setLocalToken] = useState('')
+    const [userFunction, setUserFunction] = useState('')
+    const [loggedUserId, setloggedUserId] = useState('')
     const { protocolsListLocal, dispatch } = useContext(ProtocolsContext)
     const { dispatch_token } = useContext(AppContext)
     let navigate = useNavigate()
@@ -29,7 +32,12 @@ export default function RescueListPage() {
             if (storageToken !== null) {
                 dispatch_token({ type: 'set-token', value: storageToken })
             }
-            const fetchedProtocolList = await fetchProtocols(storageToken)
+            const userId = localStorage.getItem('user_id')
+            const { userFunction } = await fetchUser(storageToken, userId)
+            localStorage.setItem('user_function', userFunction)
+            setUserFunction(userFunction)
+            setloggedUserId(userId as string)
+            const fetchedProtocolList = await fetchProtocols(storageToken, userId)
             const protocolsListLocal = [...fetchedProtocolList].sort((a, b) => {
                 const dateA: Date = new Date(a.date.split('.').reverse().join('-'))
                 const dateB: Date = new Date(b.date.split('.').reverse().join('-'))
@@ -44,8 +52,10 @@ export default function RescueListPage() {
         onMount()
     }, [dispatch, dispatch_token])
 
-    const fetchProtocols = async (storageToken: string | null) => {
-        const response = await fetch('/api/protocols', {
+    const fetchProtocols = async (storageToken: string | null, userId: string | null) => {
+        const response = await fetch('/api/protocols?'+ new URLSearchParams({
+            userId: userId!
+        }), {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json',
@@ -61,9 +71,11 @@ export default function RescueListPage() {
     const search = async () => {
     }
 
-    const downloadProtocol = async (storageToken: string | null) => {
+    const downloadProtocol = async (storageToken: string | null, userId: string | null) => {
         try {
-            const response = await fetch('/api/protocols/file', {
+            const response = await fetch('/api/protocols/file?'+ new URLSearchParams({
+                userId: userId!
+            }), {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${storageToken}`,
@@ -107,7 +119,7 @@ export default function RescueListPage() {
         content = (<p><em>Keine Protokolle gefunden.</em></p>)
     } else {
         content = protocolsListLocal.map(protocolEntry => (
-            <Protocol key={protocolEntry.protocolId} protocolId={protocolEntry.protocolId} />
+            <Protocol key={protocolEntry.protocolId} protocolId={protocolEntry.protocolId} userFunction={userFunction} />
         ))
     }
 
@@ -122,13 +134,15 @@ export default function RescueListPage() {
                         isNotMobile={isNotMobile}
                         placeholder={'Suchen'}></SearchInput>
                     <RowContainer>
-                        <DownloadProtocolButton onClick={() => downloadProtocol(localToken)}>Bericht herunterladen</DownloadProtocolButton>
-                        <CreateProtocolButton onClick={() => createProtocol()}>Neues Protokoll erstellen</CreateProtocolButton>
+                        <DownloadProtocolButton onClick={() => downloadProtocol(localToken, loggedUserId)}>Bericht herunterladen</DownloadProtocolButton>
+                        {(userFunction !== 'Wildhut') && (
+                            <CreateProtocolButton onClick={() => createProtocol()}>Neues Protokoll erstellen</CreateProtocolButton>
+                        )}
                     </RowContainer>
                     <SiteTitle>Übersicht Protokolle</SiteTitle>
-                        <RescueListItems>
-                            {content}
-                        </RescueListItems>
+                    <RescueListItems>
+                        {content}
+                    </RescueListItems>
                 </RescueListColumnLayout >
             </RescueListRowLayout>
         </RescueListLayout>
@@ -179,8 +193,8 @@ const SearchInput = styled.input<{ isNotMobile: boolean }>`
     font-size: 25px;
     background: #898472;
     color: #ffeccb;
-    margin-top: ${({ isNotMobile }) => (isNotMobile ? "5vh" : "12vh")};
-    margin-right: 0.75em; 
+    margin-top: ${({ isNotMobile }) => (isNotMobile ? "1em" : "3em")};
+    margin-right: ${({ isNotMobile }) => (isNotMobile ? "2vh" : "1vh")};
     &::placeholder {
         color: #ffeccb; 
         opacity: 0.5;

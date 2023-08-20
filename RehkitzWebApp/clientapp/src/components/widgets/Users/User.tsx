@@ -28,10 +28,10 @@ export default function Users({ userId }: Props) {
 
     useEffect(() => {
         const onMount = async () => {
-            const data = usersListLocal.filter(user => user.userId === userId);
+            const data = usersListLocal.filter(user => user.userId === userId)
             setUserEntry(data[0])
         }
-        onMount();
+        onMount()
     }, [usersListLocal, userId])
 
     return (

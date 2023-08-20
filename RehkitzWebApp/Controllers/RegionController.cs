@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DocumentFormat.OpenXml.Drawing.Diagrams;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RehkitzWebApp.Model;
 using RehkitzWebApp.Model.Dtos;
@@ -6,6 +8,7 @@ using System.Data;
 
 namespace webapi.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/regions")]
 public class RegionController : ControllerBase
@@ -19,17 +22,44 @@ public class RegionController : ControllerBase
 
     // GET: /api/regions
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<RegionNameDto>>> GetRegion()
+    public async Task<ActionResult<IEnumerable<RegionNameDto>>> GetRegion([FromQuery(Name = "userId")] string userId)
     {
         if (_context.Region == null)
         {
             return NotFound();
         }
 
-        var regionsList = await _context.Region
-            .Where(p => p.EntryIsDeleted == false)
-            .Select(p => p.RegionName)
-            .ToListAsync();
+        // get user district and the regions part of this district 
+        var userInUserList = await _context.User.FindAsync(int.Parse(userId));
+        var userRegionIdList = await _context.Region
+                                        .Where(p => p.RegionId == int.Parse(userInUserList.UserRegionId))
+                                        .ToListAsync();
+
+        var userDistrict = userRegionIdList[0].RegionDistrict;
+
+        // get logged in user role
+        var userRoleIdList = await _context.UserRoles
+                                    .Where(x => x.UserId == userInUserList.OwnerId)
+                                    .Select(x => x.RoleId)
+                                    .ToListAsync();
+
+        var userRole = await _context.Roles.FindAsync(userRoleIdList[0]);
+        List<string?> regionsList = new List<string>();
+
+        if (userRole.Name == "Admin")
+        {
+            regionsList = await _context.Region
+                                    .Where(p => p.EntryIsDeleted == false)
+                                    .Select(p => p.RegionName)
+                                    .ToListAsync();
+        }
+        else
+        {
+            regionsList = await _context.Region
+                                    .Where(p => p.EntryIsDeleted == false && p.RegionDistrict == userDistrict)
+                                    .Select(p => p.RegionName)
+                                    .ToListAsync();
+        }
 
         var regionDtosList = new List<RegionNameDto>();
 

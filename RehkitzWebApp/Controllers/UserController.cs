@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RehkitzWebApp.Model;
@@ -6,6 +7,7 @@ using RehkitzWebApp.Model.Dtos;
 
 namespace webapi.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/users")]
 public class UserController : ControllerBase
@@ -24,20 +26,51 @@ public class UserController : ControllerBase
 
     // GET: /api/users
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<UserSmallDto>>> GetUser()
+    public async Task<ActionResult<IEnumerable<UserSmallDto>>> GetUser([FromQuery(Name = "userId")] string userId)
     {
         if (_context.User == null)
         {
             return NotFound();
         }
 
-        var users = await _context.User
-            .Where(p => p.EntryIsDeleted == false)
-            .ToListAsync();
+        // get user district and the regions part of this district 
+        var userInUserList = await _context.User.FindAsync(int.Parse(userId));
+        var userRegionIdTable = await _context.Region
+                                .Where(p => p.RegionId == int.Parse(userInUserList.UserRegionId))
+                                .ToListAsync();
+
+        var userDistrict = userRegionIdTable[0].RegionDistrict;
+        var userRegionListFromDistrict = await _context.Region
+                                                .Where(p => p.RegionDistrict == userDistrict)
+                                                .Select(p => p.RegionId.ToString())
+                                                .ToListAsync();
+
+
+        // get logged in user role
+        var loggedInUserRoleId = await _context.UserRoles
+                                            .Where(x => x.UserId == userInUserList.OwnerId)
+                                            .Select(x => x.RoleId)
+                                            .ToListAsync();
+
+        var loggedInUserRole = await _context.Roles.FindAsync(loggedInUserRoleId[0]);
+
+        List<User> userList = new List<User>();
+        if (loggedInUserRole.Name == "Admin")
+        {
+            userList = await _context.User
+                                .Where(p => p.EntryIsDeleted == false)
+                                .ToListAsync();
+        }
+        else
+        {
+            userList = await _context.User
+                                .Where(p => p.EntryIsDeleted == false && userRegionListFromDistrict.Contains(p.UserRegionId))
+                                .ToListAsync();
+        }
 
         var userDtos = new List<UserSmallDto>();
 
-        foreach (var user in users)
+        foreach (var user in userList)
         {
             var userRegion = await _context.Region.FindAsync(int.Parse(user.UserRegionId));
             var userRoleId = await _context.UserRoles
@@ -52,8 +85,16 @@ public class UserController : ControllerBase
             if (userRoleId.Count != 0)
             {
                 var userRole = await _context.Roles.FindAsync(userRoleId[0]);
-                var userDto = getUserDto(user, userRegion, userRole.Name, userName[0]);
-                userDtos.Add(userDto.ToUserSmallListDto());
+                if (loggedInUserRole.Name == "Admin" || userRole.Name != "Admin")
+                {
+                    var userEmail = await _context.Region
+                                            .Where(x => x.RegionId == userRegion.RegionId)
+                                            .Select(x => x.ContactPersonEmail)
+                                            .FirstOrDefaultAsync();
+
+                    var userDto = getUserDto(user, userRegion, userRole.Name, userName[0], userEmail);
+                    userDtos.Add(userDto.ToUserSmallListDto());
+                }
             }
             else
             {
@@ -93,6 +134,11 @@ public class UserController : ControllerBase
                                 .Select(x => x.RoleId)
                                 .ToListAsync();
 
+        var userEmail = await _context.Region
+                                .Where(x => x.RegionId == userRegion.RegionId)
+                                .Select(x => x.ContactPersonEmail)
+                                .ToListAsync();
+
         var userName = await _context.Users
                         .Where(x => x.Id == user.OwnerId)
                         .Select(x => x.UserName)
@@ -112,23 +158,43 @@ public class UserController : ControllerBase
         {
             return NotFound();
         }
-        return Ok(getUserDto(user, userRegion, userRole, userName[0]));
+        return Ok(getUserDto(user, userRegion, userRole, userName[0], userEmail[0]));
     }
 
     // GET: /api/users/roles
     [HttpGet("roles")]
-    public async Task<ActionResult<IEnumerable<RoleDto>>> GetUserRoles()
+    public async Task<ActionResult<IEnumerable<RoleDto>>> GetUserRoles([FromQuery(Name = "userId")] string userId)
     {
         if (_context.User == null)
         {
             return NotFound();
         }
 
-        var roleDtosList = new List<RoleDto>();
+        // get logged in user role
+        var userInUserList = await _context.User.FindAsync(int.Parse(userId));
+        var userRoleIdList = await _context.UserRoles
+                                    .Where(x => x.UserId == userInUserList.OwnerId)
+                                    .Select(x => x.RoleId)
+                                    .ToListAsync();
 
-        List<string> rolesList = await _context.Roles
-            .Select(x => x.Name)
-            .ToListAsync();
+        var userRole = await _context.Roles.FindAsync(userRoleIdList[0]);
+
+        var roleDtosList = new List<RoleDto>();
+        List<string> rolesList = new List<string>(); 
+
+        if (userRole.Name == "Admin")
+        {
+            rolesList = await _context.Roles
+                                .Select(x => x.Name)
+                                .ToListAsync();
+        }
+        else
+        {
+            rolesList = await _context.Roles
+                                .Where(x => x.Name != "Admin")
+                                .Select(x => x.Name)
+                                .ToListAsync();
+        }
 
         foreach (var role in rolesList)
         {
@@ -322,7 +388,7 @@ public class UserController : ControllerBase
         return (_context.User?.Any(e => e.UserId == id)).GetValueOrDefault();
     }
 
-    private UserDto getUserDto(User user, Region region, string userRole, string userName)
+    private UserDto getUserDto(User user, Region region, string userRole, string userName, string userEmail)
     {
         return new UserDto
         {
@@ -333,6 +399,7 @@ public class UserController : ControllerBase
             UserFirstName = user.UserFirstName,
             UserLastName = user.UserLastName,
             UserName = userName,
+            UserEmail = userEmail,
             UserPassword = "Password"
         };
     }

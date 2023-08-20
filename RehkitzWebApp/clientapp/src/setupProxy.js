@@ -14,7 +14,7 @@ const context = [
     "/api/authenticate/login",
     "/api/authenticate/register-admin",
     "/api/authenticate/register",
-];
+]
 
 module.exports = function (app) {
     const appProxy = createProxyMiddleware(context, {
@@ -23,7 +23,7 @@ module.exports = function (app) {
         headers: {
             Connection: 'Keep-Alive'
         }
-    });
+    })
 
-    app.use(appProxy);
-};
+    app.use(appProxy)
+}

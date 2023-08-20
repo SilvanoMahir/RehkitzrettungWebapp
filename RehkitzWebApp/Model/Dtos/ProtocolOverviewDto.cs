@@ -6,4 +6,5 @@ public class ProtocolOverviewDto
     public int FoundFawns { get; set; }
     public int InjuredFawns { get; set; }
     public int MarkedFawns { get; set; }
+    public string? DistrictName { get; set; }
 }

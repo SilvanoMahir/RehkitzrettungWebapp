@@ -2,7 +2,7 @@ import { FaListUl } from "react-icons/fa"
 import styled from "styled-components"
 
 type Props = {
-    open: boolean;
+    open: boolean
     setOpen: (v: boolean) => void
 }
 
