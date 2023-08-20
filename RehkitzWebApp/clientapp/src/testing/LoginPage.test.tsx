@@ -3,6 +3,8 @@ import '@testing-library/jest-dom'
 import LoginPage from '../components/pages/LoginPage'
 import { MemoryRouter } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import userEvent from '@testing-library/user-event'
+import debug from 'debug'
 
 test('all fields are present on the LoginPage', () => {
   render(
@@ -36,14 +38,34 @@ test('toast notification appears when login button is clicked with empty fields'
     </MemoryRouter>
   )
 
-  const submitButton = screen.getByRole('button', { name: 'Anmelden' });
+  const submitButton = screen.getByRole('button', { name: 'Anmelden' })
   fireEvent.click(submitButton)
 
   expect(toast.error).toHaveBeenCalledWith(
     'Bitte Benutzername und Password einsetzen!',
     {
       position: 'top-center',
-      containerId: 'LoginToaster',
+      containerId: 'ToasterNotification',
     }
   )
 })
+
+test('test login', async () => {
+  render(
+    <MemoryRouter>
+      <LoginPage />
+    </MemoryRouter>
+  )
+
+  if (process.env.NODE_ENV === 'development') {
+    debug.enable
+  }
+
+  userEvent.type(screen.getByPlaceholderText('Benutzername'), 'admin')
+  userEvent.type(screen.getByPlaceholderText('Passwort'), 'Password@123')
+  const submitButton = screen.getByRole('button', { name: 'Anmelden' })
+
+  fireEvent.click(submitButton)
+  screen.debug()
+})
+

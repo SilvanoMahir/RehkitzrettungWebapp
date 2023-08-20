@@ -15,7 +15,6 @@ test('check placeholders and labels in AdaptProtocolPage', () => {
   const userRegionLabel = screen.getByText('Region')
   const userFunctionLabel = screen.getByText('Funktion')
   const userNameLabel = screen.getByText('Benutzername')
-  const userMailLabel = screen.getByText('E-Mail')
   const userPasswordLabel = screen.getByText('Passwort')
 
   expect(userFirstNameLabel).toBeInTheDocument()
@@ -24,6 +23,5 @@ test('check placeholders and labels in AdaptProtocolPage', () => {
   expect(userRegionLabel).toBeInTheDocument()
   expect(userFunctionLabel).toBeInTheDocument()
   expect(userNameLabel).toBeInTheDocument()
-  expect(userMailLabel).toBeInTheDocument()
   expect(userPasswordLabel).toBeInTheDocument()
 })
