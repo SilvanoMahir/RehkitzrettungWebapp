@@ -98,15 +98,6 @@ public class UserController : ControllerBase
             }
         }
 
-        // if (searchString != "getAllUsers")
-        // {
-        //     searchString = searchString.ToLower();
-        //     userDtos = userDtos.Where(u => u.UserId.ToString()!.Contains(searchString) ||
-        //                                    u.UserDefinition!.ToLower().Contains(searchString) ||
-        //                                    u.UserFunction!.ToLower().Contains(searchString) ||
-        //                                    u.UserRegion!.ToLower().Contains(searchString)).ToList();
-        // }
-
         if (userDtos.Count != 0)
         {
             return Ok(userDtos);

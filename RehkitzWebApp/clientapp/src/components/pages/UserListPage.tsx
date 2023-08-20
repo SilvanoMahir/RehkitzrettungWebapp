@@ -9,6 +9,7 @@ import UserEntryTitles from '../widgets/Users/UserEntryTitles'
 import { CreateNewUserButton } from '../controls/Button'
 import { ROUTE_ADAPT_USER_PAGE } from '../../App'
 import { useNavigate } from 'react-router-dom'
+import { UserEntries } from '../../models/UserEntries'
 
 export default function UserListPage() {
 
@@ -16,6 +17,7 @@ export default function UserListPage() {
     const isLargeScreen = useMediaQuery({ query: '(min-width: 1200px)' })
 
     const [loadingUsers, setLoadingUsers] = useState(true)
+    const [fetchedUsersListLocal, setFetchedUsersListLocal] = useState<UserEntries[]>([])
     const { usersListLocal, dispatch_users } = useContext(UserContext)
     const { dispatch_token } = useContext(AppContext)
     let navigate = useNavigate()
@@ -28,6 +30,7 @@ export default function UserListPage() {
             }
             const userId = localStorage.getItem('user_id')
             const usersListLocal = await fetchUsers(storageToken, userId)
+            setFetchedUsersListLocal(usersListLocal)
             setLoadingUsers(false)
             dispatch_users({ type: 'get-users', usersListLocal })
         }
@@ -35,12 +38,6 @@ export default function UserListPage() {
     }, [dispatch_users, dispatch_token])
 
     const fetchUsers = async (storageToken: string | null, userId: string | null) => {
-        // if (searchString?.length === 1) {
-        //     return
-        // }
-        // if (searchString === '') {
-        //     searchString = 'getAllUsers'
-        // }
         try {
             const response = await fetch('/api/users?' + new URLSearchParams({
                 userId: userId!
@@ -64,12 +61,24 @@ export default function UserListPage() {
         navigate(ROUTE_ADAPT_USER_PAGE)
     }
 
-    const handleSearchInputChange = async (event: { target: { value: string | undefined } }) => {
-        // const usersListLocal = await fetchUsers(event.target.value)
-        // 
-        // if (usersListLocal !== undefined) {
-        //     dispatch_users({ type: 'get-users', usersListLocal })
-        // }
+    const handleSearchInputChange = async (event: { target: { value: string } }) => {
+        let searchString = event.target.value
+
+        if (searchString?.length === 1) {
+            return
+        }
+        searchString = searchString.toLowerCase()
+        let usersListLocal = fetchedUsersListLocal
+
+        if (searchString !== '') {
+            usersListLocal = usersListLocal.filter((user) =>
+                user.userId.toString().toLowerCase().includes(searchString) ||
+                user.userDefinition.toLowerCase().includes(searchString) ||
+                user.userFunction.toLowerCase().includes(searchString) ||
+                user.userRegion.toLowerCase().includes(searchString))
+        }
+
+        dispatch_users({ type: 'get-users', usersListLocal })
     }
 
     let content
