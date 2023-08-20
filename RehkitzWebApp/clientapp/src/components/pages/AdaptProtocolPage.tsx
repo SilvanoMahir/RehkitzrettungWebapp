@@ -31,7 +31,7 @@ export default function AdaptProtocolPage() {
     const [isNewProtocol, setIsNewProtocol] = useState(false)
     const [regions, setRegions] = useState<{ label: string; value: string; }[]>([])
     const [areaSizes, setAreaSizes] = useState<{ label: string; value: string; }[]>([])
-    const { protocolsListLocal, dispatch } = useContext(ProtocolsContext)
+    const { protocolsListLocal, dispatch_protocols } = useContext(ProtocolsContext)
     const { dispatch_token } = useContext(AppContext)
 
     let navigate = useNavigate()
@@ -152,7 +152,7 @@ export default function AdaptProtocolPage() {
                 injuredFawns: parseInt(injuredFawns),
             })
 
-            dispatch({ type: 'add-protocols', protocolsListLocal, newProtocol })
+            dispatch_protocols({ type: 'add-protocols', protocolsListLocal, newProtocol })
             navigate(ROUTE_RESCUE_LIST_PAGE)
             toast.success("Protokoll erfolgreich hinzugefügt!", {
                 position: toast.POSITION.TOP_CENTER,
@@ -207,7 +207,7 @@ export default function AdaptProtocolPage() {
             }),
         })
         if (response.ok) {
-            dispatch({ type: 'update-protocols', protocolsListLocal })
+            dispatch_protocols({ type: 'update-protocols', protocolsListLocal })
             navigate(ROUTE_RESCUE_LIST_PAGE)
             toast.success("Protokoll erfolgreich angepasst!", {
                 position: toast.POSITION.TOP_CENTER,

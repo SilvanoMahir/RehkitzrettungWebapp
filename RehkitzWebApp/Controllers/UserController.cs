@@ -96,10 +96,6 @@ public class UserController : ControllerBase
                     userDtos.Add(userDto.ToUserSmallListDto());
                 }
             }
-            else
-            {
-                return NoContent();
-            }
         }
 
         if (userDtos.Count != 0)
@@ -180,7 +176,7 @@ public class UserController : ControllerBase
         var userRole = await _context.Roles.FindAsync(userRoleIdList[0]);
 
         var roleDtosList = new List<RoleDto>();
-        List<string> rolesList = new List<string>(); 
+        List<string> rolesList = new List<string>();
 
         if (userRole.Name == "Admin")
         {

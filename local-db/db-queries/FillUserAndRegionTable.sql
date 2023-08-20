@@ -22,6 +22,6 @@ INSERT INTO [rehkitzrettung-db].[dbo].[Region]
 			, [ContactPersonLastName]
 			, [ContactPersonEmail])
 VALUES
-    ('Tasna', 'GR','Bezirk 10', 0, 'Hans','Schmid', 'tasna'),
-    ('Valsot', 'GR','Bezirk 10', 0, 'Urs', 'Locher', 'valsot');
+    ('Tasna', 'GR','Bezirk 10', 0, 'Hans','Schmid', 'admin@tasna.ch'),
+    ('Valsot', 'GR','Bezirk 10', 0, 'Urs', 'Locher', 'admin@valsot.ch');
 GO

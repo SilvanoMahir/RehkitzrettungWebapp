@@ -1,12 +1,10 @@
 ﻿using DocumentFormat.OpenXml;
-using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RehkitzWebApp.FileController;
 using RehkitzWebApp.Model;
 using RehkitzWebApp.Model.Dtos;
-using System.Linq;
 
 namespace RehkitzWebApp.Controllers;
 
@@ -51,11 +49,12 @@ public class ProtocolController : ControllerBase
         var userRole = await _context.Roles.FindAsync(userRoleIdList[0]);
 
         List<Protocol> protocols = new List<Protocol>();
-        if (userRole.Name == "Admin") { 
+        if (userRole.Name == "Admin")
+        {
             protocols = await _context.Protocol
                                     .Where(p => p.EntryIsDeleted == false)
                                     .ToListAsync();
-        } 
+        }
         else
         {
             protocols = await _context.Protocol

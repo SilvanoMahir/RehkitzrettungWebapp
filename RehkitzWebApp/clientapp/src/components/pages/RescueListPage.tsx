@@ -11,7 +11,7 @@ import { ROUTE_ADAPT_PROTOCOL_PAGE } from '../../App'
 import { toast } from 'react-toastify'
 import { saveAs } from 'file-saver'
 import { fetchUser } from './MyDataPage'
-
+import { ProtocolEntries } from '../../models/ProtocolEntries'
 
 export default function RescueListPage() {
 
@@ -20,8 +20,9 @@ export default function RescueListPage() {
     const [loadingProtocols, setLoadingProtocols] = useState(true)
     const [localToken, setLocalToken] = useState('')
     const [userFunction, setUserFunction] = useState('')
-    const [loggedUserId, setloggedUserId] = useState('')
-    const { protocolsListLocal, dispatch } = useContext(ProtocolsContext)
+    const [loggedUserId, setLoggedUserId] = useState('')
+    const [fetchedProtocolsListLocal, setFetchedProtocolsListLocal] = useState<ProtocolEntries[]>([])
+    const { protocolsListLocal, dispatch_protocols } = useContext(ProtocolsContext)
     const { dispatch_token } = useContext(AppContext)
     let navigate = useNavigate()
 
@@ -36,9 +37,10 @@ export default function RescueListPage() {
             const { userFunction } = await fetchUser(storageToken, userId)
             localStorage.setItem('user_function', userFunction)
             setUserFunction(userFunction)
-            setloggedUserId(userId as string)
-            const fetchedProtocolList = await fetchProtocols(storageToken, userId)
-            const protocolsListLocal = [...fetchedProtocolList].sort((a, b) => {
+            setLoggedUserId(userId as string)
+            const fetchedProtocols = await fetchProtocols(storageToken, userId)
+            setFetchedProtocolsListLocal(fetchedProtocols)
+            const protocolsListLocal = [...fetchedProtocols].sort((a, b) => {
                 const dateA: Date = new Date(a.date.split('.').reverse().join('-'))
                 const dateB: Date = new Date(b.date.split('.').reverse().join('-'))
                 return dateB.getTime() - dateA.getTime()
@@ -47,28 +49,29 @@ export default function RescueListPage() {
                 setLocalToken(storageToken)
             }
             setLoadingProtocols(false)
-            dispatch({ type: 'get-protocols', protocolsListLocal })
+            dispatch_protocols({ type: 'get-protocols', protocolsListLocal })
         }
         onMount()
-    }, [dispatch, dispatch_token])
+    }, [dispatch_protocols, dispatch_token])
 
     const fetchProtocols = async (storageToken: string | null, userId: string | null) => {
-        const response = await fetch('/api/protocols?'+ new URLSearchParams({
-            userId: userId!
-        }), {
-            method: 'GET',
-            headers: {
-                'Content-type': 'application/json',
-                'Authorization': `Bearer ${storageToken}`,
+        try {
+            const response = await fetch('/api/protocols?' + new URLSearchParams({
+                userId: userId!
+            }), {
+                method: 'GET',
+                headers: {
+                    'Content-type': 'application/json',
+                    'Authorization': `Bearer ${storageToken}`,
+                }
+            })
+            if (response.ok) {
+                return await response.json()
             }
-        })
-        if (response.ok) {
-            return await response.json()
+            return []
+        } catch (error) {
+            return []
         }
-        return []
-    }
-
-    const search = async () => {
     }
 
     const downloadProtocol = async (storageToken: string | null, userId: string | null) => {
@@ -111,6 +114,39 @@ export default function RescueListPage() {
         navigate(ROUTE_ADAPT_PROTOCOL_PAGE)
     }
 
+    const handleSearchInputChange = async (event: { target: { value: string } }) => {
+        let searchString = event.target.value
+
+        if (searchString?.length === 1 ) {
+            return
+        }
+        searchString = searchString.toLowerCase()
+        let protocolsListLocal = fetchedProtocolsListLocal
+
+        if (searchString !== '') {
+            protocolsListLocal = protocolsListLocal.filter((protocol) =>
+                protocol.protocolCode.toLowerCase().includes(searchString) ||
+                protocol.clientFullName.toLowerCase().includes(searchString) ||
+                protocol.localName.toLowerCase().includes(searchString) ||
+                protocol.pilotFullName.toLowerCase().includes(searchString) ||
+                protocol.regionName.toLowerCase().includes(searchString) ||
+                protocol.remark.toLowerCase().includes(searchString) ||
+                protocol.areaSize.toLowerCase().includes(searchString) ||
+                protocol.foundFawns.toString().toLowerCase().includes(searchString) ||
+                protocol.injuredFawns.toString().toLowerCase().includes(searchString) ||
+                protocol.markedFawns.toString().toLowerCase().includes(searchString) ||
+                protocol.date.toLowerCase().includes(searchString))
+        }
+
+        protocolsListLocal = [...protocolsListLocal].sort((a, b) => {
+            const dateA: Date = new Date(a.date.split('.').reverse().join('-'))
+            const dateB: Date = new Date(b.date.split('.').reverse().join('-'))
+            return dateB.getTime() - dateA.getTime()
+        })
+
+        dispatch_protocols({ type: 'get-protocols', protocolsListLocal })
+    }
+
     let content
 
     if (loadingProtocols) {
@@ -129,8 +165,8 @@ export default function RescueListPage() {
             <RescueListRowLayout isNotMobile={isNotMobile}>
                 {(isNotMobile) && <Sidebar showSidebar={isNotMobile} />}
                 <RescueListColumnLayout>
-                    <SearchInput onChange={search}
-                        value={''}
+                    <SearchInput
+                        onChange={handleSearchInputChange}
                         isNotMobile={isNotMobile}
                         placeholder={'Suchen'}></SearchInput>
                     <RowContainer>
