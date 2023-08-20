@@ -62,22 +62,6 @@ public class ProtocolController : ControllerBase
                                     .ToListAsync();
         }
 
-        // if (searchString != "getAllProtocols")
-        // {
-        //     searchString = searchString.ToLower();
-        //     protocols = protocols.Where(p => p.ProtocolCode!.ToLower().Contains(searchString) ||
-        //                                      p.ClientFullName!.ToLower().Contains(searchString) ||
-        //                                      p.LocalName!.ToLower().Contains(searchString) ||
-        //                                      p.PilotFullName!.ToLower().Contains(searchString) ||
-        //                                      p.RegionName!.ToLower().Contains(searchString) ||
-        //                                      p.Remark!.ToLower().Contains(searchString) ||
-        //                                      p.AreaSize!.ToLower().Contains(searchString) ||
-        //                                      p.FoundFawns.ToString()!.Contains(searchString) ||
-        //                                      p.InjuredFawns.ToString()!.Contains(searchString) ||
-        //                                      p.MarkedFawns.ToString()!.Contains(searchString) ||
-        //                                      p.Date.ToShortDateString()!.Contains(searchString)).ToList();
-        // }
-
         var protocolDtos = new List<ProtocolDto>();
 
         foreach (var protocol in protocols)

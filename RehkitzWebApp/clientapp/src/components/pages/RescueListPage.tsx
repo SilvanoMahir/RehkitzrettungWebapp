@@ -1,4 +1,4 @@
-import { SetStateAction, useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
 import { DownloadProtocolButton, CreateProtocolButton } from '../controls/Button'
 import { AppContext, ProtocolsContext } from '../../store/context'
@@ -11,7 +11,7 @@ import { ROUTE_ADAPT_PROTOCOL_PAGE } from '../../App'
 import { toast } from 'react-toastify'
 import { saveAs } from 'file-saver'
 import { fetchUser } from './MyDataPage'
-
+import { ProtocolEntries } from '../../models/ProtocolEntries'
 
 export default function RescueListPage() {
 
@@ -21,6 +21,7 @@ export default function RescueListPage() {
     const [localToken, setLocalToken] = useState('')
     const [userFunction, setUserFunction] = useState('')
     const [loggedUserId, setLoggedUserId] = useState('')
+    const [fetchedProtocolsListLocal, setFetchedProtocolsListLocal] = useState<ProtocolEntries[]>([])
     const { protocolsListLocal, dispatch_protocols } = useContext(ProtocolsContext)
     const { dispatch_token } = useContext(AppContext)
     let navigate = useNavigate()
@@ -37,8 +38,9 @@ export default function RescueListPage() {
             localStorage.setItem('user_function', userFunction)
             setUserFunction(userFunction)
             setLoggedUserId(userId as string)
-            const fetchedProtocolList = await fetchProtocols(storageToken, userId)
-            const protocolsListLocal = [...fetchedProtocolList].sort((a, b) => {
+            const fetchedProtocols = await fetchProtocols(storageToken, userId)
+            setFetchedProtocolsListLocal(fetchedProtocols)
+            const protocolsListLocal = [...fetchedProtocols].sort((a, b) => {
                 const dateA: Date = new Date(a.date.split('.').reverse().join('-'))
                 const dateB: Date = new Date(b.date.split('.').reverse().join('-'))
                 return dateB.getTime() - dateA.getTime()
@@ -53,12 +55,6 @@ export default function RescueListPage() {
     }, [dispatch_protocols, dispatch_token])
 
     const fetchProtocols = async (storageToken: string | null, userId: string | null) => {
-        // if (searchString?.length === 1) {
-        //     return
-        // }
-        // if (searchString === '') {
-        //     searchString = 'getAllProtocols'
-        // }
         try {
             const response = await fetch('/api/protocols?' + new URLSearchParams({
                 userId: userId!
@@ -118,22 +114,37 @@ export default function RescueListPage() {
         navigate(ROUTE_ADAPT_PROTOCOL_PAGE)
     }
 
-    const handleSearchInputChange = async (event: { target: { value: string | undefined } }) => {
-        // const fetchedProtocolList = await fetchProtocols(localToken, event.target.value)
-        // 
-        // if (fetchedProtocolList == null) {
-        //     return
-        // }
-        // 
-        // const protocolsListLocal = [...fetchedProtocolList].sort((a, b) => {
-        //     const dateA: Date = new Date(a.date.split('.').reverse().join('-'))
-        //     const dateB: Date = new Date(b.date.split('.').reverse().join('-'))
-        //     return dateB.getTime() - dateA.getTime()
-        // })
-        // 
-        // if (protocolsListLocal !== undefined) {
-        //     dispatch_protocols({ type: 'get-protocols', protocolsListLocal })
-        // }
+    const handleSearchInputChange = async (event: { target: { value: string } }) => {
+        let searchString = event.target.value
+
+        if (searchString?.length === 1 ) {
+            return
+        }
+        searchString = searchString.toLowerCase()
+        let protocolsListLocal = fetchedProtocolsListLocal
+
+        if (searchString !== '') {
+            protocolsListLocal = protocolsListLocal.filter((protocol) =>
+                protocol.protocolCode.toLowerCase().includes(searchString) ||
+                protocol.clientFullName.toLowerCase().includes(searchString) ||
+                protocol.localName.toLowerCase().includes(searchString) ||
+                protocol.pilotFullName.toLowerCase().includes(searchString) ||
+                protocol.regionName.toLowerCase().includes(searchString) ||
+                protocol.remark.toLowerCase().includes(searchString) ||
+                protocol.areaSize.toLowerCase().includes(searchString) ||
+                protocol.foundFawns.toString().toLowerCase().includes(searchString) ||
+                protocol.injuredFawns.toString().toLowerCase().includes(searchString) ||
+                protocol.markedFawns.toString().toLowerCase().includes(searchString) ||
+                protocol.date.toLowerCase().includes(searchString))
+        }
+
+        protocolsListLocal = [...protocolsListLocal].sort((a, b) => {
+            const dateA: Date = new Date(a.date.split('.').reverse().join('-'))
+            const dateB: Date = new Date(b.date.split('.').reverse().join('-'))
+            return dateB.getTime() - dateA.getTime()
+        })
+
+        dispatch_protocols({ type: 'get-protocols', protocolsListLocal })
     }
 
     let content
