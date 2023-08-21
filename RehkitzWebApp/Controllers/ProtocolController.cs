@@ -230,6 +230,35 @@ public class ProtocolController : ControllerBase
             return NotFound();
         }
 
+        // int maxProtocolCode = 0;
+        // for (int index = 0; index < _context.Protocol.Count(); ++index)
+        // {
+        //     int currentProtocolCode = int.Parse(_context.Protocol.ElementAt(index).ProtocolCode);
+        //     if (maxProtocolCode < currentProtocolCode)
+        //     {
+        //         maxProtocolCode = currentProtocolCode;
+        //     }
+        // }
+        // protocolDto.ProtocolCode = Convert.ToString(maxProtocolCode + 1);
+        // 
+        // int maxAge = context.Persons.Max(p => p.Age);
+
+        // int maxProtocolCode = _context.Protocol.Max(p => int.Parse(p.ProtocolCode));
+        // int maxProtocolCode = _context.Protocol.Max(p => (int?)p.ProtocolCode) ?? 0;
+        // int maxProtocolCode = _context.Protocol.ToList().Max(p => Convert.ToInt32(p.ProtocolCode));
+
+        int maxProtocolCode = 0;
+        foreach (var protocolEntry in _context.Protocol)
+        {
+            int currentProtocolCode = int.Parse(protocolEntry.ProtocolCode);
+            if (maxProtocolCode < currentProtocolCode)
+            {
+                maxProtocolCode = currentProtocolCode;
+            }
+        }
+
+        protocolDto.ProtocolCode = Convert.ToString(maxProtocolCode + 1);
+
         bool entryIsDeleted = false;
         var protocol = protocolDto.ToProtocolEntity(entryIsDeleted);
         _context.Protocol.Add(protocol);
