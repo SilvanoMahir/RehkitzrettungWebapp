@@ -1,10 +1,11 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import LoginPage from '../components/pages/LoginPage'
-import { MemoryRouter } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import userEvent from '@testing-library/user-event'
 import debug from 'debug'
+import App from '../App'
+import { ProtocolProvider, AppProvider, UserProvider } from '../store/context'
+import { MemoryRouter } from 'react-router'
 
 test('all fields are present on the LoginPage', () => {
   render(
@@ -50,22 +51,36 @@ test('toast notification appears when login button is clicked with empty fields'
   )
 })
 
-test('test login', async () => {
+test('login routing', async () => {
   render(
-    <MemoryRouter>
-      <LoginPage />
-    </MemoryRouter>
+      <AppProvider>
+        <ProtocolProvider>
+          <UserProvider>
+            <MemoryRouter>
+              <App />
+            </MemoryRouter>
+          </UserProvider>
+        </ProtocolProvider>
+      </AppProvider>
   )
 
   if (process.env.NODE_ENV === 'development') {
     debug.enable
   }
 
-  userEvent.type(screen.getByPlaceholderText('Benutzername'), 'admin')
-  userEvent.type(screen.getByPlaceholderText('Passwort'), 'Password@123')
-  const submitButton = screen.getByRole('button', { name: 'Anmelden' })
+  const inputUsrname = screen.getByPlaceholderText('Benutzername')
+  fireEvent.change(inputUsrname, { target: { value: 'admin' } })
+  const inputPswd = screen.getByPlaceholderText('Passwort')
+  fireEvent.change(inputPswd, { target: { value: 'Password@123' } })
 
+  const submitButton = screen.getByRole('button', { name: 'Anmelden' })
   fireEvent.click(submitButton)
-  screen.debug()
+
+  expect(screen.getByDisplayValue('admin')).toBeInTheDocument()
+
+  await waitFor(() =>
+    expect(screen.getByText('Willkommen')).toBeInTheDocument()
+  )
+
 })
 
