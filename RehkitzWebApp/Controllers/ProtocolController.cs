@@ -257,7 +257,8 @@ public class ProtocolController : ControllerBase
             }
         }
 
-        protocolDto.ProtocolCode = Convert.ToString(maxProtocolCode + 1);
+        ++maxProtocolCode;
+        protocolDto.ProtocolCode = maxProtocolCode.ToString("D4");
 
         bool entryIsDeleted = false;
         var protocol = protocolDto.ToProtocolEntity(entryIsDeleted);
