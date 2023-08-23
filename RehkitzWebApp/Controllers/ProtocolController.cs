@@ -230,23 +230,6 @@ public class ProtocolController : ControllerBase
             return NotFound();
         }
 
-        // int maxProtocolCode = 0;
-        // for (int index = 0; index < _context.Protocol.Count(); ++index)
-        // {
-        //     int currentProtocolCode = int.Parse(_context.Protocol.ElementAt(index).ProtocolCode);
-        //     if (maxProtocolCode < currentProtocolCode)
-        //     {
-        //         maxProtocolCode = currentProtocolCode;
-        //     }
-        // }
-        // protocolDto.ProtocolCode = Convert.ToString(maxProtocolCode + 1);
-        // 
-        // int maxAge = context.Persons.Max(p => p.Age);
-
-        // int maxProtocolCode = _context.Protocol.Max(p => int.Parse(p.ProtocolCode));
-        // int maxProtocolCode = _context.Protocol.Max(p => (int?)p.ProtocolCode) ?? 0;
-        // int maxProtocolCode = _context.Protocol.ToList().Max(p => Convert.ToInt32(p.ProtocolCode));
-
         int maxProtocolCode = 0;
         foreach (var protocolEntry in _context.Protocol)
         {
@@ -258,7 +241,14 @@ public class ProtocolController : ControllerBase
         }
 
         ++maxProtocolCode;
-        protocolDto.ProtocolCode = maxProtocolCode.ToString("D4");
+        string protocolCode = maxProtocolCode.ToString("D4");
+
+        var regionState = await _context.Region
+                                        .Where(r => r.RegionName == protocolDto.RegionName)
+                                        .Select(r => r.RegionState)
+                                        .ToListAsync();
+
+        protocolDto.ProtocolCode = $"{regionState[0]}-{protocolCode}";
 
         bool entryIsDeleted = false;
         var protocol = protocolDto.ToProtocolEntity(entryIsDeleted);
