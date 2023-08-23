@@ -233,7 +233,7 @@ public class ProtocolController : ControllerBase
         int maxProtocolCode = 0;
         foreach (var protocolEntry in _context.Protocol)
         {
-            int currentProtocolCode = int.Parse(protocolEntry.ProtocolCode);
+            int currentProtocolCode = int.Parse(protocolEntry.ProtocolCode.Substring(3));
             if (maxProtocolCode < currentProtocolCode)
             {
                 maxProtocolCode = currentProtocolCode;
