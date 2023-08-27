@@ -19,6 +19,7 @@ public class AreaController : ControllerBase
     }
 
     // GET: /api/area
+    [Authorize(Roles = "Admin,Zentrale,Benutzer")]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<AreaDto>>> GetArea()
     {
@@ -30,8 +31,8 @@ public class AreaController : ControllerBase
         var areaSizeDtosList = new List<AreaDto>();
 
         List<string> areaSizeList = await _context.Area
-            .Select(x => x.AreaSize)
-            .ToListAsync();
+                                            .Select(x => x.AreaSize)
+                                            .ToListAsync();
 
         foreach (var areaSize in areaSizeList)
         {

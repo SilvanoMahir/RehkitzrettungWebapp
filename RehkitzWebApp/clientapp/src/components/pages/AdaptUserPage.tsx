@@ -37,7 +37,8 @@ export default function AdaptUserPage() {
             if (storageToken !== null) {
                 dispatch_token({ type: 'set-token', value: storageToken })
             }
-            const userId = localStorage.getItem('user_id')
+            // get Id from token
+            //const userId = localStorage.getItem('user_id')
             let data = usersListLocal.filter(users => users.userId.toString() === id)
             if (data.length === 0) {
                 setIsNewUser(true)
@@ -57,14 +58,14 @@ export default function AdaptUserPage() {
                 setUsername(userName)
                 setUserPassword(userPassword)
             }
-            const rolesData = await fetchUserRoles(storageToken, userId)
+            const rolesData = await fetchUserRoles(storageToken)
             const transformedRoles = rolesData.map((role: { roleName: any }) => ({
                 label: role.roleName,
                 value: role.roleName,
             }))
             setRoles(transformedRoles)
 
-            const regionsData = await fetchRegions(storageToken, userId)
+            const regionsData = await fetchRegions(storageToken)
             const transformedRegions = regionsData.map((role: { regionName: any }) => ({
                 label: role.regionName,
                 value: role.regionName,
@@ -209,11 +210,13 @@ export default function AdaptUserPage() {
 
     const deleteUser = async () => {
         const answer = window.confirm("Wirklich löschen?")
+        const storageToken = localStorage.getItem('user_token')
         if (answer) {
             const response = await fetch(`${`/api/users`}/${id}`, {
                 method: 'DELETE',
                 headers: {
                     'content-type': 'application/json',
+                    'Authorization': `Bearer ${storageToken}`,
                 }
             })
             if (response.ok) {
@@ -241,10 +244,8 @@ export default function AdaptUserPage() {
         return []
     }
 
-    const fetchUserRoles = async (storageToken: string | null, userId: string | null) => {
-        const response = await fetch('/api/users/roles?' + new URLSearchParams({
-            userId: userId!
-        }), {
+    const fetchUserRoles = async (storageToken: string | null) => {
+        const response = await fetch('/api/users/roles', {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json',
@@ -257,10 +258,8 @@ export default function AdaptUserPage() {
         return []
     }
 
-    const fetchRegions = async (storageToken: string | null, userId: string | null) => {
-        const response = await fetch('/api/regions?' + new URLSearchParams({
-            userId: userId!
-        }), {
+    const fetchRegions = async (storageToken: string | null) => {
+        const response = await fetch('/api/regions', {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json',

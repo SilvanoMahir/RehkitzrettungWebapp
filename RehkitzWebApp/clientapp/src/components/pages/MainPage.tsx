@@ -9,6 +9,7 @@ import InformationOverviewEntry from '../widgets/Information/InformationOverview
 import { toast } from 'react-toastify'
 import { fetchUser } from './MyDataPage'
 
+
 export default function MainPage() {
 
     const isNotMobile = useMediaQuery({ query: '(min-width: 700px)' })
@@ -29,9 +30,12 @@ export default function MainPage() {
                 dispatch_token({ type: 'set-token', value: storageToken })
             }
             const userId = localStorage.getItem('user_id')
+            //const decodedToken = jwt_decode(storageToken as string)
+            //const secretKey = 'JWT:Secret'
+            //console.log(userId)
             const user = await fetchUser(storageToken, userId)
-            const { userRegion, userName } = user
-            const { numberOfProtocols, foundFawns, injuredFawns, markedFawns, districtName } = await fetchProtocolOverview(storageToken, userRegion)
+            const { userName } = user
+            const { numberOfProtocols, foundFawns, injuredFawns, markedFawns, districtName } = await fetchProtocolOverview(storageToken)
             setUserName(userName)
             setNumberOfProtocols(numberOfProtocols)
             setFoundFawns(foundFawns)
@@ -43,10 +47,8 @@ export default function MainPage() {
         onMount()
     }, [dispatch_token])
 
-    const fetchProtocolOverview = async (storageToken: string | null, userRegion: string | undefined) => {
-        const response = await fetch('/api/protocols/overview?' + new URLSearchParams({
-            userRegion: userRegion!
-        }), {
+    const fetchProtocolOverview = async (storageToken: string | null) => {
+        const response = await fetch('/api/protocols/overview', {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json',
