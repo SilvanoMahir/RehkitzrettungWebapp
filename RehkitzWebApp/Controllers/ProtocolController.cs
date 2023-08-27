@@ -230,6 +230,26 @@ public class ProtocolController : ControllerBase
             return NotFound();
         }
 
+        int maxProtocolCode = 0;
+        foreach (var protocolEntry in _context.Protocol)
+        {
+            int currentProtocolCode = int.Parse(protocolEntry.ProtocolCode.Substring(3));
+            if (maxProtocolCode < currentProtocolCode)
+            {
+                maxProtocolCode = currentProtocolCode;
+            }
+        }
+
+        ++maxProtocolCode;
+        string protocolCode = maxProtocolCode.ToString("D4");
+
+        var regionState = await _context.Region
+                                        .Where(r => r.RegionName == protocolDto.RegionName)
+                                        .Select(r => r.RegionState)
+                                        .ToListAsync();
+
+        protocolDto.ProtocolCode = $"{regionState[0]}-{protocolCode}";
+
         bool entryIsDeleted = false;
         var protocol = protocolDto.ToProtocolEntity(entryIsDeleted);
         _context.Protocol.Add(protocol);
