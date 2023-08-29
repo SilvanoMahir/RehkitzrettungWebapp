@@ -8,6 +8,8 @@ import 'react-datepicker/dist/react-datepicker.css'
 import InformationOverviewEntry from '../widgets/Information/InformationOverviewEntry'
 import { toast } from 'react-toastify'
 import { fetchUser } from './MyDataPage'
+import { JwtPayload } from '../../interfaces/jwtPayload'
+import jwt_decode from 'jwt-decode'
 
 
 export default function MainPage() {
@@ -29,10 +31,8 @@ export default function MainPage() {
             if (storageToken !== null) {
                 dispatch_token({ type: 'set-token', value: storageToken })
             }
-            const userId = localStorage.getItem('user_id')
-            //const decodedToken = jwt_decode(storageToken as string)
-            //const secretKey = 'JWT:Secret'
-            //console.log(userId)
+            var decoded = jwt_decode(storageToken as string) as JwtPayload
+            const userId = decoded.userId
             const user = await fetchUser(storageToken, userId)
             const { userName } = user
             const { numberOfProtocols, foundFawns, injuredFawns, markedFawns, districtName } = await fetchProtocolOverview(storageToken)

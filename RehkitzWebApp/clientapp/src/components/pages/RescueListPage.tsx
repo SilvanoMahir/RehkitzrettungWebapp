@@ -12,6 +12,9 @@ import { toast } from 'react-toastify'
 import { saveAs } from 'file-saver'
 import { fetchUser } from './MyDataPage'
 import { ProtocolEntries } from '../../models/ProtocolEntries'
+import jwt_decode from 'jwt-decode'
+import { JwtPayload } from '../../interfaces/jwtPayload'
+
 
 export default function RescueListPage() {
 
@@ -31,12 +34,13 @@ export default function RescueListPage() {
             const storageToken = localStorage.getItem('user_token')
             if (storageToken !== null) {
                 dispatch_token({ type: 'set-token', value: storageToken })
+                setLocalToken(storageToken)
             }
-            //get id from token
-            const userId = localStorage.getItem('user_id')
-            const { userFunction } = await fetchUser(storageToken, userId)
-            localStorage.setItem('user_function', userFunction)
-            setUserFunction(userFunction)
+            //verify jwt token
+            var decoded = jwt_decode(storageToken as string) as JwtPayload
+            const userRole = decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]
+            setUserFunction(userRole)
+
             const fetchedProtocols = await fetchProtocols(storageToken)
             setFetchedProtocolsListLocal(fetchedProtocols)
             const protocolsListLocal = [...fetchedProtocols].sort((a, b) => {
@@ -44,9 +48,6 @@ export default function RescueListPage() {
                 const dateB: Date = new Date(b.date.split('.').reverse().join('-'))
                 return dateB.getTime() - dateA.getTime()
             })
-            if (storageToken !== null) {
-                setLocalToken(storageToken)
-            }
             setLoadingProtocols(false)
             dispatch_protocols({ type: 'get-protocols', protocolsListLocal })
         }
@@ -112,7 +113,7 @@ export default function RescueListPage() {
     const handleSearchInputChange = async (event: { target: { value: string } }) => {
         let searchString = event.target.value
 
-        if (searchString?.length === 1 ) {
+        if (searchString?.length === 1) {
             return
         }
         searchString = searchString.toLowerCase()

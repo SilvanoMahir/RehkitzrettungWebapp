@@ -37,8 +37,6 @@ export default function AdaptUserPage() {
             if (storageToken !== null) {
                 dispatch_token({ type: 'set-token', value: storageToken })
             }
-            // get Id from token
-            //const userId = localStorage.getItem('user_id')
             let data = usersListLocal.filter(users => users.userId.toString() === id)
             if (data.length === 0) {
                 setIsNewUser(true)
