@@ -23,11 +23,6 @@ export function authReducer(state: AuthState, action: Action): AuthState {
                 ...state,
                 authenticated: true
             }
-        case 'set-user-id':
-            return {
-                ...state,
-                userId: action.value
-            }
         case 'log-out':
             return initialAuthState
     }

@@ -8,6 +8,8 @@ import { ROUTE_MAIN_PAGE, ROUTE_LOGIN_PAGE, ROUTE_MAP_PAGE, ROUTE_RESCUE_LIST_PA
 import { useNavigate } from "react-router"
 import { useMediaQuery } from "react-responsive"
 import { fetchUser } from "../../pages/MyDataPage"
+import jwt_decode from 'jwt-decode'
+import { JwtPayload } from "../../../interfaces/jwtPayload"
 
 interface Props {
     showSidebar: boolean
@@ -28,9 +30,9 @@ export default function Sidebar({ showSidebar }: Props) {
             if (storageToken !== null) {
                 dispatch_token({ type: 'set-token', value: storageToken })
             }
-            const userId = localStorage.getItem('user_id')
-            const { userFunction } = await fetchUser(storageToken, userId)
-            localStorage.setItem('user_function', userFunction)
+            //verify jwt token
+            var decoded = jwt_decode(storageToken as string) as JwtPayload
+            const userFunction = decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]
             setUserFunction(userFunction)
         }
         onMount()

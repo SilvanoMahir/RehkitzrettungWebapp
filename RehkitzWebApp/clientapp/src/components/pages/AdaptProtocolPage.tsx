@@ -43,7 +43,6 @@ export default function AdaptProtocolPage() {
             if (storageToken !== null) {
                 dispatch_token({ type: 'set-token', value: storageToken })
             }
-            const userId = localStorage.getItem('user_id')
             let data = protocolsListLocal.filter(protocols => protocols.protocolId.toString() === id)
             if (data.length === 0) {
                 setIsNewProtocol(true)
@@ -66,7 +65,7 @@ export default function AdaptProtocolPage() {
                 setAreaSize(areaSize)
                 setInjuredFawns(injuredFawns.toString())
             }
-            const regionsData = await fetchRegions(storageToken, userId)
+            const regionsData = await fetchRegions(storageToken)
             const transformedRegions = regionsData.map((role: { regionName: any }) => ({
                 label: role.regionName,
                 value: role.regionName,
@@ -216,10 +215,8 @@ export default function AdaptProtocolPage() {
         }
     }
 
-    const fetchRegions = async (storageToken: string | null, userId: string | null) => {
-        const response = await fetch('/api/regions?' + new URLSearchParams({
-            userId: userId!
-        }), {
+    const fetchRegions = async (storageToken: string | null) => {
+        const response = await fetch('/api/regions', {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json',

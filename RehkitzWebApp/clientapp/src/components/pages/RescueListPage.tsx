@@ -12,6 +12,9 @@ import { toast } from 'react-toastify'
 import { saveAs } from 'file-saver'
 import { fetchUser } from './MyDataPage'
 import { ProtocolEntries } from '../../models/ProtocolEntries'
+import jwt_decode from 'jwt-decode'
+import { JwtPayload } from '../../interfaces/jwtPayload'
+
 
 export default function RescueListPage() {
 
@@ -20,7 +23,6 @@ export default function RescueListPage() {
     const [loadingProtocols, setLoadingProtocols] = useState(true)
     const [localToken, setLocalToken] = useState('')
     const [userFunction, setUserFunction] = useState('')
-    const [loggedUserId, setLoggedUserId] = useState('')
     const [fetchedProtocolsListLocal, setFetchedProtocolsListLocal] = useState<ProtocolEntries[]>([])
     const { protocolsListLocal, dispatch_protocols } = useContext(ProtocolsContext)
     const { dispatch_token } = useContext(AppContext)
@@ -32,33 +34,29 @@ export default function RescueListPage() {
             const storageToken = localStorage.getItem('user_token')
             if (storageToken !== null) {
                 dispatch_token({ type: 'set-token', value: storageToken })
+                setLocalToken(storageToken)
             }
-            const userId = localStorage.getItem('user_id')
-            const { userFunction } = await fetchUser(storageToken, userId)
-            localStorage.setItem('user_function', userFunction)
-            setUserFunction(userFunction)
-            setLoggedUserId(userId as string)
-            const fetchedProtocols = await fetchProtocols(storageToken, userId)
+            //verify jwt token
+            var decoded = jwt_decode(storageToken as string) as JwtPayload
+            const userRole = decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]
+            setUserFunction(userRole)
+
+            const fetchedProtocols = await fetchProtocols(storageToken)
             setFetchedProtocolsListLocal(fetchedProtocols)
             const protocolsListLocal = [...fetchedProtocols].sort((a, b) => {
                 const dateA: Date = new Date(a.date.split('.').reverse().join('-'))
                 const dateB: Date = new Date(b.date.split('.').reverse().join('-'))
                 return dateB.getTime() - dateA.getTime()
             })
-            if (storageToken !== null) {
-                setLocalToken(storageToken)
-            }
             setLoadingProtocols(false)
             dispatch_protocols({ type: 'get-protocols', protocolsListLocal })
         }
         onMount()
     }, [dispatch_protocols, dispatch_token])
 
-    const fetchProtocols = async (storageToken: string | null, userId: string | null) => {
+    const fetchProtocols = async (storageToken: string | null) => {
         try {
-            const response = await fetch('/api/protocols?' + new URLSearchParams({
-                userId: userId!
-            }), {
+            const response = await fetch('/api/protocols', {
                 method: 'GET',
                 headers: {
                     'Content-type': 'application/json',
@@ -74,11 +72,9 @@ export default function RescueListPage() {
         }
     }
 
-    const downloadProtocol = async (storageToken: string | null, userId: string | null) => {
+    const downloadProtocol = async (storageToken: string | null) => {
         try {
-            const response = await fetch('/api/protocols/file?'+ new URLSearchParams({
-                userId: userId!
-            }), {
+            const response = await fetch('/api/protocols/file', {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${storageToken}`,
@@ -117,7 +113,7 @@ export default function RescueListPage() {
     const handleSearchInputChange = async (event: { target: { value: string } }) => {
         let searchString = event.target.value
 
-        if (searchString?.length === 1 ) {
+        if (searchString?.length === 1) {
             return
         }
         searchString = searchString.toLowerCase()
@@ -170,7 +166,7 @@ export default function RescueListPage() {
                         isNotMobile={isNotMobile}
                         placeholder={'Suchen'}></SearchInput>
                     <RowContainer>
-                        <DownloadProtocolButton onClick={() => downloadProtocol(localToken, loggedUserId)}>Bericht herunterladen</DownloadProtocolButton>
+                        <DownloadProtocolButton onClick={() => downloadProtocol(localToken)}>Bericht herunterladen</DownloadProtocolButton>
                         {(userFunction !== 'Wildhut') && (
                             <CreateProtocolButton onClick={() => createProtocol()}>Neues Protokoll erstellen</CreateProtocolButton>
                         )}

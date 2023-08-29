@@ -1,5 +1,5 @@
 type SetFieldAction = {
-    type: 'set-username' | 'set-password' | 'set-token' | 'set-user-id'
+    type: 'set-username' | 'set-password' | 'set-token' 
     value: string
 }
 

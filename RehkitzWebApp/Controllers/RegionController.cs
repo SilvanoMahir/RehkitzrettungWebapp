@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using RehkitzWebApp.Model;
 using RehkitzWebApp.Model.Dtos;
 using System.Data;
+using System.Security.Claims;
 
 namespace webapi.Controllers;
 
@@ -14,39 +15,41 @@ namespace webapi.Controllers;
 public class RegionController : ControllerBase
 {
     private readonly ApplicationDbContext _context;
+    private readonly IHttpContextAccessor _httpcontext;
 
-    public RegionController(ApplicationDbContext context)
+    public RegionController(ApplicationDbContext context, IHttpContextAccessor httpcontext)
     {
         _context = context;
+        _httpcontext = httpcontext;
     }
 
     // GET: /api/regions
+    [Authorize(Roles = "Admin,Zentrale,Benutzer")]
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<RegionNameDto>>> GetRegion([FromQuery(Name = "userId")] string userId)
+    public async Task<ActionResult<IEnumerable<RegionNameDto>>> GetRegion()
     {
         if (_context.Region == null)
         {
             return NotFound();
         }
 
-        // get user district and the regions part of this district 
-        var userInUserList = await _context.User.FindAsync(int.Parse(userId));
-        var userRegionIdList = await _context.Region
-                                        .Where(p => p.RegionId == int.Parse(userInUserList.UserRegionId))
-                                        .ToListAsync();
+        if (_httpcontext.HttpContext == null)
+        {
+            return NotFound();
+        }
 
-        var userDistrict = userRegionIdList[0].RegionDistrict;
+        var principal = _httpcontext.HttpContext.User;
+        var loggedInUserDistrict = principal.FindFirst("userDistrict");
+        var loggedInUserRole = principal.FindFirst(ClaimTypes.Role);
 
-        // get logged in user role
-        var userRoleIdList = await _context.UserRoles
-                                    .Where(x => x.UserId == userInUserList.OwnerId)
-                                    .Select(x => x.RoleId)
-                                    .ToListAsync();
+        if (loggedInUserDistrict == null || loggedInUserRole == null)
+        {
+            return NotFound();
+        };
 
-        var userRole = await _context.Roles.FindAsync(userRoleIdList[0]);
         List<string?> regionsList = new List<string>();
 
-        if (userRole.Name == "Admin")
+        if (loggedInUserRole.Value == "Admin")
         {
             regionsList = await _context.Region
                                     .Where(p => p.EntryIsDeleted == false)
@@ -56,7 +59,7 @@ public class RegionController : ControllerBase
         else
         {
             regionsList = await _context.Region
-                                    .Where(p => p.EntryIsDeleted == false && p.RegionDistrict == userDistrict)
+                                    .Where(p => p.EntryIsDeleted == false && p.RegionDistrict == loggedInUserDistrict.Value)
                                     .Select(p => p.RegionName)
                                     .ToListAsync();
         }

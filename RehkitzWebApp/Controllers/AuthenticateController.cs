@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -36,10 +37,31 @@ public class AuthenticateController : ControllerBase
     {
         var user = await _userManager.FindByNameAsync(model.Username);
 
+        if (user  == null)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Benutzer nicht gefunden!" });
+        }
+
         var userDeleted = await _context.User
                             .Where(x => x.OwnerId == user.Id)
                             .Select(x => x.EntryIsDeleted)
                             .ToListAsync();
+
+        var userInUserList = await _context.User
+                                    .Where(x => x.OwnerId == user.Id)
+                                    .ToListAsync();
+
+        var userRegion = await _context.Region
+                                    .Where(x => x.RegionId == int.Parse(userInUserList[0].UserRegionId))
+                                    .Select(x => x.RegionName)
+                                    .ToListAsync();
+
+        var userDistrict = await _context.Region
+                            .Where(x => x.RegionId == int.Parse(userInUserList[0].UserRegionId))
+                            .Select(x => x.RegionDistrict)
+                            .ToListAsync();
+
+        var userId = userInUserList[0].UserId.ToString();
 
         if (userDeleted[0] == true)
         {
@@ -53,6 +75,10 @@ public class AuthenticateController : ControllerBase
             var authClaims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, user.UserName),
+                new Claim("userOwnerId", user.Id),
+                new Claim("userDistrict", userDistrict[0]),
+                new Claim("userRegion", userRegion[0]),
+                new Claim("userId", userId),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             };
 
@@ -62,16 +88,6 @@ public class AuthenticateController : ControllerBase
             }
 
             var token = GetToken(authClaims);
-
-            var userOwnerId = await _context.Users
-                .Where(r => r.UserName == model.Username)
-                .Select(r => r.Id)
-                .FirstOrDefaultAsync();
-
-            var userId = await _context.User
-                .Where(r => r.OwnerId == userOwnerId)
-                .Select(r => r.UserId)
-                .FirstOrDefaultAsync();
 
             return Ok(new
             {
@@ -83,6 +99,7 @@ public class AuthenticateController : ControllerBase
         return Unauthorized();
     }
 
+    [Authorize(Roles ="Admin,Zentrale")]
     [HttpPost]
     [Route("register")]
     public async Task<IActionResult> Register([FromBody] RegisterModel model)

@@ -49,7 +49,7 @@ public class ExcelExporter
                 worksheet.Cell(row, 1).Value = protocol.ProtocolCode;
                 worksheet.Cell(row, 2).Value = protocol.PilotFullName;
                 worksheet.Cell(row, 3).Value = protocol.ClientFullName;
-                worksheet.Cell(row, 4).Value = protocol.Date;
+                worksheet.Cell(row, 4).Value = protocol.Date.Date;
                 worksheet.Cell(row, 5).Value = protocol.LocalName;
                 worksheet.Cell(row, 6).Value = protocol.AreaSize;
                 worksheet.Cell(row, 7).Value = district;
