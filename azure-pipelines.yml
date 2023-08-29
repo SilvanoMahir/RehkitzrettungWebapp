@@ -4,18 +4,30 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
 trigger:
-- main
+- '*'
 
 pool:
-  vmImage: ubuntu-latest
+  vmImage: 'windows-latest'
 
 steps:
 - task: NodeTool@0
   inputs:
-    versionSpec: '10.x'
+    versionSpec: '18.x'
   displayName: 'Install Node.js'
 
 - script: |
     npm install
     npm run build
   displayName: 'npm install and build'
+  workingDirectory: '$(Build.SourcesDirectory)/RehkitzWebApp/clientapp'
+
+- script: |
+    npm test -- --watchAll=false 
+  displayName: 'npm test -- --watchAll=false'
+  workingDirectory: '$(Build.SourcesDirectory)/RehkitzWebApp/clientapp'
+
+- task: PublishTestResults@2
+  inputs:
+    testResultsFormat: 'JUnit'
+    testResultsFiles: '**/TEST-*.xml'
+    searchFolder: '$(System.DefaultWorkingDirectory)/RehkitzWebApp/clientapp'

@@ -1,0 +1,220 @@
+{
+  "ProtocolInfos": {
+    "Areas": [
+      "<1/2ha",
+      "1/2ha - 1ha",
+      ">1ha"
+    ],
+    "Regions": [
+      "Ftan",
+      "Scuol-Tarasp",
+      "Sent",
+      "Valsot",
+      "Calanda",
+      "Samignun",
+      "Tasna"
+    ]
+  },
+  "Protocols": {
+    "-NGSDaZ2dT-yK4CVmBQo": {
+      "Client": "Hans Bauer",
+      "Date": "9/11/2022",
+      "FoundFawns": 2,
+      "InjuredFawns": 1,
+      "LocalName": "Fürholzli",
+      "MarkedFawns": 0,
+      "Pilot": "Peter Müller",
+      "Region": "Calanda",
+      "Remark": "Keine Bemerkung",
+      "Surface": "<1/2ha"
+    },
+    "-NQ1ik5TMLI-O8fTEfBZ": {
+      "Client": "Reto Bickel",
+      "Date": "05/03/2023",
+      "FoundFawns": 2,
+      "InjuredFawns": 0,
+      "LocalName": "Valcherlun",
+      "MarkedFawns": 2,
+      "Pilot": "Armon",
+      "Region": "Valsot",
+      "Remark": "Keine Bemerkung",
+      "Surface": "<1/2ha"
+    },
+    "-NQ1j4zBJJT0GHj-orBg": {
+      "Client": "Reto Bickel",
+      "Date": "07/03/2023",
+      "FoundFawns": 1,
+      "InjuredFawns": 1,
+      "LocalName": "Uaclers",
+      "MarkedFawns": 0,
+      "Pilot": "Armon",
+      "Region": "Valsot",
+      "Remark": "Keine Bemerkung",
+      "Surface": ">1/2ha"
+    },
+    "-NQ1nGZ-mXVZrmKZ1sL7": {
+      "Client": "Jachen Andri Viletta",
+      "Date": "08/03/2023",
+      "FoundFawns": 1,
+      "InjuredFawns": 0,
+      "LocalName": "Er dal Uors",
+      "MarkedFawns": 1,
+      "Pilot": "Andri",
+      "Region": "Valsot",
+      "Remark": "Keine Bemerkung",
+      "Surface": ">1ha"
+    },
+    "-NQ25zv6IEG3LZNIwguw": {
+      "Client": "Claudio Franziscus",
+      "Date": "08/03/2023",
+      "FoundFawns": 0,
+      "InjuredFawns": 0,
+      "LocalName": "Bursan",
+      "MarkedFawns": 0,
+      "Pilot": "Rico",
+      "Region": "Valsot",
+      "Remark": "Keine Bemerkung",
+      "Surface": ">1/2ha"
+    },
+    "-NQWMmsMuQx9U2Ll4_sY": {
+      "Client": "Jon Morell",
+      "Date": "13/03/2023",
+      "FoundFawns": 2,
+      "InjuredFawns": 0,
+      "LocalName": "Clüset",
+      "MarkedFawns": 0,
+      "Pilot": "Armon",
+      "Region": "Tasna",
+      "Remark": "Keine Bemerkung",
+      "Surface": ">1ha"
+    },
+    "-NQWN4oVFid1Oj29mLWJ": {
+      "Client": "Jon Blanc",
+      "Date": "14/03/2023",
+      "FoundFawns": 2,
+      "InjuredFawns": 0,
+      "LocalName": "Ardüras",
+      "MarkedFawns": 2,
+      "Pilot": "Andri",
+      "Region": "Tasna",
+      "Remark": "Keine Bemerkung",
+      "Surface": "<1/2ha"
+    },
+    "-NQWO6wREMSEisi5jD4E": {
+      "Client": "Reto Viletta",
+      "Date": "14/03/2023",
+      "FoundFawns": 1,
+      "InjuredFawns": 0,
+      "LocalName": "zaclers",
+      "MarkedFawns": 1,
+      "Pilot": "Beat",
+      "Region": "Tasna",
+      "Remark": "Keine Bemerkung",
+      "Surface": "1/2ha - 1ha"
+    },
+    "-NUNTdB_wiBccPpBcFTr": {
+      "Client": "paur",
+      "Date": "02/05/2023",
+      "FoundFawns": 1,
+      "InjuredFawns": 0,
+      "LocalName": "dadour cumün",
+      "MarkedFawns": 0,
+      "Pilot": "Jon",
+      "Region": "Sent",
+      "Remark": "TEST 01",
+      "Surface": "<1/2ha"
+    }
+  },
+  "Users": {
+    "6krphmeOrLX6h2ZMYwpZP48zCMI3": {
+      "Email": "demo@salvamaint.ch",
+      "FirstName": " ",
+      "Job": "Pilot",
+      "LastName": "Demo Version",
+      "PersonId": "6krphmeOrLX6h2ZMYwpZP48zCMI3",
+      "Phone": "+41 79 999 99 99",
+      "Region": "Valsot"
+    },
+    "9rljbbrV0jbLVnY2BupVipfVGvz1": {
+      "Email": "ftan@salvamaint.ch",
+      "FirstName": "Salvamaint",
+      "Job": "Pilot",
+      "LastName": "Ftan",
+      "PersonId": "9rljbbrV0jbLVnY2BupVipfVGvz1",
+      "Phone": "",
+      "Region": "Ftan"
+    },
+    "ChWgXF9a9WW1GcB9WfYiIGffyk73": {
+      "Email": "stecher.fabio@gmail.com",
+      "FirstName": "Fabio",
+      "Job": "Pilot",
+      "LastName": "Stecher",
+      "PersonId": "ChWgXF9a9WW1GcB9WfYiIGffyk73",
+      "Phone": "+41 79 415 21 96",
+      "Region": "Valsot"
+    },
+    "Heow3ivIrOZulVR9FvnuTLHcpBn1": {
+      "Email": "silvano.stecher@gmail.com",
+      "FirstName": "Silvano",
+      "Job": "Administrator",
+      "LastName": "Stecher",
+      "PersonId": "Heow3ivIrOZulVR9FvnuTLHcpBn1",
+      "Phone": "+41745662324",
+      "Region": "Scuol"
+    },
+    "LkMMSicBmlOfhI33S5odcRg1tqp1": {
+      "Email": "scuol-tarasp@salvamaint.ch",
+      "FirstName": "Salvamaint",
+      "Job": "Pilot",
+      "LastName": "Scuol-Tarasp",
+      "PersonId": "LkMMSicBmlOfhI33S5odcRg1tqp1",
+      "Phone": "",
+      "Region": "Scuol-Tarasp"
+    },
+    "V1P3BcZgbWOqWuPHZzHDtGULlAW2": {
+      "Email": "sent@salvamaint.ch",
+      "FirstName": "Salvamaint",
+      "Job": "Pilot",
+      "LastName": "Sent",
+      "PersonId": "V1P3BcZgbWOqWuPHZzHDtGULlAW2",
+      "Phone": "",
+      "Region": "Sent"
+    },
+    "aob2NJyLpUMMDl66hma5lze5Rii2": {
+      "Email": "salvamaint@tasna.ch",
+      "FirstName": "Salvamaint",
+      "Job": "Pilot",
+      "LastName": "Tasna",
+      "PersonId": "aob2NJyLpUMMDl66hma5lze5Rii2",
+      "Phone": "Ingün",
+      "Region": "Tasna"
+    },
+    "bXgyube7wLZAmQ9rcnWHwbq6gZ83": {
+      "Email": "samignun@salvamaint.ch",
+      "FirstName": "Salvamaint",
+      "Job": "Pilot",
+      "LastName": "Samignun",
+      "PersonId": "bXgyube7wLZAmQ9rcnWHwbq6gZ83",
+      "Phone": "",
+      "Region": "Samignun"
+    },
+    "sYaWRWq8XiOhfK5hZ2K689WwKoT2": {
+      "Email": "valsot@salvamaint.ch",
+      "FirstName": "Salvamaint",
+      "Job": "Pilot",
+      "LastName": "Valsot",
+      "PersonId": "sYaWRWq8XiOhfK5hZ2K689WwKoT2",
+      "Phone": "+41 79 999 99 99",
+      "Region": "Valsot"
+    },
+    "wKL6mYI4tPcpq4vt6mKsM5aFZDv2": {
+      "Email": "calanda@salvamaint.ch",
+      "FirstName": "Rehkitzrettung",
+      "Job": "Pilot",
+      "LastName": "Calanda",
+      "PersonId": "wKL6mYI4tPcpq4vt6mKsM5aFZDv2",
+      "Phone": "+41 79 999 99 99",
+      "Region": "Calanda"
+    }
+  }
+}
