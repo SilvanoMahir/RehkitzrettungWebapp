@@ -37,7 +37,7 @@ public class AuthenticateController : ControllerBase
     {
         var user = await _userManager.FindByNameAsync(model.Username);
 
-        if (user  == null)
+        if (user == null)
         {
             return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Benutzer nicht gefunden!" });
         }

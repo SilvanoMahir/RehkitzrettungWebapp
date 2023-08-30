@@ -31,7 +31,7 @@ export default function MainPage() {
             if (storageToken !== null) {
                 dispatch_token({ type: 'set-token', value: storageToken })
             }
-            var decoded = jwt_decode(storageToken as string) as JwtPayload
+            let decoded = jwt_decode(storageToken as string) as JwtPayload
             const userId = decoded.userId
             const user = await fetchUser(storageToken, userId)
             const { userName } = user

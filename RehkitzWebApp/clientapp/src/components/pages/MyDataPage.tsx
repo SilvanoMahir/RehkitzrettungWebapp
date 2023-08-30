@@ -31,7 +31,7 @@ export default function MyDataPage() {
                 dispatch_token({ type: 'set-token', value: storageToken })
             }
             //verify jwt token
-            var decoded = jwt_decode(storageToken as string) as JwtPayload
+            let decoded = jwt_decode(storageToken as string) as JwtPayload
             const id = decoded.userId
             const user = await fetchUser(storageToken, id)
             const { userId, userFirstName, userLastName, userEmail, userFunction,
