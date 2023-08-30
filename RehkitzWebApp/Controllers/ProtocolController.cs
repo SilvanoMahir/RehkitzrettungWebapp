@@ -1,10 +1,12 @@
 ﻿using DocumentFormat.OpenXml;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RehkitzWebApp.FileController;
 using RehkitzWebApp.Model;
 using RehkitzWebApp.Model.Dtos;
+using System.Security.Claims;
 
 namespace RehkitzWebApp.Controllers;
 
@@ -14,42 +16,45 @@ namespace RehkitzWebApp.Controllers;
 public class ProtocolController : ControllerBase
 {
     private readonly ApplicationDbContext _context;
+    private readonly IHttpContextAccessor _httpcontext;
 
-    public ProtocolController(ApplicationDbContext context)
+    public ProtocolController(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor)
     {
         _context = context;
+        _httpcontext = httpContextAccessor;
     }
 
     // GET: /api/protocols
+    [Authorize(Roles = "Admin,Zentrale,Wildhut,Benutzer")]
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<ProtocolDto>>> GetProtocols([FromQuery(Name = "userId")] string userId)
+    public async Task<ActionResult<IEnumerable<ProtocolDto>>> GetProtocols()
     {
         if (_context.Protocol == null)
         {
             return NotFound();
         }
 
-        // get user district and the regions part of this district 
-        var userInUserList = await _context.User.FindAsync(int.Parse(userId));
-        var userRegionIdList = await _context.Region
-                                        .Where(p => p.RegionId == int.Parse(userInUserList.UserRegionId))
-                                        .ToListAsync();
+        if (_httpcontext.HttpContext == null)
+        {
+            return NotFound();
+        }
 
-        var userDistrict = userRegionIdList[0].RegionDistrict;
+        var principal = _httpcontext.HttpContext.User;
+        var loggedInUserDistrict = principal.FindFirst("userDistrict");
+        var loggedInUserRole = principal.FindFirst(ClaimTypes.Role);
+
+        if ( loggedInUserDistrict == null || loggedInUserRole == null)
+        {
+            return NotFound();
+        }
+
         var userRegionsFromDistrictList = await _context.Region
-                                                    .Where(p => p.RegionDistrict == userDistrict)
+                                                    .Where(p => p.RegionDistrict == loggedInUserDistrict.Value)
                                                     .Select(p => p.RegionName)
                                                     .ToListAsync();
-        // get logged in user role
-        var userRoleIdList = await _context.UserRoles
-                                    .Where(x => x.UserId == userInUserList.OwnerId)
-                                    .Select(x => x.RoleId)
-                                    .ToListAsync();
-
-        var userRole = await _context.Roles.FindAsync(userRoleIdList[0]);
 
         List<Protocol> protocols = new List<Protocol>();
-        if (userRole.Name == "Admin")
+        if (loggedInUserRole.Value == "Admin")
         {
             protocols = await _context.Protocol
                                     .Where(p => p.EntryIsDeleted == false)
@@ -73,6 +78,7 @@ public class ProtocolController : ControllerBase
     }
 
     // GET: /api/protocols/5
+    [Authorize(Roles = "Admin,Zentrale,Benutzer")]
     [HttpGet("{id}")]
     public async Task<ActionResult<ProtocolDto>> GetProtocol(int id)
     {
@@ -91,35 +97,35 @@ public class ProtocolController : ControllerBase
     }
 
     // GET: /api/protocols/file
+    [Authorize(Roles = "Admin,Zentrale,Wildhut,Benutzer")]
     [HttpGet("file")]
-    public async Task<IActionResult> ExportProtocolsToExcelAsync([FromQuery(Name = "userId")] string userId)
+    public async Task<IActionResult> ExportProtocolsToExcelAsync()
     {
         if (_context.Protocol == null)
         {
             return NotFound();
         }
 
-        // get user district and the regions part of this district 
-        var userInUserList = await _context.User.FindAsync(int.Parse(userId));
-        var userRegionIdList = await _context.Region
-                                        .Where(p => p.RegionId == int.Parse(userInUserList.UserRegionId))
-                                        .ToListAsync();
+        if (_httpcontext.HttpContext == null)
+        {
+            return NotFound();
+        }
 
-        var userDistrict = userRegionIdList[0].RegionDistrict;
+        var principal = _httpcontext.HttpContext.User;
+        var loggedInUserDistrict = principal.FindFirst("userDistrict");
+        var loggedInUserRole = principal.FindFirst(ClaimTypes.Role);
+
+        if (loggedInUserDistrict == null || loggedInUserRole == null)
+        {
+            return NotFound();
+        }
         var userRegionsFromDistrictList = await _context.Region
-                                                    .Where(p => p.RegionDistrict == userDistrict)
+                                                    .Where(p => p.RegionDistrict == loggedInUserDistrict.Value)
                                                     .Select(p => p.RegionName)
                                                     .ToListAsync();
-        // get logged in user role
-        var userRoleIdList = await _context.UserRoles
-                                    .Where(x => x.UserId == userInUserList.OwnerId)
-                                    .Select(x => x.RoleId)
-                                    .ToListAsync();
-
-        var userRole = await _context.Roles.FindAsync(userRoleIdList[0]);
 
         List<Protocol> protocolsList = new List<Protocol>();
-        if (userRole.Name == "Admin")
+        if (loggedInUserRole.Value == "Admin")
         {
             protocolsList = await _context.Protocol
                                     .Where(p => p.EntryIsDeleted == false)
@@ -133,25 +139,40 @@ public class ProtocolController : ControllerBase
         }
 
         ExcelExporter exporter = new ExcelExporter();
-        var stream = exporter.ExportToExcel(protocolsList, userDistrict);
+        var stream = exporter.ExportToExcel(protocolsList, loggedInUserDistrict.Value);
         return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "RehkitzrettungProtokolle" + DateTime.Now.ToString("yyyy-M-d") + ".xlsx");
     }
 
     // GET: /api/protocols/overview
+    [Authorize(Roles = "Admin,Zentrale,Wildhut,Benutzer")]
     [HttpGet("overview")]
-    public async Task<ActionResult<ProtocolOverviewDto>> GetProtocolsOverview([FromQuery(Name = "userRegion")] string userRegion)
+    public async Task<ActionResult<ProtocolOverviewDto>> GetProtocolsOverview()
     {
         if (_context.Protocol == null)
         {
             return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Der Server ist akutell nicht erreichbar! Bitte probieren Sie es später nochmals." });
         }
+
+        if (_httpcontext.HttpContext == null)
+        {
+            return NotFound();
+        }
+
+        var principal = _httpcontext.HttpContext.User;
+        var loggedInUserDistrict = principal.FindFirst("userDistrict");
+        var loggedInRegion = principal.FindFirst("userRegion");
+
+        if (loggedInUserDistrict == null || loggedInRegion == null)
+        {
+            return NotFound();
+        }
+
         var userRegionTable = await _context.Region
-                                        .Where(p => p.RegionName == userRegion)
+                                        .Where(p => p.RegionName == loggedInRegion.Value)
                                         .ToListAsync();
 
-        var userDistrict = userRegionTable[0].RegionDistrict;
         var userRegionListFromDistrict = await _context.Region
-                                                .Where(p => p.RegionDistrict == userDistrict)
+                                                .Where(p => p.RegionDistrict == loggedInUserDistrict.Value)
                                                 .Select(p => p.RegionName)
                                                 .ToListAsync();
 
@@ -181,7 +202,7 @@ public class ProtocolController : ControllerBase
             FoundFawns = foundFawns,
             InjuredFawns = injuredFawns,
             MarkedFawns = markedFawns,
-            DistrictName = userDistrict
+            DistrictName = loggedInUserDistrict.Value
         };
 
         return Ok(protocolOverviewDto);
@@ -189,6 +210,7 @@ public class ProtocolController : ControllerBase
 
     // PUT: /api/protocols/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+    [Authorize(Roles = "Admin,Zentrale,Benutzer")]
     [HttpPut("{id}")]
     public async Task<ActionResult> PutProtocol(int id, ProtocolDto protocolDto)
     {
@@ -222,6 +244,7 @@ public class ProtocolController : ControllerBase
 
     // POST: /api/protocols
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+    [Authorize(Roles = "Admin,Zentrale,Benutzer")]
     [HttpPost]
     public async Task<ActionResult<ProtocolDto>> PostProtocol(ProtocolDto protocolDto)
     {
@@ -259,6 +282,7 @@ public class ProtocolController : ControllerBase
     }
 
     // DELETE: /api/protocols/5
+    [Authorize(Roles = "Admin,Zentrale")]
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteProtocol(int id)
     {

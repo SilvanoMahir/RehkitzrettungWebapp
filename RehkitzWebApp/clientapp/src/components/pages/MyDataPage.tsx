@@ -6,6 +6,8 @@ import { useMediaQuery } from 'react-responsive'
 import { Menu } from '../widgets/Menu'
 import 'react-datepicker/dist/react-datepicker.css'
 import MyDataEntry from '../widgets/MyData/MyDataEntry'
+import jwt_decode from 'jwt-decode'
+import { JwtPayload } from '../../interfaces/jwtPayload'
 
 export default function MyDataPage() {
 
@@ -17,7 +19,7 @@ export default function MyDataPage() {
     const [definition, setDefinition] = useState('')
     const [region, setRegion] = useState('')
     const [userFunction, setUserFunction] = useState('')
-    const [email , setEmail] = useState('')
+    const [email, setEmail] = useState('')
     const [userName, setUserName] = useState('')
 
     const { dispatch_token } = useContext(AppContext)
@@ -28,7 +30,9 @@ export default function MyDataPage() {
             if (storageToken !== null) {
                 dispatch_token({ type: 'set-token', value: storageToken })
             }
-            const id = localStorage.getItem('user_id')
+            //verify jwt token
+            let decoded = jwt_decode(storageToken as string) as JwtPayload
+            const id = decoded.userId
             const user = await fetchUser(storageToken, id)
             const { userId, userFirstName, userLastName, userEmail, userFunction,
                 userRegion, userDefinition, userName } = user

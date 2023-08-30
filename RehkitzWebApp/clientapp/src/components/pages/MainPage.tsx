@@ -8,6 +8,9 @@ import 'react-datepicker/dist/react-datepicker.css'
 import InformationOverviewEntry from '../widgets/Information/InformationOverviewEntry'
 import { toast } from 'react-toastify'
 import { fetchUser } from './MyDataPage'
+import { JwtPayload } from '../../interfaces/jwtPayload'
+import jwt_decode from 'jwt-decode'
+
 
 export default function MainPage() {
 
@@ -28,10 +31,11 @@ export default function MainPage() {
             if (storageToken !== null) {
                 dispatch_token({ type: 'set-token', value: storageToken })
             }
-            const userId = localStorage.getItem('user_id')
+            let decoded = jwt_decode(storageToken as string) as JwtPayload
+            const userId = decoded.userId
             const user = await fetchUser(storageToken, userId)
-            const { userRegion, userName } = user
-            const { numberOfProtocols, foundFawns, injuredFawns, markedFawns, districtName } = await fetchProtocolOverview(storageToken, userRegion)
+            const { userName } = user
+            const { numberOfProtocols, foundFawns, injuredFawns, markedFawns, districtName } = await fetchProtocolOverview(storageToken)
             setUserName(userName)
             setNumberOfProtocols(numberOfProtocols)
             setFoundFawns(foundFawns)
@@ -43,10 +47,8 @@ export default function MainPage() {
         onMount()
     }, [dispatch_token])
 
-    const fetchProtocolOverview = async (storageToken: string | null, userRegion: string | undefined) => {
-        const response = await fetch('/api/protocols/overview?' + new URLSearchParams({
-            userRegion: userRegion!
-        }), {
+    const fetchProtocolOverview = async (storageToken: string | null) => {
+        const response = await fetch('/api/protocols/overview', {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json',
