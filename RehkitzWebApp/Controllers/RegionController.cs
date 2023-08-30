@@ -45,7 +45,7 @@ public class RegionController : ControllerBase
         if (loggedInUserDistrict == null || loggedInUserRole == null)
         {
             return NotFound();
-        };
+        }
 
         List<string?> regionsList = new List<string>();
 

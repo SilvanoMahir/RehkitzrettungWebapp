@@ -10,7 +10,6 @@ import { useNavigate } from 'react-router-dom'
 import { ROUTE_ADAPT_PROTOCOL_PAGE } from '../../App'
 import { toast } from 'react-toastify'
 import { saveAs } from 'file-saver'
-import { fetchUser } from './MyDataPage'
 import { ProtocolEntries } from '../../models/ProtocolEntries'
 import jwt_decode from 'jwt-decode'
 import { JwtPayload } from '../../interfaces/jwtPayload'
@@ -37,8 +36,8 @@ export default function RescueListPage() {
                 setLocalToken(storageToken)
             }
             //verify jwt token
-            var decoded = jwt_decode(storageToken as string) as JwtPayload
-            const userRole = decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]
+            let decoded = jwt_decode(storageToken as string) as JwtPayload
+            const userRole = decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']
             setUserFunction(userRole)
 
             const fetchedProtocols = await fetchProtocols(storageToken)
