@@ -43,7 +43,6 @@ export default function AdaptProtocolPage() {
             if (storageToken !== null) {
                 dispatch_token({ type: 'set-token', value: storageToken })
             }
-            const userId = localStorage.getItem('user_id')
             let data = protocolsListLocal.filter(protocols => protocols.protocolId.toString() === id)
             if (data.length === 0) {
                 setIsNewProtocol(true)
@@ -66,7 +65,7 @@ export default function AdaptProtocolPage() {
                 setAreaSize(areaSize)
                 setInjuredFawns(injuredFawns.toString())
             }
-            const regionsData = await fetchRegions(storageToken, userId)
+            const regionsData = await fetchRegions(storageToken)
             const transformedRegions = regionsData.map((role: { regionName: any }) => ({
                 label: role.regionName,
                 value: role.regionName,
@@ -92,23 +91,23 @@ export default function AdaptProtocolPage() {
     }
 
     const saveProtocol = async () => {
-        if (clientFullName === "" || localName === "" || foundFawns === "" || markedFawns === ""
-            || pilotFullName === "" || regionName === "" || areaSize === "" || injuredFawns === "") {
-            toast.error("Bitte alle Felder ausfüllen!", {
+        if (clientFullName === '' || localName === '' || foundFawns === '' || markedFawns === ''
+            || pilotFullName === '' || regionName === '' || areaSize === '' || injuredFawns === '') {
+            toast.error('Bitte alle Felder ausfüllen!', {
                 position: toast.POSITION.TOP_CENTER,
                 containerId: 'ToasterNotification'
             })
             return
         }
         if (!isValidNumericString(injuredFawns) || !isValidNumericString(markedFawns) || !isValidNumericString(foundFawns)) {
-            toast.error("Felder gefundene, verletzte oder markierte Kitze sind keine Zahlen!", {
+            toast.error('Felder gefundene, verletzte oder markierte Kitze sind keine Zahlen!', {
                 position: toast.POSITION.TOP_CENTER,
                 containerId: 'ToasterNotification'
             })
             return
         }
         if (remark.length > 250) {
-            toast.error("Bemerkung zu lang! Mehr als 250 Zeichen sind nicht erlaubt.", {
+            toast.error('Bemerkung zu lang! Mehr als 250 Zeichen sind nicht erlaubt.', {
                 position: toast.POSITION.TOP_CENTER,
                 containerId: 'ToasterNotification'
             })
@@ -154,7 +153,7 @@ export default function AdaptProtocolPage() {
 
             dispatch_protocols({ type: 'add-protocols', protocolsListLocal, newProtocol })
             navigate(ROUTE_RESCUE_LIST_PAGE)
-            toast.success("Protokoll erfolgreich hinzugefügt!", {
+            toast.success('Protokoll erfolgreich hinzugefügt!', {
                 position: toast.POSITION.TOP_CENTER,
                 containerId: 'ToasterNotification'
             })
@@ -162,23 +161,23 @@ export default function AdaptProtocolPage() {
     }
 
     const updateProtocol = async () => {
-        if (clientFullName === "" || localName === "" || foundFawns === "" || markedFawns === ""
-            || pilotFullName === "" || regionName === "" || areaSize === "" || injuredFawns === "") {
-            toast.error("Bitte alle Felder ausfüllen!", {
+        if (clientFullName === '' || localName === '' || foundFawns === '' || markedFawns === ''
+            || pilotFullName === '' || regionName === '' || areaSize === '' || injuredFawns === '') {
+            toast.error('Bitte alle Felder ausfüllen!', {
                 position: toast.POSITION.TOP_CENTER,
                 containerId: 'ToasterNotification'
             })
             return
         }
         if (!isValidNumericString(injuredFawns) || !isValidNumericString(markedFawns) || !isValidNumericString(foundFawns)) {
-            toast.error("Felder gefundene, verletzte oder markierte Kitze sind keine Zahlen!", {
+            toast.error('Felder gefundene, verletzte oder markierte Kitze sind keine Zahlen!', {
                 position: toast.POSITION.TOP_CENTER,
                 containerId: 'ToasterNotification'
             })
             return
         }
         if (remark.length > 250) {
-            toast.error("Bemerkung zu lang! Mehr als 250 Zeichen sind nicht erlaubt.", {
+            toast.error('Bemerkung zu lang! Mehr als 250 Zeichen sind nicht erlaubt.', {
                 position: toast.POSITION.TOP_CENTER,
                 containerId: 'ToasterNotification'
             })
@@ -209,17 +208,15 @@ export default function AdaptProtocolPage() {
         if (response.ok) {
             dispatch_protocols({ type: 'update-protocols', protocolsListLocal })
             navigate(ROUTE_RESCUE_LIST_PAGE)
-            toast.success("Protokoll erfolgreich angepasst!", {
+            toast.success('Protokoll erfolgreich angepasst!', {
                 position: toast.POSITION.TOP_CENTER,
                 containerId: 'ToasterNotification'
             })
         }
     }
 
-    const fetchRegions = async (storageToken: string | null, userId: string | null) => {
-        const response = await fetch('/api/regions?' + new URLSearchParams({
-            userId: userId!
-        }), {
+    const fetchRegions = async (storageToken: string | null) => {
+        const response = await fetch('/api/regions', {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json',
@@ -253,7 +250,7 @@ export default function AdaptProtocolPage() {
                 {(isNotMobile) && <Sidebar showSidebar={isNotMobile} />}
                 <RescueListColumnLayout>
                     <ProtocolLayout isNotMobile={isNotMobile}>
-                        <ProtocolTitle>{isNewProtocol ? 'Neues Protokoll' : `${clientFullName}`}</ProtocolTitle>
+                        <ProtocolTitle>{isNewProtocol ? 'Neues Protokoll' : `${protocolCode}`}</ProtocolTitle>
                         <ColumnContainer>
                             <ProtocolEntryForAdaptPage entry="Auftraggeber" value={clientFullName} callbackFunction={setClientFullName} />
                             <ProtocolEntryForAdaptPage entry="Pilot" value={pilotFullName} callbackFunction={setPilotFullName} />

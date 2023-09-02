@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RehkitzWebApp.Model;
 using RehkitzWebApp.Model.Dtos;
+using System.Security.Claims;
 
 namespace webapi.Controllers;
 
@@ -15,47 +17,48 @@ public class UserController : ControllerBase
     private readonly ApplicationDbContext _context;
     private readonly UserManager<IdentityUser> _userManager;
     private readonly RoleManager<IdentityRole> _roleManager;
+    private readonly IHttpContextAccessor _httpcontext;
 
     public UserController(ApplicationDbContext context, UserManager<IdentityUser> userManager,
-        RoleManager<IdentityRole> roleManager)
+        IHttpContextAccessor httpContextAccessor, RoleManager<IdentityRole> roleManager)
     {
         _context = context;
         _userManager = userManager;
         _roleManager = roleManager;
+        _httpcontext = httpContextAccessor;
     }
 
     // GET: /api/users
+    [Authorize(Roles = "Admin,Zentrale")]
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<UserSmallDto>>> GetUser([FromQuery(Name = "userId")] string userId)
+    public async Task<ActionResult<IEnumerable<UserSmallDto>>> GetUser()
     {
         if (_context.User == null)
         {
             return NotFound();
         }
 
-        // get user district and the regions part of this district 
-        var userInUserList = await _context.User.FindAsync(int.Parse(userId));
-        var userRegionIdTable = await _context.Region
-                                .Where(p => p.RegionId == int.Parse(userInUserList.UserRegionId))
-                                .ToListAsync();
+        if (_httpcontext.HttpContext == null)
+        {
+            return NotFound();
+        }
 
-        var userDistrict = userRegionIdTable[0].RegionDistrict;
+        var principal = _httpcontext.HttpContext.User;
+        var loggedInUserDistrict = principal.FindFirst("userDistrict");
+        var loggedInUserRole = principal.FindFirst(ClaimTypes.Role);
+
+        if (loggedInUserDistrict == null || loggedInUserRole == null)
+        {
+            return NotFound();
+        }
+
         var userRegionListFromDistrict = await _context.Region
-                                                .Where(p => p.RegionDistrict == userDistrict)
+                                                .Where(p => p.RegionDistrict == loggedInUserDistrict.Value)
                                                 .Select(p => p.RegionId.ToString())
                                                 .ToListAsync();
 
-
-        // get logged in user role
-        var loggedInUserRoleId = await _context.UserRoles
-                                            .Where(x => x.UserId == userInUserList.OwnerId)
-                                            .Select(x => x.RoleId)
-                                            .ToListAsync();
-
-        var loggedInUserRole = await _context.Roles.FindAsync(loggedInUserRoleId[0]);
-
         List<User> userList = new List<User>();
-        if (loggedInUserRole.Name == "Admin")
+        if (loggedInUserRole.Value == "Admin")
         {
             userList = await _context.User
                                 .Where(p => p.EntryIsDeleted == false)
@@ -85,7 +88,7 @@ public class UserController : ControllerBase
             if (userRoleId.Count != 0)
             {
                 var userRole = await _context.Roles.FindAsync(userRoleId[0]);
-                if (loggedInUserRole.Name == "Admin" || userRole.Name != "Admin")
+                if (loggedInUserRole.Value == "Admin" || userRole.Name != "Admin")
                 {
                     var userEmail = await _context.Region
                                             .Where(x => x.RegionId == userRegion.RegionId)
@@ -109,6 +112,7 @@ public class UserController : ControllerBase
     }
 
     // GET: /api/users/5
+    [Authorize(Roles = "Admin,Zentrale")]
     [HttpGet("{id}")]
     public async Task<ActionResult<UserDto>> GetUser(int id)
     {
@@ -158,27 +162,32 @@ public class UserController : ControllerBase
     }
 
     // GET: /api/users/roles
+    [Authorize(Roles = "Admin,Zentrale")]
     [HttpGet("roles")]
-    public async Task<ActionResult<IEnumerable<RoleDto>>> GetUserRoles([FromQuery(Name = "userId")] string userId)
+    public async Task<ActionResult<IEnumerable<RoleDto>>> GetUserRoles()
     {
         if (_context.User == null)
         {
             return NotFound();
         }
 
-        // get logged in user role
-        var userInUserList = await _context.User.FindAsync(int.Parse(userId));
-        var userRoleIdList = await _context.UserRoles
-                                    .Where(x => x.UserId == userInUserList.OwnerId)
-                                    .Select(x => x.RoleId)
-                                    .ToListAsync();
+        if (_httpcontext.HttpContext == null)
+        {
+            return NotFound();
+        }
 
-        var userRole = await _context.Roles.FindAsync(userRoleIdList[0]);
+        var principal = _httpcontext.HttpContext.User;
+        var loggedInUserRole = principal.FindFirst(ClaimTypes.Role);
+
+        if (loggedInUserRole == null)
+        {
+            return NotFound();
+        }
 
         var roleDtosList = new List<RoleDto>();
         List<string> rolesList = new List<string>();
 
-        if (userRole.Name == "Admin")
+        if (loggedInUserRole.Value == "Admin")
         {
             rolesList = await _context.Roles
                                 .Select(x => x.Name)
@@ -213,6 +222,7 @@ public class UserController : ControllerBase
 
     // PUT: /api/users/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+    [Authorize(Roles = "Admin,Zentrale")]
     [HttpPut("{id}")]
     public async Task<ActionResult> PutUser(int id, UserDto userDto)
     {
@@ -301,6 +311,7 @@ public class UserController : ControllerBase
 
     // POST: /api/users
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+    [Authorize(Roles = "Admin,Zentrale")]
     [HttpPost]
     public async Task<ActionResult<UserDto>> PostUser(UserDto userDto)
     {
@@ -359,6 +370,7 @@ public class UserController : ControllerBase
     }
 
     // DELETE: /api/users/5
+    [Authorize(Roles = "Admin,Zentrale")]
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteUser(int id)
     {
@@ -366,6 +378,7 @@ public class UserController : ControllerBase
         {
             return NotFound();
         }
+
         var user = await _context.User.FindAsync(id);
         if (user == null)
         {

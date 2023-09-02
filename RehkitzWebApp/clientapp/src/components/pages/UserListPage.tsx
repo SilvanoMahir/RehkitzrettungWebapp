@@ -28,8 +28,8 @@ export default function UserListPage() {
             if (storageToken !== null) {
                 dispatch_token({ type: 'set-token', value: storageToken })
             }
-            const userId = localStorage.getItem('user_id')
-            const usersListLocal = await fetchUsers(storageToken, userId)
+            // get id from token
+            const usersListLocal = await fetchUsers(storageToken)
             setFetchedUsersListLocal(usersListLocal)
             setLoadingUsers(false)
             dispatch_users({ type: 'get-users', usersListLocal })
@@ -37,11 +37,10 @@ export default function UserListPage() {
         onMount()
     }, [dispatch_users, dispatch_token])
 
-    const fetchUsers = async (storageToken: string | null, userId: string | null) => {
+    const fetchUsers = async (storageToken: string | null) => {
         try {
-            const response = await fetch('/api/users?' + new URLSearchParams({
-                userId: userId!
-            }), {
+            const response = await fetch('/api/users',
+            {
                 method: 'GET',
                 headers: {
                     'Content-type': 'application/json',

@@ -46,8 +46,6 @@ export default function LoginPage() {
         if (response.ok) {
             localStorage.setItem('user_token', token)
             dispatch_token({ type: 'set-token', value: token })
-            localStorage.setItem('user_id', userId)
-            dispatch_token({ type: 'set-user-id', value: userId })
             navigate(ROUTE_MAIN_PAGE)
         } else {
             toast.error("Login fehlgeschlagen. Password oder Benutzername falsch", {
