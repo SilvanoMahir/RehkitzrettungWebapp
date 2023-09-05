@@ -38,6 +38,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="clientapp\public\manifest.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <InternalsVisibleTo Include="ApiWebAppTesting" />
   </ItemGroup>
 

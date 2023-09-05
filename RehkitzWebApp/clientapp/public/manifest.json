@@ -1,0 +1,16 @@
+{
+  "name": "Rehkitzrettung Webapplikation",
+  "short_name": "Rehkitzrettung WebApp",
+  "description": "Web Applikation zum dokumentieren von Rettungsfluegen mit Drohnen",
+  "start_url": "/?homescreen=1",
+  "background_color": "#000000",
+  "theme_color": "#0f4a73",
+  "icons": [
+    {
+      "src": "rescue_logo_tab_icon.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    }
+  ]
+
+}
