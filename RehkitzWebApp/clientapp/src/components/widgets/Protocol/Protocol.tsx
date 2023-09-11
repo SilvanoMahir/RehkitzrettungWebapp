@@ -95,7 +95,7 @@ const ProtocolLayout = styled.div`
 	color: beige;
 	border-radius: 10px;
     max-width: 850px;
-    width: 100%;
+    width: 85%;
 `
 
 const ProtocolTitle = styled.div`
