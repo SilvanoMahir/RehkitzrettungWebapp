@@ -2,7 +2,7 @@ import { render } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import MapPage from '../components/pages/MapPage'
 
-test('check if create new user buttons exists', async () => {
+test('check if iframe exists', async () => {
   render(
     <MemoryRouter>
       <MapPage />

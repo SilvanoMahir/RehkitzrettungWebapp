@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import AdaptUserPage from '../components/pages/AdaptUserPage'
 
-test('check placeholders and labels in AdaptProtocolPage', () => {
+test('check placeholders and labels in AdaptUserPage', () => {
   render(
     <MemoryRouter>
       <AdaptUserPage />

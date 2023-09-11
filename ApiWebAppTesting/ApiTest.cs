@@ -149,8 +149,6 @@ namespace ApiWebAppTesting
                 Date = "2023.05.07 12:00:00"
             };
 
-            var newProtocol = JsonConvert.SerializeObject(newProtocolDto);
-
             //setup request for creating new protocol
             var request = new HttpRequestMessage
             {
@@ -159,9 +157,13 @@ namespace ApiWebAppTesting
             };
             request.Headers.Add("Authorization", "Bearer " + token);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            var stringContent = new StringContent(new ProtocolDto().ToString(), Encoding.UTF8);
+            request.Content = new StringContent(JsonConvert.SerializeObject(newProtocolDto), Encoding.UTF8, "application/json");
 
-            await _httpClient.PostAsync("/api/protocols", stringContent);
+            await _httpClient.SendAsync(request);
+
+            //jsonPayload = JsonConvert.SerializeObject(newProtocolDto);
+            //content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+            //responseRegister = await _httpClient.PostAsync("/api/protocols", content);
 
             //setup request for getting the protocols
             request = new HttpRequestMessage
