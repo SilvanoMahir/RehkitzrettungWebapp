@@ -42,7 +42,7 @@ export default function RescueListPage() {
                 "password": inputPassword
             }),
         })
-        const { token, userId } = await response.json()
+        const { token } = await response.json()
         if (response.ok) {
             localStorage.setItem('user_token', token)
             dispatch_token({ type: 'set-token', value: token })
