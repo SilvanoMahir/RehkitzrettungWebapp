@@ -124,7 +124,7 @@ export default function AdaptProtocolPage() {
                 ProtocolCode: protocolCode,
                 ClientFullName: clientFullName,
                 LocalName: localName,
-                Date: date,
+                Date: date?.toISOString(),
                 FoundFawns: parseInt(foundFawns),
                 MarkedFawns: parseInt(markedFawns),
                 Remark: remark,
