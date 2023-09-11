@@ -135,12 +135,11 @@ namespace ApiWebAppTesting
 
             var newProtocolDto = new ProtocolDto
             {
-                ProtocolId = 2,
                 ProtocolCode = "GR-0025",
                 ClientFullName = "Fritz Weber",
                 LocalName = "Chomps",
                 PilotFullName = "Johannes Erny",
-                RegionName = "1",
+                RegionName = "Tasna",
                 Remark = "Keine Bemerkung",
                 AreaSize = ">1ha",
                 FoundFawns = 1,
