@@ -270,14 +270,7 @@ public class ProtocolController : ControllerBase
                                         .Select(r => r.RegionState)
                                         .ToListAsync();
 
-        if (regionState[0] != null)
-        {
-            protocolDto.ProtocolCode = $"{regionState[0]}-{protocolCode}";
-        }
-        else
-        {
-            protocolDto.ProtocolCode = "Undefined region state";
-        }
+        protocolDto.ProtocolCode = $"{regionState[0]}-{protocolCode}";
 
         bool entryIsDeleted = false;
         var protocol = protocolDto.ToProtocolEntity(entryIsDeleted);

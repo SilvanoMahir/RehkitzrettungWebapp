@@ -160,10 +160,6 @@ namespace ApiWebAppTesting
 
             await _httpClient.SendAsync(request);
 
-            //jsonPayload = JsonConvert.SerializeObject(newProtocolDto);
-            //content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
-            //responseRegister = await _httpClient.PostAsync("/api/protocols", content);
-
             //setup request for getting the protocols
             request = new HttpRequestMessage
             {
@@ -177,16 +173,8 @@ namespace ApiWebAppTesting
             var responseGet = await _httpClient.SendAsync(request);
             var stringResult = await responseGet.Content.ReadAsStringAsync();
 
-            //get the comparasion object from initialisation db and delete the desired object
             List<Protocol> protocolList = models.getProtocolExpectedResultList().ToList();
-            // int indexToRemove = protocolList.FindIndex(protocol => protocol.ProtocolId == protocolIdToRemove);
-            // if (indexToRemove != -1)
-            // {
-            //     protocolList.RemoveAt(indexToRemove);
-            // }
-            //
-            // string expectedProtocolsResult = JsonConvert.SerializeObject(protocolList.ToArray());
-            // 
+
             Assert.IsTrue((protocolList.Count + 1) == JArray.Parse(stringResult).Count);
         }
 
