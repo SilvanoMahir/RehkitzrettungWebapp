@@ -1,7 +1,7 @@
-import styled from "styled-components"
-import { useState } from "react"
-import { Hamburger } from "./Hamburger"
-import Sidebar from "./Sidebar/Sidebar"
+import styled from 'styled-components'
+import { useState } from 'react'
+import { Hamburger } from './Hamburger'
+import Sidebar from './Sidebar/Sidebar'
 
 export const Menu = () => {
     const [open, setOpen] = useState<boolean>(false)

@@ -1,6 +1,7 @@
-import styled from "styled-components"
-import { ProtocolEntries } from "../../../models/ProtocolEntries"
+import styled from 'styled-components'
+import { ProtocolEntries } from '../../../models/ProtocolEntries'
 import ProtocolEntry from './ProtocolEntry'
+import { formatDate } from './ProtocolBodySmallScreen'
 
 interface Props {
     protocolEntry: ProtocolEntries
@@ -13,7 +14,7 @@ export default function ProtocolBodyLargeScreen({ protocolEntry }: Props) {
             <ColumnContainer>
                 <ProtocolEntry entry="Auftraggeber" value={protocolEntry?.clientFullName} />
                 <ProtocolEntry entry="Lokalname" value={protocolEntry?.localName} />
-                <ProtocolEntry entry="Datum" value={protocolEntry?.date} />
+                <ProtocolEntry entry="Datum" value={formatDate(protocolEntry?.date)} />
                 <ProtocolEntry entry="Gefundene Kitze" value={protocolEntry?.foundFawns} />
                 <ProtocolEntry entry="Markierte Kitze" value={protocolEntry?.markedFawns} />
                 <ProtocolEntry entry="Bemerkung" value={protocolEntry?.remark} />

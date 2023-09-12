@@ -1,8 +1,8 @@
-import styled from "styled-components"
-import { UserEntries } from "../../../models/UserEntries"
-import { EditUserButton } from "../../controls/Button"
-import { ROUTE_ADAPT_USER_PAGE } from "../../../App"
-import { useNavigate } from "react-router-dom"
+import styled from 'styled-components'
+import { UserEntries } from '../../../models/UserEntries'
+import { EditUserButton } from '../../controls/Button'
+import { ROUTE_ADAPT_USER_PAGE } from '../../../App'
+import { useNavigate } from 'react-router-dom'
 
 interface Props {
     userEntry: UserEntries
