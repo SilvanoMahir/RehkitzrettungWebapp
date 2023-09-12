@@ -1,4 +1,4 @@
-import { ProtocolEntries } from "./ProtocolEntries"
+import { ProtocolEntries } from './ProtocolEntries'
 
 export interface ProtocolState {
     protocolsListLocal: ProtocolEntries[]

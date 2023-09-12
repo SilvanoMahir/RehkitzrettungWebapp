@@ -17,7 +17,7 @@ public static class ProtocolExtensions
             FoundFawns = protocol.FoundFawns,
             InjuredFawns = protocol.InjuredFawns,
             MarkedFawns = protocol.MarkedFawns,
-            Date = protocol.Date.ToShortDateString(),
+            Date = protocol.Date,
         };
     }
 
@@ -36,7 +36,7 @@ public static class ProtocolExtensions
             FoundFawns = protocolDto.FoundFawns,
             InjuredFawns = protocolDto.InjuredFawns,
             MarkedFawns = protocolDto.MarkedFawns,
-            Date = DateTime.Parse(protocolDto.Date),
+            Date = protocolDto.Date,
             EntryIsDeleted = entryIsDeleted,
         };
     }

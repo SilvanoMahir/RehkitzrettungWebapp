@@ -1,5 +1,5 @@
-import styled from "styled-components"
-import { TextInputForAdaptPage } from "../../controls/TextInput"
+import styled from 'styled-components'
+import { TextInputForAdaptPage } from '../../controls/TextInput'
 
 interface Props {
     entry: string
