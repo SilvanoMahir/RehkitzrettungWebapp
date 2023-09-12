@@ -145,7 +145,7 @@ namespace ApiWebAppTesting
                 FoundFawns = 1,
                 InjuredFawns = 0,
                 MarkedFawns = 0,
-                Date = "2023.05.07 12:00:00"
+                Date = new DateTime(),
             };
 
             //setup request for creating new protocol
@@ -179,9 +179,94 @@ namespace ApiWebAppTesting
         }
 
         [TestMethod]
+        public async Task updateProtocolTest()
+        {
+            int protocolIdToUpdate = 2;
+
+            var user = new
+            {
+                userName = "admin_test",
+                userEmail = "admin@tasna.ch",
+                userPassword = "Password@123",
+                userDefinition = "Admin 1",
+                userFirstName = "Kristian",
+                userLastName = "Küttel",
+                userRegion = "Tasna"
+            };
+
+            var userLogin = new
+            {
+                username = "admin_test",
+                password = "Password@123"
+            };
+
+            // create a new admin user
+            string jsonPayload = JsonConvert.SerializeObject(user);
+            var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+            var responseRegister = await _httpClient.PostAsync("/api/authenticate/register-admin", content);
+
+            // login as admin user
+            string jsonLoginPayload = JsonConvert.SerializeObject(userLogin);
+            var contentLogin = new StringContent(jsonLoginPayload, Encoding.UTF8, "application/json");
+            var responseLogin = await _httpClient.PostAsync("/api/authenticate/login", contentLogin);
+
+            // create new protocol
+            string responseString = await responseLogin.Content.ReadAsStringAsync();
+            var responseJson = JObject.Parse(responseString);
+            string token = responseJson["token"].Value<string>();
+
+            var protocolDtoToUpdate = new ProtocolDto
+            {
+                ProtocolId = 2,
+                ProtocolCode = "GR-0025",
+                ClientFullName = "Fritz Weber",
+                LocalName = "Chomps",
+                PilotFullName = "Johannes Erny",
+                RegionName = "Tasna",
+                Remark = "Keine Bemerkung",
+                AreaSize = ">1ha",
+                FoundFawns = 1,
+                InjuredFawns = 0,
+                MarkedFawns = 0,
+                Date = new DateTime()
+            };
+
+            //setup request for updating one protocol
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Put,
+                RequestUri = new Uri("/api/protocols/" + protocolIdToUpdate, UriKind.Relative)
+            };
+            request.Headers.Add("Authorization", "Bearer " + token);
+            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            request.Content = new StringContent(JsonConvert.SerializeObject(protocolDtoToUpdate), Encoding.UTF8, "application/json");
+
+            await _httpClient.SendAsync(request);
+
+            //setup request for getting the protocols
+            request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new Uri("/api/protocols", UriKind.Relative)
+            };
+            request.Headers.Add("Authorization", "Bearer " + token);
+            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            //send request
+            var responseGet = await _httpClient.SendAsync(request);
+            var stringResult = await responseGet.Content.ReadAsStringAsync();
+
+            List<Protocol> protocolList = models.getProtocolExpectedResultList().ToList();
+
+            Assert.IsTrue(stringResult.Contains("Fritz Weber"));
+            Assert.IsTrue(protocolList.Count == JArray.Parse(stringResult).Count);
+        }
+
+        [TestMethod]
         public async Task deleteProtocolTest()
         {
-            int protocolIdToRemove = 2; //protocolId with this number is deleted
+            int protocolIdToRemove = 2;
+
             var user = new
             {
                 userName = "admin_test",
