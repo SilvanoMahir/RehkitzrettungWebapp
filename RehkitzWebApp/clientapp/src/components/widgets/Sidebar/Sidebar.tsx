@@ -1,12 +1,12 @@
-import { FaInfo, FaListUl, FaMap, FaRegArrowAltCircleRight, FaUser, FaUsers } from "react-icons/fa"
-import styled from "styled-components"
-import SidebarButton from "../Sidebar/SidebarButton"
-import SidebarIcon from "../Sidebar/SidebarIcon"
-import { useContext, useEffect, useState } from "react"
+import { FaInfo, FaListUl, FaMap, FaRegArrowAltCircleRight, FaUser, FaUsers } from 'react-icons/fa'
+import styled from 'styled-components'
+import SidebarButton from '../Sidebar/SidebarButton'
+import SidebarIcon from '../Sidebar/SidebarIcon'
+import { useContext, useEffect, useState } from 'react'
 import { AppContext } from '../../../store/context'
 import { ROUTE_MAIN_PAGE, ROUTE_LOGIN_PAGE, ROUTE_MAP_PAGE, ROUTE_RESCUE_LIST_PAGE, ROUTE_USER_LIST_PAGE, ROUTE_MY_DATA_PAGE } from '../../../App'
-import { useNavigate } from "react-router"
-import { useMediaQuery } from "react-responsive"
+import { useNavigate } from 'react-router'
+import { useMediaQuery } from 'react-responsive'
 import jwt_decode from 'jwt-decode'
 import { JwtPayload } from '../../../interfaces/jwtPayload'
 
