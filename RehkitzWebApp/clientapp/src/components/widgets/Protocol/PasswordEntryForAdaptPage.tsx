@@ -1,5 +1,5 @@
-import styled from "styled-components"
-import { TextInputPasswordEntry } from "../../controls/TextInputPasswordEntry"
+import styled from 'styled-components'
+import { TextInputPasswordEntry } from '../../controls/TextInputPasswordEntry'
 
 interface Props {
     entry: string

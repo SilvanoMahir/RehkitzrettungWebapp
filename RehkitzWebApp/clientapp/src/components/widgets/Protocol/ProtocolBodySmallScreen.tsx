@@ -1,5 +1,5 @@
-import styled from "styled-components"
-import { ProtocolEntries } from "../../../models/ProtocolEntries"
+import styled from 'styled-components'
+import { ProtocolEntries } from '../../../models/ProtocolEntries'
 import ProtocolEntry from './ProtocolEntry'
 
 interface Props {
@@ -25,7 +25,9 @@ export default function ProtocolBodySmallScreen({ protocolEntry }: Props) {
 }
 
 export function formatDate(dateString: string | number | Date) {
-    if (!dateString) return "" 
+    if (!dateString) {
+        return ''
+    }
   
     const date = new Date(dateString)
     const day = date.getDate().toString().padStart(2, '0')

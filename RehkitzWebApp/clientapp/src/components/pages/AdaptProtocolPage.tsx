@@ -8,7 +8,7 @@ import { Menu } from '../widgets/Menu'
 import { useNavigate, useParams } from 'react-router-dom'
 import { ROUTE_RESCUE_LIST_PAGE } from '../../App'
 import ProtocolEntryForAdaptPage from '../widgets/Protocol/ProtocolEntryForAdaptPage'
-import DatePicker from "react-datepicker"
+import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import { Dropdown } from '../controls/Dropdown'
 import { toast } from 'react-toastify'

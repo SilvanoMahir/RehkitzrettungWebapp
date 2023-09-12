@@ -1,5 +1,5 @@
-import { FaListUl } from "react-icons/fa"
-import styled from "styled-components"
+import { FaListUl } from 'react-icons/fa'
+import styled from 'styled-components'
 
 type Props = {
     open: boolean

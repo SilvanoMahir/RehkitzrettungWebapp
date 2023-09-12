@@ -43,8 +43,8 @@ export default function RescueListPage() {
             const fetchedProtocols = await fetchProtocols(storageToken)
             setFetchedProtocolsListLocal(fetchedProtocols)
             const protocolsListLocal = [...fetchedProtocols].sort((a, b) => {
-                const dateA = new Date(a.date.includes("T") ? a.date : `${a.date}T00:00:00.000Z`)
-                const dateB = new Date(b.date.includes("T") ? b.date : `${b.date}T00:00:00.000Z`)
+                const dateA = new Date(a.date.includes('T') ? a.date : `${a.date}T00:00:00.000Z`)
+                const dateB = new Date(b.date.includes('T') ? b.date : `${b.date}T00:00:00.000Z`)
                 return dateB.getTime() - dateA.getTime()
             })
             console.log(protocolsListLocal)

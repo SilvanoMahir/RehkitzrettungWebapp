@@ -3,8 +3,8 @@ import { LoginButton } from '../controls/Button'
 import { useContext, useState } from 'react'
 import { TextInput } from '../controls/TextInput'
 import { TextInputPassword } from '../controls/TextInputPassword'
-import LoginIcon from "../widgets/Login/LoginIcon"
-import BackgroundIcon from "../widgets/Login/LoginBackground"
+import LoginIcon from '../widgets/Login/LoginIcon'
+import BackgroundIcon from '../widgets/Login/LoginBackground'
 import { ROUTE_MAIN_PAGE } from '../../App'
 import { useNavigate } from 'react-router-dom'
 import { FaSignInAlt } from "react-icons/fa"

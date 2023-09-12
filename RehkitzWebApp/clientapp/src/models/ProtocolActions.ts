@@ -1,4 +1,4 @@
-import { ProtocolEntries } from "./ProtocolEntries"
+import { ProtocolEntries } from './ProtocolEntries'
 
 type addProtocolsAction = {
     type: 'add-protocols'

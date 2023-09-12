@@ -1,5 +1,5 @@
-import { ActionUsers } from "../models/UserActions"
-import { UserState } from "../models/UserState"
+import { ActionUsers } from '../models/UserActions'
+import { UserState } from '../models/UserState'
 
 export function userReducer(state: UserState, action: ActionUsers): UserState {
     switch (action.type) {

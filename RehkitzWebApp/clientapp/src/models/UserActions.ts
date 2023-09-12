@@ -1,4 +1,4 @@
-import { UserEntries } from "./UserEntries"
+import { UserEntries } from './UserEntries'
 
 type addUserAction = {
     type: 'add-user'

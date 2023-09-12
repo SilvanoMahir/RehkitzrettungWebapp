@@ -1,7 +1,7 @@
-import styled from "styled-components"
-import { ProtocolEntries } from "../../../models/ProtocolEntries"
+import styled from 'styled-components'
+import { ProtocolEntries } from '../../../models/ProtocolEntries'
 import ProtocolEntry from './ProtocolEntry'
-import { formatDate } from "./ProtocolBodySmallScreen"
+import { formatDate } from './ProtocolBodySmallScreen'
 
 interface Props {
     protocolEntry: ProtocolEntries
