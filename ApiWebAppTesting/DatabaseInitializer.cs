@@ -1,6 +1,5 @@
 ﻿using ApiWebAppTesting;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using RehkitzWebApp.Model;
 
 
@@ -48,6 +47,7 @@ public class DatabaseInitializer
         //fill the tables with initial data
         FillProtocolTable();
         FillRegionTable();
+        FillAreaTable();
     }
 
     private void FillProtocolTable()
@@ -83,6 +83,14 @@ public class DatabaseInitializer
                     ContactPersonLastName NVARCHAR(50) NULL,
                     ContactPersonFirstName NVARCHAR(50) NULL,
                     ContactPersonEmail NVARCHAR(50) NULL,
+                    EntryIsDeleted BIT NOT NULL
+                );");
+
+            // Create Area table
+            _dbContext.Database.ExecuteSqlRaw(@"
+                CREATE TABLE Area (
+                    AreaId INT IDENTITY(1, 1) PRIMARY KEY,
+                    AreaSize NVARCHAR(50) NOT NULL,
                     EntryIsDeleted BIT NOT NULL
                 );");
 
@@ -128,14 +136,19 @@ public class DatabaseInitializer
         _dbContext.SaveChangesAsync();
     }
 
-    private void FillUserTable()
+    private void FillAreaTable()
     {
-        var users = new List<User>
+        var areas = new List<Area>
         {
-            // Add User instances as needed
+            new Area
+            {
+                    AreaSize = ">1ha",
+                    EntryIsDeleted = false
+            }
         };
 
-        _dbContext.User.AddRange(users);
-        _dbContext.SaveChangesAsync();    }
+        _dbContext.Area.AddRange(areas);
+        _dbContext.SaveChangesAsync();
+    }
 }
 

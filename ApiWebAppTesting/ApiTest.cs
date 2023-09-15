@@ -18,7 +18,7 @@ namespace ApiWebAppTesting
         private readonly DbContextOptions<ApiTestDbContext> _options;
         TestModels models;
 
-        //set enviroment for the client which test against the test DB 
+        // set enviroment for the client which test against the test DB 
         public ApiTest()
         {
             var webAppFactory = new WebApplicationFactory<Program>().WithWebHostBuilder(builder =>
@@ -26,11 +26,11 @@ namespace ApiWebAppTesting
                 builder.UseEnvironment("Test");
             });
 
-            //create client and model for testing
+            // create client and model for testing
             _httpClient = webAppFactory.CreateDefaultClient();
             models = new TestModels();
 
-            //set up connection to test db and fill reset and initialize with test data of the model
+            // set up connection to test db and fill reset and initialize with test data of the model
             string json = File.ReadAllText("../../../../RehkitzWebApp/appsettings.json");
             JObject obj = JObject.Parse(json);
             string testConnectionString = obj["ConnectionStrings"]["Test"].ToString();
@@ -68,22 +68,22 @@ namespace ApiWebAppTesting
                 password = "Password@123"
             };
 
-            //register new admin client
+            // register new admin client
             string jsonPayload = JsonConvert.SerializeObject(user);
             var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
             var responseRegister = await _httpClient.PostAsync("/api/authenticate/register-admin", content);
 
-            //login with previous created admin user
+            // login with previous created admin user
             string jsonLoginPayload = JsonConvert.SerializeObject(userLogin);
             var contentLogin = new StringContent(jsonLoginPayload, Encoding.UTF8, "application/json");
             var responseLogin = await _httpClient.PostAsync("/api/authenticate/login", contentLogin);
 
-            //get token of the login
+            // get token of the login
             string responseString = await responseLogin.Content.ReadAsStringAsync();
             var responseJson = JObject.Parse(responseString);
             string token = responseJson["token"].Value<string>();
 
-            //setup request for getting the protocols
+            // setup request for getting the protocols
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Get,
@@ -92,7 +92,7 @@ namespace ApiWebAppTesting
             request.Headers.Add("Authorization", "Bearer " + token);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            //send request
+            // send request
             var responseGet = await _httpClient.SendAsync(request);
 
             Assert.IsTrue(responseGet.ToString().Contains("StatusCode: 200"));
@@ -148,7 +148,7 @@ namespace ApiWebAppTesting
                 Date = new DateTime(),
             };
 
-            //setup request for creating new protocol
+            // setup request for creating new protocol
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Post,
@@ -160,7 +160,7 @@ namespace ApiWebAppTesting
 
             await _httpClient.SendAsync(request);
 
-            //setup request for getting the protocols
+            // setup request for getting the protocols
             request = new HttpRequestMessage
             {
                 Method = HttpMethod.Get,
@@ -169,7 +169,7 @@ namespace ApiWebAppTesting
             request.Headers.Add("Authorization", "Bearer " + token);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            //send request
+            // send request
             var responseGet = await _httpClient.SendAsync(request);
             var stringResult = await responseGet.Content.ReadAsStringAsync();
 
@@ -212,7 +212,7 @@ namespace ApiWebAppTesting
             var responseJson = JObject.Parse(responseString);
             string token = responseJson["token"].Value<string>();
 
-            //setup request for getting the protocols
+            // setup request for getting the protocols
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Get,
@@ -221,7 +221,7 @@ namespace ApiWebAppTesting
             request.Headers.Add("Authorization", "Bearer " + token);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            //send request
+            // send request
             var responseGet = await _httpClient.SendAsync(request);
             var stringResult = await responseGet.Content.ReadAsStringAsync();
 
@@ -281,7 +281,7 @@ namespace ApiWebAppTesting
                 Date = new DateTime()
             };
 
-            //setup request for updating one protocol
+            // setup request for updating one protocol
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Put,
@@ -293,7 +293,7 @@ namespace ApiWebAppTesting
 
             await _httpClient.SendAsync(request);
 
-            //setup request for getting the protocols
+            // setup request for getting the protocols
             request = new HttpRequestMessage
             {
                 Method = HttpMethod.Get,
@@ -302,7 +302,7 @@ namespace ApiWebAppTesting
             request.Headers.Add("Authorization", "Bearer " + token);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            //send request
+            // send request
             var responseGet = await _httpClient.SendAsync(request);
             var stringResult = await responseGet.Content.ReadAsStringAsync();
 
@@ -349,7 +349,7 @@ namespace ApiWebAppTesting
             var responseJson = JObject.Parse(responseString);
             string token = responseJson["token"].Value<string>();
 
-            //setup request for deleting one protocol
+            // setup request for deleting one protocol
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Delete,
@@ -360,7 +360,7 @@ namespace ApiWebAppTesting
 
             await _httpClient.SendAsync(request);
 
-            //setup request for getting the protocols
+            // setup request for getting the protocols
             request = new HttpRequestMessage
             {
                 Method = HttpMethod.Get,
@@ -369,11 +369,11 @@ namespace ApiWebAppTesting
             request.Headers.Add("Authorization", "Bearer " + token);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            //send request
+            // send request
             var responseGet = await _httpClient.SendAsync(request);
             var stringResult = await responseGet.Content.ReadAsStringAsync();
 
-            //get the comparasion object from initialisation db and delete the desired object
+            // get the comparasion object from initialisation db and delete the desired object
             List<Protocol> protocolList = models.getProtocolExpectedResultList().ToList();
             int indexToRemove = protocolList.FindIndex(protocol => protocol.ProtocolId == protocolIdToRemove);
             if (indexToRemove != -1)
@@ -401,11 +401,11 @@ namespace ApiWebAppTesting
                 userRegion = "Tasna"
             };
 
-            //setup request for getting the protocols
+            // setup request for getting the protocols
             string jsonPayload = JsonConvert.SerializeObject(user);
             var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
 
-            //send request
+            // send request
             var response = await _httpClient.PostAsync("/api/authenticate/register-admin", content);
 
             Assert.IsTrue(response.ToString().Contains("StatusCode: 200"));
@@ -431,22 +431,22 @@ namespace ApiWebAppTesting
                 password = "Password@123"
             };
 
-            //register new admin client
+            // register new admin client
             string jsonPayload = JsonConvert.SerializeObject(user);
             var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
             var responseRegister = await _httpClient.PostAsync("/api/authenticate/register-admin", content);
 
-            //login with previous created admin user
+            // login with previous created admin user
             string jsonLoginPayload = JsonConvert.SerializeObject(userLogin);
             var contentLogin = new StringContent(jsonLoginPayload, Encoding.UTF8, "application/json");
             var responseLogin = await _httpClient.PostAsync("/api/authenticate/login", contentLogin);
 
-            //get token of the login
+            // get token of the login
             string responseString = await responseLogin.Content.ReadAsStringAsync();
             var responseJson = JObject.Parse(responseString);
             string token = responseJson["token"].Value<string>();
 
-            //setup request for getting the users
+            // setup request for getting the users
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Get,
@@ -455,7 +455,7 @@ namespace ApiWebAppTesting
             request.Headers.Add("Authorization", "Bearer " + token);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            //send request
+            // send request
             var responseGet = await _httpClient.SendAsync(request);
             var stringResult = await responseGet.Content.ReadAsStringAsync();
 
@@ -495,17 +495,17 @@ namespace ApiWebAppTesting
                 userFunction = "Admin"
             };
 
-            //register new admin client
+            // register new admin client
             string jsonPayload = JsonConvert.SerializeObject(user);
             var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
             var responseRegister = await _httpClient.PostAsync("/api/authenticate/register-admin", content);
 
-            //login with previous created admin user
+            // login with previous created admin user
             string jsonLoginPayload = JsonConvert.SerializeObject(userLogin);
             var contentLogin = new StringContent(jsonLoginPayload, Encoding.UTF8, "application/json");
             var responseLogin = await _httpClient.PostAsync("/api/authenticate/login", contentLogin);
 
-            //get token of the login
+            // get token of the login
             string responseString = await responseLogin.Content.ReadAsStringAsync();
             var responseJson = JObject.Parse(responseString);
             string token = responseJson["token"].Value<string>();
@@ -527,7 +527,7 @@ namespace ApiWebAppTesting
             // Send the request
             var responsePut = await _httpClient.SendAsync(request);
 
-            //setup request for getting the users
+            // setup request for getting the users
             request = new HttpRequestMessage
             {
                 Method = HttpMethod.Get,
@@ -536,7 +536,7 @@ namespace ApiWebAppTesting
             request.Headers.Add("Authorization", "Bearer " + token);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            //send request
+            // send request
             var responseGet = await _httpClient.SendAsync(request);
             var stringResult = await responseGet.Content.ReadAsStringAsync();
 
@@ -566,17 +566,17 @@ namespace ApiWebAppTesting
                 password = "Password@123"
             };
 
-            //register new admin client
+            // register new admin client
             string jsonPayload = JsonConvert.SerializeObject(user);
             var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
             var responseRegister = await _httpClient.PostAsync("/api/authenticate/register-admin", content);
 
-            //login with previous created admin user
+            // login with previous created admin user
             string jsonLoginPayload = JsonConvert.SerializeObject(userLogin);
             var contentLogin = new StringContent(jsonLoginPayload, Encoding.UTF8, "application/json");
             var responseLogin = await _httpClient.PostAsync("/api/authenticate/login", contentLogin);
 
-            //get token of the login
+            // get token of the login
             string responseString = await responseLogin.Content.ReadAsStringAsync();
             var responseJson = JObject.Parse(responseString);
             string token = responseJson["token"].Value<string>();
@@ -594,7 +594,7 @@ namespace ApiWebAppTesting
             // Send the request
             var responseDelete = await _httpClient.SendAsync(request);
 
-            //setup request for getting the users
+            // setup request for getting the users
             request = new HttpRequestMessage
             {
                 Method = HttpMethod.Get,
@@ -603,7 +603,7 @@ namespace ApiWebAppTesting
             request.Headers.Add("Authorization", "Bearer " + token);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            //send request
+            // send request
             var responseGet = await _httpClient.SendAsync(request);
             var stringResult = await responseGet.Content.ReadAsStringAsync();
 
@@ -646,7 +646,7 @@ namespace ApiWebAppTesting
             var responseJson = JObject.Parse(responseString);
             string token = responseJson["token"].Value<string>();
 
-            //setup request for getting the regions
+            // setup request for getting the regions
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Get,
@@ -655,7 +655,58 @@ namespace ApiWebAppTesting
             request.Headers.Add("Authorization", "Bearer " + token);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            //send request
+            // send request
+            var responseGet = await _httpClient.SendAsync(request);
+            var stringResult = await responseGet.Content.ReadAsStringAsync();
+
+            Assert.IsTrue(stringResult.Contains("\"regionName\":\"Tasna\""));
+            Assert.IsTrue(JArray.Parse(stringResult).Count == 1);
+        }
+
+        [TestMethod]
+        public async Task readAreaTest()
+        {
+            var user = new
+            {
+                userName = "admin_test",
+                userEmail = "admin@tasna.ch",
+                userPassword = "Password@123",
+                userDefinition = "Admin 1",
+                userFirstName = "Kristian",
+                userLastName = "Küttel",
+                userRegion = "Tasna"
+            };
+
+            var userLogin = new
+            {
+                username = "admin_test",
+                password = "Password@123"
+            };
+
+            // create a new admin user
+            string jsonPayload = JsonConvert.SerializeObject(user);
+            var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+            var responseRegister = await _httpClient.PostAsync("/api/authenticate/register-admin", content);
+
+            // login as admin user
+            string jsonLoginPayload = JsonConvert.SerializeObject(userLogin);
+            var contentLogin = new StringContent(jsonLoginPayload, Encoding.UTF8, "application/json");
+            var responseLogin = await _httpClient.PostAsync("/api/authenticate/login", contentLogin);
+
+            string responseString = await responseLogin.Content.ReadAsStringAsync();
+            var responseJson = JObject.Parse(responseString);
+            string token = responseJson["token"].Value<string>();
+
+            // setup request for getting the areas
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new Uri("/api/area", UriKind.Relative)
+            };
+            request.Headers.Add("Authorization", "Bearer " + token);
+            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            // send request
             var responseGet = await _httpClient.SendAsync(request);
             var stringResult = await responseGet.Content.ReadAsStringAsync();
 
@@ -665,7 +716,7 @@ namespace ApiWebAppTesting
 
         private void resetAndInitializeTestDB()
         {
-            //setup dbcontext and check if connections is established
+            // setup dbcontext and check if connections is established
             ApiTestDbContext dbContext = new ApiTestDbContext(_options);
             if (dbContext.Database.CanConnect())
             {
