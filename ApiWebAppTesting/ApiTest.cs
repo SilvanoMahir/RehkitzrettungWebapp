@@ -51,27 +51,13 @@ namespace ApiWebAppTesting
         [TestMethod]
         public async Task getAdminUserProtocolsTest()
         {
-            var user = new
-            {
-                userName = "admin_test",
-                userEmail = "admin@tasna.ch",
-                userPassword = "Password@123",
-                userDefinition = "Admin 1",
-                userFirstName = "Silvano",
-                userLastName = "Stecher",
-                userRegion = "Tasna"
-            };
-
             var userLogin = new
             {
                 username = "admin_test",
                 password = "Password@123"
             };
 
-            // register new admin client
-            string jsonPayload = JsonConvert.SerializeObject(user);
-            var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
-            var responseRegister = await _httpClient.PostAsync("/api/authenticate/register-admin", content);
+            registerNewAdminClient();
 
             // login with previous created admin user
             string jsonLoginPayload = JsonConvert.SerializeObject(userLogin);
@@ -727,6 +713,24 @@ namespace ApiWebAppTesting
             {
                 throw new Exception("No connection to test DB");
             }
+        }
+
+        private async void registerNewAdminClient()
+        {
+            var user = new
+            {
+                userName = "admin_test",
+                userEmail = "admin@tasna.ch",
+                userPassword = "Password@123",
+                userDefinition = "Admin 1",
+                userFirstName = "Silvano",
+                userLastName = "Stecher",
+                userRegion = "Tasna"
+            };
+
+            string jsonPayload = JsonConvert.SerializeObject(user);
+            var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+            var responseRegister = await _httpClient.PostAsync("/api/authenticate/register-admin", content);
         }
     }
 }
