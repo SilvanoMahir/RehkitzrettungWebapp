@@ -45,13 +45,15 @@ public class DatabaseInitializer
         bool result = _dbContext.Database.EnsureCreated();
 
         //fill the tables with initial data
-        FillProtocolTable();
-        FillRegionTable();
-        FillAreaTable();
+        createTables();
+        fillProtocolTable();
+        fillRegionTable();
+        fillAreaTable();
     }
 
-    private void FillProtocolTable()
+    private void createTables()
     {
+
         _dbContext.Database.EnsureCreated();
         try
         {
@@ -109,14 +111,15 @@ public class DatabaseInitializer
         {
             Console.WriteLine("Exception creating tables:", e);
         }
-
-        // Fill Protocol table with data
-        _dbContext.Protocol.AddRange(models.getProtocolTestList());
-        _dbContext.SaveChanges();
-
     }
 
-    private void FillRegionTable()
+    private void fillProtocolTable()
+    {
+        _dbContext.Protocol.AddRange(models.getProtocolTestList());
+        _dbContext.SaveChanges();
+    }
+
+    private void fillRegionTable()
     {
         var regions = new List<Region>
         {
@@ -133,10 +136,10 @@ public class DatabaseInitializer
         };
 
         _dbContext.Region.AddRange(regions);
-        _dbContext.SaveChangesAsync();
+        _dbContext.SaveChanges();
     }
 
-    private void FillAreaTable()
+    private void fillAreaTable()
     {
         var areas = new List<Area>
         {
@@ -148,7 +151,7 @@ public class DatabaseInitializer
         };
 
         _dbContext.Area.AddRange(areas);
-        _dbContext.SaveChangesAsync();
+        _dbContext.SaveChanges();
     }
 }
 

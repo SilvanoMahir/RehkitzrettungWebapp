@@ -710,7 +710,7 @@ namespace ApiWebAppTesting
             var responseGet = await _httpClient.SendAsync(request);
             var stringResult = await responseGet.Content.ReadAsStringAsync();
 
-            Assert.IsTrue(stringResult.Contains("\"regionName\":\"Tasna\""));
+            Assert.IsTrue(stringResult.Contains("\"areaSize\":\">1ha\""));
             Assert.IsTrue(JArray.Parse(stringResult).Count == 1);
         }
 
