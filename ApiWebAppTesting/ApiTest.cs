@@ -177,51 +177,13 @@ namespace ApiWebAppTesting
         }
 
         [TestMethod]
-        public async Task readRegionTest()
+        public void readRegionTest()
         {
-            var user = new
-            {
-                userName = "admin_test",
-                userEmail = "admin@tasna.ch",
-                userPassword = "Password@123",
-                userDefinition = "Admin 1",
-                userFirstName = "Kristian",
-                userLastName = "Küttel",
-                userRegion = "Tasna"
-            };
+            registerNewAdminClientAsync().Wait();
+            var responseLogin = loginAsAdminClientAsync();
+            var token = getTokenAsync(responseLogin.Result).Result;
 
-            var userLogin = new
-            {
-                username = "admin_test",
-                password = "Password@123"
-            };
-
-            // create a new admin user
-            string jsonPayload = JsonConvert.SerializeObject(user);
-            var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
-            var responseRegister = await _httpClient.PostAsync("/api/authenticate/register-admin", content);
-
-            // login as admin user
-            string jsonLoginPayload = JsonConvert.SerializeObject(userLogin);
-            var contentLogin = new StringContent(jsonLoginPayload, Encoding.UTF8, "application/json");
-            var responseLogin = await _httpClient.PostAsync("/api/authenticate/login", contentLogin);
-
-            string responseString = await responseLogin.Content.ReadAsStringAsync();
-            var responseJson = JObject.Parse(responseString);
-            string token = responseJson["token"].Value<string>();
-
-            // setup request for getting the regions
-            var request = new HttpRequestMessage
-            {
-                Method = HttpMethod.Get,
-                RequestUri = new Uri("/api/regions", UriKind.Relative)
-            };
-            request.Headers.Add("Authorization", "Bearer " + token);
-            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-            // send request
-            var responseGet = await _httpClient.SendAsync(request);
-            var stringResult = await responseGet.Content.ReadAsStringAsync();
+            var stringResult = sendGetRegionsRequestAsync(token).Result;
 
             Assert.IsTrue(stringResult.Contains("\"regionName\":\"Tasna\""));
             Assert.IsTrue(JArray.Parse(stringResult).Count == 1);
@@ -477,6 +439,20 @@ namespace ApiWebAppTesting
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
             return await _httpClient.SendAsync(request);
+        }
+
+        private async Task<string> sendGetRegionsRequestAsync(string token)
+        {
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new Uri("/api/regions", UriKind.Relative)
+            };
+            request.Headers.Add("Authorization", "Bearer " + token);
+            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            var responseGet = await _httpClient.SendAsync(request);
+            return await responseGet.Content.ReadAsStringAsync();
         }
     }
 }
