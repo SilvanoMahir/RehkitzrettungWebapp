@@ -49,55 +49,40 @@ namespace ApiWebAppTesting
         }
 
         [TestMethod]
-        public void getAdminUserProtocolsTest()
-        {
-            registerNewAdminClientAsync().Wait();
-            var responseLogin = loginAsAdminClientAsync();
-            var token = getTokenAsync(responseLogin.Result).Result;
-
-            var responseGet = sendGetProtocolsRequestAsync(token).Result;
-
-            Assert.IsTrue(responseGet.ToString().Contains("StatusCode: 200"));
-        }
-
-        [TestMethod]
-        public async Task createProtocolTest()
+        public void createProtocolTest()
         {
             registerNewAdminClientAsync().Wait();
             var responseLogin = loginAsAdminClientAsync();
             var token = getTokenAsync(responseLogin.Result).Result;
 
             sendPostProtocolsRequestAsync(token).Wait();
-            var responseGet = sendGetProtocolsRequestAsync(token).Result;
-            var stringResult = await responseGet.Content.ReadAsStringAsync();
+            var stringResult = sendGetProtocolsRequestAsync(token).Result;
             List<Protocol> protocolList = models.getProtocolExpectedResultList().ToList();
 
             Assert.IsTrue((protocolList.Count + 1) == JArray.Parse(stringResult).Count);
         }
 
         [TestMethod]
-        public async Task readProtocolTest()
+        public void readProtocolTest()
         {
             registerNewAdminClientAsync().Wait();
             var responseLogin = loginAsAdminClientAsync();
             var token = getTokenAsync(responseLogin.Result).Result;
 
-            var responseGet = sendGetProtocolsRequestAsync(token).Result;
-            var stringResult = await responseGet.Content.ReadAsStringAsync();
+            var stringResult = sendGetProtocolsRequestAsync(token).Result;
 
             Assert.IsTrue(JArray.Parse(stringResult).Count == 2);
         }
 
         [TestMethod]
-        public async Task updateProtocolTest()
+        public void updateProtocolTest()
         {
             registerNewAdminClientAsync().Wait();
             var responseLogin = loginAsAdminClientAsync();
             var token = getTokenAsync(responseLogin.Result).Result;
 
             sendPutProtocolsRequestAsync(token).Wait();
-            var responseGet = sendGetProtocolsRequestAsync(token).Result;
-            var stringResult = await responseGet.Content.ReadAsStringAsync();
+            var stringResult = sendGetProtocolsRequestAsync(token).Result;
             List<Protocol> protocolList = models.getProtocolExpectedResultList().ToList();
 
             Assert.IsTrue(stringResult.Contains("Fritz Weber"));
@@ -561,7 +546,7 @@ namespace ApiWebAppTesting
             return responseJson["token"].Value<string>();
         }
 
-        private async Task<HttpResponseMessage> sendGetProtocolsRequestAsync(string token)
+        private async Task<string> sendGetProtocolsRequestAsync(string token)
         {
             var request = new HttpRequestMessage
             {
@@ -570,8 +555,9 @@ namespace ApiWebAppTesting
             };
             request.Headers.Add("Authorization", "Bearer " + token);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            var responseGet = await _httpClient.SendAsync(request);
 
-            return await _httpClient.SendAsync(request);
+            return await responseGet.Content.ReadAsStringAsync();
         }
 
         private async Task sendPostProtocolsRequestAsync(string token)
