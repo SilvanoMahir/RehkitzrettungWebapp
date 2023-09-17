@@ -57,7 +57,7 @@ namespace ApiWebAppTesting
                 password = "Password@123"
             };
 
-            registerNewAdminClient();
+            registerNewAdminClientAsync().Wait();
 
             // login with previous created admin user
             string jsonLoginPayload = JsonConvert.SerializeObject(userLogin);
@@ -715,7 +715,7 @@ namespace ApiWebAppTesting
             }
         }
 
-        private async void registerNewAdminClient()
+        private async Task registerNewAdminClientAsync()
         {
             var user = new
             {
@@ -730,7 +730,7 @@ namespace ApiWebAppTesting
 
             string jsonPayload = JsonConvert.SerializeObject(user);
             var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
-            var responseRegister = await _httpClient.PostAsync("/api/authenticate/register-admin", content);
+            await _httpClient.PostAsync("/api/authenticate/register-admin", content);
         }
     }
 }
