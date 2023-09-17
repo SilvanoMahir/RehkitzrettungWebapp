@@ -151,84 +151,15 @@ namespace ApiWebAppTesting
         }
 
         [TestMethod]
-        public async Task updateAdminUserTest()
+        public void updateAdminUserTest()
         {
-            var user = new
-            {
-                userName = "admin_test",
-                userEmail = "admin@tasna.ch",
-                userPassword = "Password@123",
-                userDefinition = "Admin 1",
-                userFirstName = "Silvano",
-                userLastName = "Stecher",
-                userRegion = "Tasna"
-            };
+            registerNewAdminClientAsync().Wait();
+            var responseLogin = loginAsAdminClientAsync();
+            var token = getTokenAsync(responseLogin.Result).Result;
 
-            var userLogin = new
-            {
-                username = "admin_test",
-                password = "Password@123"
-            };
+            sendPutUsersRequestAsync(token).Wait();
+            var stringResult = sendGetUsersRequestAsync(token).Result;
 
-            var userAdapted = new
-            {
-                userId = "1",
-                userName = "admin_test",
-                userMail = "admin@tasna.ch",
-                userPassword = "Password@123",
-                userDefinition = "Admin 2",
-                userFirstName = "Fabio",
-                userLastName = "Stecher",
-                userRegion = "Tasna",
-                userFunction = "Admin"
-            };
-
-            // register new admin client
-            string jsonPayload = JsonConvert.SerializeObject(user);
-            var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
-            var responseRegister = await _httpClient.PostAsync("/api/authenticate/register-admin", content);
-
-            // login with previous created admin user
-            string jsonLoginPayload = JsonConvert.SerializeObject(userLogin);
-            var contentLogin = new StringContent(jsonLoginPayload, Encoding.UTF8, "application/json");
-            var responseLogin = await _httpClient.PostAsync("/api/authenticate/login", contentLogin);
-
-            // get token of the login
-            string responseString = await responseLogin.Content.ReadAsStringAsync();
-            var responseJson = JObject.Parse(responseString);
-            string token = responseJson["token"].Value<string>();
-
-            // Serialize the payload to JSON
-            string jsonPayloadAdaptAdmin = JsonConvert.SerializeObject(userAdapted);
-
-            // Setup request for adapting the user
-            var request = new HttpRequestMessage
-            {
-                Method = HttpMethod.Put,
-                RequestUri = new Uri("/api/users/1", UriKind.Relative),
-                Content = new StringContent(jsonPayloadAdaptAdmin, Encoding.UTF8, "application/json")
-            };
-
-            request.Headers.Add("Authorization", "Bearer " + token);
-            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-            // Send the request
-            var responsePut = await _httpClient.SendAsync(request);
-
-            // setup request for getting the users
-            request = new HttpRequestMessage
-            {
-                Method = HttpMethod.Get,
-                RequestUri = new Uri("/api/users", UriKind.Relative)
-            };
-            request.Headers.Add("Authorization", "Bearer " + token);
-            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-            // send request
-            var responseGet = await _httpClient.SendAsync(request);
-            var stringResult = await responseGet.Content.ReadAsStringAsync();
-
-            Assert.IsTrue(responsePut.ToString().Contains("StatusCode: 200"));
             Assert.IsTrue(stringResult.ToString().Contains("Admin 2"));
         }
 
@@ -556,6 +487,36 @@ namespace ApiWebAppTesting
 
             var responseGet = await _httpClient.SendAsync(request);
             return await responseGet.Content.ReadAsStringAsync();
+        }
+
+        private async Task sendPutUsersRequestAsync(string token)
+        {
+            var userAdapted = new
+            {
+                userId = "1",
+                userName = "admin_test",
+                userMail = "admin@tasna.ch",
+                userPassword = "Password@123",
+                userDefinition = "Admin 2",
+                userFirstName = "Fabio",
+                userLastName = "Stecher",
+                userRegion = "Tasna",
+                userFunction = "Admin"
+            };
+
+            string jsonPayloadAdaptAdmin = JsonConvert.SerializeObject(userAdapted);
+
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Put,
+                RequestUri = new Uri("/api/users/1", UriKind.Relative),
+                Content = new StringContent(jsonPayloadAdaptAdmin, Encoding.UTF8, "application/json")
+            };
+
+            request.Headers.Add("Authorization", "Bearer " + token);
+            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            await _httpClient.SendAsync(request);
         }
     }
 }
