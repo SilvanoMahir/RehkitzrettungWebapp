@@ -49,25 +49,12 @@ namespace ApiWebAppTesting
         }
 
         [TestMethod]
-        public async Task getAdminUserProtocolsTest()
+        public void getAdminUserProtocolsTest()
         {
             registerNewAdminClientAsync().Wait();
-
             var responseLogin = loginAsAdminClientAsync();
-
             var token = getTokenAsync(responseLogin.Result).Result;
-
-            // setup request for getting the protocols
-            var request = new HttpRequestMessage
-            {
-                Method = HttpMethod.Get,
-                RequestUri = new Uri("/api/protocols", UriKind.Relative)
-            };
-            request.Headers.Add("Authorization", "Bearer " + token);
-            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-            // send request
-            var responseGet = await _httpClient.SendAsync(request);
+            var responseGet = sendGetProtocolsRequestAsync(token).Result;
 
             Assert.IsTrue(responseGet.ToString().Contains("StatusCode: 200"));
         }
@@ -731,6 +718,7 @@ namespace ApiWebAppTesting
 
             string jsonLoginPayload = JsonConvert.SerializeObject(userLogin);
             var contentLogin = new StringContent(jsonLoginPayload, Encoding.UTF8, "application/json");
+
             return await _httpClient.PostAsync("/api/authenticate/login", contentLogin);
         }
 
@@ -738,7 +726,22 @@ namespace ApiWebAppTesting
         {
             string responseString = await responseLogin.Content.ReadAsStringAsync();
             var responseJson = JObject.Parse(responseString);
+
             return responseJson["token"].Value<string>();
         }
+
+        private async Task<HttpResponseMessage> sendGetProtocolsRequestAsync(string token)
+        {
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new Uri("/api/protocols", UriKind.Relative)
+            };
+            request.Headers.Add("Authorization", "Bearer " + token);
+            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            return await _httpClient.SendAsync(request);
+        }
+
     }
 }
