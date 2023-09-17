@@ -55,10 +55,7 @@ namespace ApiWebAppTesting
 
             var responseLogin = loginAsAdminClientAsync();
 
-            // get token of the login
-            string responseString = await responseLogin.Result.Content.ReadAsStringAsync();
-            var responseJson = JObject.Parse(responseString);
-            string token = responseJson["token"].Value<string>();
+            var token = getTokenAsync(responseLogin.Result).Result;
 
             // setup request for getting the protocols
             var request = new HttpRequestMessage
@@ -735,6 +732,13 @@ namespace ApiWebAppTesting
             string jsonLoginPayload = JsonConvert.SerializeObject(userLogin);
             var contentLogin = new StringContent(jsonLoginPayload, Encoding.UTF8, "application/json");
             return await _httpClient.PostAsync("/api/authenticate/login", contentLogin);
+        }
+
+        private async Task<string> getTokenAsync(HttpResponseMessage responseLogin)
+        {
+            string responseString = await responseLogin.Content.ReadAsStringAsync();
+            var responseJson = JObject.Parse(responseString);
+            return responseJson["token"].Value<string>();
         }
     }
 }
