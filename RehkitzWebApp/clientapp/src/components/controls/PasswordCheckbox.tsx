@@ -1,35 +1,34 @@
 import styled from 'styled-components/macro'
 
 interface PasswordCheckboxProps {
-  entry: string
-  showPassword: boolean
-  onChange: (selectedValue: boolean) => void
+    entry: string
+    showPassword: boolean
+    onChange: (selectedValue: boolean) => void
 }
 
 export function PasswordCheckbox({ entry, showPassword, onChange }: PasswordCheckboxProps) {
-  const handleCheckboxChange = () => {
-    onChange(!showPassword)
-  }
+    const handleCheckboxChange = () => {
+        onChange(!showPassword)
+    }
 
-  return (
-    <RowContainer>
-      <Entry>{entry}</Entry>
-      <CheckboxInputContainer>
-        <input
-          type="checkbox"
-          checked={showPassword}
-          onChange={handleCheckboxChange}
-        />
-      </CheckboxInputContainer>
-    </RowContainer>
-  )
+    return (
+        <RowContainer>
+            <Entry>{entry}</Entry>
+            <CheckboxInputContainer>
+                <input
+                    type="checkbox"
+                    checked={showPassword}
+                    onChange={handleCheckboxChange}
+                />
+            </CheckboxInputContainer>
+        </RowContainer>
+    )
 }
 
-
 const CheckboxInputContainer = styled.div` 
-  display: flex;
-  flex: 1;
-  position: relative;
+    display: flex;
+    flex: 1;
+    position: relative;
 `
 
 const RowContainer = styled.div`

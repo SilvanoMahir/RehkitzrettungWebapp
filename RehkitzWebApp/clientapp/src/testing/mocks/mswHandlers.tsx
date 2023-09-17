@@ -43,7 +43,6 @@ const mockUser = {
     "userPassword": "Password"
 }
 
-
 export const handlers = [
     rest.post(`/api/authenticate/login`, async (req, res, ctx) => {
         console.log('Received request:', req.url.toString())
