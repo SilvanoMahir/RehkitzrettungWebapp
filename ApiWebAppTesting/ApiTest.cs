@@ -51,21 +51,12 @@ namespace ApiWebAppTesting
         [TestMethod]
         public async Task getAdminUserProtocolsTest()
         {
-            var userLogin = new
-            {
-                username = "admin_test",
-                password = "Password@123"
-            };
-
             registerNewAdminClientAsync().Wait();
 
-            // login with previous created admin user
-            string jsonLoginPayload = JsonConvert.SerializeObject(userLogin);
-            var contentLogin = new StringContent(jsonLoginPayload, Encoding.UTF8, "application/json");
-            var responseLogin = await _httpClient.PostAsync("/api/authenticate/login", contentLogin);
+            var responseLogin = loginAsAdminClientAsync();
 
             // get token of the login
-            string responseString = await responseLogin.Content.ReadAsStringAsync();
+            string responseString = await responseLogin.Result.Content.ReadAsStringAsync();
             var responseJson = JObject.Parse(responseString);
             string token = responseJson["token"].Value<string>();
 
@@ -731,6 +722,19 @@ namespace ApiWebAppTesting
             string jsonPayload = JsonConvert.SerializeObject(user);
             var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
             await _httpClient.PostAsync("/api/authenticate/register-admin", content);
+        }
+
+        private async Task<HttpResponseMessage> loginAsAdminClientAsync()
+        {
+            var userLogin = new
+            {
+                username = "admin_test",
+                password = "Password@123"
+            };
+
+            string jsonLoginPayload = JsonConvert.SerializeObject(userLogin);
+            var contentLogin = new StringContent(jsonLoginPayload, Encoding.UTF8, "application/json");
+            return await _httpClient.PostAsync("/api/authenticate/login", contentLogin);
         }
     }
 }
