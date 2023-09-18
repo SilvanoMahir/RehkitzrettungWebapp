@@ -115,27 +115,16 @@ namespace ApiWebAppTesting
         }
 
         [TestMethod]
-        public async Task createAdminUserTest()
+        public void createAdminUserTest()
         {
-            var user = new
-            {
-                userName = "admin_test",
-                userEmail = "admin@tasna.ch",
-                userPassword = "Password@123",
-                userDefinition = "Admin 1",
-                userFirstName = "Silvano",
-                userLastName = "Stecher",
-                userRegion = "Tasna"
-            };
+            registerNewAdminClientAsync().Wait();
+            var responseLogin = loginAsAdminClientAsync();
+            var token = getTokenAsync(responseLogin.Result).Result;
 
-            // setup request for getting the protocols
-            string jsonPayload = JsonConvert.SerializeObject(user);
-            var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+            sendPostUsersRequestAsync(token).Wait();
+            var stringResult = sendGetUsersRequestAsync(token).Result;
 
-            // send request
-            var response = await _httpClient.PostAsync("/api/authenticate/register-admin", content);
-
-            Assert.IsTrue(response.ToString().Contains("StatusCode: 200"));
+            Assert.IsTrue(JArray.Parse(stringResult).Count == 2);
         }
 
         [TestMethod]
@@ -356,6 +345,32 @@ namespace ApiWebAppTesting
 
             var responseGet = await _httpClient.SendAsync(request);
             return await responseGet.Content.ReadAsStringAsync();
+        }
+
+        private async Task sendPostUsersRequestAsync(string token)
+        {
+            var userDto = new
+            {
+                userName = "another_admin",
+                userEmail = "admin@tasna.ch",
+                userPassword = "Password@123",
+                userDefinition = "Admin 1",
+                userFirstName = "Paul",
+                userLastName = "Keller",
+                userRegion = "Tasna",
+                userFunction = "Admin"
+            };
+
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Post,
+                RequestUri = new Uri("/api/users", UriKind.Relative)
+            };
+            request.Headers.Add("Authorization", "Bearer " + token);
+            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            request.Content = new StringContent(JsonConvert.SerializeObject(userDto), Encoding.UTF8, "application/json");
+
+            await _httpClient.SendAsync(request);
         }
 
         private async Task sendPutUsersRequestAsync(string token)
