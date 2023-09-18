@@ -1,6 +1,5 @@
 ﻿using ApiWebAppTesting;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using RehkitzWebApp.Model;
 
 
@@ -46,12 +45,15 @@ public class DatabaseInitializer
         bool result = _dbContext.Database.EnsureCreated();
 
         //fill the tables with initial data
-        FillProtocolTable();
-        FillRegionTable();
+        createTables();
+        fillProtocolTable();
+        fillRegionTable();
+        fillAreaTable();
     }
 
-    private void FillProtocolTable()
+    private void createTables()
     {
+
         _dbContext.Database.EnsureCreated();
         try
         {
@@ -86,6 +88,14 @@ public class DatabaseInitializer
                     EntryIsDeleted BIT NOT NULL
                 );");
 
+            // Create Area table
+            _dbContext.Database.ExecuteSqlRaw(@"
+                CREATE TABLE Area (
+                    AreaId INT IDENTITY(1, 1) PRIMARY KEY,
+                    AreaSize NVARCHAR(50) NOT NULL,
+                    EntryIsDeleted BIT NOT NULL
+                );");
+
             // Create User table
             _dbContext.Database.ExecuteSqlRaw(@"
                 CREATE TABLE [User] (
@@ -101,14 +111,15 @@ public class DatabaseInitializer
         {
             Console.WriteLine("Exception creating tables:", e);
         }
-
-        // Fill Protocol table with data
-        _dbContext.Protocol.AddRange(models.getProtocolTestList());
-        _dbContext.SaveChanges();
-
     }
 
-    private void FillRegionTable()
+    private void fillProtocolTable()
+    {
+        _dbContext.Protocol.AddRange(models.getProtocolTestList());
+        _dbContext.SaveChanges();
+    }
+
+    private void fillRegionTable()
     {
         var regions = new List<Region>
         {
@@ -125,17 +136,22 @@ public class DatabaseInitializer
         };
 
         _dbContext.Region.AddRange(regions);
-        _dbContext.SaveChangesAsync();
+        _dbContext.SaveChanges();
     }
 
-    private void FillUserTable()
+    private void fillAreaTable()
     {
-        var users = new List<User>
+        var areas = new List<Area>
         {
-            // Add User instances as needed
+            new Area
+            {
+                    AreaSize = ">1ha",
+                    EntryIsDeleted = false
+            }
         };
 
-        _dbContext.User.AddRange(users);
-        _dbContext.SaveChangesAsync();    }
+        _dbContext.Area.AddRange(areas);
+        _dbContext.SaveChanges();
+    }
 }
 

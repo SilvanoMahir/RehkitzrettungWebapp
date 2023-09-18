@@ -1,6 +1,5 @@
 ﻿using DocumentFormat.OpenXml;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RehkitzWebApp.FileController;
@@ -43,7 +42,7 @@ public class ProtocolController : ControllerBase
         var loggedInUserDistrict = principal.FindFirst("userDistrict");
         var loggedInUserRole = principal.FindFirst(ClaimTypes.Role);
 
-        if ( loggedInUserDistrict == null || loggedInUserRole == null)
+        if (loggedInUserDistrict == null || loggedInUserRole == null)
         {
             return NotFound();
         }

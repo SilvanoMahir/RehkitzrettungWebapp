@@ -1,10 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using RehkitzWebApp.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using RehkitzWebApp.Model;
 
 namespace ApiWebAppTesting
 {
@@ -12,7 +6,8 @@ namespace ApiWebAppTesting
     {
         Protocol[] protcolsList;
 
-        public TestModels() {
+        public TestModels()
+        {
 
             // initialize Protocol model with dummy data
             protcolsList = new Protocol[]
@@ -61,7 +56,7 @@ namespace ApiWebAppTesting
             Protocol[] protcolsList = getProtocolTestList();
             for (int i = 0; i < protcolsList.Length; i++)
             {
-                protcolsList[i].ProtocolId = i+1;
+                protcolsList[i].ProtocolId = i + 1;
             }
             return protcolsList;
         }

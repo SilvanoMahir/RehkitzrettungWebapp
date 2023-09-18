@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -332,10 +331,10 @@ public class UserController : ControllerBase
             UserName = userDto.UserName
         };
 
-        var userManger = await _userManager.CreateAsync(user, userDto.UserPassword);
-        if (userManger.Errors.Any())
+        var userManager = await _userManager.CreateAsync(user, userDto.UserPassword);
+        if (userManager.Errors.Any())
         {
-            return BadRequest(userManger.Errors);
+            return BadRequest(userManager.Errors);
         }
 
         try
@@ -344,7 +343,7 @@ public class UserController : ControllerBase
         }
         catch
         {
-            return BadRequest(userManger.Errors);
+            return BadRequest(userManager.Errors);
         }
 
         var userRegion = await _context.Region

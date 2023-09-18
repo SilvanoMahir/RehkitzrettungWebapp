@@ -5,31 +5,32 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RehkitzWebApp.Model;
-using System.IdentityModel.Tokens.Jwt;
+using RehkitzWebApp.Model.Dtos;
 using System.Net.Http.Headers;
 using System.Text;
 
 namespace ApiWebAppTesting
 {
     [TestClass]
-    public class ApiTest 
+    public class ApiTest
     {
         private HttpClient _httpClient;
         private readonly DbContextOptions<ApiTestDbContext> _options;
         TestModels models;
 
-        //set enviroment for the client which test against the test DB 
-        public ApiTest() {
+        // set environment for the client which tests against the test DB 
+        public ApiTest()
+        {
             var webAppFactory = new WebApplicationFactory<Program>().WithWebHostBuilder(builder =>
             {
                 builder.UseEnvironment("Test");
             });
 
-            //create client and model for testing
+            // create client and model for testing
             _httpClient = webAppFactory.CreateDefaultClient();
             models = new TestModels();
 
-            //set up connection to test db and fill reset and initialize with test data of the model
+            // set up connection to test db and fill reset and initialize with test data of the model
             string json = File.ReadAllText("../../../../RehkitzWebApp/appsettings.json");
             JObject obj = JObject.Parse(json);
             string testConnectionString = obj["ConnectionStrings"]["Test"].ToString();
@@ -48,7 +49,164 @@ namespace ApiWebAppTesting
         }
 
         [TestMethod]
-        public async Task getAdminUserProtocolsTest()
+        public void createProtocolTest()
+        {
+            registerNewAdminClientAsync().Wait();
+            var responseLogin = loginAsAdminClientAsync();
+            var token = getTokenAsync(responseLogin.Result).Result;
+
+            sendPostProtocolsRequestAsync(token).Wait();
+            var stringResult = sendGetProtocolsRequestAsync(token).Result;
+            List<Protocol> protocolList = models.getProtocolExpectedResultList().ToList();
+
+            Assert.IsTrue((protocolList.Count + 1) == JArray.Parse(stringResult).Count);
+        }
+
+        [TestMethod]
+        public void readProtocolTest()
+        {
+            registerNewAdminClientAsync().Wait();
+            var responseLogin = loginAsAdminClientAsync();
+            var token = getTokenAsync(responseLogin.Result).Result;
+
+            var stringResult = sendGetProtocolsRequestAsync(token).Result;
+
+            Assert.IsTrue(JArray.Parse(stringResult).Count == 2);
+        }
+
+        [TestMethod]
+        public void updateProtocolTest()
+        {
+            registerNewAdminClientAsync().Wait();
+            var responseLogin = loginAsAdminClientAsync();
+            var token = getTokenAsync(responseLogin.Result).Result;
+
+            sendPutProtocolsRequestAsync(token).Wait();
+            var stringResult = sendGetProtocolsRequestAsync(token).Result;
+            List<Protocol> protocolList = models.getProtocolExpectedResultList().ToList();
+
+            Assert.IsTrue(stringResult.Contains("Fritz Weber"));
+            Assert.IsTrue(protocolList.Count == JArray.Parse(stringResult).Count);
+        }
+
+        [TestMethod]
+        public void deleteProtocolTest()
+        {
+            registerNewAdminClientAsync().Wait();
+            var responseLogin = loginAsAdminClientAsync();
+            var token = getTokenAsync(responseLogin.Result).Result;
+
+            int protocolIdToRemove = 2;
+            sendDeleteProtocolsRequestAsync(token, protocolIdToRemove).Wait();
+            var stringResult = sendGetProtocolsRequestAsync(token).Result;
+
+            // get the comparasion object from initialisation db and delete the desired object
+            List<Protocol> protocolList = models.getProtocolExpectedResultList().ToList();
+            int indexToRemove = protocolList.FindIndex(protocol => protocol.ProtocolId == protocolIdToRemove);
+            if (indexToRemove != -1)
+            {
+                protocolList.RemoveAt(indexToRemove);
+            }
+
+            string expectedProtocolsResult = JsonConvert.SerializeObject(protocolList.ToArray());
+
+            Assert.IsTrue(stringResult.Contains(protocolList[0].ProtocolId.ToString()));
+            Assert.IsTrue(protocolList.Count == JArray.Parse(stringResult).Count);
+        }
+
+        [TestMethod]
+        public void createAdminUserTest()
+        {
+            registerNewAdminClientAsync().Wait();
+            var responseLogin = loginAsAdminClientAsync();
+            var token = getTokenAsync(responseLogin.Result).Result;
+
+            sendPostUsersRequestAsync(token).Wait();
+            var stringResult = sendGetUsersRequestAsync(token).Result;
+
+            Assert.IsTrue(JArray.Parse(stringResult).Count == 2);
+        }
+
+        [TestMethod]
+        public void readAdminUserTest()
+        {
+            registerNewAdminClientAsync().Wait();
+            var responseLogin = loginAsAdminClientAsync();
+            var token = getTokenAsync(responseLogin.Result).Result;
+
+            var stringResult = sendGetUsersRequestAsync(token).Result;
+
+            Assert.IsTrue(JArray.Parse(stringResult).Count == 1);
+        }
+
+        [TestMethod]
+        public void updateAdminUserTest()
+        {
+            registerNewAdminClientAsync().Wait();
+            var responseLogin = loginAsAdminClientAsync();
+            var token = getTokenAsync(responseLogin.Result).Result;
+
+            sendPutUsersRequestAsync(token).Wait();
+            var stringResult = sendGetUsersRequestAsync(token).Result;
+
+            Assert.IsTrue(stringResult.ToString().Contains("Admin 2"));
+        }
+
+        [TestMethod]
+        public void deleteAdminUserTest()
+        {
+            registerNewAdminClientAsync().Wait();
+            var responseLogin = loginAsAdminClientAsync();
+            var token = getTokenAsync(responseLogin.Result).Result;
+
+            var responseDelete = sendDeleteUsersRequestAsync(token).Result;
+
+            Assert.IsTrue(responseDelete.ToString().Contains("StatusCode: 204"));
+            Assert.IsTrue(responseDelete.ToString().Contains("ReasonPhrase: 'No Content'"));
+        }
+
+        [TestMethod]
+        public void readRegionTest()
+        {
+            registerNewAdminClientAsync().Wait();
+            var responseLogin = loginAsAdminClientAsync();
+            var token = getTokenAsync(responseLogin.Result).Result;
+
+            var stringResult = sendGetRegionsRequestAsync(token).Result;
+
+            Assert.IsTrue(stringResult.Contains("\"regionName\":\"Tasna\""));
+            Assert.IsTrue(JArray.Parse(stringResult).Count == 1);
+        }
+
+        [TestMethod]
+        public void readAreaTest()
+        {
+            registerNewAdminClientAsync().Wait();
+            var responseLogin = loginAsAdminClientAsync();
+            var token = getTokenAsync(responseLogin.Result).Result;
+
+            var stringResult = sendGetAreaRequestAsync(token).Result;
+
+            Assert.IsTrue(stringResult.Contains("\"areaSize\":\">1ha\""));
+            Assert.IsTrue(JArray.Parse(stringResult).Count == 1);
+        }
+
+        private void resetAndInitializeTestDB()
+        {
+            // setup dbcontext and check if connections is established
+            ApiTestDbContext dbContext = new ApiTestDbContext(_options);
+            if (dbContext.Database.CanConnect())
+            {
+                DatabaseInitializer databaseInitializer = new DatabaseInitializer(dbContext);
+                databaseInitializer.ResetAndInitializeTables();
+            }
+            else
+            {
+                throw new Exception("No connection to test DB");
+            }
+        }
+
+        private async Task registerNewAdminClientAsync()
         {
             var user = new
             {
@@ -61,28 +219,35 @@ namespace ApiWebAppTesting
                 userRegion = "Tasna"
             };
 
+            string jsonPayload = JsonConvert.SerializeObject(user);
+            var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+            await _httpClient.PostAsync("/api/authenticate/register-admin", content);
+        }
+
+        private async Task<HttpResponseMessage> loginAsAdminClientAsync()
+        {
             var userLogin = new
             {
                 username = "admin_test",
                 password = "Password@123"
             };
 
-            //register new admin client
-            string jsonPayload = JsonConvert.SerializeObject(user);
-            var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
-            var responseRegister = await _httpClient.PostAsync("/api/authenticate/register-admin", content);
-
-            //login with previous created admin user
             string jsonLoginPayload = JsonConvert.SerializeObject(userLogin);
             var contentLogin = new StringContent(jsonLoginPayload, Encoding.UTF8, "application/json");
-            var responseLogin = await _httpClient.PostAsync("/api/authenticate/login", contentLogin);
 
-            //get token of the login
+            return await _httpClient.PostAsync("/api/authenticate/login", contentLogin);
+        }
+
+        private async Task<string> getTokenAsync(HttpResponseMessage responseLogin)
+        {
             string responseString = await responseLogin.Content.ReadAsStringAsync();
             var responseJson = JObject.Parse(responseString);
-            string token = responseJson["token"].Value<string>();
 
-            //setup request for getting the protocols
+            return responseJson["token"].Value<string>();
+        }
+
+        private async Task<string> sendGetProtocolsRequestAsync(string token)
+        {
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Get,
@@ -90,50 +255,73 @@ namespace ApiWebAppTesting
             };
             request.Headers.Add("Authorization", "Bearer " + token);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-            //send request
             var responseGet = await _httpClient.SendAsync(request);
 
-            Assert.IsTrue(responseGet.ToString().Contains("StatusCode: 200"));
+            return await responseGet.Content.ReadAsStringAsync();
         }
 
-        [TestMethod]
-        public async Task deleteProtocolsTest()
+        private async Task sendPostProtocolsRequestAsync(string token)
         {
-            int protocolIdToRemove = 2; //protocolId with this number is deleted
-            var user = new
+            var newProtocolDto = new ProtocolDto
             {
-                userName = "admin_test",
-                userEmail = "admin@tasna.ch",
-                userPassword = "Password@123",
-                userDefinition = "Admin 1",
-                userFirstName = "Silvano",
-                userLastName = "Stecher",
-                userRegion = "Tasna"
+                ProtocolCode = "GR-0025",
+                ClientFullName = "Fritz Weber",
+                LocalName = "Chomps",
+                PilotFullName = "Johannes Erny",
+                RegionName = "Tasna",
+                Remark = "Keine Bemerkung",
+                AreaSize = ">1ha",
+                FoundFawns = 1,
+                InjuredFawns = 0,
+                MarkedFawns = 0,
+                Date = new DateTime(),
             };
 
-            var userLogin = new
+            var request = new HttpRequestMessage
             {
-                username = "admin_test",
-                password = "Password@123"
+                Method = HttpMethod.Post,
+                RequestUri = new Uri("/api/protocols", UriKind.Relative)
+            };
+            request.Headers.Add("Authorization", "Bearer " + token);
+            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            request.Content = new StringContent(JsonConvert.SerializeObject(newProtocolDto), Encoding.UTF8, "application/json");
+
+            await _httpClient.SendAsync(request);
+        }
+
+        private async Task sendPutProtocolsRequestAsync(string token)
+        {
+            int protocolIdToUpdate = 2;
+            var protocolDtoToUpdate = new ProtocolDto
+            {
+                ProtocolId = 2,
+                ProtocolCode = "GR-0025",
+                ClientFullName = "Fritz Weber",
+                LocalName = "Chomps",
+                PilotFullName = "Johannes Erny",
+                RegionName = "Tasna",
+                Remark = "Keine Bemerkung",
+                AreaSize = ">1ha",
+                FoundFawns = 1,
+                InjuredFawns = 0,
+                MarkedFawns = 0,
+                Date = new DateTime()
             };
 
-            // create a new admin user
-            string jsonPayload = JsonConvert.SerializeObject(user);
-            var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
-            var responseRegister = await _httpClient.PostAsync("/api/authenticate/register-admin", content);
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Put,
+                RequestUri = new Uri("/api/protocols/" + protocolIdToUpdate, UriKind.Relative)
+            };
+            request.Headers.Add("Authorization", "Bearer " + token);
+            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            request.Content = new StringContent(JsonConvert.SerializeObject(protocolDtoToUpdate), Encoding.UTF8, "application/json");
 
-            // login as admin user
-            string jsonLoginPayload = JsonConvert.SerializeObject(userLogin);
-            var contentLogin = new StringContent(jsonLoginPayload, Encoding.UTF8, "application/json");
-            var responseLogin = await _httpClient.PostAsync("/api/authenticate/login", contentLogin);
+            await _httpClient.SendAsync(request);
+        }
 
-            // delete the protocol
-            string responseString = await responseLogin.Content.ReadAsStringAsync();
-            var responseJson = JObject.Parse(responseString);
-            string token = responseJson["token"].Value<string>();
-
-            //setup request for deleting one protocol
+        private async Task sendDeleteProtocolsRequestAsync(string token, int protocolIdToRemove)
+        {
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Delete,
@@ -143,76 +331,50 @@ namespace ApiWebAppTesting
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
             await _httpClient.SendAsync(request);
+        }
 
-            //setup request for getting the protocols
-            request = new HttpRequestMessage
+        private async Task<string> sendGetUsersRequestAsync(string token)
+        {
+            var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Get,
-                RequestUri = new Uri("/api/protocols", UriKind.Relative)
+                RequestUri = new Uri("/api/users", UriKind.Relative)
             };
             request.Headers.Add("Authorization", "Bearer " + token);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            //send request
             var responseGet = await _httpClient.SendAsync(request);
-            var stringResult = await responseGet.Content.ReadAsStringAsync();
-
-            //get the comparasion object from initialisation db and delete the desired object
-            List<Protocol> protocolList = models.getProtocolExpectedResultList().ToList();
-            int indexToRemove = protocolList.FindIndex(protocol => protocol.ProtocolId == protocolIdToRemove);
-            if (indexToRemove != -1)
-                protocolList.RemoveAt(indexToRemove);
-            string expectedProtocolsResult = JsonConvert.SerializeObject(protocolList.ToArray());
-
-            Assert.IsTrue(stringResult.Contains(protocolList[0].ProtocolId.ToString()));
-            Assert.IsTrue((protocolList.Count == JArray.Parse(stringResult).Count));
+            return await responseGet.Content.ReadAsStringAsync();
         }
 
-        [TestMethod]
-        public async Task createAdminUserTest()
+        private async Task sendPostUsersRequestAsync(string token)
         {
-            var user = new
+            var userDto = new
             {
-                userName = "admin_test",
+                userName = "another_admin",
                 userEmail = "admin@tasna.ch",
                 userPassword = "Password@123",
                 userDefinition = "Admin 1",
-                userFirstName = "Silvano",
-                userLastName = "Stecher",
-                userRegion = "Tasna"
+                userFirstName = "Paul",
+                userLastName = "Keller",
+                userRegion = "Tasna",
+                userFunction = "Admin"
             };
 
-            //setup request for getting the protocols
-            string jsonPayload = JsonConvert.SerializeObject(user);
-            var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Post,
+                RequestUri = new Uri("/api/users", UriKind.Relative)
+            };
+            request.Headers.Add("Authorization", "Bearer " + token);
+            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            request.Content = new StringContent(JsonConvert.SerializeObject(userDto), Encoding.UTF8, "application/json");
 
-            //send request
-            var response = await _httpClient.PostAsync("/api/authenticate/register-admin", content);
-            var stringResult = await response.Content.ReadAsStringAsync();
-
-            Assert.IsTrue(response.ToString().Contains("StatusCode: 200"));
+            await _httpClient.SendAsync(request);
         }
 
-        [TestMethod]
-        public async Task adaptAdminUserTest()
+        private async Task sendPutUsersRequestAsync(string token)
         {
-            var user = new
-            {
-                userName = "admin_test",
-                userEmail = "admin@tasna.ch",
-                userPassword = "Password@123",
-                userDefinition = "Admin 1",
-                userFirstName = "Silvano",
-                userLastName = "Stecher",
-                userRegion = "Tasna"
-            };
-
-            var userLogin = new
-            {
-                username = "admin_test",
-                password = "Password@123"
-            };
-
             var userAdapted = new
             {
                 userId = "1",
@@ -226,25 +388,8 @@ namespace ApiWebAppTesting
                 userFunction = "Admin"
             };
 
-            //register new admin client
-            string jsonPayload = JsonConvert.SerializeObject(user);
-            var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
-            var responseRegister = await _httpClient.PostAsync("/api/authenticate/register-admin", content);
-
-            //login with previous created admin user
-            string jsonLoginPayload = JsonConvert.SerializeObject(userLogin);
-            var contentLogin = new StringContent(jsonLoginPayload, Encoding.UTF8, "application/json");
-            var responseLogin = await _httpClient.PostAsync("/api/authenticate/login", contentLogin);
-
-            //get token of the login
-            string responseString = await responseLogin.Content.ReadAsStringAsync();
-            var responseJson = JObject.Parse(responseString);
-            string token = responseJson["token"].Value<string>();
-
-            // Serialize the payload to JSON
             string jsonPayloadAdaptAdmin = JsonConvert.SerializeObject(userAdapted);
 
-            // Setup request for adapting the user
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Put,
@@ -255,39 +400,50 @@ namespace ApiWebAppTesting
             request.Headers.Add("Authorization", "Bearer " + token);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            // Send the request
-            var responsePut = await _httpClient.SendAsync(request);
+            await _httpClient.SendAsync(request);
+        }
 
-            //setup request for getting the users
-            request = new HttpRequestMessage
+        private async Task<HttpResponseMessage> sendDeleteUsersRequestAsync(string token)
+        {
+            int userIdToRemove = 1;
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Delete,
+                RequestUri = new Uri("/api/users/" + userIdToRemove, UriKind.Relative),
+            };
+
+            request.Headers.Add("Authorization", "Bearer " + token);
+            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            return await _httpClient.SendAsync(request);
+        }
+
+        private async Task<string> sendGetRegionsRequestAsync(string token)
+        {
+            var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Get,
-                RequestUri = new Uri("/api/users", UriKind.Relative)
+                RequestUri = new Uri("/api/regions", UriKind.Relative)
             };
             request.Headers.Add("Authorization", "Bearer " + token);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            //send request
             var responseGet = await _httpClient.SendAsync(request);
-            var stringResult = await responseGet.Content.ReadAsStringAsync();
-
-            Assert.IsTrue(responsePut.ToString().Contains("StatusCode: 200"));
-            Assert.IsTrue(stringResult.ToString().Contains("Admin 2"));
+            return await responseGet.Content.ReadAsStringAsync();
         }
 
-        private void resetAndInitializeTestDB()
+        private async Task<string> sendGetAreaRequestAsync(string token)
         {
-            //setup dbcontext and check if connections is established
-            ApiTestDbContext dbContext = new ApiTestDbContext(_options);
-            if (dbContext.Database.CanConnect())
+            var request = new HttpRequestMessage
             {
-                DatabaseInitializer databaseInitializer = new DatabaseInitializer(dbContext);
-                databaseInitializer.ResetAndInitializeTables();
-            }
-            else
-            {
-                throw new Exception("No connection to test DB");
-            }
+                Method = HttpMethod.Get,
+                RequestUri = new Uri("/api/area", UriKind.Relative)
+            };
+            request.Headers.Add("Authorization", "Bearer " + token);
+            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            var responseGet = await _httpClient.SendAsync(request);
+            return await responseGet.Content.ReadAsStringAsync();
         }
     }
 }

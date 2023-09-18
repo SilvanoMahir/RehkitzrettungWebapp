@@ -13,7 +13,7 @@ import { toast } from 'react-toastify'
 import { trackPromise, usePromiseTracker } from 'react-promise-tracker'
 import { FadeLoader } from 'react-spinners'
 
-export default function RescueListPage() {
+export default function LoginPage() {
     const [inputUserName, setUserName] = useState('')
     const [inputPassword, setPassword] = useState('')
     const { dispatch_token } = useContext(AppContext)
