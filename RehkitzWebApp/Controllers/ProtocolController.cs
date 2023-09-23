@@ -208,7 +208,6 @@ public class ProtocolController : ControllerBase
     }
 
     // PUT: /api/protocols/5
-    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [Authorize(Roles = "Admin,Zentrale,Benutzer")]
     [HttpPut("{id}")]
     public async Task<ActionResult> PutProtocol(int id, ProtocolDto protocolDto)
@@ -242,7 +241,6 @@ public class ProtocolController : ControllerBase
     }
 
     // POST: /api/protocols
-    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [Authorize(Roles = "Admin,Zentrale,Benutzer")]
     [HttpPost]
     public async Task<ActionResult<ProtocolDto>> PostProtocol(ProtocolDto protocolDto)

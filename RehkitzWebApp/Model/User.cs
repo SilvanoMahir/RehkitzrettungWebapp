@@ -11,7 +11,6 @@ public class User
     public int UserId { get; set; }
 
     [Required]
-    // user ID from AspNetUser table. In this table username and Email are stored. With this ID the Role is linked. 
     [Column(TypeName = "nvarchar(50)")]
     public string? OwnerId { get; set; }
 
@@ -22,7 +21,7 @@ public class User
     [Required]
     [Column(TypeName = "nvarchar(50)")]
     public string? UserLastName { get; set; }
-        
+
     [Required]
     [Column(TypeName = "nvarchar(50)")]
     public string? UserDefinition { get; set; }

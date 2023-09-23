@@ -7,24 +7,20 @@ public class ExcelExporter
 {
     internal Stream ExportToExcel(List<Protocol> protocolsList, string district)
     {
-        // Create the Excel file using ClosedXML
         using (var workbook = new XLWorkbook())
         {
             var worksheet = workbook.Worksheets.Add("Rehkitzrettung Protokolle");
             int row = 1;
 
-            // Title
             worksheet.Cell(row, 1).Value = "Rehkitzrettung Protokolle " + DateTime.Now.Date.Year;
             worksheet.Cell(row, 1).Style.Font.FontSize = 16;
             worksheet.Cell(row, 1).Style.Font.Bold = true;
             worksheet.Cell(row, 1).Style.Font.Underline = XLFontUnderlineValues.Single;
             row++;
 
-            // Date and User
             worksheet.Cell(row, 1).Value = "Erstelldatum: " + DateTime.Now.ToString("dd.MM.yyyy");
 
             row = 4;
-            // Add column headers
             worksheet.Cell(row, 1).Value = "Protokoll Code";
             worksheet.Cell(row, 2).Value = "Name Pilot";
             worksheet.Cell(row, 3).Value = "Name Kunde/Bauer";
@@ -42,7 +38,6 @@ public class ExcelExporter
                 worksheet.Cell(row, i).Style.Font.Bold = true;
             }
 
-            // Populate the data starting from the second row
             row++;
             foreach (var protocol in protocolsList)
             {
@@ -63,12 +58,10 @@ public class ExcelExporter
             }
 
             worksheet.Columns().AdjustToContents();
-            // Save the Excel file to a MemoryStream
             var stream = new MemoryStream();
             workbook.SaveAs(stream);
             stream.Seek(0, SeekOrigin.Begin);
 
-            // Return the Excel file as a FileStreamResult
             return stream;
         }
     }
