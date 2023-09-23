@@ -307,7 +307,6 @@ public class UserController : ControllerBase
     }
 
     // POST: /api/users
-    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [Authorize(Roles = "Admin,Zentrale")]
     [HttpPost]
     public async Task<ActionResult<UserDto>> PostUser(UserDto userDto)
