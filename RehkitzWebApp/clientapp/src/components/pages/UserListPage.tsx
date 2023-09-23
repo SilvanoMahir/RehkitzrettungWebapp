@@ -13,6 +13,8 @@ import { UserEntries } from '../../models/UserEntries'
 
 export default function UserListPage() {
 
+    // the negated form "isNotMobile" is used since there were issues
+    // regarding the responsive design when using "isMobile" with "max-width"
     const isNotMobile = useMediaQuery({ query: '(min-width: 700px)' })
     const isLargeScreen = useMediaQuery({ query: '(min-width: 1200px)' })
 
@@ -28,7 +30,6 @@ export default function UserListPage() {
             if (storageToken !== null) {
                 dispatch_token({ type: 'set-token', value: storageToken })
             }
-            // get id from token
             const usersListLocal = await fetchUsers(storageToken)
             setFetchedUsersListLocal(usersListLocal)
             setLoadingUsers(false)

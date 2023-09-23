@@ -14,6 +14,8 @@ import jwt_decode from 'jwt-decode'
 
 export default function MainPage() {
 
+    // the negated form "isNotMobile" is used since there were issues
+    // regarding the responsive design when using "isMobile" with "max-width"
     const isNotMobile = useMediaQuery({ query: '(min-width: 700px)' })
 
     const [userName, setUserName] = useState('')

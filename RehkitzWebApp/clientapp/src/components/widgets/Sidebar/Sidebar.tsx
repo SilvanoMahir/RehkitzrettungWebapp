@@ -16,6 +16,8 @@ interface Props {
 
 export default function Sidebar({ showSidebar }: Props) {
 
+    // the negated form "isNotMobile" is used since there were issues
+    // regarding the responsive design when using "isMobile" with "max-width"
     const isNotMobile = useMediaQuery({ query: '(min-width: 700px)' })
     const isLargeScreen = useMediaQuery({ query: '(min-width: 1200px)' })
 
@@ -29,7 +31,6 @@ export default function Sidebar({ showSidebar }: Props) {
             if (storageToken !== null) {
                 dispatch_token({ type: 'set-token', value: storageToken })
             }
-            //verify jwt token
             let decoded = jwt_decode(storageToken as string) as JwtPayload
             const userFunction = decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']
             setUserFunction(userFunction)

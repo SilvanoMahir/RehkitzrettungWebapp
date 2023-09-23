@@ -1,6 +1,5 @@
 ﻿using DocumentFormat.OpenXml;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RehkitzWebApp.FileController;
@@ -43,7 +42,7 @@ public class ProtocolController : ControllerBase
         var loggedInUserDistrict = principal.FindFirst("userDistrict");
         var loggedInUserRole = principal.FindFirst(ClaimTypes.Role);
 
-        if ( loggedInUserDistrict == null || loggedInUserRole == null)
+        if (loggedInUserDistrict == null || loggedInUserRole == null)
         {
             return NotFound();
         }
@@ -209,7 +208,6 @@ public class ProtocolController : ControllerBase
     }
 
     // PUT: /api/protocols/5
-    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [Authorize(Roles = "Admin,Zentrale,Benutzer")]
     [HttpPut("{id}")]
     public async Task<ActionResult> PutProtocol(int id, ProtocolDto protocolDto)
@@ -243,7 +241,6 @@ public class ProtocolController : ControllerBase
     }
 
     // POST: /api/protocols
-    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [Authorize(Roles = "Admin,Zentrale,Benutzer")]
     [HttpPost]
     public async Task<ActionResult<ProtocolDto>> PostProtocol(ProtocolDto protocolDto)

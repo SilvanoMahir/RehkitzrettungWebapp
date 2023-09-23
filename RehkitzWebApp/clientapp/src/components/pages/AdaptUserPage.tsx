@@ -14,6 +14,8 @@ import PasswordEntryForAdaptPage from '../widgets/Protocol/PasswordEntryForAdapt
 
 export default function AdaptUserPage() {
 
+    // the negated form "isNotMobile" is used since there were issues
+    // regarding the responsive design when using "isMobile" with "max-width"
     const isNotMobile = useMediaQuery({ query: '(min-width: 700px)' })
 
     const [userId, setUserId] = useState(0)

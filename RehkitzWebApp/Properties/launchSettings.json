@@ -11,7 +11,7 @@
     "RehkitzWebApp": {
       "commandName": "Project",
       "launchBrowser": true,
-      //"launchUrl": "swagger",  //add following code so swagger startsup instead of application
+      // "launchUrl": "swagger",  // uncomment this line so that swagger starts up instead of application
       "applicationUrl": "https://localhost:7286",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",

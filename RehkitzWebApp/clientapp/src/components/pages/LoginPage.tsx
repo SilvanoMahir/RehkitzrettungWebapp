@@ -13,7 +13,7 @@ import { toast } from 'react-toastify'
 import { trackPromise, usePromiseTracker } from 'react-promise-tracker'
 import { FadeLoader } from 'react-spinners'
 
-export default function RescueListPage() {
+export default function LoginPage() {
     const [inputUserName, setUserName] = useState('')
     const [inputPassword, setPassword] = useState('')
     const { dispatch_token } = useContext(AppContext)
@@ -72,7 +72,7 @@ export default function RescueListPage() {
                     <RowContainer>
                         <LoginButton onClick={() => login()}>Anmelden <FaSignInAlt /></LoginButton>
                     </RowContainer>
-                    <VersionText>v0.1</VersionText>
+                    <VersionText>v1.0.0</VersionText>
                     <LoadingBar>{promiseInProgress ? (<FadeLoader height={8} color='#ffeccb' />) : ('')} </LoadingBar>
                 </LoginPageColumnLayout >
             </LoginPageRowLayout>
