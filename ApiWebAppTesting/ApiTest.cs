@@ -18,7 +18,6 @@ namespace ApiWebAppTesting
         private readonly DbContextOptions<ApiTestDbContext> _options;
         TestModels models;
 
-        // set environment for the client which tests against the test DB 
         public ApiTest()
         {
             var webAppFactory = new WebApplicationFactory<Program>().WithWebHostBuilder(builder =>
@@ -26,11 +25,9 @@ namespace ApiWebAppTesting
                 builder.UseEnvironment("Test");
             });
 
-            // create client and model for testing
             _httpClient = webAppFactory.CreateDefaultClient();
             models = new TestModels();
 
-            // set up connection to test db and fill reset and initialize with test data of the model
             string json = File.ReadAllText("../../../../RehkitzWebApp/appsettings.json");
             JObject obj = JObject.Parse(json);
             string testConnectionString = obj["ConnectionStrings"]["Test"].ToString();
@@ -100,7 +97,6 @@ namespace ApiWebAppTesting
             sendDeleteProtocolsRequestAsync(token, protocolIdToRemove).Wait();
             var stringResult = sendGetProtocolsRequestAsync(token).Result;
 
-            // get the comparasion object from initialisation db and delete the desired object
             List<Protocol> protocolList = models.getProtocolExpectedResultList().ToList();
             int indexToRemove = protocolList.FindIndex(protocol => protocol.ProtocolId == protocolIdToRemove);
             if (indexToRemove != -1)
@@ -193,7 +189,6 @@ namespace ApiWebAppTesting
 
         private void resetAndInitializeTestDB()
         {
-            // setup dbcontext and check if connections is established
             ApiTestDbContext dbContext = new ApiTestDbContext(_options);
             if (dbContext.Database.CanConnect())
             {

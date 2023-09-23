@@ -220,7 +220,6 @@ public class UserController : ControllerBase
     }
 
     // PUT: /api/users/5
-    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [Authorize(Roles = "Admin,Zentrale")]
     [HttpPut("{id}")]
     public async Task<ActionResult> PutUser(int id, UserDto userDto)
@@ -242,7 +241,6 @@ public class UserController : ControllerBase
             userInUserTable.UserLastName = userDto.UserLastName;
             userInUserTable.UserDefinition = userDto.UserDefinition;
 
-            // find the region Id for the new region 
             var userRegionId = await _context.Region
                                 .Where(x => x.RegionName == userDto.UserRegion)
                                 .Select(x => x.RegionId)
@@ -309,7 +307,6 @@ public class UserController : ControllerBase
     }
 
     // POST: /api/users
-    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [Authorize(Roles = "Admin,Zentrale")]
     [HttpPost]
     public async Task<ActionResult<UserDto>> PostUser(UserDto userDto)

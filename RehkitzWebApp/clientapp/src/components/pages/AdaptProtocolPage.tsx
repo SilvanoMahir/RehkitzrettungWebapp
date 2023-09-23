@@ -15,6 +15,8 @@ import { toast } from 'react-toastify'
 
 export default function AdaptProtocolPage() {
 
+    // the negated form "isNotMobile" is used since there were issues 
+    // regarding the responsive design when using "isMobile" with "max-width"
     const isNotMobile = useMediaQuery({ query: '(min-width: 700px)' })
 
     const [protocolCode, setProtocolCode] = useState('')

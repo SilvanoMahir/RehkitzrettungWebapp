@@ -11,6 +11,8 @@ import { JwtPayload } from '../../interfaces/jwtPayload'
 
 export default function MyDataPage() {
 
+    // the negated form "isNotMobile" is used since there were issues
+    // regarding the responsive design when using "isMobile" with "max-width"
     const isNotMobile = useMediaQuery({ query: '(min-width: 700px)' })
 
     const [id, setId] = useState('')
@@ -30,7 +32,6 @@ export default function MyDataPage() {
             if (storageToken !== null) {
                 dispatch_token({ type: 'set-token', value: storageToken })
             }
-            //verify jwt token
             let decoded = jwt_decode(storageToken as string) as JwtPayload
             const id = decoded.userId
             const user = await fetchUser(storageToken, id)

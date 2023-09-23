@@ -16,10 +16,8 @@ public class DatabaseInitializer
 
     public void ResetAndInitializeTables()
     {
-        //drop and recreate the tables
         bool value = _dbContext.Database.CanConnect();
 
-        //try catch necessary to catch exceptions, otherwise tests will fail 
         try
         {
             _dbContext.Database.ExecuteSqlRaw("USE [rehkitzrettung-db-testing]");
@@ -44,7 +42,6 @@ public class DatabaseInitializer
         _dbContext.SaveChanges();
         bool result = _dbContext.Database.EnsureCreated();
 
-        //fill the tables with initial data
         createTables();
         fillProtocolTable();
         fillRegionTable();
@@ -57,7 +54,6 @@ public class DatabaseInitializer
         _dbContext.Database.EnsureCreated();
         try
         {
-            // Create Protocol table
             _dbContext.Database.ExecuteSqlRaw(@"
                 CREATE TABLE Protocol (
                     ProtocolId INT IDENTITY(1, 1) PRIMARY KEY,
@@ -75,7 +71,6 @@ public class DatabaseInitializer
                     EntryIsDeleted BIT NOT NULL
                 );");
 
-            // Create Region table
             _dbContext.Database.ExecuteSqlRaw(@"
                 CREATE TABLE Region (
                     RegionId INT IDENTITY(1, 1) PRIMARY KEY,
@@ -88,7 +83,6 @@ public class DatabaseInitializer
                     EntryIsDeleted BIT NOT NULL
                 );");
 
-            // Create Area table
             _dbContext.Database.ExecuteSqlRaw(@"
                 CREATE TABLE Area (
                     AreaId INT IDENTITY(1, 1) PRIMARY KEY,
@@ -96,7 +90,6 @@ public class DatabaseInitializer
                     EntryIsDeleted BIT NOT NULL
                 );");
 
-            // Create User table
             _dbContext.Database.ExecuteSqlRaw(@"
                 CREATE TABLE [User] (
                     UserId INT IDENTITY(1, 1) PRIMARY KEY,
