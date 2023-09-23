@@ -9,7 +9,6 @@ namespace ApiWebAppTesting
         public TestModels()
         {
 
-            // initialize Protocol model with dummy data
             protcolsList = new Protocol[]
             {
                 new Protocol
@@ -50,7 +49,6 @@ namespace ApiWebAppTesting
             return protcolsList;
         }
 
-        //add protocolId as this is set by db, so compared data from db and model are the same
         public Protocol[] getProtocolExpectedResultList()
         {
             Protocol[] protcolsList = getProtocolTestList();
