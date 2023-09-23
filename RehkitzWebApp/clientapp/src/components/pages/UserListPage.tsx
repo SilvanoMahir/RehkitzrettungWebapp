@@ -28,7 +28,6 @@ export default function UserListPage() {
             if (storageToken !== null) {
                 dispatch_token({ type: 'set-token', value: storageToken })
             }
-            // get id from token
             const usersListLocal = await fetchUsers(storageToken)
             setFetchedUsersListLocal(usersListLocal)
             setLoadingUsers(false)

@@ -29,13 +29,11 @@ export default function RescueListPage() {
 
     useEffect(() => {
         const onMount = async () => {
-            //token handling can probably be optimized
             const storageToken = localStorage.getItem('user_token')
             if (storageToken !== null) {
                 dispatch_token({ type: 'set-token', value: storageToken })
                 setLocalToken(storageToken)
             }
-            //verify jwt token
             let decoded = jwt_decode(storageToken as string) as JwtPayload
             const userRole = decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']
             setUserFunction(userRole)
