@@ -16,6 +16,8 @@ interface Props {
 
 export default function Sidebar({ showSidebar }: Props) {
 
+    // the negated form "isNotMobile" is used since there were issues
+    // regarding the responsive design when using "isMobile" with "max-width"
     const isNotMobile = useMediaQuery({ query: '(min-width: 700px)' })
     const isLargeScreen = useMediaQuery({ query: '(min-width: 1200px)' })
 

@@ -5,6 +5,9 @@ import Sidebar from '../widgets/Sidebar/Sidebar'
 import { Menu } from '../widgets/Menu'
 
 export default function MapPage() {
+
+    // the negated form "isNotMobile" is used since there were issues
+    // regarding the responsive design when using "isMobile" with "max-width"
     const isNotMobile = useMediaQuery({ query: '(min-width: 700px)' })
 
     return (
