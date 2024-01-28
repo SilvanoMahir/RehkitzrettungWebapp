@@ -1,4 +1,4 @@
-import styled from 'styled-components/macro'
+import styled from 'styled-components'
 import { useContext, useState, useEffect } from 'react'
 import { useMediaQuery } from 'react-responsive'
 import { UserContext } from '../../../store/context'
