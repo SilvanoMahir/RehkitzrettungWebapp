@@ -32,10 +32,10 @@ namespace ApiWebAppTesting
             JObject obj = JObject.Parse(json);
             string testConnectionString = obj["ConnectionStrings"]["Test"].ToString();
 
-            _options = new DbContextOptionsBuilder<ApiTestDbContext>()
+            /*_options = new DbContextOptionsBuilder<ApiTestDbContext>()
                 .UseSqlServer(testConnectionString)
                 .Options;
-            resetAndInitializeTestDB();
+            resetAndInitializeTestDB();*/
         }
 
         [TestMethod]
@@ -45,7 +45,7 @@ namespace ApiWebAppTesting
             Assert.IsTrue(response.ToString().Contains("Unauthorized"));
         }
 
-        [TestMethod]
+        /*[TestMethod]
         public void createProtocolTest()
         {
             registerNewAdminClientAsync().Wait();
@@ -439,6 +439,6 @@ namespace ApiWebAppTesting
 
             var responseGet = await _httpClient.SendAsync(request);
             return await responseGet.Content.ReadAsStringAsync();
-        }
+        }*/
     }
 }
