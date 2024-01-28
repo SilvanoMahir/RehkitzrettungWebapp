@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react'
-import styled from 'styled-components/macro'
+import styled from 'styled-components'
 import { DiscardProtocolButton, SaveProtocolButton } from '../controls/Button'
 import { AppContext, ProtocolsContext } from '../../store/context'
 import Sidebar from '../widgets/Sidebar/Sidebar'

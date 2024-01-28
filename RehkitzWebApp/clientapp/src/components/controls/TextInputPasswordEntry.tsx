@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import styled from 'styled-components/macro'
+import styled from 'styled-components'
 import { FaEye, FaEyeSlash } from 'react-icons/fa'
 
 interface TextInputPasswordProps {

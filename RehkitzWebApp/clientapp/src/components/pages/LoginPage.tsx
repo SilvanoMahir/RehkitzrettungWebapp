@@ -1,4 +1,4 @@
-import styled from 'styled-components/macro'
+import styled from 'styled-components'
 import { LoginButton } from '../controls/Button'
 import { useContext, useState } from 'react'
 import { TextInput } from '../controls/TextInput'

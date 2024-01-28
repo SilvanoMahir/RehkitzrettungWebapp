@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react'
-import styled from 'styled-components/macro'
+import styled from 'styled-components'
 import { DownloadProtocolButton, CreateProtocolButton } from '../controls/Button'
 import { AppContext, ProtocolsContext } from '../../store/context'
 import Protocol from '../widgets/Protocol/Protocol'

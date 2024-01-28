@@ -1,4 +1,4 @@
-import styled from 'styled-components/macro'
+import styled from 'styled-components'
 import { useContext, useState, useEffect } from 'react'
 import { ProtocolEntries } from '../../../models/ProtocolEntries'
 import { DeleteProtocolButton, EditProtocolButton } from '../../controls/Button'
