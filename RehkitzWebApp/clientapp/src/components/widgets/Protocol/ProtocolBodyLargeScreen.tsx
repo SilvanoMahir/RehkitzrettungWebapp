@@ -24,6 +24,7 @@ export default function ProtocolBodyLargeScreen({ protocolEntry }: Props) {
                 <ProtocolEntry entry="Region" value={protocolEntry?.regionName} />
                 <ProtocolEntry entry="Fläche" value={protocolEntry?.areaSize} />
                 <ProtocolEntry entry="Verletzte Kitze" value={protocolEntry?.injuredFawns} />
+                <ProtocolEntry entry="Geflüchtete Kitze" value={protocolEntry?.escapedFawns} />
             </ColumnContainer>
         </RowContainer>
     )

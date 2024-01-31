@@ -19,6 +19,7 @@ export default function ProtocolBodySmallScreen({ protocolEntry }: Props) {
             <ProtocolEntry entry="Gefundene Kitze" value={protocolEntry?.foundFawns} />
             <ProtocolEntry entry="Markierte Kitze" value={protocolEntry?.markedFawns} />
             <ProtocolEntry entry="Verletzte Kitze" value={protocolEntry?.injuredFawns} />
+            <ProtocolEntry entry="Geflüchtete Kitze" value={protocolEntry?.escapedFawns} />
             <ProtocolEntry entry="Bemerkung" value={protocolEntry?.remark} />
         </ColumnContainer>
     )

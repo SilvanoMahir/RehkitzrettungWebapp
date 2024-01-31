@@ -183,6 +183,7 @@ public class ProtocolController : ControllerBase
         int foundFawns = 0;
         int injuredFawns = 0;
         int markedFawns = 0;
+        int escapedFawns = 0;
 
         foreach (var protocol in protocolsList)
         {
@@ -192,6 +193,8 @@ public class ProtocolController : ControllerBase
                 foundFawns += protocol.FoundFawns;
                 injuredFawns += protocol.InjuredFawns;
                 markedFawns += protocol.MarkedFawns;
+                escapedFawns += protocol.EscapedFawns;
+
             }
         }
 
@@ -201,6 +204,7 @@ public class ProtocolController : ControllerBase
             FoundFawns = foundFawns,
             InjuredFawns = injuredFawns,
             MarkedFawns = markedFawns,
+            EscapedFawns = escapedFawns,
             DistrictName = loggedInUserDistrict.Value
         };
 

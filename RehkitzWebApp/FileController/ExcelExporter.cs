@@ -32,8 +32,9 @@ public class ExcelExporter
             worksheet.Cell(row, 9).Value = "Gerettete Kitze";
             worksheet.Cell(row, 10).Value = "Verletzte Kitze";
             worksheet.Cell(row, 11).Value = "Markierte Kitze";
-            worksheet.Cell(row, 12).Value = "Kommentar";
-            for (int i = 1; i < 13; i++)
+            worksheet.Cell(row, 12).Value = "Geflüchtete Kitze";
+            worksheet.Cell(row, 13).Value = "Kommentar";
+            for (int i = 1; i < 14; i++)
             {
                 worksheet.Cell(row, i).Style.Font.Bold = true;
             }
@@ -52,7 +53,8 @@ public class ExcelExporter
                 worksheet.Cell(row, 9).Value = protocol.FoundFawns;
                 worksheet.Cell(row, 10).Value = protocol.InjuredFawns;
                 worksheet.Cell(row, 11).Value = protocol.MarkedFawns;
-                worksheet.Cell(row, 12).Value = protocol.Remark;
+                worksheet.Cell(row, 12).Value = protocol.EscapedFawns;
+                worksheet.Cell(row, 13).Value = protocol.Remark;
 
                 row++;
             }

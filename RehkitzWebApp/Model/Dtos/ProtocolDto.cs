@@ -12,6 +12,7 @@ public class ProtocolDto
     public string? AreaSize { get; set; }
     public int FoundFawns { get; set; }
     public int InjuredFawns { get; set; }
+    public int EscapedFawns { get; set; }
     public int MarkedFawns { get; set; }
     public DateTime Date { get; set; }
 }

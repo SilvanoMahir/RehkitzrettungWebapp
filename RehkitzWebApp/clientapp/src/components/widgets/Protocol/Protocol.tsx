@@ -30,6 +30,7 @@ export default function Protocol({ protocolId, userFunction }: Props) {
         date: "",
         foundFawns: 0,
         markedFawns: 0,
+        escapedFawns: 0,
         remark: "",
         pilotFullName: "",
         regionName: "",
