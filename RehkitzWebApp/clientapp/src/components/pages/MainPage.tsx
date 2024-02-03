@@ -23,6 +23,7 @@ export default function MainPage() {
     const [numberOfProtocols, setNumberOfProtocols] = useState(0)
     const [foundFawns, setFoundFawns] = useState(0)
     const [injuredFawns, setInjuredFawns] = useState(0)
+    const [escapedFawns, setEscapedFawns] = useState(0)
     const [markedFawns, setMarkedFawns] = useState(0)
 
     const { dispatch_token } = useContext(AppContext)
@@ -37,13 +38,13 @@ export default function MainPage() {
             const userId = decoded.userId
             const user = await fetchUser(storageToken, userId)
             const { userName } = user
-            const { numberOfProtocols, foundFawns, injuredFawns, markedFawns, districtName } = await fetchProtocolOverview(storageToken)
+            const { numberOfProtocols, foundFawns, injuredFawns, markedFawns, escapedFawns, districtName } = await fetchProtocolOverview(storageToken)
             setUserName(userName)
             setNumberOfProtocols(numberOfProtocols)
             setFoundFawns(foundFawns)
             setInjuredFawns(injuredFawns)
             setMarkedFawns(markedFawns)
-            setMarkedFawns(markedFawns)
+            setEscapedFawns(escapedFawns)
             setDistrictName(districtName)
         }
         onMount()
@@ -95,6 +96,7 @@ export default function MainPage() {
                             <InformationOverviewEntry entry="Gerettete Kitze" value={foundFawns} />
                             <InformationOverviewEntry entry="Verletzte Kitze" value={injuredFawns} />
                             <InformationOverviewEntry entry="Markierte Kitze" value={markedFawns} />
+                            <InformationOverviewEntry entry="Geflüchtete Kitze" value={escapedFawns} />
                         </ColumnContainer>
                     </InformationOverviewLayout>
                 </MainPageColumnLayout>

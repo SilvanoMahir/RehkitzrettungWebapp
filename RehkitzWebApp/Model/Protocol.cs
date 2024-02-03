@@ -40,6 +40,8 @@ public class Protocol
 
     [Required]
     public int FoundFawns { get; set; }
+    [Required]
+    public int EscapedFawns { get; set; }
 
     [Required]
     public int InjuredFawns { get; set; }

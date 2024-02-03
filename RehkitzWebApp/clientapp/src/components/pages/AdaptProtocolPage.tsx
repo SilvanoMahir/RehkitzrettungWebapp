@@ -30,6 +30,7 @@ export default function AdaptProtocolPage() {
     const [regionName, setRegionName] = useState('')
     const [areaSize, setAreaSize] = useState('')
     const [injuredFawns, setInjuredFawns] = useState('')
+    const [escapedFawns, setEscapedFawns] = useState('')
     const [isNewProtocol, setIsNewProtocol] = useState(false)
     const [regions, setRegions] = useState<{ label: string; value: string; }[]>([])
     const [areaSizes, setAreaSizes] = useState<{ label: string; value: string; }[]>([])
@@ -53,7 +54,7 @@ export default function AdaptProtocolPage() {
                 setIsNewProtocol(false)
                 const { protocolCode, clientFullName, localName, date, foundFawns,
                     markedFawns, remark, pilotFullName, regionName, areaSize,
-                    injuredFawns } = data[0]
+                    injuredFawns, escapedFawns } = data[0]
                 setProtocolCode(protocolCode)
                 setClientFullName(clientFullName)
                 setLocalName(localName)
@@ -61,6 +62,7 @@ export default function AdaptProtocolPage() {
                 setDate(dateObject)
                 setFoundFawns(foundFawns.toString())
                 setMarkedFawns(markedFawns.toString())
+                setEscapedFawns(escapedFawns.toString())
                 setRemark(remark)
                 setPilotFullName(pilotFullName)
                 setRegionName(regionName)
@@ -94,14 +96,14 @@ export default function AdaptProtocolPage() {
 
     const saveProtocol = async () => {
         if (clientFullName === '' || localName === '' || foundFawns === '' || markedFawns === ''
-            || pilotFullName === '' || regionName === '' || areaSize === '' || injuredFawns === '') {
+            || pilotFullName === '' || regionName === '' || areaSize === '' || injuredFawns === '' || escapedFawns === '') {
             toast.error('Bitte alle Felder ausfüllen!', {
                 position: toast.POSITION.TOP_CENTER,
                 containerId: 'ToasterNotification'
             })
             return
         }
-        if (!isValidNumericString(injuredFawns) || !isValidNumericString(markedFawns) || !isValidNumericString(foundFawns)) {
+        if (!isValidNumericString(injuredFawns) || !isValidNumericString(markedFawns) || !isValidNumericString(foundFawns) || !isValidNumericString(escapedFawns)) {
             toast.error('Felder gefundene, verletzte oder markierte Kitze sind keine Zahlen!', {
                 position: toast.POSITION.TOP_CENTER,
                 containerId: 'ToasterNotification'
@@ -129,6 +131,7 @@ export default function AdaptProtocolPage() {
                 Date: date?.toISOString(),
                 FoundFawns: parseInt(foundFawns),
                 MarkedFawns: parseInt(markedFawns),
+                EscapedFawns: parseInt(escapedFawns),
                 Remark: remark,
                 PilotFullName: pilotFullName,
                 RegionName: regionName,
@@ -146,6 +149,7 @@ export default function AdaptProtocolPage() {
                 date: dateAsString,
                 foundFawns: parseInt(foundFawns),
                 markedFawns: parseInt(markedFawns),
+                escapedFawns: parseInt(escapedFawns),
                 remark: remark,
                 pilotFullName: pilotFullName,
                 regionName: regionName,
@@ -164,15 +168,15 @@ export default function AdaptProtocolPage() {
 
     const updateProtocol = async () => {
         if (clientFullName === '' || localName === '' || foundFawns === '' || markedFawns === ''
-            || pilotFullName === '' || regionName === '' || areaSize === '' || injuredFawns === '') {
+            || pilotFullName === '' || regionName === '' || areaSize === '' || injuredFawns === '' || escapedFawns === '') {
             toast.error('Bitte alle Felder ausfüllen!', {
                 position: toast.POSITION.TOP_CENTER,
                 containerId: 'ToasterNotification'
             })
             return
         }
-        if (!isValidNumericString(injuredFawns) || !isValidNumericString(markedFawns) || !isValidNumericString(foundFawns)) {
-            toast.error('Felder gefundene, verletzte oder markierte Kitze sind keine Zahlen!', {
+        if (!isValidNumericString(injuredFawns) || !isValidNumericString(markedFawns) || !isValidNumericString(foundFawns) || !isValidNumericString(escapedFawns)) {
+            toast.error('Felder gefundene, verletzte, geflüchtete oder markierte Kitze sind keine Zahlen!', {
                 position: toast.POSITION.TOP_CENTER,
                 containerId: 'ToasterNotification'
             })
@@ -200,6 +204,7 @@ export default function AdaptProtocolPage() {
                 date: date,
                 foundFawns: parseInt(foundFawns),
                 markedFawns: parseInt(markedFawns),
+                escapedFawns: parseInt(escapedFawns),
                 remark: remark,
                 pilotFullName: pilotFullName,
                 regionName: regionName,
@@ -268,6 +273,7 @@ export default function AdaptProtocolPage() {
                             <ProtocolEntryForAdaptPage entry="Gefundene Kitze" value={foundFawns} callbackFunction={setFoundFawns} />
                             <ProtocolEntryForAdaptPage entry="Verletzte Kitze" value={injuredFawns} callbackFunction={setInjuredFawns} />
                             <ProtocolEntryForAdaptPage entry="Markierte Kitze" value={markedFawns} callbackFunction={setMarkedFawns} />
+                            <ProtocolEntryForAdaptPage entry="Geflüchtete Kitze" value={escapedFawns} callbackFunction={setEscapedFawns} />
                             <ProtocolEntryForAdaptPage entry="Bemerkung" value={remark} callbackFunction={setRemark} />
                         </ColumnContainer>
                     </ProtocolLayout>

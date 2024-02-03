@@ -131,6 +131,7 @@ export default function RescueListPage() {
                 protocol.foundFawns.toString().toLowerCase().includes(searchString) ||
                 protocol.injuredFawns.toString().toLowerCase().includes(searchString) ||
                 protocol.markedFawns.toString().toLowerCase().includes(searchString) ||
+                protocol.escapedFawns.toString().toLowerCase().includes(searchString) ||
                 protocol.date.toLowerCase().includes(searchString))
         }
 
