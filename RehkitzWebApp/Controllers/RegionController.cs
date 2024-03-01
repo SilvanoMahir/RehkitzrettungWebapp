@@ -83,4 +83,69 @@ public class RegionController : ControllerBase
             return NoContent();
         }
     }
+
+    // GET: /api/regions/all
+    [Authorize(Roles = "Admin,Zentrale")]
+    [HttpGet("all")]
+    public async Task<ActionResult<IEnumerable<RegionNameDto>>> GetRegionsAll()
+    {
+        if (_context.Region == null)
+        {
+            return NotFound();
+        }
+
+        if (_httpcontext.HttpContext == null)
+        {
+            return NotFound();
+        }
+
+        var principal = _httpcontext.HttpContext.User;
+        var loggedInUserDistrict = principal.FindFirst("userDistrict");
+        var loggedInUserRole = principal.FindFirst(ClaimTypes.Role);
+
+        if (loggedInUserDistrict == null || loggedInUserRole == null)
+        {
+            return NotFound();
+        }
+
+        List<Region> regionsList = new List<Region>();
+
+        if (loggedInUserRole.Value == "Admin")
+        {
+            regionsList = await _context.Region
+                                    .Where(p => p.EntryIsDeleted == false).ToListAsync();
+        }
+        else
+        {
+            regionsList = await _context.Region
+                                    .Where(p => p.EntryIsDeleted == false && p.RegionDistrict == loggedInUserDistrict.Value)
+                                    .ToListAsync();
+        }
+
+        var regionDtosList = new List<RegionDto>();
+
+        foreach (var region in regionsList)
+        {
+            var regionDto = new RegionDto
+            {
+                RegionId = region.RegionId,
+                RegionName = region.RegionName,
+                RegionState = region.RegionState,
+                RegionDistrict = region.RegionDistrict,
+                ContactPersonFirstName = region.ContactPersonFirstName,
+                ContactPersonLastName = region.ContactPersonLastName,
+                ContactPersonEmail = region.ContactPersonEmail
+            };
+            regionDtosList.Add(regionDto);
+        }
+
+        if (regionsList.Count != 0)
+        {
+            return Ok(regionDtosList);
+        }
+        else
+        {
+            return NoContent();
+        }
+    }
 }

@@ -1,26 +1,24 @@
 import { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { AppContext, UserContext } from '../../store/context'
+import { AppContext, RegionContext } from '../../store/context'
 import Sidebar from '../widgets/Sidebar/Sidebar'
 import { useMediaQuery } from 'react-responsive'
 import { Menu } from '../widgets/Menu'
-import User from '../widgets/Users/User'
-import UserEntryTitles from '../widgets/Region/RegionEntryTitles'
 import { CreateNewUserButton } from '../controls/Button'
-import { ROUTE_ADAPT_USER_PAGE } from '../../App'
 import { useNavigate } from 'react-router-dom'
-import { UserEntries } from '../../models/UserEntries'
+import { RegionEntries } from '../../models/RegionEntries'
+import { ROUTE_ADAPT_REGION_PAGE } from '../../App'
 
-export default function UserListPage() {
+export default function RegionListPage() {
 
     // the negated form "isNotMobile" is used since there were issues
     // regarding the responsive design when using "isMobile" with "max-width"
     const isNotMobile = useMediaQuery({ query: '(min-width: 700px)' })
     const isLargeScreen = useMediaQuery({ query: '(min-width: 1200px)' })
 
-    const [loadingUsers, setLoadingUsers] = useState(true)
-    const [fetchedUsersListLocal, setFetchedUsersListLocal] = useState<UserEntries[]>([])
-    const { usersListLocal, dispatch_users } = useContext(UserContext)
+    const [loadingRegions, setLoadingRegions] = useState(true)
+    const [fetchedRegionListLocal, setFetchedRegionsListLocal] = useState<RegionEntries[]>([])
+    const { regionsListLocal, dispatch_regions } = useContext(RegionContext)
     const { dispatch_token } = useContext(AppContext)
     let navigate = useNavigate()
 
@@ -30,17 +28,17 @@ export default function UserListPage() {
             if (storageToken !== null) {
                 dispatch_token({ type: 'set-token', value: storageToken })
             }
-            const usersListLocal = await fetchUsers(storageToken)
-            setFetchedUsersListLocal(usersListLocal)
-            setLoadingUsers(false)
-            dispatch_users({ type: 'get-users', usersListLocal })
+            const regionsListLocal = await fetchRegions(storageToken)
+            setFetchedRegionsListLocal(regionsListLocal)
+            setLoadingRegions(false)
+            dispatch_regions({ type: 'get-regions', regionsListLocal })
         }
         onMount()
-    }, [dispatch_users, dispatch_token])
+    }, [dispatch_regions, dispatch_token])
 
-    const fetchUsers = async (storageToken: string | null) => {
+    const fetchRegions = async (storageToken: string | null) => {
         try {
-            const response = await fetch('/api/users',
+            const response = await fetch('/api/regions/all',
             {
                 method: 'GET',
                 headers: {
@@ -57,8 +55,9 @@ export default function UserListPage() {
         }
     }
 
-    const addNewUser = async () => {
-        navigate(ROUTE_ADAPT_USER_PAGE)
+    const addNewRegion = async () => {
+        console.log(fetchedRegionListLocal)
+        //navigate(ROUTE_ADAPT_REGION_PAGE)
     }
 
     const handleSearchInputChange = async (event: { target: { value: string } }) => {
@@ -68,28 +67,29 @@ export default function UserListPage() {
             return
         }
         searchString = searchString.toLowerCase()
-        let usersListLocal = fetchedUsersListLocal
+        let regionsListLocal = fetchedRegionListLocal
 
         if (searchString !== '') {
-            usersListLocal = usersListLocal.filter((user) =>
-                user.userId.toString().toLowerCase().includes(searchString) ||
-                user.userDefinition.toLowerCase().includes(searchString) ||
-                user.userFunction.toLowerCase().includes(searchString) ||
-                user.userRegion.toLowerCase().includes(searchString))
+            regionsListLocal = regionsListLocal.filter((region) =>
+                region.regionId.toString().toLowerCase().includes(searchString) ||
+                region.regionName.toLowerCase().includes(searchString) ||
+                region.regionState.toLowerCase().includes(searchString) ||
+                region.regionDistrict.toLowerCase().includes(searchString))
         }
 
-        dispatch_users({ type: 'get-users', usersListLocal })
+        dispatch_regions({ type: 'get-regions', regionsListLocal })
     }
 
     let content
-    if (loadingUsers) {
-        content = (<p><em>Lädt Benutzer... </em></p>)
-    } else if (usersListLocal.length === 0) {
-        content = (<p><em>Keine Benutzer gefunden.</em></p>)
+    if (loadingRegions) {
+        content = (<p><em>Lädt Regionen... </em></p>)
+    } else if (regionsListLocal.length === 0) {    
+        console.log(regionsListLocal)
+        content = (<p><em>Keine Region gefunden. </em> </p>) 
     } else {
-        content = usersListLocal.map(userEntry => (
-            <User key={userEntry.userId} userId={userEntry.userId} />
-        ))
+                //content = regionsListLocal.map(regionEntry => (
+            //<Region key={regionEntry.regionId} regionId={regionEntry.regionId} userFunction={regionEntry.regionName} />// hier Rolle mitgeben
+        //))
     }
 
     return (
@@ -102,15 +102,12 @@ export default function UserListPage() {
                         isNotMobile={isNotMobile}
                         placeholder={"Suchen"}></SearchInput>
                     <TitleBlock>
-                        <PageTitle>Benutzerverwaltung</PageTitle>
+                        <PageTitle>Regionenverwaltung</PageTitle>
                         <NewUserButton>
-                            <CreateNewUserButton onClick={() => addNewUser()}> Neuer Benutzer erstellen</CreateNewUserButton>
+                            <CreateNewUserButton onClick={() => addNewRegion()}> Neue Region erstellen</CreateNewUserButton>
                         </NewUserButton>
                     </TitleBlock>
-                    <UserListBlock>
-                        {isLargeScreen ? <UserEntryTitles /> : <></>}
                         {content}
-                    </UserListBlock>
                 </RescueListColumnLayout >
             </RescueListRowLayout>
         </RescueListLayout>

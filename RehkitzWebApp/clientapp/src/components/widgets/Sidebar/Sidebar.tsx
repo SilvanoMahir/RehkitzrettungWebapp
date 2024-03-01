@@ -1,10 +1,12 @@
-import { FaInfo, FaListUl, FaMap, FaRegArrowAltCircleRight, FaUser, FaUsers } from 'react-icons/fa'
+import { FaInfo, FaListUl, FaMap, FaRegArrowAltCircleRight, FaUser  } from 'react-icons/fa'
+import { FaUsersGear } from "react-icons/fa6";
+import { BsHouseGearFill } from "react-icons/bs"
 import styled from 'styled-components'
 import SidebarButton from '../Sidebar/SidebarButton'
 import SidebarIcon from '../Sidebar/SidebarIcon'
 import { useContext, useEffect, useState } from 'react'
 import { AppContext } from '../../../store/context'
-import { ROUTE_MAIN_PAGE, ROUTE_LOGIN_PAGE, ROUTE_MAP_PAGE, ROUTE_RESCUE_LIST_PAGE, ROUTE_USER_LIST_PAGE, ROUTE_MY_DATA_PAGE } from '../../../App'
+import { ROUTE_MAIN_PAGE, ROUTE_LOGIN_PAGE, ROUTE_MAP_PAGE, ROUTE_RESCUE_LIST_PAGE, ROUTE_USER_LIST_PAGE, ROUTE_REGION_LIST_PAGE, ROUTE_MY_DATA_PAGE } from '../../../App'
 import { useNavigate } from 'react-router'
 import { useMediaQuery } from 'react-responsive'
 import jwt_decode from 'jwt-decode'
@@ -52,6 +54,10 @@ export default function Sidebar({ showSidebar }: Props) {
         navigate(ROUTE_USER_LIST_PAGE)
     }
 
+    function moveToRegionAdministration(): void {
+        navigate(ROUTE_REGION_LIST_PAGE)
+    }
+
     function moveToMyData(): void {
         navigate(ROUTE_MY_DATA_PAGE)
     }
@@ -74,7 +80,10 @@ export default function Sidebar({ showSidebar }: Props) {
                     <SidebarButton onClick={moveToRescues} text="Rettungen" icon={<FaListUl />} />
                     <SidebarButton onClick={moveToMap} text="Karte" icon={<FaMap />} />
                     {(userFunction === 'Admin' || userFunction === 'Zentrale') && (
-                        <SidebarButton onClick={moveToOrganisation} text="Organisation" icon={<FaUsers />} />
+                        <SidebarButton onClick={moveToOrganisation} text="Benutzerverwaltung" icon={<FaUsersGear />} />
+                    )}
+                    {(userFunction === 'Admin' || userFunction === 'Zentrale') && (
+                        <SidebarButton onClick={moveToRegionAdministration} text="Regionenverwaltung" icon={<BsHouseGearFill />} />
                     )}
                     <SidebarButton onClick={moveToInformation} text="Information" icon={<FaInfo />} />
                     <SidebarButton onClick={logout} text="Abmelden" icon={<FaRegArrowAltCircleRight />} />
