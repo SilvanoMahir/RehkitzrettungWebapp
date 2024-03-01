@@ -88,7 +88,7 @@ const ProtocolLayout = styled.div`
     background: #7c6b57;
 	color: beige;
 	border-radius: 10px;
-    max-width: 850px;
+    max-width: 1000px;
     width: 85%;
 `
 

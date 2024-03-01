@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { AppContext, RegionContext } from '../../store/context'
+import { AppContext, RegionContext, UserContext } from '../../store/context'
 import Sidebar from '../widgets/Sidebar/Sidebar'
 import { useMediaQuery } from 'react-responsive'
 import { Menu } from '../widgets/Menu'
@@ -8,6 +8,7 @@ import { CreateNewUserButton } from '../controls/Button'
 import { useNavigate } from 'react-router-dom'
 import { RegionEntries } from '../../models/RegionEntries'
 import { ROUTE_ADAPT_REGION_PAGE } from '../../App'
+import Region from '../widgets/Region/Region'
 
 export default function RegionListPage() {
 
@@ -56,8 +57,7 @@ export default function RegionListPage() {
     }
 
     const addNewRegion = async () => {
-        console.log(fetchedRegionListLocal)
-        //navigate(ROUTE_ADAPT_REGION_PAGE)
+        navigate(ROUTE_ADAPT_REGION_PAGE)
     }
 
     const handleSearchInputChange = async (event: { target: { value: string } }) => {
@@ -87,9 +87,9 @@ export default function RegionListPage() {
         console.log(regionsListLocal)
         content = (<p><em>Keine Region gefunden. </em> </p>) 
     } else {
-                //content = regionsListLocal.map(regionEntry => (
-            //<Region key={regionEntry.regionId} regionId={regionEntry.regionId} userFunction={regionEntry.regionName} />// hier Rolle mitgeben
-        //))
+        content = regionsListLocal.map(regionEntry => (
+            <Region key={regionEntry.regionId} regionId={regionEntry.regionId} userFunction={regionEntry.regionName} />// hier Rolle mitgeben
+        ))
     }
 
     return (
