@@ -36,6 +36,7 @@ export default function App() {
             <Route path={`${ROUTE_ADAPT_USER_PAGE}/:id`} element={<AdaptUserPage />} />
             <Route path={ROUTE_ADAPT_USER_PAGE} element={<AdaptUserPage />} />
             <Route path={ROUTE_ADAPT_REGION_PAGE} element={<AdaptRegionPage />} />
+            <Route path={`${ROUTE_ADAPT_REGION_PAGE}/:id`} element={<AdaptRegionPage />} />
         </Routes >
     )
 }

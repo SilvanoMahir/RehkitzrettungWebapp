@@ -1,16 +1,18 @@
 import { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { DeleteUserButton, DiscardUserButton, SaveProtocolButton } from '../controls/Button'
-import { AppContext, UserContext } from '../../store/context'
+import { AppContext, RegionContext, UserContext } from '../../store/context'
 import Sidebar from '../widgets/Sidebar/Sidebar'
 import { useMediaQuery } from 'react-responsive'
 import { Menu } from '../widgets/Menu'
 import { useNavigate, useParams } from 'react-router-dom'
-import { ROUTE_USER_LIST_PAGE } from '../../App'
+import { ROUTE_REGION_LIST_PAGE, ROUTE_USER_LIST_PAGE } from '../../App'
 import ProtocolEntryForAdaptPage from '../widgets/Protocol/ProtocolEntryForAdaptPage'
 import { Dropdown } from '../controls/Dropdown'
 import { toast } from 'react-toastify'
-import PasswordEntryForAdaptPage from '../widgets/Protocol/PasswordEntryForAdaptPage'
+import { JwtPayload } from '../../interfaces/jwtPayload'
+import jwt_decode from 'jwt-decode'
+
 
 export default function AdaptRegionPage() {
 
@@ -18,19 +20,22 @@ export default function AdaptRegionPage() {
     // regarding the responsive design when using "isMobile" with "max-width"
     const isNotMobile = useMediaQuery({ query: '(min-width: 700px)' })
 
-    const [userId, setUserId] = useState(0)
-    const [userLastName, setUserLastName] = useState('')
-    const [userFirstName, setUserFirstName] = useState('')
-    const [userDefinition, setUserDefinition] = useState('')
-    const [userRegion, setUserRegion] = useState('')
-    const [userFunction, setUserFunction] = useState('')
-    const [userName, setUsername] = useState('')
-    const [userPassword, setUserPassword] = useState('')
-    const [isNewUser, setIsNewUser] = useState(false)
+    const [regionId, setRegionId] = useState(0)
+    const [regionName, setRegionName] = useState('')
+    const [regionState, setRegionState] = useState('')
+    const [regionDistrict, setRegionDistrict] = useState('')
+    const [contactPersonEmail, setContacPersonEmail] = useState('')
+    const [contactPersonFirstName, setContactPersonFirstName] = useState('')
+    const [contactPersonLastName, setContactPersonLastName] = useState('')
+    const [isNewRegion, setIsNewRegion] = useState(false)
     const [roles, setRoles] = useState<{ label: string; value: string; }[]>([])
+    const [districts, setDistricts] = useState<{ label: string; value: string; }[]>([])
     const [regions, setRegions] = useState<{ label: string; value: string; }[]>([])
-    const { usersListLocal, dispatch_users } = useContext(UserContext)
+    const [states, setStates] = useState<{ label: string; value: string; }[]>([])
+    const { regionsListLocal, dispatch_regions } = useContext(RegionContext)
     const { dispatch_token } = useContext(AppContext)
+    const [userFunction, setUserFunction] = useState('')
+
     const { id } = useParams()
 
     useEffect(() => {
@@ -39,32 +44,45 @@ export default function AdaptRegionPage() {
             if (storageToken !== null) {
                 dispatch_token({ type: 'set-token', value: storageToken })
             }
-            let data = usersListLocal.filter(users => users.userId.toString() === id)
+            let decoded = jwt_decode(storageToken as string) as JwtPayload
+            const userFunction = decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']
+            setUserFunction(userFunction)
+            console.log(userFunction)
+
+            const districtsData = await fetchDistricts(storageToken)
+            const transformedDistricts = districtsData.map((district: { districtName: any }) => ({
+                label: district.districtName,
+                value: district.districtName,
+            }))
+            setDistricts(transformedDistricts)
+
+            const statesData = await fetchStates(storageToken)
+            const transformedStates = statesData.map((state: { stateName: any }) => ({
+                label: state.stateName,
+                value: state.stateName,
+            }))
+            setStates(transformedStates)
+
+            console.log(districtsData)
+
+            let data = regionsListLocal.filter(region => region.regionId.toString() === id)
             if (data.length === 0) {
-                setIsNewUser(true)
+                setIsNewRegion(true)
             }
             else {
-                const updateUser = await fetchUsers(id, storageToken)
-                setIsNewUser(false)
-                const { userId, userFirstName, userLastName, userDefinition, userRegion,
-                    userFunction, userName, userPassword } = updateUser
+                const updateUser = await fetchRegion(id, storageToken)
+                setIsNewRegion(false)
+                const { regionId, regionName, regionState, regionDistrict, contactPersonEmail,
+                    contactPersonFirstName, contactPersonLastName } = updateUser
 
-                setUserId(userId)
-                setUserFirstName(userFirstName)
-                setUserLastName(userLastName)
-                setUserDefinition(userDefinition)
-                setUserRegion(userRegion)
-                setUserFunction(userFunction)
-                setUsername(userName)
-                setUserPassword(userPassword)
+                setRegionId(regionId)
+                setRegionName(regionName)
+                setRegionState(regionState)
+                setRegionDistrict(regionDistrict)
+                setContacPersonEmail(contactPersonEmail)
+                setContactPersonFirstName(contactPersonFirstName)
+                setContactPersonLastName(contactPersonLastName)
             }
-            const rolesData = await fetchUserRoles(storageToken)
-            const transformedRoles = rolesData.map((role: { roleName: any }) => ({
-                label: role.roleName,
-                value: role.roleName,
-            }))
-            setRoles(transformedRoles)
-
             const regionsData = await fetchRegions(storageToken)
             const transformedRegions = regionsData.map((role: { regionName: any }) => ({
                 label: role.regionName,
@@ -73,17 +91,17 @@ export default function AdaptRegionPage() {
             setRegions(transformedRegions)
         }
         onMount()
-    }, [usersListLocal, id, dispatch_token])
+    }, [regionsListLocal, id, dispatch_token])
 
     let navigate = useNavigate()
 
-    const discardUser = async () => {
-        navigate(ROUTE_USER_LIST_PAGE)
+    const discardRegion = async () => {
+        navigate(ROUTE_REGION_LIST_PAGE)
     }
 
-    const saveUser = async () => {
-        if (userName === "" || userPassword === "" || userDefinition === "" || userFirstName === ""
-            || userLastName === "" || userRegion === "" || userFunction === "") {
+    const saveRegion = async () => {
+        if (regionName === "" || regionState === "" || regionDistrict === "" || contactPersonEmail === ""
+            || contactPersonFirstName === "" || contactPersonLastName === "") {
             toast.error("Bitte alle Felder ausfüllen!", {
                 position: toast.POSITION.TOP_CENTER,
                 containerId: 'ToasterNotification'
@@ -91,36 +109,35 @@ export default function AdaptRegionPage() {
             return
         }
         const storageToken = localStorage.getItem('user_token')
-        const response = await fetch('/api/users', {
+        const response = await fetch('/api/regions', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json',
                 'Authorization': `Bearer ${storageToken}`,
             },
             body: JSON.stringify({
-                userName: userName,
-                userPassword: userPassword,
-                userDefinition: userDefinition,
-                userFirstName: userFirstName,
-                userLastName: userLastName,
-                userRegion: userRegion,
-                userFunction: userFunction
+                regionName: regionName,
+                regionState: regionState,
+                regionDistrict: regionDistrict,
+                contactPersonEmail: contactPersonEmail,
+                contactPersonFirstName: contactPersonFirstName,
+                contactPersonLastName: contactPersonLastName
             }),
         })
+        console.log(response);
         if (response.ok) {
-            const newUser = ({
-                userId: 0,
-                userName: userName,
-                userPassword: userPassword,
-                userDefinition: userDefinition,
-                userFirstName: userFirstName,
-                userLastName: userLastName,
-                userRegion: userRegion,
-                userFunction: userFunction
+            const newRegion = ({
+                regionId: 0,
+                regionName: regionName,
+                regionState: regionState,
+                regionDistrict: regionDistrict,
+                contactPersonEmail: contactPersonEmail,
+                contactPersonFirstName: contactPersonFirstName,
+                contactPersonLastName: contactPersonLastName
             })
-            dispatch_users({ type: 'add-user', usersListLocal, newUser })
-            navigate(ROUTE_USER_LIST_PAGE)
-            toast.success("Benutzer erfolgreich hinzugefügt!", {
+            dispatch_regions({ type: 'add-region', regionsListLocal, newRegion })
+            navigate(ROUTE_REGION_LIST_PAGE)
+            toast.success("Region erfolgreich hinzugefügt!", {
                 position: toast.POSITION.TOP_CENTER,
                 containerId: 'ToasterNotification'
             })
@@ -149,9 +166,9 @@ export default function AdaptRegionPage() {
         }
     }
 
-    const updateUser = async () => {
-        if (userName === "" || userDefinition === "" || userFirstName === ""
-            || userLastName === "" || userRegion === "" || userFunction === "") {
+    const updateRegion = async () => {
+        if (regionName === "" || regionState === "" || regionDistrict === "" || contactPersonEmail === ""
+            || contactPersonFirstName === "" || contactPersonLastName === "") {
             toast.error("Bitte alle Felder ausfüllen!", {
                 position: toast.POSITION.TOP_CENTER,
                 containerId: 'ToasterNotification'
@@ -159,26 +176,25 @@ export default function AdaptRegionPage() {
             return
         }
         const storageToken = localStorage.getItem('user_token')
-        const response = await fetch(`${`/api/users`}/${id}`, {
+        const response = await fetch(`${`/api/regions`}/${id}`, {
             method: 'PUT',
             headers: {
                 'content-type': 'application/json',
                 'Authorization': `Bearer ${storageToken}`,
             },
             body: JSON.stringify({
-                userId: id,
-                userName: userName,
-                userPassword: userPassword,
-                userDefinition: userDefinition,
-                userFirstName: userFirstName,
-                userLastName: userLastName,
-                userRegion: userRegion,
-                userFunction: userFunction
+                regionId: id,
+                regionName: regionName,
+                regionState: regionState,
+                regionDistrict: regionDistrict,
+                contactPersonEmail: contactPersonEmail,
+                contactPersonFirstName: contactPersonFirstName,
+                contactPersonLastName: contactPersonLastName
             }),
         })
         if (response.ok) {
-            dispatch_users({ type: 'update-users', usersListLocal })
-            navigate(ROUTE_USER_LIST_PAGE)
+            dispatch_regions({ type: 'update-regions', regionsListLocal })
+            navigate(ROUTE_REGION_LIST_PAGE)
             toast.success("Benutzer erfolgreich angepasst!", {
                 position: toast.POSITION.TOP_CENTER,
                 containerId: 'ToasterNotification'
@@ -208,11 +224,11 @@ export default function AdaptRegionPage() {
         }
     }
 
-    const deleteUser = async () => {
+    const deleteRegion = async () => {
         const answer = window.confirm("Wirklich löschen?")
         const storageToken = localStorage.getItem('user_token')
         if (answer) {
-            const response = await fetch(`${`/api/users`}/${id}`, {
+            const response = await fetch(`${`/api/region`}/${id}`, {
                 method: 'DELETE',
                 headers: {
                     'content-type': 'application/json',
@@ -220,9 +236,9 @@ export default function AdaptRegionPage() {
                 }
             })
             if (response.ok) {
-                dispatch_users({ type: 'delete-user', usersListLocal, userId })
-                navigate(ROUTE_USER_LIST_PAGE)
-                toast.success("Benutzer erfolgreich gelöscht!", {
+                dispatch_regions({ type: 'delete-region', regionsListLocal, regionId })
+                navigate(ROUTE_REGION_LIST_PAGE)
+                toast.success("Region erfolgreich gelöscht!", {
                     position: toast.POSITION.TOP_CENTER,
                     containerId: 'ToasterNotification'
                 })
@@ -230,8 +246,8 @@ export default function AdaptRegionPage() {
         }
     }
 
-    const fetchUsers = async (id: string | undefined, storageToken: string | null) => {
-        const response = await fetch(`/api/users/${id}`, {
+    const fetchRegion = async (id: string | undefined, storageToken: string | null) => {
+        const response = await fetch(`/api/regions/${id}`, {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json',
@@ -244,8 +260,22 @@ export default function AdaptRegionPage() {
         return []
     }
 
-    const fetchUserRoles = async (storageToken: string | null) => {
-        const response = await fetch('/api/users/roles', {
+    const fetchDistricts = async (storageToken: string | null) => {
+        const response = await fetch(`/api/districts`, {
+            method: 'GET',
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': `Bearer ${storageToken}`,
+            }
+        })
+        if (response.ok) {
+            return await response.json()
+        }
+        return []
+    }
+
+    const fetchStates = async (storageToken: string | null) => {
+        const response = await fetch(`/api/states`, {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json',
@@ -279,21 +309,22 @@ export default function AdaptRegionPage() {
                 {(isNotMobile) && <Sidebar showSidebar={isNotMobile} />}
                 <AdaptUserColumnLayout>
                     <UserLayout isNotMobile={isNotMobile}>
-                        <UserTitle>{isNewUser ? 'Neuer Benutzer' : `Benutzer ${userDefinition}`}</UserTitle>
+                        <UserTitle>{isNewRegion ? 'Neue Region' : `Region ${regionName}`}</UserTitle>
                         <ColumnContainer>
-                            <ProtocolEntryForAdaptPage entry="Vorname" value={userFirstName} callbackFunction={setUserFirstName} />
-                            <ProtocolEntryForAdaptPage entry="Name" value={userLastName} callbackFunction={setUserLastName} />
-                            <ProtocolEntryForAdaptPage entry="Bezeichnung" value={userDefinition} callbackFunction={setUserDefinition} />
-                            <Dropdown entry="Region" options={regions} value={userRegion} onChange={setUserRegion} />
-                            <Dropdown entry="Funktion" options={roles} value={userFunction} onChange={setUserFunction} />
-                            <ProtocolEntryForAdaptPage entry="Benutzername" value={userName} callbackFunction={setUsername} />
-                            <PasswordEntryForAdaptPage entry={isNewUser ? 'Passwort' : `Neues Passwort`} value={userPassword} callbackFunction={setUserPassword} />
+                            <ProtocolEntryForAdaptPage entry="Name Region" value={regionName} callbackFunction={setRegionName} />
+                            <ProtocolEntryForAdaptPage entry="Kontaktperson Vorname" value={contactPersonFirstName} callbackFunction={setContactPersonFirstName} />
+                            <ProtocolEntryForAdaptPage entry="Kontaktperson Nachname" value={contactPersonLastName} callbackFunction={setContactPersonLastName} />
+                            <ProtocolEntryForAdaptPage entry="Kontaktperson E-Mail" value={contactPersonEmail} callbackFunction={setContacPersonEmail} />
+                            {(userFunction === 'Admin') && (
+                                <><Dropdown entry="Distrikt" options={districts} value={regionDistrict} onChange={setRegionDistrict} />
+                                <Dropdown entry="Kanton" options={states} value={regionState} onChange={setRegionState} /></>
+                            )}
                         </ColumnContainer>
                     </UserLayout>
                     <RowContainer>
-                        <DiscardUserButton onClick={() => discardUser()}>Verwerfen</DiscardUserButton>
-                        {(!isNewUser) && <DeleteUserButton onClick={() => deleteUser()}>Löschen</DeleteUserButton>}
-                        <SaveProtocolButton onClick={() => isNewUser ? saveUser() : updateUser()}>Speichern</SaveProtocolButton>
+                        <DiscardUserButton onClick={() => discardRegion()}>Verwerfen</DiscardUserButton>
+                        {(!isNewRegion) && <DeleteUserButton onClick={() => deleteRegion()}>Löschen</DeleteUserButton>}
+                        <SaveProtocolButton onClick={() => isNewRegion ? saveRegion() : updateRegion()}>Speichern</SaveProtocolButton>
                     </RowContainer>
                 </AdaptUserColumnLayout >
             </AdaptUserRowLayout>

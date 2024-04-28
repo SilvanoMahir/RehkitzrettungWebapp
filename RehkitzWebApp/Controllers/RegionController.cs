@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RehkitzWebApp.Model;
@@ -147,5 +148,149 @@ public class RegionController : ControllerBase
         {
             return NoContent();
         }
+    }
+
+    // GET: /api/regions/5
+    [Authorize(Roles = "Admin,Zentrale")]
+    [HttpGet("{id}")]
+    public async Task<ActionResult<RegionDto>> GetRegion(int id)
+    {
+        if (_context.Region == null)
+        {
+            return NotFound();
+        }
+
+        var principal = _httpcontext.HttpContext.User;
+        var loggedInUserRole = principal.FindFirst(ClaimTypes.Role);
+
+        var region = await _context.Region.FindAsync(id);
+
+        if (region == null)
+        {
+            return NotFound();
+        }
+
+        if (loggedInUserRole.Value == "Admin")
+        {
+            var regionDto = new RegionDto
+            {
+                RegionId = region.RegionId,
+                RegionName = region.RegionName,
+                RegionState = region.RegionState,
+                RegionDistrict = region.RegionDistrict,
+                ContactPersonFirstName = region.ContactPersonFirstName,
+                ContactPersonLastName = region.ContactPersonLastName,
+                ContactPersonEmail = region.ContactPersonEmail
+            };
+
+            return regionDto;
+
+        }
+        else
+        {
+            var regionDto = new RegionDto
+            {
+                RegionId = region.RegionId,
+                RegionName = region.RegionName,
+                RegionState = "",
+                RegionDistrict = "",
+                ContactPersonFirstName = region.ContactPersonFirstName,
+                ContactPersonLastName = region.ContactPersonLastName,
+                ContactPersonEmail = region.ContactPersonEmail
+            };
+
+            return regionDto;
+
+        }
+    }
+
+    // DELETE: /api/regions/5
+    [Authorize(Roles = "Admin,Zentrale")]
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> DeleteRegion(int id)
+    {
+        if (_context.Region == null)
+        {
+            return NotFound();
+        }
+
+        var region = await _context.Region.FindAsync(id);
+        if (region == null)
+        {
+            return NotFound();
+        }
+
+        region.EntryIsDeleted = true;
+        _context.Entry(region).State = EntityState.Modified;
+        _context.SaveChanges();
+
+        return NoContent();
+    }
+
+    // POST: /api/regions
+    [Authorize(Roles = "Admin,Zentrale")]
+    [HttpPost]
+    public async Task<ActionResult<RegionDto>> PostRegion(RegionDto regionDto)
+    {
+        if (_context.Region == null)
+        {
+            return NotFound();
+        }
+
+        var newRegion = new Region
+        {
+            RegionName = regionDto.RegionName,
+            RegionState = regionDto.RegionState,
+            RegionDistrict = regionDto.RegionDistrict,
+            ContactPersonFirstName = regionDto.ContactPersonFirstName,
+            ContactPersonLastName = regionDto.ContactPersonLastName,
+            ContactPersonEmail = regionDto.ContactPersonEmail,
+            EntryIsDeleted = false
+        };
+
+        _context.Region.Add(newRegion);
+
+        await _context.SaveChangesAsync();
+
+        return Ok(regionDto);
+    }
+
+    // POST: /api/regions
+    [Authorize(Roles = "Admin,Zentrale")]
+    [HttpPut("{id}")]
+    public async Task<ActionResult<RegionDto>> PutProtocol(int id, RegionDto regionDto)
+    {
+        if (id != regionDto.RegionId)
+        {
+            return BadRequest();
+        }
+
+        bool entryIsDeleted = false;
+        var region = regionDto.ToRegionEntity(entryIsDeleted);
+        region.RegionDistrict = regionDto.RegionDistrict;
+        _context.Entry(region).State = EntityState.Modified;
+
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!RegionExists(id))
+            {
+                return NotFound();
+            }
+            else
+            {
+                throw;
+            }
+        }
+
+        return NoContent();
+    }
+
+    private bool RegionExists(int id)
+    {
+        return (_context.Region?.Any(e => e.RegionId == id)).GetValueOrDefault();
     }
 }

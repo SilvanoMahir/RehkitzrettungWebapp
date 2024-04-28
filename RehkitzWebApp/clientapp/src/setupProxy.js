@@ -9,6 +9,8 @@ const context = [
     "/api/protocols/file",
     "/api/protocols/overview",
     "/api/regions",
+    "/api/districts",
+    "/api/states",
     "/api/users",
     "/api/area",
     "/api/authenticate/login",
