@@ -8,6 +8,9 @@ import { initialAuthState, authReducer } from './authReducer'
 import { initialUserState, userReducer } from './userReducer'
 import { ActionUsers } from '../models/UserActions'
 import { UserState } from '../models/UserState'
+import { RegionState } from '../models/RegionState'
+import { ActionRegions } from '../models/RegionActions'
+import { initialRegionState, regionReducer } from './regionReducer'
 
 interface AppState1 extends ProtocolState {
     dispatch_protocols: (action: ActionProtocols) => void
@@ -37,6 +40,8 @@ export const ProtocolProvider = ({ children }: Props) => {
     )
 }
 
+//*********************************************************************************** */
+
 interface AppState2 extends AuthState {
     dispatch_token: (action: Action) => void
 }
@@ -63,6 +68,8 @@ export const AppProvider = ({ children }: Props) => {
     return <AppContext.Provider value={appStore}>{children}</AppContext.Provider>
 }
 
+//************************************************************************************ */
+
 interface AppState3 extends UserState {
     dispatch_users: (action: ActionUsers) => void
 }
@@ -88,5 +95,35 @@ export const UserProvider = ({ children }: Props) => {
 
     return (
         <UserContext.Provider value={userAppStore}>{children}</UserContext.Provider>
+    )
+}
+
+//*********************************************************************************** */
+
+interface AppState4 extends RegionState {
+    dispatch_regions: (action: ActionRegions) => void
+}
+
+const initialState3: AppState4 = {
+    ...initialRegionState,
+    dispatch_regions: (action: ActionRegions) => { },
+}
+
+export const RegionContext = createContext<AppState4>(initialState3)
+
+interface Props {
+    children: ReactNode
+}
+
+export const RegionProvider = ({ children }: Props) => {
+    const [regionState, dispatch_regions] = useReducer(regionReducer, initialState3)
+
+    const regionAppStore = {
+        ...regionState,
+        dispatch_regions,
+    }
+
+    return (
+        <RegionContext.Provider value={regionAppStore}>{children}</RegionContext.Provider>
     )
 }

@@ -2,7 +2,7 @@ import App from './App'
 import ReactDOM from 'react-dom/client'
 import './index.css'
 import { BrowserRouter } from 'react-router-dom'
-import { ProtocolProvider, AppProvider, UserProvider } from './store/context'
+import { ProtocolProvider, AppProvider, UserProvider, RegionProvider } from './store/context'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
@@ -17,9 +17,11 @@ root.render(
         <AppProvider>
             <ProtocolProvider>
                 <UserProvider>
-                    <BrowserRouter>
-                        <App />
-                    </BrowserRouter>
+                    <RegionProvider>
+                        <BrowserRouter>
+                            <App />
+                        </BrowserRouter>
+                    </RegionProvider>
                 </UserProvider>
             </ProtocolProvider>
             <ToastContainer enableMultiContainer containerId={'ToasterNotification'} />
