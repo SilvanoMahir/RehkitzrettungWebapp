@@ -4,10 +4,10 @@ export default function RegionEntryTitles() {
 	return (
 		<RowContainer>
 			<Title>ID</Title>
-			<Title>Name Region</Title>
-			<Title>Distrikt</Title>
-			<Title>Verantwortlicher</Title>
-			<Title>E-Mail</Title>
+			<Title>Bezeichnung</Title>
+			<Title>Rolle</Title>
+			<Title>Region</Title>
+			<Title></Title>
 		</RowContainer>
 	)
 }

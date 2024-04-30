@@ -72,7 +72,7 @@ export default function LoginPage() {
                     <RowContainer>
                         <LoginButton onClick={() => login()}>Anmelden <FaSignInAlt /></LoginButton>
                     </RowContainer>
-                    <VersionText>v1.0.1</VersionText>
+                    <VersionText>v1.1.0</VersionText>
                     <LoadingBar>{promiseInProgress ? (<FadeLoader height={8} color='#ffeccb' />) : ('')} </LoadingBar>
                 </LoginPageColumnLayout >
             </LoginPageRowLayout>
