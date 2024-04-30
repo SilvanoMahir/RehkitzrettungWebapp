@@ -17,6 +17,7 @@ public static class ProtocolExtensions
             FoundFawns = protocol.FoundFawns,
             InjuredFawns = protocol.InjuredFawns,
             MarkedFawns = protocol.MarkedFawns,
+            EscapedFawns = protocol.EscapedFawns,
             Date = protocol.Date,
         };
     }
@@ -36,6 +37,7 @@ public static class ProtocolExtensions
             FoundFawns = protocolDto.FoundFawns,
             InjuredFawns = protocolDto.InjuredFawns,
             MarkedFawns = protocolDto.MarkedFawns,
+            EscapedFawns = protocolDto.EscapedFawns,
             Date = protocolDto.Date,
             EntryIsDeleted = entryIsDeleted,
         };

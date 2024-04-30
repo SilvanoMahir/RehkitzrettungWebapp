@@ -1,55 +1,48 @@
 import styled from 'styled-components'
 import { useContext, useState, useEffect } from 'react'
-import { ProtocolEntries } from '../../../models/ProtocolEntries'
-import { DeleteProtocolButton, EditProtocolButton } from '../../controls/Button'
-import ProtocolBodySmallScreen from './ProtocolBodySmallScreen'
 import { useMediaQuery } from 'react-responsive'
-import ProtocolBodyLargeScreen from './ProtocolBodyLargeScreen'
-import { AppContext, ProtocolsContext } from '../../../store/context'
-import { ROUTE_ADAPT_PROTOCOL_PAGE } from '../../../App'
+import { AppContext, RegionContext } from '../../../store/context'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import { RegionEntries } from '../../../models/RegionEntries'
+import { ROUTE_ADAPT_REGION_PAGE } from '../../../App'
+import RegionBodyLargeScreen from './RegionBodyLargeScreen'
+import { DeleteProtocolButton, EditProtocolButton } from '../../controls/Button'
 
 interface Props {
-    protocolId: String
+    regionId: number
     userFunction: String
 }
 
-export default function Protocol({ protocolId, userFunction }: Props) {
+export default function Region({ regionId, userFunction }: Props) {
 
     const isLargeScreen = useMediaQuery({ query: '(min-width: 1200px)' })
 
     const { token } = useContext(AppContext)
-    const { protocolsListLocal, dispatch_protocols } = useContext(ProtocolsContext)
+    const { regionsListLocal, dispatch_regions } = useContext(RegionContext)
     let navigate = useNavigate()
-    const [protocolEntry, setProtocolEntry] = useState<ProtocolEntries>({
-        protocolId: "",
-        protocolCode: "",
-        clientFullName: "",
-        localName: "",
-        date: "",
-        foundFawns: 0,
-        markedFawns: 0,
-        escapedFawns: 0,
-        remark: "",
-        pilotFullName: "",
+    const [regionEntry, setRegionEntry] = useState<RegionEntries>({
+        regionId: 0,
         regionName: "",
-        areaSize: "",
-        injuredFawns: 0,
+        regionState: "",
+        regionDistrict: "",
+        contactPersonFirstName: "",
+        contactPersonLastName: "",
+        contactPersonEmail: "",
     })
 
     useEffect(() => {
         const onMount = async () => {
-            const data = protocolsListLocal.filter(protocol => protocol.protocolId === protocolId)
-            setProtocolEntry(data[0])
+            const data = regionsListLocal.filter(region => region.regionId === regionId)
+            setRegionEntry(data[0])
         }
         onMount();
-    }, [protocolsListLocal, protocolId]);
+    }, [regionsListLocal, regionId]);
 
-    const deleteProtocol = async (protocolId: string) => {
+    const deleteRegion = async (regionId: number) => {
         const answer = window.confirm("Wirklich löschen?")
         if (answer) {
-            const response = await fetch(`/api/protocols/${Number(protocolId)}`, {
+            const response = await fetch(`/api/regions/${Number(regionId)}`, {
                 method: 'DELETE',
                 headers: {
                     'content-type': 'application/json',
@@ -57,8 +50,8 @@ export default function Protocol({ protocolId, userFunction }: Props) {
                 },
             })
             if (response.ok) {
-                dispatch_protocols({ type: 'delete-protocols', protocolsListLocal, protocolId })
-                toast.success("Protokoll erfolgreich gelöscht!", {
+                dispatch_regions({ type: 'delete-region', regionsListLocal, regionId })
+                toast.success("Region erfolgreich gelöscht!", {
                     position: toast.POSITION.TOP_CENTER,
                     containerId: 'ToasterNotification'
                 })
@@ -67,16 +60,16 @@ export default function Protocol({ protocolId, userFunction }: Props) {
     }
 
     const editProtocol = async () => {
-        navigate(`${ROUTE_ADAPT_PROTOCOL_PAGE}/${protocolId}`)
+        navigate(`${ROUTE_ADAPT_REGION_PAGE}/${regionId}`)
     }
 
     return (
         <ProtocolLayout>
-            <ProtocolTitle>Protokoll {protocolEntry.protocolCode}</ProtocolTitle>
-            {isLargeScreen ? <ProtocolBodyLargeScreen protocolEntry={protocolEntry} /> : <ProtocolBodySmallScreen protocolEntry={protocolEntry} />}
+            <ProtocolTitle>Region {regionEntry.regionDistrict}</ProtocolTitle>
+            {isLargeScreen ? <RegionBodyLargeScreen regionEntry={regionEntry} /> : <RegionBodyLargeScreen regionEntry={regionEntry} />}
             <RowContainer>
                 {(userFunction !== 'Wildhut' && userFunction !== 'Benutzer') && (
-                    <DeleteProtocolButton onClick={() => deleteProtocol(protocolEntry.protocolId)}>Löschen</DeleteProtocolButton>
+                    <DeleteProtocolButton onClick={() => deleteRegion(regionEntry.regionId)}>Löschen</DeleteProtocolButton>
                 )}
                 {(userFunction !== 'Wildhut') && (
                     <EditProtocolButton onClick={() => editProtocol()}>Bearbeiten</EditProtocolButton>
@@ -95,7 +88,7 @@ const ProtocolLayout = styled.div`
     background: #7c6b57;
 	color: beige;
 	border-radius: 10px;
-    max-width: 850px;
+    max-width: 1000px;
     width: 85%;
 `
 

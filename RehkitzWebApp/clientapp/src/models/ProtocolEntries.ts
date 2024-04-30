@@ -6,6 +6,7 @@ export interface ProtocolEntries {
     date: string
     foundFawns: number
     markedFawns: number
+    escapedFawns: number
     remark: string
     pilotFullName: string
     regionName: string
