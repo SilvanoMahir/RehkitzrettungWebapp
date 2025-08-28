@@ -70,7 +70,8 @@ This project is licensed under the [MIT License](LICENSE).
 
 ## Contact
 
-Silvano Mahir – *Project Lead*  
+[Silvano](https://github.com/SilvanoMahir)  – *Software Engineer*  
+[Kristian](https://github.com/kriskuett)  – *Software Engineer*  
 
 **Thank you for your support**
 
